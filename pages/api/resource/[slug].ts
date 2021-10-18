@@ -1,17 +1,11 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { Resource } from "../../../definitions/Resource";
+import type { ResourceResponse } from "types/Resource/ResourceResponse";
 
-type ResourceAPI = {
-  data: {
-    type: string;
-    id: string;
-    attributes: Resource;
-  };
-};
+
 
 export default function handler(
   req: NextApiRequest,
-  res: NextApiResponse<ResourceAPI>
+  res: NextApiResponse<ResourceResponse>
 ) {
   res.status(200).json({
     data: {
@@ -24,13 +18,16 @@ export default function handler(
         slug: "my-first-resource",
         createdAt: new Date("2020-01-01T00:00:00.000Z"),
         data: {
-          type: "Feature",
-          geometry: {
-            type: "Point",
-            coordinates: [125.6, 10.1],
-          },
-          properties: {
-            name: "Dinagat Islands",
+          type: "location",
+          attributes: {
+            type: "Feature",
+            geometry: {
+              type: "Point",
+              coordinates: [125.6, 10.1],
+            },
+            properties: {
+              name: "Dinagat Islands",
+            },
           },
         },
         likes: 12,
@@ -41,6 +38,7 @@ export default function handler(
             photoUrl: "https://placekitten.com/300/300",
           },
         ],
+        validated: true,
       },
     },
   });
