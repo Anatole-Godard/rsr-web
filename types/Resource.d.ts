@@ -1,3 +1,4 @@
+import type { ExternalLink } from "./Resource/ExternalLink";
 import type { GeoJSON_Point } from "./Resource/GeoJSON";
 import type { PhysicalItem } from "./Resource/PhysicalItem";
 
@@ -8,8 +9,8 @@ export type Resource = {
   createdAt: Date;
   description: string;
   data: {
-    type: string;
-    attributes: GeoJSON_Point | PhysicalItem | any;
+    type: "location" | "physical_item" | string;
+    attributes: GeoJSON_Point | PhysicalItem | ExternalLink | any;
   }; // à définir,
   likes: number;
   comments: {

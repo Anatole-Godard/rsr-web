@@ -1,7 +1,7 @@
 export type GeoJSON_Point = {
-  type: string; // "Feature"
+  type: "Feature"; // "Feature"
   geometry: {
-    type: string; //"Point";
+    type: "Point"; //"Point";
     coordinates: number[]; //[125.6, 10.1];
   };
   properties: {
