@@ -1,3 +1,32 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+    @font-face {
+      font-family: Marianne;
+      font-weight: 100;
+      src: url(/fonts/marianne/Marianne-Thin.woff) format("woff");
+    }@font-face {
+      font-family: Marianne;
+      font-weight: 300;
+      src: url(/fonts/marianne/Marianne-Light.woff) format("woff");
+    }@font-face {
+      font-family: Marianne;
+      font-weight: 400;
+      src: url(/fonts/marianne/Marianne-Regular.woff) format("woff");
+    }
+    @font-face {
+      font-family: Marianne;
+      font-weight: 500;
+      src: url(/fonts/marianne/Marianne-Medium.woff) format("woff");
+    }@font-face {
+      font-family: Marianne;
+      font-weight: 700;
+      src: url(/fonts/marianne/Marianne-Bold.woff) format("woff");
+    }@font-face {
+      font-family: Marianne;
+      font-weight: 800;
+      src: url(/fonts/marianne/Marianne-ExtraBold.woff) format("woff");
+    }
+  }
