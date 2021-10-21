@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import type { ResourceResponse } from "types/Resource/ResourceResponse";
+import type { ResourceResponse } from "@definitions/Resource/ResourceResponse";
 
 export default function handler(
   req: NextApiRequest,

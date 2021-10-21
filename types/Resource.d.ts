@@ -9,7 +9,7 @@ export type Resource = {
   createdAt: Date;
   description: string;
   data: {
-    type: "location" | "physical_item" | string;
+    type: "location" | "physical_item" | "external_link" | string;
     attributes: GeoJSON_Point | PhysicalItem | ExternalLink | any;
   }; // à définir,
   likes: number;

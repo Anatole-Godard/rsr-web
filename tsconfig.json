@@ -15,7 +15,7 @@
     "jsx": "preserve",
     "baseUrl": ".", // This must be specified if "paths" is.
     "paths": {
-      "@types/*": ["types/*"],
+      "@definitions/*": ["types/*"],
       "@static/*": ["static/*"],
       // "@components/*": ["components/*"],
     }

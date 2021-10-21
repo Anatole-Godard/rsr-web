@@ -1,6 +1,6 @@
 export type ExternalLink = {
   url: string;
-  title: string;
+  name: string;
   description: string;
   image: string;
 };
