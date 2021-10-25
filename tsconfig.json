@@ -16,10 +16,11 @@
     "baseUrl": ".", // This must be specified if "paths" is.
     "paths": {
       "@definitions/*": ["types/*"],
-      "@static/*": ["static/*"],
-      // "@components/*": ["components/*"],
+      "@utils/*": ["utils/*"],
+      "@components/*": ["components/*"],
+      "@resources/*": ["resources/*"],
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "utils/faker.dev.js"],
   "exclude": ["node_modules"]
 }

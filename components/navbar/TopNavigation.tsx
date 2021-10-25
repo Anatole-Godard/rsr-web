@@ -1,9 +1,19 @@
 import { MoonIcon, SearchIcon, SunIcon } from "@heroicons/react/outline";
 import { useTheme } from "next-themes";
 
-export const TopNavigation = () => {
+export const TopNavigation = ({
+  config = { shadow: true, backgroundColor: "bg-white dark:bg-gray-900" },
+}: {
+  config: { shadow: boolean; backgroundColor: string };
+}) => {
   return (
-    <div className="flex items-center justify-between top-navigation">
+    <div
+      className={
+        (config.shadow ? "shadow-md " : " ") +
+        config.backgroundColor +
+        " flex items-center justify-between w-full top-navigation z-40"
+      }
+    >
       <Title />
       <Search />
       <ThemeIcon />
@@ -27,14 +37,18 @@ const ThemeIcon = () => {
 
 const Search = () => (
   <div className="search">
-    <input className="search-input" type="text" placeholder="Rechercher une ressource, un canal, un utilisateur..." />
+    <input
+      className="search-input"
+      type="text"
+      placeholder="Rechercher une ressource, un canal, un utilisateur..."
+    />
     <SearchIcon className="w-5 h-5 my-auto text-secondary" />
   </div>
 );
 
 const Title = () => (
-  <h5 className="inline-flex items-center title-text">
+  <h5 className="inline-flex items-center font-extrabold uppercase title-text">
     <span className="text-bleuFrance-500">Hello</span>{" "}
-    <span className="text-rougeMarianne-500">RSR</span>
+    <span className="ml-1 text-rougeMarianne-500">RSR</span>
   </h5>
 );

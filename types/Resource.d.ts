@@ -20,3 +20,4 @@ export type Resource = {
   }[];
   validated: boolean;
 };
+

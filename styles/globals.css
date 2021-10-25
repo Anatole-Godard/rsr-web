@@ -37,11 +37,11 @@
 
 @layer components {
   .sidebar {
-    @apply fixed left-0 flex-col hidden h-screen bg-white top-16 xl:items-start md:flex md:w-16 xl:min-w-max dark:bg-gray-900;
+    @apply  min-h-[calc(100vh-4rem)] z-[41] flex-col hidden px-2 bg-white shadow-lg top-16 xl:items-start md:flex min-w-max dark:bg-gray-900;
   }
 
   .sidebar-icon {
-    @apply relative flex items-center justify-center w-12 h-12 mx-auto mt-2 mb-2 transition-all duration-300 ease-linear bg-gray-100 cursor-pointer text-bleuFrance-500 group-hover:bg-bleuFrance-600 dark:bg-gray-800 group-hover:text-white group-hover:rounded-xl rounded-3xl dark:text-blue-100;
+    @apply relative flex items-center justify-center xl:justify-start xl:min-w-[8rem] w-full min-h-[4rem] mx-auto mt-2 mb-2 transition-all duration-300 ease-linear bg-gray-100 cursor-pointer dark:bg-gray-800 group-hover:text-white group-hover:rounded-xl rounded-xl  flex-col flex-shrink-0 px-5 xl:flex-row xl:items-center;
   }
 
   .sidebar-tooltip {
@@ -57,11 +57,11 @@
   }
 
   .top-navigation {
-    @apply flex flex-row items-center justify-between w-full h-16 px-6 m-0 bg-white dark:bg-gray-900 bg-opacity-90;
+    @apply flex flex-row items-center justify-between w-full h-16 px-6 m-0 bg-opacity-90;
   }
 
   .top-navigation-icon {
-    @apply ml-4 mr-3 text-gray-500 transition duration-300 ease-in-out cursor-pointer hover:text-bleuFrance-400;
+    @apply ml-4 mr-3 text-gray-500 transition duration-300 ease-in-out cursor-pointer hover:text-blue-400 dark:hover:text-blue-200;
   }
 
   .title-text {
@@ -73,16 +73,6 @@
   }
 
   .search-input {
-    @apply w-full pl-1 font-thin font-semibold text-gray-500 placeholder-gray-500 bg-transparent rounded outline-none;
+    @apply w-full pl-1 font-bold text-gray-500 placeholder-gray-500 bg-transparent rounded outline-none;
   }
-}
-
-@tailwind utilities;
-
-::-webkit-scrollbar {
-  background-color: transparent;
-}
-
-::-webkit-scrollbar-thumb {
-  @apply bg-gray-500 dark:bg-bleuFrance-400;
 }
