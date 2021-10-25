@@ -6,7 +6,6 @@ import Link from "next/link";
 
 const Store: NextPage = () => {
   const { theme, setTheme } = useTheme();
-  console.log(theme);
 
   const color = Math.random() > 0.5 ? "#000091" : "#E1000F";
   const background =
@@ -43,15 +42,45 @@ const Store: NextPage = () => {
       </div>
       <div className="z-30 hidden grid-cols-2 gap-3 p-6 -mt-16 md:grid xl:grid-cols-6 xl:gap-6">
         {[1, 2, 3, 4, 5, 6].map((item) => (
-          <LittleCard key={item} />
+          <ResourcePreview
+            key={item}
+            photoURL={"https://picsum.photos/400/" + (300 + item).toString()}
+            name={"Ressource " + item}
+            tagline={item % 2 === 0 && "Lorem ipsum dolor sit amet, consectetur adipiscing elit."}
+          />
         ))}
       </div>
     </AppLayout>
   );
 };
 
-const LittleCard = () => {
-  return <div className="w-full h-24 bg-white shadow-lg rounded-xl"></div>;
+const ResourcePreview: React.FC<any> = ({
+  photoURL,
+  name,
+  tagline,
+}: {
+  photoURL: string;
+  name: string;
+  tagline?: string;
+}) => {
+  return (
+    <div
+      className="flex flex-col justify-end w-full duration-300 ease-linear shadow-lg cursor-pointer h-28 rounded-xl hover:scale-105"
+      style={{
+        background:
+          "-webkit-linear-gradient(top, transparent, #000000ff), url('" +
+          photoURL +
+          "')",
+      }}
+    >
+      <div className="flex flex-col w-full p-2 ">
+        <h4 className="text-xs font-normal font-marianne text-gray-50">{name}</h4>
+        <p className="text-[0.6rem] text-gray-300 font-marianne font-thin mt-0.5 truncate">
+          {tagline}
+        </p>
+      </div>
+    </div>
+  );
 };
 
 export default Store;

@@ -1,7 +1,7 @@
 import { MoonIcon, SearchIcon, SunIcon } from "@heroicons/react/outline";
 import { useTheme } from "next-themes";
 
-export const TopNavigation = ({
+export const TopNavigation: React.FC<any> = ({
   config = { shadow: true, backgroundColor: "bg-white dark:bg-gray-900" },
 }: {
   config: { shadow: boolean; backgroundColor: string };
