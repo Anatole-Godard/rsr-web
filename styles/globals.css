@@ -37,7 +37,7 @@
 
 @layer components {
   .sidebar {
-    @apply  min-h-[calc(100vh-4rem)] z-[41] flex-col hidden px-2 bg-white shadow-lg top-16 xl:items-start md:flex min-w-max dark:bg-gray-900;
+    @apply  min-h-[calc(100vh-4rem)] z-[41] flex-col hidden px-2 bg-white shadow-lg top-16 xl:items-start md:flex min-w-max dark:bg-black dark:border-r dark:border-gray-900;
   }
 
   .sidebar-icon {
@@ -57,7 +57,7 @@
   }
 
   .top-navigation {
-    @apply flex flex-row items-center justify-between w-full h-16 px-6 m-0 bg-opacity-90;
+    @apply flex flex-row items-center justify-between w-full h-16 px-6 m-0 bg-white dark:bg-black;
   }
 
   .top-navigation-icon {

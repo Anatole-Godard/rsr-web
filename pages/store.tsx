@@ -7,15 +7,10 @@ import Link from "next/link";
 const Store: NextPage = () => {
   const { theme, setTheme } = useTheme();
 
-  const color = Math.random() > 0.5 ? "#000091" : "#E1000F";
   const background =
     theme === "light"
-      ? "-webkit-linear-gradient(top, " +
-        color +
-        "C0, #ffffffff), url('https://picsum.photos/1600/600')"
-      : "-webkit-linear-gradient(top, " +
-        color +
-        "C0, #000000ff), url('https://picsum.photos/1600/600')";
+      ? "-webkit-linear-gradient(top, #000091C0, #ffffffff), url('https://picsum.photos/1600/600')"
+      : "-webkit-linear-gradient(top, #E1000FC0, #000000ff), url('https://picsum.photos/1600/600')";
 
   return (
     <AppLayout>
@@ -65,7 +60,7 @@ const ResourcePreview: React.FC<any> = ({
 }) => {
   return (
     <div
-      className="flex flex-col justify-end w-full duration-300 ease-linear shadow-lg cursor-pointer h-28 rounded-xl hover:scale-105"
+      className="flex flex-col justify-end w-full duration-300 ease-linear shadow-lg cursor-pointer hover:shadow-lg h-28 rounded-xl hover:scale-105"
       style={{
         background:
           "-webkit-linear-gradient(top, transparent, #000000ff), url('" +
