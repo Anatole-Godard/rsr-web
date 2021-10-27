@@ -1,6 +1,6 @@
-import type { ExternalLink } from "./Resource/ExternalLink";
-import type { GeoJSON_Point } from "./Resource/GeoJSON";
-import type { PhysicalItem } from "./Resource/PhysicalItem";
+import type { ExternalLink } from "./ExternalLink";
+import type { GeoJSON_Point } from "./GeoJSON";
+import type { PhysicalItem } from "./PhysicalItem";
 
 export type Resource = {
   id: number;

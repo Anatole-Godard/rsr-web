@@ -1,4 +1,4 @@
-import type { ChannelInvite } from "@definitions/ChannelInvite";
+import type { ChannelInvite } from "@definitions/Channel/ChannelInvite";
 import { fakeChannelInvite } from "@utils/faker.dev";
 import type { NextApiRequest, NextApiResponse } from "next";
 
