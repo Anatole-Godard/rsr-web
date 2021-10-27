@@ -4,19 +4,24 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "serve": "next build && nodemon server",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
     "@heroicons/react": "^1.0.4",
+    "@types/express": "^4.17.13",
     "@types/react-lottie": "^1.2.6",
+    "express": "^4.17.1",
     "jose": "^4.1.1",
     "next": "11.1.2",
     "next-themes": "^0.0.15",
     "react": "17.0.2",
     "react-dom": "17.0.2",
-    "react-lottie": "^1.2.3"
+    "react-lottie": "^1.2.3",
+    "socket.io": "^4.3.1",
+    "socket.io-client": "^4.3.2"
   },
   "devDependencies": {
     "@types/react": "17.0.28",
@@ -24,6 +29,7 @@
     "eslint": "8.0.0",
     "eslint-config-next": "11.1.2",
     "faker": "^5.5.3",
+    "nodemon": "^2.0.14",
     "postcss": "^8.3.9",
     "tailwindcss": "^2.2.17",
     "typescript": "4.4.3"

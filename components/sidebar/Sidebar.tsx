@@ -23,9 +23,9 @@ export const SideBar = () => {
       />
       <SideBarIcon
         icon={ChatIcon}
-        active={pathname === "/channel"}
+        active={pathname === "/channels"}
         text="Canaux"
-        href="/channel"
+        href="/channels"
       />
     </div>
   );
