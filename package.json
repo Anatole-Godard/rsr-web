@@ -11,7 +11,9 @@
   "dependencies": {
     "@heroicons/react": "^1.0.4",
     "@types/react-lottie": "^1.2.6",
+    "dotenv": "^10.0.0",
     "jose": "^4.1.1",
+    "mongoose": "^6.0.12",
     "next": "11.1.2",
     "next-themes": "^0.0.15",
     "react": "17.0.2",
