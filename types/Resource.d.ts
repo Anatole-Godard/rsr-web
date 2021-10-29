@@ -8,6 +8,7 @@ export type Resource = {
   owner: string;
   createdAt: Date;
   description: string;
+  tags?: string[];
   data: {
     type: "location" | "physical_item" | "external_link" | string;
     attributes: GeoJSON_Point | PhysicalItem | ExternalLink | any;
@@ -20,4 +21,3 @@ export type Resource = {
   }[];
   validated: boolean;
 };
-

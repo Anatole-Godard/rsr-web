@@ -1,5 +1,5 @@
 const colors = require('tailwindcss/colors')
-delete colors.lightGray;
+delete colors.lightBlue;
 
 module.exports = {
   mode: "jit",
@@ -11,7 +11,7 @@ module.exports = {
     },
     extend: {
       colors: {
-        gray: colors.gray,
+        ...colors,
         bleuFrance: {
           DEFAULT: "#000091",
           500: "#000091",
