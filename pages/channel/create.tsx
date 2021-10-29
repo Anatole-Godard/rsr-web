@@ -23,7 +23,11 @@ const ChannelCreate: NextPage<any> = ({
           canExpand={false}
           isExpanded={false}
           canReturn
+          isCreatingChannel
         />
+        <div className="w-full h-full xl:p-6">
+          <div className="w-full p-6 mx-auto bg-gray-100 xl:max-w-3xl xl:rounded-xl"></div>
+        </div>
       </div>
     </AppLayout>
   );
@@ -34,73 +38,7 @@ export default ChannelCreate;
 export const getServerSideProps: GetServerSideProps = async (context) => {
   return {
     props: {
-      channels: [
-        {
-          slug: "general",
-          name: "General",
-          photoURL: "https://picsum.photos/200",
-        },
-        {
-          slug: "random",
-          name: "Random",
-          photoURL: "https://picsum.photos/201",
-        },
-        {
-          slug: "cool",
-          name: "Cool",
-          photoURL: "https://picsum.photos/202",
-        },
-        {
-          slug: "fun",
-          name: "Fun",
-          photoURL: "https://picsum.photos/203",
-        },
-        {
-          slug: "programming",
-          name: "Programming",
-          photoURL: "https://picsum.photos/204",
-        },
-        {
-          slug: "javascript",
-          name: "Javascript",
-          photoURL: "https://picsum.photos/205",
-        },
-        {
-          slug: "typescript",
-          name: "Typescript",
-          photoURL: "https://picsum.photos/206",
-        },
-        {
-          slug: "react",
-          name: "React",
-          photoURL: "https://picsum.photos/207",
-        },
-        {
-          slug: "node",
-          name: "Node",
-          photoURL: "https://picsum.photos/208",
-        },
-        {
-          slug: "express",
-          name: "Express",
-          photoURL: "https://picsum.photos/209",
-        },
-        {
-          slug: "mongodb",
-          name: "MongoDB",
-          photoURL: "https://picsum.photos/210",
-        },
-        {
-          slug: "mysql",
-          name: "MySQL",
-          photoURL: "https://picsum.photos/211",
-        },
-        {
-          slug: "postgresql",
-          name: "PostgreSQL",
-          photoURL: "https://picsum.photos/212",
-        },
-      ],
+      channels: [],
     },
   };
 };
