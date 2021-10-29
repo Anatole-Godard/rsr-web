@@ -18,6 +18,7 @@ export const Sidebar = ({
   canReturn,
   isExpanded,
   selectedChannelSlug,
+  isCreatingChannel,
 }: {
   channels: {
     slug: string;
@@ -32,6 +33,7 @@ export const Sidebar = ({
   canReturn: boolean;
   isExpanded: boolean;
   selectedChannelSlug?: string;
+  isCreatingChannel?: boolean;
 }) => {
   const [expanded, setExpanded] = useState<boolean>(isExpanded);
 
@@ -42,7 +44,7 @@ export const Sidebar = ({
   return (
     <div
       className={
-        "w-full h-auto m-0 items-center flex flex-row xl:flex-col justify-between bg-gray-100 dark:bg-gray-800 " +
+        "w-full h-auto m-0 items-center flex flex-row xl:flex-col justify-between bg-gray-100 dark:bg-gray-900 " +
         (expanded ? "xl:w-64" : "xl:w-full xl:max-w-max")
       }
     >
@@ -77,50 +79,54 @@ export const Sidebar = ({
             )}
           </div>
         </div>
-        <div
-          className={
-            "p-2 m-2  flex flex-row xl:flex-col h-full  overflow-x-scroll xl:overflow-x-hidden xl:overflow-y-auto bg-gray-50 rounded-xl dark:bg-gray-800 " +
-            (expanded && selectedChannelSlug ? "xl:max-h-[52vh] " : "xl:max-h-[65vh] ") +
-            (expanded && !selectedChannelSlug ? " xl:max-h-[65vh] " : "") +
-            (canExpand && !selectedChannelSlug
-              ? "max-w-[80vw] "
-              : "max-w-[70vw]")
-          }
-        >
-          {channels?.map((el, key) => (
-            <ChatOverview
-              key={key}
-              isFirst={key === 0}
-              isLast={false}
-              slug={el.slug}
-              name={el.name}
-              photoURL={el.photoURL}
-              expanded={expanded}
-              active={selectedChannelSlug === el.slug}
-            />
-          ))}
+        {!isCreatingChannel && (
+          <div
+            className={
+              "p-2 m-2  flex flex-row xl:flex-col h-full  overflow-x-scroll xl:overflow-x-hidden xl:overflow-y-auto bg-gray-50 rounded-xl dark:bg-gray-800 " +
+              (expanded && selectedChannelSlug
+                ? "xl:max-h-[52vh] "
+                : "xl:max-h-[65vh] ") +
+              (expanded && !selectedChannelSlug ? " xl:max-h-[65vh] " : "") +
+              (canExpand && !selectedChannelSlug
+                ? "max-w-[80vw] "
+                : "max-w-[70vw]")
+            }
+          >
+            {channels?.map((el, key) => (
+              <ChatOverview
+                key={key}
+                isFirst={key === 0}
+                isLast={false}
+                slug={el.slug}
+                name={el.name}
+                photoURL={el.photoURL}
+                expanded={expanded}
+                active={selectedChannelSlug === el.slug}
+              />
+            ))}
 
-          <Link href="/channel/create">
-            <a
-              className={
-                "flex flex-row items-center w-full px-4 py-2 text-sm leading-5 text-gray-700 transition duration-300 ease-in-out dark:text-gray-200 hover:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900 focus:outline-none xl:rounded-b-xl rounded rounded-r-xl xl:rounded-r xl:rounded-br-xl active:bg-blue-50" +
-                (!expanded ? " justify-center" : "")
-              }
-            >
-              <span className="flex items-center justify-center w-8 h-8 p-2 text-blue-500 bg-blue-200 rounded-full dark:bg-blue-700">
-                <PlusIcon className="w-4 h-4" />
-              </span>
+            <Link href="/channel/create">
+              <a
+                className={
+                  "flex flex-row items-center w-full px-4 py-2 text-sm leading-5 text-gray-700 transition duration-300 ease-in-out dark:text-gray-200 hover:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900 focus:outline-none xl:rounded-b-xl rounded rounded-r-xl xl:rounded-r xl:rounded-br-xl active:bg-blue-50" +
+                  (!expanded ? " justify-center" : "")
+                }
+              >
+                <span className="flex items-center justify-center w-8 h-8 p-2 text-blue-500 bg-blue-200 rounded-full dark:bg-blue-700">
+                  <PlusIcon className="w-4 h-4" />
+                </span>
 
-              {expanded && (
-                <div className="flex-col hidden ml-2 xl:flex">
-                  <span className="text-[0.65rem] select-none text-gray-400 dark:text-gray-300">
-                    Create
-                  </span>
-                </div>
-              )}
-            </a>
-          </Link>
-        </div>
+                {expanded && (
+                  <div className="flex-col hidden ml-2 xl:flex">
+                    <span className="text-[0.65rem] select-none text-gray-400 dark:text-gray-300">
+                      Create
+                    </span>
+                  </div>
+                )}
+              </a>
+            </Link>
+          </div>
+        )}
       </div>
       {selectedChannelSlug && (
         <div className="justify-center hidden w-full p-4 xl:flex">

@@ -36,9 +36,9 @@ const ThemeIcon = () => {
   return (
     <span onClick={handleMode}>
       {theme === "dark" ? (
-        <SunIcon className="w-5 h-5 top-navigation-icon" />
-      ) : (
         <MoonIcon className="w-5 h-5 top-navigation-icon" />
+      ) : (
+        <SunIcon className="w-5 h-5 top-navigation-icon" />
       )}
     </span>
   );
