@@ -35,7 +35,7 @@ export default function handler(
               {
                 owner: "John Doe",
                 content: "This is my first comment",
-                photoUrl: "https://placekitten.com/300/300",
+                photoURL: "https://placekitten.com/300/300",
               },
             ],
             validated: true,
@@ -51,7 +51,7 @@ export default function handler(
               attributes: {
                 name: "A bottle of water",
                 description: "A bottle of water",
-                photoUrl: "https://placekitten.com/300/300",
+                photoURL: "https://placekitten.com/300/300",
                 price: null,
                 category: "Water",
               },
@@ -61,7 +61,7 @@ export default function handler(
               {
                 owner: "John Doe",
                 content: "This is my first comment",
-                photoUrl: "https://placekitten.com/300/300",
+                photoURL: "https://placekitten.com/300/300",
               },
             ],
             validated: true,

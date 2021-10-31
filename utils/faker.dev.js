@@ -51,7 +51,7 @@ export const fakeGeoJSON_Point = () => {
 export const fakePhysicalItem = () => ({
   name: faker.commerce.productName(),
   description: faker.lorem.paragraph(),
-  photoUrl: faker.image.imageUrl(),
+  photoURL: faker.image.imageUrl(),
   price: faker.datatype.number(),
   category: faker.commerce.department(),
 });
@@ -83,7 +83,7 @@ export const fakeResource = () => {
       new Array(faker.datatype.number(10)).fill(null).map(() => ({
         owner: faker.internet.userName(),
         content: faker.lorem.sentence(),
-        photoUrl: faker.image.avatar(),
+        photoURL: faker.image.avatar(),
       })),
     ],
     validated: faker.datatype.boolean(),
