@@ -8,12 +8,14 @@ const ICON = icon({
 
 const Map: React.FC<any> = ({
   point,
+  className
 }: {
   point: LatLngExpression | number[];
+  className?: string
 }) => {
   return (
     <MapContainer
-      className="absolute inset-0 h-full p-10"
+      className={"absolute inset-0 h-full p-10 " + className}
       center={point as LatLngExpression}
       zoom={8}
       //   scrollWheelZoom={false}
