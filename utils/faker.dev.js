@@ -39,12 +39,14 @@ export const fakeGeoJSON_Point = () => {
     type: "Feature",
     geometry: {
       type: "Point",
-      coordinates: [faker.datatype.number(), faker.datatype.number()],
+      coordinates: [
+        faker.address.latitude(41.59101, 51.03457),
+        faker.address.longitude(-4.65, 9.45),
+      ],
     },
-    properties: { name: faker.name.findName() },
+    properties: { name: faker.address.city() },
   };
 };
-
 
 export const fakePhysicalItem = () => ({
   name: faker.commerce.productName(),
@@ -53,7 +55,6 @@ export const fakePhysicalItem = () => ({
   price: faker.datatype.number(),
   category: faker.commerce.department(),
 });
-
 
 export const fakeResource = () => {
   const datatype = faker.random.arrayElement([
@@ -88,4 +89,3 @@ export const fakeResource = () => {
     validated: faker.datatype.boolean(),
   };
 };
-

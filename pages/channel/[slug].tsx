@@ -1,5 +1,7 @@
+import { ChannelResource } from "@components/channel/Resource";
 import { Sidebar } from "@components/channel/Sidebar";
 import { AppLayout } from "@components/layouts/AppLayout";
+import { fakeResource } from "@utils/faker.dev";
 import { GetServerSideProps, NextPage } from "next";
 import { useRouter } from "next/router";
 
@@ -19,6 +21,26 @@ const ChannelSlug: NextPage<any> = ({
   const router = useRouter();
   const { slug } = router.query;
 
+  const description = "Hello world";
+  const chat = [
+    {
+      content: "Hello world",
+      createdAt: "2020-01-01T00:00:00.000Z",
+      user: {
+        fullName: "John Doe",
+        avatar: "https://via.placeholder.com/150",
+      },
+    },
+    {
+      content: "Hello world",
+      createdAt: "2020-01-01T00:00:00.000Z",
+      user: {
+        fullName: "John Doe",
+        avatar: "https://via.placeholder.com/150",
+      },
+    },
+  ];
+
   return (
     <AppLayout sidebar={{ size: "small" }}>
       <div className="flex flex-col w-full h-full xl:flex-row">
@@ -29,7 +51,36 @@ const ChannelSlug: NextPage<any> = ({
           canReturn
           selectedChannelSlug={slug as string}
         />
-        <div className="flex flex-col w-full h-full bg-gray-50"></div>
+        <div className="flex justify-center w-full h-full xl:p-6">
+          <div className="flex flex-col w-full mx-auto bg-gray-100 xl:shadow xl:mx-12 xl:rounded-xl">
+            {/* HEADER */}
+            <div className="inline-flex justify-between w-full p-3 px-6">
+              <div className="flex flex-col ">
+                <div className="inline-flex items-center">
+                  <p className="text-xl font-medium text-gray-800 font-marianne">
+                    {"#" + slug}
+                  </p>
+                  {/* <span className=" text-[0.6rem] ml-3 h-3 min-w-max w-full bg-gray-200 text-black font-bold rounded-full">
+                    {chat.length}
+                  </span> */}
+                </div>
+                {description && (
+                  <p className="text-sm font-light text-gray-500 font-spectral">
+                    {description}
+                  </p>
+                )}
+              </div>
+            </div>
+
+            {/* BODY */}
+            <div className="flex flex-col flex-grow p-3 bg-white xl:rounded-xl">
+              <ChannelResource {...fakeResource()} />
+            </div>
+
+            {/* FOOTER */}
+            <div className="inline-flex justify-between w-full p-3 px-6"></div>
+          </div>
+        </div>
       </div>
     </AppLayout>
   );

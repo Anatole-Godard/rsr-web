@@ -27,7 +27,7 @@ export const SideBar = ({ config = { size: "normal" } }: { config?: any }) => {
       <SideBarIcon
         icon={ChatIcon}
         active={pathname.includes("/channel")}
-        text="Canaux"
+        text="Salons"
         href="/channel"
       />
     </div>
