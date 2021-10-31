@@ -21,7 +21,7 @@ const Store: NextPage = () => {
     <AppLayout>
       {/* <div className="w-screen min-h-screen"> */}
       <div
-        className="z-20 flex flex-col items-start justify-center object-cover w-full p-12 h-96"
+        className="z-20 flex flex-col items-start justify-center object-cover w-full p-12 rounded-tl-xl h-96"
         style={{
           background: background,
           opacity: 0.9,
