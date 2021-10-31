@@ -1,9 +1,6 @@
 import { Sidebar } from "@components/channel/Sidebar";
 import { AppLayout } from "@components/layouts/AppLayout";
-import { ArrowsExpandIcon, UserGroupIcon } from "@heroicons/react/outline";
 import { GetServerSideProps, NextPage } from "next";
-import Link from "next/link";
-import { useState } from "react";
 
 const Channel: NextPage<any> = ({
   channels,

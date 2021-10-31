@@ -44,7 +44,7 @@ export const Sidebar = ({
   return (
     <div
       className={
-        "w-full h-auto m-0 items-center flex flex-row xl:flex-col justify-between bg-gray-100 dark:bg-gray-900 " +
+        "w-full h-auto m-0 items-center flex flex-row xl:flex-col justify-between xl:rounded-t-xl bg-gray-100 dark:bg-gray-900 " +
         (expanded ? "xl:w-64" : "xl:w-full xl:max-w-max")
       }
     >
@@ -74,7 +74,7 @@ export const Sidebar = ({
             )}
             {expanded && (
               <p className="hidden my-auto mr-auto text-lg font-bold tracking-wider text-gray-600 align-middle xl:flex dark:text-gray-400">
-                Canaux
+                Salons
               </p>
             )}
           </div>

@@ -11,7 +11,7 @@ const variants = {
 }
 
 export const AppLayout: React.FC<any> = ({
-  topNavigation = { shadow: true },
+  topNavigation = { shadow: false },
   sidebar = { },
   children,
 }: {

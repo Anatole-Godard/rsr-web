@@ -210,3 +210,29 @@
   height: 50%;
   border-left: 1px solid rgb(59, 130, 246);
 }
+
+.leaflet-popup-content {
+  margin: 0 !important;
+}
+
+.leaflet-popup-content-wrapper {
+  padding: 0 !important;
+}
+
+.leaflet-popup-content-wrapper,
+.leaflet-popup-tip {
+  background: none !important;
+}
+
+.leaflet-control-container {
+  display: none;
+}
+
+.leaflet-container {
+  height: 100%;
+  width: 100%;
+}
+
+.leaflet-pane {
+  z-index: 0 !important;
+}

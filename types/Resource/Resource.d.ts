@@ -6,7 +6,7 @@ export type Resource = {
   id: number;
   slug: string;
   owner: string;
-  createdAt: Date;
+  createdAt: Date | string;
   description: string;
   tags?: string[];
   data: {
