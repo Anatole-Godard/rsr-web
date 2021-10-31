@@ -17,7 +17,7 @@ export type Resource = {
   comments: {
     owner: string;
     content: string;
-    photoUrl: string;
+    photoURL: string;
   }[];
   validated: boolean;
 };

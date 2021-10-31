@@ -1,7 +1,7 @@
 export type PhysicalItem = {
   name: string;
   description: string;
-  photoUrl: string;
+  photoURL: string;
   price: number | null;
   category: string;
 };
