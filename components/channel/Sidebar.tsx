@@ -86,7 +86,7 @@ export const Sidebar = ({
               (expanded && selectedChannelSlug
                 ? "xl:max-h-[52vh] "
                 : "xl:max-h-[65vh] ") +
-              (expanded && !selectedChannelSlug ? " xl:max-h-[65vh] " : "") +
+              (expanded && !selectedChannelSlug ? " xl:max-h-[80vh] " : "") +
               (canExpand && !selectedChannelSlug
                 ? "max-w-[80vw] "
                 : "max-w-[70vw]")
@@ -129,7 +129,7 @@ export const Sidebar = ({
         )}
       </div>
       {selectedChannelSlug && (
-        <div className="justify-center hidden w-full p-4 xl:flex">
+        <div className="fixed justify-center hidden w-full p-4 bottom-2 xl:flex">
           {expanded ? (
             <span
               className="flex items-center justify-center p-1 text-blue-500 duration-300 ease-linear bg-blue-200 cursor-pointer active:bg-blue-100 hover:bg-blue-300 rounded-xl dark:bg-blue-700"
