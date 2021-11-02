@@ -7,7 +7,7 @@ export const SideBar = () => {
   const { pathname } = router;
 
   return (
-    <div className="sidebar">
+    <div className="min-h-[calc(100vh-4rem)] z-[41] flex-col hidden px-2 bg-white shadow-lg top-16 xl:items-start md:flex min-w-max dark:bg-black dark:border-r dark:border-gray-900">
       <SideBarIcon
         icon={HomeIcon}
         active={pathname === "/"}
@@ -47,21 +47,22 @@ const SideBarIcon = ({
       <div
         className={
           (active
-            ? " dark:bg-gray-100 text-blue-500 group-hover:bg-blue-600"
+            ? " dark:bg-gray-100  text-blue-500 group-hover:bg-blue-600"
             : "dark:text-gray-100 text-gray-500 group-hover:bg-gray-600 ") +
-          " sidebar-icon"
+          " relative flex-row items-center justify-center w-full min-h-[4rem] min-w-[4rem] mx-auto mt-2 mb-2 transition-all duration-300 ease-linear bg-gray-100 cursor-pointer dark:bg-gray-800 group-hover:text-white group-hover:rounded-lg rounded-xl  flex flex-shrink-0 px-5 "
         }
       >
+        
         {icon({ className: "flex-shrink-0 w-5 h-5" })}
         <span
           className={
             (active ? "hidden" : "") +
-            " ml-6 xl:hidden sidebar-tooltip group-hover:scale-100"
+            " ml-6  absolute w-auto p-2 m-2 text-xs font-bold text-white transition-all duration-100 origin-left scale-0 bg-gray-900 rounded-md shadow-md min-w-max left-14 group-hover:scale-100"
           }
         >
           {text}
         </span>
-        <span
+        {/* <span
           className={
             (active ? "flex" : "hidden xl:flex") +
             " text-[0.65rem] font-bold flex-col xl:flex-row xl:items-center"
@@ -76,7 +77,7 @@ const SideBarIcon = ({
             }
           />
           {text}
-        </span>
+        </span> */}
       </div>
     </div>
   </Link>
