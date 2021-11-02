@@ -79,13 +79,12 @@ export const fakeResource = () => {
           : fakeExternalLink(),
     },
     likes: faker.datatype.number(),
-    comments: [
-      new Array(faker.datatype.number(10)).fill(null).map(() => ({
-        owner: faker.internet.userName(),
-        content: faker.lorem.sentence(),
-        photoURL: faker.image.avatar(),
-      })),
-    ],
+    comments: new Array(faker.datatype.number(10)).fill(null).map(() => ({
+      owner: faker.internet.userName(),
+      content: faker.lorem.sentence(),
+      photoURL: faker.image.avatar(),
+    })),
+
     validated: faker.datatype.boolean(),
   };
 };
