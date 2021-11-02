@@ -1,7 +1,9 @@
 import type { Resource } from "@definitions/Resource";
+import { Transition } from "@headlessui/react";
 import {
   ChatAltIcon,
   CheckCircleIcon,
+  ChevronDownIcon,
   ExternalLinkIcon,
   HeartIcon,
 } from "@heroicons/react/outline";
@@ -9,6 +11,7 @@ import { formatDistanceToNow } from "date-fns";
 import { fr } from "date-fns/locale";
 
 import dynamic from "next/dynamic";
+import { Fragment, useState } from "react";
 
 const Map: any = dynamic(() => import("@components/map/Map") as any, {
   ssr: false,
@@ -25,9 +28,12 @@ export const ChannelResource: React.FC<any> = ({
   comments,
   validated,
 }: Resource) => {
+  const [message, setMessage] = useState<string>("");
+  const [showComments, setShowComments] = useState<boolean>(false);
+
   return (
-    <div className="flex flex-col overflow-hidden">
-      <div className="flex flex-col p-6 bg-gray-100 rounded-md xl:rounded-xl">
+    <div className="flex flex-col">
+      <div className="flex flex-col p-6 bg-gray-100 rounded-md shadow xl:rounded-xl">
         <div className="inline-flex justify-between">
           <div className="flex flex-col">
             <small className="-mb-2 text-xs text-gray-400 uppercase select-none font-spectral">
@@ -73,27 +79,77 @@ export const ChannelResource: React.FC<any> = ({
         <ResourceView {...data} />
       </div>
       {/* COMMENTS */}
-      {comments.length > 0 && (
-        <div className="flex flex-col p-6 mt-3 rounded-md xl:rounded-xl">
-          {comments.map(
-            (
-              comment: { photoURL: string; owner: string; content: string },
-              i
-            ) => (
-              <div className="inline-flex space-x-4" key={i}>
-                <img src={comment.photoURL} alt={comment.owner}></img>
-                <div className="flex flex-col">
-                  <p className="text-sm text-gray-700 font-marianne">
-                    {comment.owner}
-                  </p>
-                  <p className="text-xs text-gray-600 font-marianne">
-                    {comment.content}
-                  </p>
+
+      {showComments ? (
+        <>
+          {comments.length > 0 && (
+            <>
+              <button
+                className="inline-flex items-center w-full p-2 mt-2 text-sm duration-300 ease-linear rounded-md text-emerald-500 hover:bg-emerald-100 active:bg-emerald-300 active:text-emerald-700 max-w-max "
+                onClick={() => setShowComments(false)}
+              >
+                <ChevronDownIcon className="w-4 h-4 mr-1 rotate-180 text-emerald-500" />
+                Cacher les commentaires
+              </button>
+              <Transition
+                as={Fragment}
+                show={showComments}
+                enter="transform transition duration-[400ms]"
+                enterFrom="opacity-0  scale-50"
+                enterTo="opacity-100 scale-100"
+                leave="transform duration-200 transition ease-in-out"
+                leaveFrom="opacity-100 scale-100 "
+                leaveTo="opacity-0 scale-95 "
+              >
+                <div className="flex flex-col px-4 mt-2 space-y-2 overflow-y-auto rounded-md xl:rounded-xl">
+                  {comments.map(
+                    (
+                      comment: {
+                        photoURL: string;
+                        owner: string;
+                        content: string;
+                      },
+                      i
+                    ) => (
+                      <div
+                        className="inline-flex p-2 space-x-6 rounded-md bg-gray-50"
+                        key={i}
+                      >
+                        <img
+                          src={comment.photoURL}
+                          alt={comment.owner}
+                          className="w-10 h-10 rounded-full"
+                        ></img>
+                        <div className="flex flex-col">
+                          <p className="text-sm text-gray-700 font-marianne">
+                            {comment.owner}
+                          </p>
+                          <p className="text-xs text-gray-600">
+                            {comment.content}
+                          </p>
+                        </div>
+                      </div>
+                    )
+                  )}
+                  <input
+                    value={message}
+                    placeholder="Écrivez un commentaire"
+                    onChange={(e) => setMessage(e.target.value)}
+                    className="w-full p-2 mt-2 bg-gray-100 rounded-md "
+                  ></input>
                 </div>
-              </div>
-            )
+              </Transition>
+            </>
           )}
-        </div>
+        </>
+      ) : (
+        <button
+          className="inline-flex items-center w-full p-2 mt-2 text-sm duration-300 ease-linear rounded-md text-emerald-500 hover:bg-emerald-100 active:bg-emerald-300 active:text-emerald-700 max-w-max "
+          onClick={() => setShowComments(true)}
+        >
+          <ChevronDownIcon className="w-4 h-4 mr-1 text-emerald-500" />
+          Afficher les commentaires ({comments.length})
+        </button>
       )}
     </div>
   );
