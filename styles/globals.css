@@ -36,8 +36,6 @@
 }
 
 @layer components {
-  
-
   .sidebar-hr {
     @apply mx-2 bg-gray-200 border border-gray-200 rounded-full dark:bg-gray-800 dark:border-gray-800;
   }
@@ -46,10 +44,17 @@
     @apply flex flex-col w-full h-full pl-0 m-0 overflow-hidden bg-gray-300 md:pl-16 xl:pl-48 dark:bg-gray-700;
   }
 
-
   .top-navigation-icon {
     @apply ml-4 mr-3 text-gray-500 transition duration-300 ease-in-out cursor-pointer hover:text-gray-800 dark:hover:text-gray-200;
   }
+}
 
-
+.sidebar-icon {
+  position: relative;
+}
+.sidebar-icon::after {
+  position: absolute;
+  top: 25%;
+  height: 50%;
+  border-left: 1px solid rgb(59, 130, 246);
 }

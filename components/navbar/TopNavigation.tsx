@@ -45,7 +45,7 @@ const ThemeIcon = () => {
 };
 
 const Search = () => (
-  <div className="flex items-center w-2/5 px-2 text-gray-500 transition duration-300 ease-in-out bg-gray-100 rounded-md dark:bg-gray-800 h-9 focus-within:bg-gray-200 font-marianne">
+  <div className="items-center hidden w-2/5 px-2 text-gray-500 transition duration-300 ease-in-out bg-gray-100 rounded-md md:flex dark:bg-gray-800 h-9 focus-within:bg-gray-200 font-marianne">
     <input
       className="w-full pl-1 font-bold text-gray-500 placeholder-gray-500 bg-transparent rounded outline-none"
       type="text"
