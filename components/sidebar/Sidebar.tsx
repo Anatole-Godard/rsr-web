@@ -2,6 +2,9 @@ import { ChatIcon, HomeIcon, ShoppingCartIcon } from "@heroicons/react/outline";
 import { useRouter } from "next/router";
 import Link from "next/link";
 
+import { motion } from "framer-motion"
+
+
 export const SideBar = () => {
   const router = useRouter();
   const { pathname } = router;
@@ -23,7 +26,7 @@ export const SideBar = () => {
       />
       <SideBarIcon
         icon={ChatIcon}
-        active={pathname === "/channel"}
+        active={pathname.includes("/channel")}
         text="Canaux"
         href="/channel"
       />
@@ -47,13 +50,13 @@ const SideBarIcon = ({
       <div
         className={
           (active
-            ? " dark:bg-gray-100  text-blue-500 group-hover:bg-blue-600"
+            ? " dark:bg-gray-100  text-blue-500 dark:text-red-500 dark:group-hover:bg-red-600 group-hover:bg-blue-600"
             : "dark:text-gray-100 text-gray-500 group-hover:bg-gray-600 ") +
           " relative flex-row items-center justify-between w-full min-h-[4rem] min-w-[4rem] mx-auto my-2 transition-all duration-300 ease-linear bg-gray-100 cursor-pointer dark:bg-gray-800 group-hover:text-white group-hover:rounded-lg rounded-xl flex flex-shrink-0 sidebar-icon"
         }
       >
         {active ? (
-          <span className="w-1 h-6 duration-300 bg-blue-500 rounded-r group-hover:bg-blue-100"></span>
+          <motion.span layoutId={"activeIndicator"} className="w-1 h-6 duration-300 bg-blue-500 rounded-r dark:bg-red-500 group-hover:bg-blue-100 dark:group-hover:bg-red-100"></motion.span>
         ) : (
           <span></span>
         )}

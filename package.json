@@ -9,9 +9,11 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@headlessui/react": "^1.4.1",
     "@heroicons/react": "^1.0.4",
     "@types/react-lottie": "^1.2.6",
     "dotenv": "^10.0.0",
+    "framer-motion": "^5.0.2",
     "jose": "^4.1.1",
     "mongoose": "^6.0.12",
     "next": "11.1.2",
