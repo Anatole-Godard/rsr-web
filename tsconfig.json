@@ -19,8 +19,9 @@
       "@utils/*": ["utils/*"],
       "@components/*": ["components/*"],
       "@resources/*": ["resources/*"],
+      "@hooks/*": ["hooks/*"],
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "utils/faker.dev.js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules"]
 }
