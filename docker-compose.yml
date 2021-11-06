@@ -1,0 +1,45 @@
+version: '3.7'
+
+networks:
+    rsr-network:
+
+volumes:
+    database-data:
+
+services:
+    mongo:
+        image: mongo
+        environment:
+            MONGO_INITDB_ROOT_USERNAME: root
+            MONGO_INITDB_ROOT_PASSWORD: root
+        networks:
+            - rsr-network
+        volumes:
+            - database-data:/data/db
+        ports:
+            - "27017:27017"
+
+    mongo-express:
+        image: mongo-express
+        restart: always
+        networks:
+            - rsr-network
+        ports:
+            - "8081:8081"
+        environment:
+            ME_CONFIG_MONGODB_ADMINUSERNAME: root
+            ME_CONFIG_MONGODB_ADMINPASSWORD: root
+            ME_CONFIG_MONGODB_URL: mongodb://root:root@mongo:27017/
+
+    web-app:
+        build: "."
+        image: rsr/web-app
+        networks:
+            - rsr-network
+        restart: always
+        volumes:
+            - .:/app
+            - /app/node_modules
+            - /app/.next
+        ports:
+            - "3000:3000"
