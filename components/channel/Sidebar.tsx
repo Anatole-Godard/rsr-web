@@ -44,8 +44,8 @@ export const Sidebar = ({
   return (
     <div
       className={
-        "w-full h-auto m-0 items-center flex flex-row xl:flex-col justify-between xl:rounded-t-xl bg-gray-100 dark:bg-gray-900 " +
-        (expanded ? "xl:w-64" : "xl:w-full xl:max-w-max")
+        "w-full h-auto m-0 items-center flex flex-row xl:flex-col justify-between bg-gray-100 dark:bg-gray-900 " +
+        (expanded ? "xl:w-64" : "xl:w-full xl:max-w-max") + (selectedChannelSlug || isCreatingChannel ? " xl:rounded-tl-xl" : " xl:rounded-t-xl")
       }
     >
       <div className="flex flex-row w-full xl:flex-col">
@@ -129,7 +129,7 @@ export const Sidebar = ({
         )}
       </div>
       {selectedChannelSlug && (
-        <div className="fixed justify-center hidden w-full p-4 bottom-2 xl:flex">
+        <div className="justify-center hidden w-full p-4  xl:flex">
           {expanded ? (
             <span
               className="flex items-center justify-center p-1 text-blue-500 duration-300 ease-linear bg-blue-200 cursor-pointer active:bg-blue-100 hover:bg-blue-300 rounded-xl dark:bg-blue-700"
