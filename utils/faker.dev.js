@@ -80,9 +80,13 @@ export const fakeResource = () => {
     },
     likes: faker.datatype.number(),
     comments: new Array(faker.datatype.number(10)).fill(null).map(() => ({
-      owner: faker.internet.userName(),
+      owner: {
+        fullName: faker.internet.userName(),
+        photoURL: faker.image.avatar(),
+        uid: faker.datatype.uuid(),
+      },
+      createdAt: faker.date.past(),
       content: faker.lorem.sentence(),
-      photoURL: faker.image.avatar(),
     })),
 
     validated: faker.datatype.boolean(),

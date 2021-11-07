@@ -105,8 +105,12 @@ export const ChannelResource: React.FC<any> = ({
                   {comments.map(
                     (
                       comment: {
-                        photoURL: string;
-                        owner: string;
+                        owner: {
+                          photoURL: string;
+                          fullName: string;
+                          uid: string;
+                        };
+                        createdAt: Date | string;
                         content: string;
                       },
                       i
@@ -116,13 +120,13 @@ export const ChannelResource: React.FC<any> = ({
                         key={i}
                       >
                         <img
-                          src={comment.photoURL}
-                          alt={comment.owner}
+                          src={comment.owner.photoURL}
+                          alt={comment.owner.fullName}
                           className="w-10 h-10 rounded-full"
                         ></img>
                         <div className="flex flex-col">
                           <p className="text-sm text-gray-700 font-marianne">
-                            {comment.owner}
+                            {comment.owner.fullName}
                           </p>
                           <p className="text-xs text-gray-600">
                             {comment.content}
