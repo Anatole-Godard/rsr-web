@@ -139,7 +139,7 @@ export const ChannelResource: React.FC<any> = ({
                     value={message}
                     placeholder="Écrivez un commentaire"
                     onChange={(e) => setMessage(e.target.value)}
-                    className="w-full p-2 mt-2 bg-gray-100 rounded-md "
+                    className="mb-1 input"
                   ></input>
                 </div>
               </Transition>

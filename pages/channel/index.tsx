@@ -17,7 +17,7 @@ const Channel: NextPage<any> = ({
 }) => {
   return (
     <AppLayout sidebar={{ size: "small" }}>
-      <div className="flex flex-col w-full h-full xl:flex-row">
+      <div className="flex flex-col w-full h-full max-h-[calc(100vh-4rem)] xl:flex-row">
         <Sidebar channels={channels} canExpand isExpanded canReturn={false} />
       </div>
     </AppLayout>
