@@ -36,7 +36,7 @@ const ChannelSlug: NextPage<any> = ({
 
   return (
     <AppLayout sidebar={{ size: "small" }}>
-      <div className="flex flex-col w-full h-full xl:flex-row ">
+      <div className="flex flex-col w-full h-full max-h-[calc(100vh-4rem)] xl:flex-row ">
         <Sidebar
           channels={sideBarChannels}
           canExpand
@@ -44,8 +44,8 @@ const ChannelSlug: NextPage<any> = ({
           canReturn
           selectedChannelSlug={slug as string}
         />
-        <div className="flex justify-center w-full h-full xl:p-6">
-          <div className="flex flex-col w-full mx-auto bg-gray-700 xl:shadow xl:mx-12 xl:rounded-xl">
+        <div className="flex justify-center w-full h-full">
+          <div className="flex flex-col w-full h-full bg-gray-700">
             {/* HEADER */}
             <div className="inline-flex justify-between w-full p-3 px-6">
               <div className="flex flex-col ">
@@ -65,7 +65,7 @@ const ChannelSlug: NextPage<any> = ({
               </div>
               <div className="inline-flex items-center space-x-3">
                 <Link href={"/resource/create" + `?channel=${slug}`}>
-                  <a className="inline-flex items-center px-4 py-2 text-sm font-light text-blue-600 transition-all duration-300 bg-blue-200 rounded-lg hover:bg-blue-300 active:bg-blue-100 font-spectral">
+                  <a className="btn-blue">
                     <PlusIcon className="w-4 h-4 mr-2" /> Poster une ressource
                   </a>
                 </Link>
@@ -73,7 +73,7 @@ const ChannelSlug: NextPage<any> = ({
             </div>
 
             {/* BODY */}
-            <div className="flex flex-col p-3 xl:p-6 space-y-4 overflow-y-auto  bg-white h-[36rem] xl:rounded-xl">
+            <div className="flex flex-col p-3 space-y-4 overflow-y-auto bg-white xl:ml-6 xl:rounded-l-xl xl:p-6">
               {resources.map((e, key) => (
                 <ChannelResource {...e} key={key} />
               ))}
@@ -84,7 +84,7 @@ const ChannelSlug: NextPage<any> = ({
               <input
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
-                className="z-40 w-full px-3 py-2 text-sm font-light text-gray-600 transition-all duration-300 bg-gray-200 rounded-lg hover:bg-gray-300 active:bg-gray-100 font-spectral"
+                className="z-40 input"
               ></input>
             </div>
           </div>
