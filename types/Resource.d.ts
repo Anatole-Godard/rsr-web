@@ -15,9 +15,13 @@ export type Resource = {
   }; // à définir,
   likes: number;
   comments: {
-    owner: string;
+    owner: {
+      uid: string;
+      fullName: string;
+      photoURL: string;
+    };
     content: string;
-    photoURL: string;
+    createdAt: Date | string;
   }[];
   validated: boolean;
 };
