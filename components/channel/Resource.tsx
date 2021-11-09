@@ -166,17 +166,22 @@ const ResourceView: React.FC<any> = ({
   switch (type) {
     case "location":
       return (
-        <div className="relative flex w-full h-48 p-10 overflow-hidden rounded-lg xl:flex-row">
+        <div className="relative flex flex-col w-full h-48 p-10 overflow-hidden rounded-lg xl:flex-row">
           <Map
             point={attributes.geometry.coordinates as number[]}
             className="w-full xl:w-1/2 rounded-xl"
           />
+          <div className="flex-col p-3 xl:w-1/2">
+            <p className="text-sm text-gray-700 font-marianne">
+              {JSON.stringify({ type, attributes })}
+            </p>
+          </div>
         </div>
       );
       break;
     case "physical_item":
       return (
-        <div className="flex w-full h-48 rounded-lg xl:flex-row">
+        <div className="flex flex-col w-full h-48 rounded-lg xl:flex-row">
           <img
             className="object-cover w-full h-auto xl:w-1/2 rounded-xl"
             src={attributes.photoURL}
@@ -193,7 +198,7 @@ const ResourceView: React.FC<any> = ({
 
     case "external_link":
       return (
-        <div className="flex w-full h-48 rounded-lg xl:flex-row">
+        <div className="flex flex-col w-full h-48 rounded-lg xl:flex-row">
           <a
             className="flex items-center justify-center w-full h-auto text-green-500 bg-green-100 xl:w-1/2 rounded-xl"
             href={attributes.url}

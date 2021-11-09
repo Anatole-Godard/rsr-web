@@ -1,22 +1,39 @@
 import { Sidebar } from "@components/channel/Sidebar";
 import { AppLayout } from "@components/layouts/AppLayout";
+import { GetServerSideProps, NextPage } from "next";
+import { useRouter } from "next/router";
+import { useState } from "react";
+
+import slugify from "slug";
+import dynamic from "next/dynamic";
 import {
   InformationCircleIcon,
-  PaperAirplaneIcon,
+  PencilAltIcon,
+  TrashIcon,
   UsersIcon,
   XIcon,
 } from "@heroicons/react/outline";
-import { NextPage } from "next";
-import { useState } from "react";
-
-import slug from "slug";
-import dynamic from "next/dynamic";
 
 const Select: any = dynamic(() => import("react-select") as any, {
   ssr: false,
 });
 
-const ChannelCreate: NextPage<any> = () => {
+const ChannelEditPage: NextPage<any> = ({
+  sideBarChannels,
+}: {
+  sideBarChannels: {
+    slug: string;
+    name: string;
+    messages: {
+      content: string;
+      createdAt: string;
+    }[];
+    members: object[];
+  }[];
+}) => {
+  const router = useRouter();
+  const { slug } = router.query;
+
   const [name, setName] = useState<string>("");
   const [picture, setPicture] = useState<File | null>(null);
   const [pictureUrl, setPictureUrl] = useState<string | null>(null);
@@ -42,12 +59,11 @@ const ChannelCreate: NextPage<any> = () => {
       photoURL: "https://picsum.photos/202",
     },
   ]);
-
   return (
-    <AppLayout sidebar={{ size: "small" }}>
+    <AppLayout>
       <div className="flex flex-col w-full h-full max-h-[calc(100vh-4rem)] xl:flex-row">
         <Sidebar
-          channels={[]}
+          channels={sideBarChannels}
           canExpand={false}
           isExpanded={false}
           canReturn
@@ -60,12 +76,12 @@ const ChannelCreate: NextPage<any> = () => {
               <div className="flex flex-col ">
                 <div className="inline-flex items-center">
                   <p className="text-xl font-medium text-gray-100 font-marianne">
-                    {"#" + (name !== "" ? slug(name) : "créer-un-salon")}
+                    {"#" + (name !== "" ? slugify(name) : "éditer-" + slug)}
                   </p>
                 </div>
 
                 <p className="text-sm font-light text-gray-300 font-spectral">
-                  Échangeons tous ensemble.
+                  {description || "Échangeons tous ensemble."}
                 </p>
               </div>
             </div>
@@ -223,10 +239,14 @@ const ChannelCreate: NextPage<any> = () => {
             </div>
 
             {/* FOOTER */}
-            <div className="inline-flex justify-end w-full p-3 px-6">
-              <button className="btn-blue">
-                <PaperAirplaneIcon className="w-4 h-4 mr-1 -mt-1 rotate-45" />
-                Créer
+            <div className="inline-flex justify-end w-full p-3 px-6 space-x-3">
+              <button className="btn-red">
+                <TrashIcon className="w-4 h-4 mr-1" />
+                Supprimer
+              </button>
+              <button className="btn-green">
+                <PencilAltIcon className="w-4 h-4 mr-1" />
+                Editer
               </button>
             </div>
           </div>
@@ -236,4 +256,33 @@ const ChannelCreate: NextPage<any> = () => {
   );
 };
 
-export default ChannelCreate;
+export default ChannelEditPage;
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  return {
+    props: {
+      sideBarChannels: [
+        {
+          slug: "general",
+          name: "General",
+          photoURL: "https://picsum.photos/200",
+        },
+        {
+          slug: "random",
+          name: "Random",
+          photoURL: "https://picsum.photos/201",
+        },
+        {
+          slug: "cool",
+          name: "Cool",
+          photoURL: "https://picsum.photos/202",
+        },
+        {
+          slug: "fun",
+          name: "Fun",
+          photoURL: "https://picsum.photos/203",
+        },
+      ],
+    },
+  };
+};
