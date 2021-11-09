@@ -1,7 +1,11 @@
 import { ChannelResource } from "@components/channel/Resource";
 import { Sidebar } from "@components/channel/Sidebar";
 import { AppLayout } from "@components/layouts/AppLayout";
-import { PlusIcon } from "@heroicons/react/outline";
+import {
+  PaperAirplaneIcon,
+  PencilIcon,
+  PlusIcon,
+} from "@heroicons/react/outline";
 import { fakeResource } from "@utils/faker.dev";
 import { GetServerSideProps, NextPage } from "next";
 import { useRouter } from "next/router";
@@ -35,7 +39,7 @@ const ChannelSlug: NextPage<any> = ({
   ]);
 
   return (
-    <AppLayout sidebar={{ size: "small" }}>
+    <AppLayout>
       <div className="flex flex-col w-full h-full max-h-[calc(100vh-4rem)] xl:flex-row ">
         <Sidebar
           channels={sideBarChannels}
@@ -64,28 +68,40 @@ const ChannelSlug: NextPage<any> = ({
                 )}
               </div>
               <div className="inline-flex items-center space-x-3">
+                <Link href={`/channel/${slug}/edit`}>
+                  <a className="btn-green">
+                    <PencilIcon className="w-4 h-4 sm:mr-2" />
+                    <span className="hidden sm:block">Éditer le salon</span>
+                  </a>
+                </Link>
                 <Link href={"/resource/create" + `?channel=${slug}`}>
                   <a className="btn-blue">
-                    <PlusIcon className="w-4 h-4 mr-2" /> Poster une ressource
+                    <PlusIcon className="w-4 h-4 sm:mr-2" />
+                    <span className="hidden sm:block">
+                      Poster une ressource
+                    </span>
                   </a>
                 </Link>
               </div>
             </div>
 
             {/* BODY */}
-            <div className="flex flex-col p-3 space-y-4 overflow-y-auto bg-white xl:ml-6 xl:rounded-l-xl xl:p-6">
+            <div className="flex flex-col max-h-[65vh] md:max-h-full  p-3 space-y-4 overflow-y-auto bg-white xl:ml-6 xl:rounded-l-xl xl:p-6">
               {resources.map((e, key) => (
                 <ChannelResource {...e} key={key} />
               ))}
             </div>
 
             {/* FOOTER */}
-            <div className="inline-flex justify-between w-full p-3 px-6">
+            <div className="inline-flex items-center w-full p-3 px-6">
               <input
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
-                className="z-40 input"
+                className="z-40 mr-2 input"
               ></input>
+              <button className="btn-blue">
+                <PaperAirplaneIcon className="w-[1.25rem] h-[1.25rem] " />
+              </button>
             </div>
           </div>
         </div>
@@ -119,51 +135,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
           slug: "fun",
           name: "Fun",
           photoURL: "https://picsum.photos/203",
-        },
-        {
-          slug: "programming",
-          name: "Programming",
-          photoURL: "https://picsum.photos/204",
-        },
-        {
-          slug: "javascript",
-          name: "Javascript",
-          photoURL: "https://picsum.photos/205",
-        },
-        {
-          slug: "typescript",
-          name: "Typescript",
-          photoURL: "https://picsum.photos/206",
-        },
-        {
-          slug: "react",
-          name: "React",
-          photoURL: "https://picsum.photos/207",
-        },
-        {
-          slug: "node",
-          name: "Node",
-          photoURL: "https://picsum.photos/208",
-        },
-        {
-          slug: "express",
-          name: "Express",
-          photoURL: "https://picsum.photos/209",
-        },
-        {
-          slug: "mongodb",
-          name: "MongoDB",
-          photoURL: "https://picsum.photos/210",
-        },
-        {
-          slug: "mysql",
-          name: "MySQL",
-          photoURL: "https://picsum.photos/211",
-        },
-        {
-          slug: "postgresql",
-          name: "PostgreSQL",
-          photoURL: "https://picsum.photos/212",
         },
       ],
     },
