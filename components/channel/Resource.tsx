@@ -4,8 +4,10 @@ import {
   ChatAltIcon,
   CheckCircleIcon,
   ChevronDownIcon,
+  ExclamationIcon,
   ExternalLinkIcon,
   HeartIcon,
+  PaperAirplaneIcon,
 } from "@heroicons/react/outline";
 import { formatDistanceToNow } from "date-fns";
 import { fr } from "date-fns/locale";
@@ -76,7 +78,7 @@ export const ChannelResource: React.FC<any> = ({
         </div>
         <hr className="my-2" />
         {/* RESOURCE VIEW */}
-        <ResourceView {...data} />
+        <ResourceView {...data} slug={slug} />
       </div>
       {/* COMMENTS */}
 
@@ -135,12 +137,17 @@ export const ChannelResource: React.FC<any> = ({
                       </div>
                     )
                   )}
-                  <input
-                    value={message}
-                    placeholder="Écrivez un commentaire"
-                    onChange={(e) => setMessage(e.target.value)}
-                    className="mb-1 input"
-                  ></input>
+                  <div className="inline-flex items-center pb-2">
+                    <input
+                      value={message}
+                      placeholder="Écrivez un commentaire"
+                      onChange={(e) => setMessage(e.target.value)}
+                      className="mr-2 input"
+                    ></input>
+                    <button className="btn-green">
+                      <PaperAirplaneIcon className="w-[1.25rem] h-[1.25rem] " />
+                    </button>
+                  </div>
                 </div>
               </Transition>
             </>
@@ -148,7 +155,7 @@ export const ChannelResource: React.FC<any> = ({
         </>
       ) : (
         <button
-          className="inline-flex items-center w-full p-2 mt-2 text-sm duration-300 ease-linear rounded-md text-emerald-500 hover:bg-emerald-100 active:bg-emerald-300 active:text-emerald-700 max-w-max "
+          className="btn-text-green"
           onClick={() => setShowComments(true)}
         >
           <ChevronDownIcon className="w-4 h-4 mr-1 text-emerald-500" />
@@ -162,7 +169,20 @@ export const ChannelResource: React.FC<any> = ({
 const ResourceView: React.FC<any> = ({
   type,
   attributes,
-}: Resource["data"]) => {
+  slug,
+}: {
+  type: Resource["data"]["type"];
+  attributes: Resource["data"]["attributes"];
+  slug: string;
+}) => {
+  const like = async () => {
+    console.log("liked", slug); //TODO
+  };
+
+  const report = async () => {
+    console.log("report", slug); //TODO
+  };
+
   switch (type) {
     case "location":
       return (
@@ -171,10 +191,20 @@ const ResourceView: React.FC<any> = ({
             point={attributes.geometry.coordinates as number[]}
             className="w-full xl:w-1/2 rounded-xl"
           />
-          <div className="flex-col p-3 xl:w-1/2">
-            <p className="text-sm text-gray-700 font-marianne">
-              {JSON.stringify({ type, attributes })}
+          <div className="flex-col justify-between min-h-full p-3 xl:w-1/2">
+            <p className="max-h-full text-sm text-gray-700 font-marianne">
+              {JSON.stringify({ type, attributes, slug }, null, 2)}
             </p>
+            <div className="inline-flex items-center justify-end w-full space-x-1">
+              <button className="btn-text-red" onClick={like}>
+                <HeartIcon className="w-4 h-4 mr-1 text-red-700" />
+                J'aime
+              </button>
+              <button className="btn-text-yellow" onClick={like}>
+                <ExclamationIcon className="w-4 h-4 mr-1 text-yellow-700" />
+                Signaler
+              </button>
+            </div>
           </div>
         </div>
       );
@@ -183,14 +213,24 @@ const ResourceView: React.FC<any> = ({
       return (
         <div className="flex flex-col w-full h-48 rounded-lg xl:flex-row">
           <img
-            className="object-cover w-full h-auto xl:w-1/2 rounded-xl"
+            className="object-cover w-full max-h-full xl:w-1/2 rounded-xl"
             src={attributes.photoURL}
             alt={attributes.name}
           />
-          <div className="flex-col p-3">
-            <p className="text-sm text-gray-700 font-marianne">
-              {attributes.description}
+          <div className="flex-col justify-between p-3 xl:w-1/2">
+            <p className="max-h-full text-sm text-gray-700 font-marianne">
+              {JSON.stringify({ type, attributes, slug }, null, 2)}
             </p>
+            <div className="inline-flex items-center justify-end w-full space-x-1">
+              <button className="btn-text-red" onClick={like}>
+                <HeartIcon className="w-4 h-4 mr-1 text-red-700" />
+                J'aime
+              </button>
+              <button className="btn-text-yellow" onClick={like}>
+                <ExclamationIcon className="w-4 h-4 mr-1 text-yellow-700" />
+                Signaler
+              </button>
+            </div>
           </div>
         </div>
       );
@@ -200,7 +240,7 @@ const ResourceView: React.FC<any> = ({
       return (
         <div className="flex flex-col w-full h-48 rounded-lg xl:flex-row">
           <a
-            className="flex items-center justify-center w-full h-auto text-green-500 bg-green-100 xl:w-1/2 rounded-xl"
+            className="flex items-center justify-center w-full max-h-full text-green-500 bg-green-100 xl:w-1/2 rounded-xl"
             href={attributes.url}
           >
             {attributes.image ? (
@@ -212,10 +252,20 @@ const ResourceView: React.FC<any> = ({
               <ExternalLinkIcon className="w-16 h-16" />
             )}
           </a>
-          <div className="flex-col p-3">
-            <p className="text-sm text-gray-700 font-marianne">
-              {attributes.description}
+          <div className="flex-col justify-between p-3 xl:w-1/2">
+            <p className="max-h-full text-sm text-gray-700 font-marianne">
+              {JSON.stringify({ type, attributes, slug }, null, 2)}
             </p>
+            <div className="inline-flex items-center justify-end w-full space-x-1">
+              <button className="btn-text-red" onClick={like}>
+                <HeartIcon className="w-4 h-4 mr-1 " />
+                J'aime
+              </button>
+              <button className="btn-text-yellow" onClick={like}>
+                <ExclamationIcon className="w-4 h-4 mr-1" />
+                Signaler
+              </button>
+            </div>
           </div>
         </div>
       );
