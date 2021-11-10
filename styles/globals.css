@@ -215,6 +215,24 @@
   .btn-red {
     @apply text-red-700 bg-red-100 btn hover:bg-red-300 active:bg-red-100 hover:text-red-800 dark:bg-red-800 dark:text-red-200;
   }
+
+  .btn-yellow {
+    @apply text-yellow-700 bg-yellow-100 btn hover:bg-yellow-300 active:bg-yellow-100 hover:text-yellow-800 dark:bg-yellow-800 dark:text-yellow-200;
+  }
+
+  .btn-text {
+    @apply inline-flex items-center w-full p-2 mt-2 text-sm duration-300 ease-linear rounded-md max-w-max;
+  }
+
+  .btn-text-green {
+    @apply text-green-500 btn-text hover:bg-green-100 active:bg-green-300 active:text-green-700;
+  }
+  .btn-text-yellow {
+    @apply text-yellow-500 btn-text hover:bg-yellow-100 active:bg-yellow-300 active:text-yellow-700;
+  }
+  .btn-text-red {
+    @apply text-red-500 btn-text hover:bg-red-100 active:bg-red-300 active:text-red-700;
+  }
 }
 
 .leaflet-popup-content {
