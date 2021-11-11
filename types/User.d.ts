@@ -7,3 +7,8 @@ export type User = {
   createdAt: Date;
   photoURL: string;
 };
+
+export type UserMinimum = {
+  fullName: string;
+  photoURL: string;
+};
