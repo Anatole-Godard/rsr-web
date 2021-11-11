@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 const Schema = mongoose.Schema;
 
-const resource = new Schema({
+const ResourceSchema = new Schema({
   slug: {
     type: String,
     required: true,
@@ -41,8 +41,7 @@ const resource = new Schema({
   },
 });
 
-// mongoose.models = {};
 
-const Resource = mongoose.model("Resource", resource);
+const Resource = mongoose.models.Resource || mongoose.model("Resource", ResourceSchema);
 
 export default Resource;
