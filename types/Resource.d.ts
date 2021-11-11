@@ -6,7 +6,7 @@ export type Resource = {
   id: number;
   slug: string;
   owner: string;
-  createdAt: Date;
+  createdAt: Date | string;
   description: string;
   tags?: string[];
   data: {
@@ -15,9 +15,13 @@ export type Resource = {
   }; // à définir,
   likes: number;
   comments: {
-    owner: string;
+    owner: {
+      uid: string;
+      fullName: string;
+      photoURL: string;
+    };
     content: string;
-    photoUrl: string;
+    createdAt: Date | string;
   }[];
   validated: boolean;
 };

@@ -39,21 +39,22 @@ export const fakeGeoJSON_Point = () => {
     type: "Feature",
     geometry: {
       type: "Point",
-      coordinates: [faker.datatype.number(), faker.datatype.number()],
+      coordinates: [
+        faker.address.latitude(41.59101, 51.03457),
+        faker.address.longitude(-4.65, 9.45),
+      ],
     },
-    properties: { name: faker.name.findName() },
+    properties: { name: faker.address.city() },
   };
 };
-
 
 export const fakePhysicalItem = () => ({
   name: faker.commerce.productName(),
   description: faker.lorem.paragraph(),
-  photoUrl: faker.image.imageUrl(),
+  photoURL: faker.image.imageUrl(),
   price: faker.datatype.number(),
   category: faker.commerce.department(),
 });
-
 
 export const fakeResource = () => {
   const datatype = faker.random.arrayElement([
@@ -78,14 +79,16 @@ export const fakeResource = () => {
           : fakeExternalLink(),
     },
     likes: faker.datatype.number(),
-    comments: [
-      new Array(faker.datatype.number(10)).fill(null).map(() => ({
-        owner: faker.internet.userName(),
-        content: faker.lorem.sentence(),
-        photoUrl: faker.image.avatar(),
-      })),
-    ],
+    comments: new Array(faker.datatype.number(10)).fill(null).map(() => ({
+      owner: {
+        fullName: faker.internet.userName(),
+        photoURL: faker.image.avatar(),
+        uid: faker.datatype.uuid(),
+      },
+      createdAt: faker.date.past(),
+      content: faker.lorem.sentence(),
+    })),
+
     validated: faker.datatype.boolean(),
   };
 };
-
