@@ -5,7 +5,7 @@ import Link from "next/link";
 import { motion } from "framer-motion"
 
 
-export const SideBar = () => {
+export const SideBar = ({ config = { size: "normal" } }: { config?: any }) => {
   const router = useRouter();
   const { pathname } = router;
 
@@ -27,7 +27,7 @@ export const SideBar = () => {
       <SideBarIcon
         icon={ChatIcon}
         active={pathname.includes("/channel")}
-        text="Canaux"
+        text="Salons"
         href="/channel"
       />
     </div>

@@ -8,6 +8,7 @@ module.exports = {
   theme: {
     fontFamily: {
       marianne: ['"Marianne"', "serif"],
+      spectral: ['"Spectral"', "serif"],
     },
     extend: {
       colors: {

@@ -10,18 +10,20 @@ const variants = {
   exit: { opacity: 0, x: 0, y: -100 },
 }
 
-export const AppLayout: React.FC = ({
-  topNavigation = { shadow: true },
+export const AppLayout: React.FC<any> = ({
+  topNavigation = { shadow: false },
+  sidebar = { },
   children,
 }: {
   topNavigation?: any;
+  sidebar?: any;
   children?: ReactNode;
 }) => {
   return (
     <div className="flex flex-col w-screen min-h-screen">
       <TopNavigation config={topNavigation} />
       <div className="flex flex-row w-full min-h-[calc(100vh-4rem)] bg-white dark:bg-black">
-        <SideBar />
+        <SideBar config={sidebar} />
         <motion.div
           variants={variants} // Pass the variant object into Framer Motion
           initial="hidden" // Set the initial state to variants.hidden

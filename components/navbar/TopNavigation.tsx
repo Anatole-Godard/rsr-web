@@ -1,11 +1,7 @@
 import { UserDropdown } from "@components/dropdowns/UserDropdown";
-import {
-  MoonIcon,
-  SearchIcon,
-  SunIcon,
-  UserIcon,
-} from "@heroicons/react/outline";
+import { MoonIcon, SearchIcon, SunIcon } from "@heroicons/react/outline";
 import { useTheme } from "next-themes";
+import Link from "next/link";
 
 export const TopNavigation: React.FC<any> = ({
   config = { shadow: true, backgroundColor: "bg-white dark:bg-gray-900" },
@@ -36,9 +32,9 @@ const ThemeIcon = () => {
   return (
     <span onClick={handleMode}>
       {theme === "dark" ? (
-        <SunIcon className="w-5 h-5 top-navigation-icon" />
-      ) : (
         <MoonIcon className="w-5 h-5 top-navigation-icon" />
+      ) : (
+        <SunIcon className="w-5 h-5 top-navigation-icon" />
       )}
     </span>
   );
@@ -56,8 +52,10 @@ const Search = () => (
 );
 
 const Title = () => (
-  <h5 className="inline-flex items-center my-auto ml-2 text-xl font-extrabold tracking-wider text-gray-500 uppercase transition duration-300 ease-in-out w-72 text-opacity-80">
-    <span className="text-bleuFrance-500">Hello</span>{" "}
-    <span className="ml-1 text-rougeMarianne-500">RSR</span>
-  </h5>
+  <Link href="/">
+    <a className="inline-flex items-center my-auto ml-2 text-xl font-extrabold tracking-wider text-gray-500 uppercase transition duration-300 ease-in-out w-72 text-opacity-80">
+      <span className="text-bleuFrance-500">Hello</span>{" "}
+      <span className="ml-1 text-rougeMarianne-500">RSR</span>
+    </a>
+  </Link>
 );
