@@ -2,15 +2,12 @@ import {Server, Server as ServerIO} from 'socket.io'
 
 const ioHandler = (req, res) => {
     if (!res.socket.server.io) {
-        console.log('*First use, starting socket.io')
+        console.log('Starting socket.io')
 
         const io = new Server(res.socket.server)
 
         io.on('connection', socket => {
-            socket.broadcast.emit('a user connected')
-            socket.on('hello', msg => {
-                socket.emit('hello', 'world!')
-            })
+            socket.broadcast.emit('notification', 'New user connected')
         })
 
         res.socket.server.io = io
@@ -21,8 +18,12 @@ const ioHandler = (req, res) => {
 
         io.on('connection', socket => {
             socket.on('new-message', message => {
-                socket.emit('new-message', 'Received')
+                io.emit('res-new-message', message)
             })
+
+            socket.on('disconnect', () => {
+                socket.broadcast.emit('notification', 'User disconnected')
+            });
         })
     }
     res.end()
