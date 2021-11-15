@@ -1,4 +1,21 @@
-import {Server, Server as ServerIO} from 'socket.io'
+import {Server} from 'socket.io'
+import Message from "@models/message"
+
+import connectDB from "@middleware/mongoose";
+
+const newMessage = async (message) => {
+    const msg = new Message({
+        user: {
+            fullName: "John Doe",
+            photoURL: "https://avatars3.githubusercontent.com/u/1234?s=460&v=4",
+            uid: "1234567890",
+        },
+        text: message,
+        createdAt: Date.now()
+    });
+    console.log(msg)
+    return await msg.save();
+}
 
 const ioHandler = (req, res) => {
     if (!res.socket.server.io) {
@@ -7,7 +24,8 @@ const ioHandler = (req, res) => {
         const io = new Server(res.socket.server)
 
         io.on('connection', socket => {
-            socket.broadcast.emit('notification', 'New user connected')
+            socket.broadcast.emit('notification', 'New user connected');
+            console.log(messages)
         })
 
         res.socket.server.io = io
@@ -17,8 +35,13 @@ const ioHandler = (req, res) => {
         const io = res.socket.server.io
 
         io.on('connection', socket => {
-            socket.on('new-message', message => {
-                io.emit('res-new-message', message)
+            socket.on('new-message', async message => {
+                try {
+                    await newMessage(message)
+                    io.emit('res-new-message', message)
+                } catch (e) {
+                    io.emit('notification', e)
+                }
             })
 
             socket.on('disconnect', () => {
@@ -35,4 +58,4 @@ export const config = {
     }
 }
 
-export default ioHandler
+export default connectDB(ioHandler)
