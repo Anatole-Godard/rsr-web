@@ -24,8 +24,7 @@ const ioHandler = (req, res) => {
         const io = new Server(res.socket.server)
 
         io.on('connection', socket => {
-            socket.broadcast.emit('notification', 'New user connected');
-            console.log(messages)
+            socket.broadcast.emit('notification', 'New user connected')
         })
 
         res.socket.server.io = io
