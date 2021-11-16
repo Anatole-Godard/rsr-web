@@ -3,7 +3,7 @@ import Message from "@models/message"
 
 import connectDB from "@middleware/mongoose";
 
-const newMessage = async (message) => {
+const postMessage = async (message) => {
     const msg = new Message({
         user: {
             fullName: "John Doe",
@@ -15,6 +15,10 @@ const newMessage = async (message) => {
     });
     console.log(msg)
     return await msg.save();
+}
+
+const getMessages = async () => {
+    return await Message.find({});
 }
 
 const ioHandler = (req, res) => {
@@ -33,15 +37,18 @@ const ioHandler = (req, res) => {
 
         const io = res.socket.server.io
 
-        io.on('connection', socket => {
+        io.on('connection', async socket => {
             socket.on('new-message', async message => {
                 try {
-                    await newMessage(message)
+                    await postMessage(message)
                     io.emit('res-new-message', message)
                 } catch (e) {
                     io.emit('notification', e)
                 }
             })
+
+            let messages = await getMessages();
+            io.emit('get-messages', messages);
 
             socket.on('disconnect', () => {
                 socket.broadcast.emit('notification', 'User disconnected')
