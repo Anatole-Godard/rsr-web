@@ -37,5 +37,12 @@ const UserSchema = new Schema({
 
 // mongoose.models = {};
 
+UserSchema.post("findOne", function (doc) {
+  if (doc) {
+    // doc.password = undefined;
+    doc.uid = doc._id.toString();
+  }
+});
+
 const User = mongoose.models.User || mongoose.model("User", UserSchema);
 export default User;
