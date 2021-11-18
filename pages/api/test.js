@@ -1,7 +1,7 @@
 import connectDB from "@middleware/mongoose";
 import User from "@models/user";
 
-// const bcrypt = require("bcrypt");
+const bcrypt = require("bcrypt");
 
 const handler = async (req, res) => {
   if (req.method === "POST") {
