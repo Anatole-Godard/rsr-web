@@ -1,4 +1,4 @@
-import connectDB from "@middleware/mongoose";
+import withDatabase from "@middleware/mongoose";
 import User from "@models/user";
 
 // const bcrypt = require("bcrypt");
@@ -29,4 +29,4 @@ const handler = async (req, res) => {
   }
 };
 
-export default connectDB(handler);
+export default withDatabase(handler);
