@@ -9,7 +9,7 @@ const theadList = [
   { name : 'name', label : 'Nom', width : 80 }
 ];
 
-const Dashboard: NextPage<any> = ({
+const Resources: NextPage<any> = ({
                                     resources,
                                   }: {
   resources: [{
@@ -20,7 +20,7 @@ const Dashboard: NextPage<any> = ({
   return (
     <AppLayoutAdmin>
       <div className="flex flex-col bg-gray-100 dark:bg-gray-900 h-full w-full p-3">
-        <h1 className="pl-1 text-2xl font-bold ">Ressources</h1>
+        <h1 className="pl-1 mb-1 text-2xl font-bold ">Ressources</h1>
         <CustomTable theadList={theadList} valuesList={resources}/>
         <div className="inline-flex justify-end w-full p-3 px-6">
           <Link href="resource/create">
@@ -37,7 +37,7 @@ const Dashboard: NextPage<any> = ({
   );
 };
 
-export default Dashboard;
+export default Resources;
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   return {
