@@ -14,6 +14,7 @@ export const CustomTable = ({
       return list.map((value: any) => (
         <th key={uuidv4()}
             style={{ width : `${value.width}%` }}
+            className="px-4 py-3"
         >
           {value.label}
         </th>
@@ -56,16 +57,16 @@ export const CustomTable = ({
     <>
       <table>
         <thead>
-          <tr>
+          <tr className="bg-gray-500 dark:bg-gray-100 text-white dark:text-black text-left">
             {displayTableHeader(theadList)}
           </tr>
         </thead>
         {valuesList.length > 0 &&
-        <tbody>
+        <tbody className="bg-gray-300 dark:bg-gray-500">
           {valuesList.length > 0 && valuesList.map((value: any) => (
-            <tr /** TODO edit entity on click  */ key={uuidv4()}>
+            <tr /** TODO edit entity on click  */ key={uuidv4()} className="cursor-pointer">
               {theadList && theadList.map((theadValue: any, index: number) => (
-                <td key={index}>
+                <td key={index} className="px-4 py-3 border-b border-gray-200 dark:border-gray-800">
                   <span title={displayValue(theadValue, value).title}>
                                     {displayValue(theadValue, value).value}
                   </span>
