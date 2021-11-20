@@ -33,6 +33,8 @@ export const genToken = (userData: { uid: string; role: string }) => ({
 
 export const parseAuthorization = (authorization: string | undefined) =>
   authorization != null ? authorization.replace("Bearer ", "") : null;
+
+
 export const isTokenValid = (
   authorization: string | undefined,
   req: NextApiRequest,
@@ -44,13 +46,11 @@ export const isTokenValid = (
       if (err) {
         if (err.name === "TokenExpiredError") {
           res.status(401).json({
-            request: req,
             message: err.message,
             statusCode: res.statusCode,
           });
         } else {
           res.status(403).json({
-            request: req,
             message: err.message,
             statusCode: res.statusCode,
           });
@@ -73,12 +73,23 @@ export const isTokenValid_middleware = (
   if (validation) next();
 };
 
+export const withAuth = (handler: Function) => async (req: NextApiRequest, res: NextApiResponse) => {
+  const headerAuth = req.headers.authorization;
+  const validation = isTokenValid(headerAuth, req, res);
+  if (validation) {
+    return handler(req, res);
+  }
+  res.status(403).json({
+    message: "Forbidden",
+    statusCode: res.statusCode,
+  });
+};
+
 export const refreshTokenHandler = (req: NextApiRequest, res: NextApiResponse) => {
   const RefreshAuth = req.body.refreshToken;
 
   if (RefreshAuth === null) {
     res.status(400).json({
-      request: req,
       message: "missing parameters",
       statusCode: res.statusCode,
     });
@@ -93,13 +104,11 @@ export const refreshTokenHandler = (req: NextApiRequest, res: NextApiResponse) =
       if (err || !decoded?.refresh) {
         if (err?.name === "TokenExpiredError") {
           res.status(401).json({
-            request: req,
             message: err.message,
             statusCode: res.statusCode,
           });
         } else {
           res.status(403).json({
-            request: req,
             message: "wrong token",
             statusCode: res.statusCode,
           });
@@ -112,7 +121,6 @@ export const refreshTokenHandler = (req: NextApiRequest, res: NextApiResponse) =
 
         const token = genToken(userData);
         res.status(200).json({
-          request: req,
           message: "token successfully refreshed",
           statusCode: res.statusCode,
           token,

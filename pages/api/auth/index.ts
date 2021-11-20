@@ -1,8 +1,8 @@
 import User from "@models/User";
 import { genToken } from "@utils/jwtHandler";
-import connectDB from "@middleware/mongoose";
 import type { NextApiRequest, NextApiResponse } from "next";
 import SessionToken from "@models/SessionToken";
+import withDatabase from "@middleware/mongoose";
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== "POST") {
@@ -19,7 +19,12 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 
   const { email, password } = req.body;
   const { appsource } = req.headers;
-  console.log(req.headers);
+
+  if (!appsource) {
+    return res.status(400).json({
+      message: "Please provide appsource",
+    });
+  }
 
   try {
     const user = await User.findOne({ email }).lean();
@@ -52,4 +57,4 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   }
 }
 
-export default connectDB(handler);
+export default withDatabase(handler);
