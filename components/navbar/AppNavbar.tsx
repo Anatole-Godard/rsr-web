@@ -3,7 +3,7 @@ import { MoonIcon, SearchIcon, SunIcon } from "@heroicons/react/outline";
 import { useTheme } from "next-themes";
 import Link from "next/link";
 
-export const TopNavigation: React.FC<any> = ({
+export const Navbar: React.FC<any> = ({
   config = { shadow: true, backgroundColor: "bg-white dark:bg-gray-900" },
 }: {
   config: { shadow: boolean; backgroundColor: string };
@@ -26,22 +26,9 @@ export const TopNavigation: React.FC<any> = ({
   );
 };
 
-const ThemeIcon = () => {
-  const { theme, setTheme } = useTheme();
-  const handleMode = () => setTheme(theme === "dark" ? "light" : "dark");
-  return (
-    <span onClick={handleMode}>
-      {theme === "dark" ? (
-        <MoonIcon className="w-5 h-5 top-navigation-icon" />
-      ) : (
-        <SunIcon className="w-5 h-5 top-navigation-icon" />
-      )}
-    </span>
-  );
-};
 
 const Search = () => (
-  <div className="items-center hidden w-2/5 px-2 text-gray-500 transition duration-300 ease-in-out bg-gray-100 rounded-md md:flex dark:bg-gray-800 h-9 focus-within:bg-gray-200 font-marianne">
+  <div className="items-center hidden w-2/5 px-2 text-gray-500 transition duration-300 ease-in-out bg-gray-100 rounded-md md:flex dark:bg-gray-800 h-9 focus-within:bg-gray-200 font-marianne ring-offset-2 ring-blue-500 focus-within:ring-2">
     <input
       className="w-full pl-1 font-bold text-gray-500 placeholder-gray-500 bg-transparent rounded outline-none"
       type="text"
