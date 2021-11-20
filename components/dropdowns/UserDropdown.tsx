@@ -14,17 +14,10 @@ import {
   UserAddIcon,
   UserIcon,
 } from "@heroicons/react/outline";
+import { useAuth } from "@hooks/useAuth";
 
 export const UserDropdown = () => {
-  const { user, signout } = {
-    user: {
-      fullName: "John Doe",
-      photoURL: "https://avatars3.githubusercontent.com/u/1234?s=460&v=4",
-      uid: "1234567890",
-      superuser: true,
-    },
-    signout: () => {},
-  };
+  const { user, signOut } = useAuth()
   const { theme, setTheme } = useTheme();
 
   return (
@@ -91,7 +84,7 @@ export const UserDropdown = () => {
 
                   <a
                     className="inline-flex items-center w-full px-4 py-2 text-sm leading-5 text-gray-700 transition duration-150 ease-in-out cursor-pointer dark:text-gray-300 hover:text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-800"
-                    onClick={signout}
+                    onClick={signOut}
                   >
                     <LogoutIcon className="w-6 h-6 pr-2 mr-2 text-center border-r border-gray-200 dark:border-gray-800" />
                     Déconnexion
