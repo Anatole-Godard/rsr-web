@@ -22,7 +22,6 @@ const ChannelInviteSchema = new Schema({
   },
 });
 
-// mongoose.models = {};
 
 const ChannelInvite =
   mongoose.models.ChannelInvite ||
