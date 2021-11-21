@@ -3,6 +3,7 @@ import { useAuth } from "@hooks/useAuth";
 import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
+import { Logo } from "@components/ui/Logo";
 
 export default function Login() {
   const { signIn } = useAuth();
@@ -13,11 +14,8 @@ export default function Login() {
     <GuestLayout>
       <div className="w-full max-w-sm mx-auto lg:w-96">
         <div>
-          <Link href="/">
-            <a>
-              <img className="w-auto h-12" src="/logo.svg" alt="OpenMeet" />
-            </a>
-          </Link>
+          <Logo className="inline-flex items-center text-5xl font-extrabold tracking-wider uppercase text-opacity-80" />
+
           <h2 className="mt-6 text-3xl font-extrabold text-gray-900 dark:text-gray-100">
             Connexion à RSR
           </h2>
@@ -27,20 +25,22 @@ export default function Login() {
           <div>
             <div>
               <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                Connectez-vous avec France Connect
+                Connectez-vous avec
               </p>
 
-              <div className="grid grid-cols-3 gap-3 mt-1">
-                <button className="inline-flex justify-center w-full px-4 py-2 text-sm font-medium text-gray-500 duration-300 bg-white border border-gray-300 rounded-md shadow-sm dark:border-gray-700 dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 group">
-                  <span className="sr-only">
-                    Connexion avec France Connect
-                  </span>
+              <div className="grid grid-cols-1 gap-3 mt-1">
+                <button
+                  disabled
+                  className="inline-flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-gray-500 duration-300 bg-white border border-gray-300 rounded-md shadow-sm dark:border-gray-700 dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 group disabled:cursor-not-allowed disabled:opacity-70"
+                >
+                  <span className="sr-only">Connexion avec France Connect</span>
                   <Image
                     width={24}
                     height={28}
                     src="/img/france_connect.png"
                     alt="France Connect"
                   ></Image>
+                  <span className="ml-3 text-xs">France Connect</span>
                 </button>
               </div>
             </div>
@@ -140,6 +140,13 @@ export default function Login() {
                 >
                   Se connecter
                 </button>
+              </div>
+              <div className="my-1 text-sm">
+                <Link href="/auth/register">
+                  <a className="font-medium text-blue-600 duration-150 hover:text-blue-500">
+                    Se créer un compte
+                  </a>
+                </Link>
               </div>
             </div>
           </div>

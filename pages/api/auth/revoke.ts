@@ -1,6 +1,6 @@
 import withDatabase from "@middleware/mongoose";
 import SessionToken from "@models/SessionToken";
-import { parseAuthorization, withAuth } from "@utils/jwtHandler";
+import { parseAuthorization, withAuth } from "@middleware/auth";
 import { NextApiRequest, NextApiResponse } from "next";
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
