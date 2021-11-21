@@ -1,4 +1,5 @@
 import { fetchRSR } from "@utils/fetchRSR";
+import { useRouter } from "next/router";
 import React, { createContext, useContext, useState, useEffect } from "react";
 const AuthContext = createContext({});
 
@@ -15,7 +16,8 @@ function AuthProvider({
 }: {
   children: React.ReactNode;
 }): JSX.Element {
-  const [user, setUser] = useState<object | null>(null);
+  const [user, setUser] = useState<any | null>(null);
+  const router = useRouter();
 
   const signIn = async (email: string, password: string) => {
     const response = await fetch("/api/auth", {
@@ -26,20 +28,22 @@ function AuthProvider({
       },
       body: JSON.stringify({ email, password }),
     });
-    const data = await response.json();
-    if (response.ok && data.user) setUser(data);
-    else setUser(null);
+    const body = await response.json();
+    if (response.ok && body.session && body.data) {
+      setUser(body);
+      router.push("/");
+    } else setUser(null);
   };
 
   const signOut = async () => {
-    const response = await fetchRSR("/api/auth/revoke", user, {
+    const response = await fetchRSR("/api/auth/revoke", user.session, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        appsource: "web",
-      },
+      headers: { appsource: "web" },
     });
-    if (response.ok) setUser(null);
+    if (response.ok) {
+      setUser(null);
+      router.push("/");
+    }
   };
 
   const register = async (
@@ -56,9 +60,11 @@ function AuthProvider({
       },
       body: JSON.stringify({ email, password, fullName, birthDate }),
     });
-    const data = await response.json();
-    if (response.ok && data.user) setUser(data);
-    else setUser(null);
+    const body = await response.json();
+    if (response.ok && body.session && body.data) {
+      setUser(body);
+      router.push("/");
+    } else setUser(null);
   };
 
   return (
@@ -70,9 +76,14 @@ function AuthProvider({
 
 interface AuthContextType {
   user: any;
-  signIn: () => void;
+  signIn: (email: string, password: string) => void;
   signOut: () => void;
-  register: () => void;
+  register: (
+    email: string,
+    password: string,
+    fullName: string,
+    birthDate: string
+  ) => void;
 }
 
 /**
