@@ -38,7 +38,6 @@ function AuthProvider({
   const signOut = async () => {
     const response = await fetchRSR("/api/auth/revoke", user.session, {
       method: "POST",
-      headers: { appsource: "web" },
     });
     if (response.ok) {
       setUser(null);
