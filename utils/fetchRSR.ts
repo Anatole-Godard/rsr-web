@@ -8,13 +8,14 @@
  */
 export const fetchRSR = async (
   url: string,
-  user: any, // TODO: check if we can only define one part of the type here
+  session: any, // TODO: check if we can only define one part of the type here
   options?: any
 ): Promise<Response> => {
   return fetch(url, {
+    // TODO: authorization header isnt send when using fetch; - WTF is this? -
     headers: {
       appsource: "web",
-      authorization: `Bearer ${user.token}`,
+      Authorization: "Bearer " + session.token,
       "Content-Type": "application/json",
       ...options?.headers,
     },
