@@ -1,11 +1,20 @@
 import { v4 as uuidv4 } from 'uuid';
+import { TrashIcon } from "@heroicons/react/outline";
+import ReactPaginate from 'react-paginate';
+import Style from "/components/customTable/pagination.module.css"
 
 export const CustomTable = ({
                               theadList,
-                              valuesList
+                              valuesList,
+                              deleteEntity,
+                              totalPages,
+                              updateCurrentPage
                             }: {
                               theadList: object[],
                               valuesList: object[],
+                              deleteEntity: any,
+                              totalPages: number,
+                              updateCurrentPage: any
                             }
 ) => {
   // DISPLAY TABLE HEADERS LIST
@@ -13,7 +22,7 @@ export const CustomTable = ({
     if (list) {
       return list.map((value: any) => (
         <th key={uuidv4()}
-            style={{ width : `${value.width}%` }}
+            style={{ width : `${value.width - (10 / list.length)}%` }}
             className="px-4 py-3"
         >
           {value.label}
@@ -41,7 +50,6 @@ export const CustomTable = ({
         break;
       default:
         displayedValue = value[theadValue.name];
-        console.log(displayedValue)
         break;
     }
 
@@ -55,10 +63,11 @@ export const CustomTable = ({
 
   return (
     <>
-      <table>
+      <table className="w-full">
         <thead>
           <tr className="bg-gray-500 dark:bg-gray-100 text-white dark:text-black text-left">
             {displayTableHeader(theadList)}
+            <th/>
           </tr>
         </thead>
         {valuesList.length > 0 &&
@@ -71,12 +80,29 @@ export const CustomTable = ({
                                     {displayValue(theadValue, value).value}
                   </span>
                 </td>
-                ))}
+              ))}
+              <td className="px-4 py-3 border-b border-gray-200 dark:border-gray-800" onClick={()=>deleteEntity(value.id)}>
+                  {TrashIcon({ className : "text-red-800 flex-shrink-0 w-5 h-5" })}
+              </td>
             </tr>
           ))}
         </tbody>
         }
       </table>
+      {totalPages !== null && (
+        <ReactPaginate
+          previousLabel="<"
+          nextLabel=">"
+          breakLabel="..."
+          breakClassName="break-me"
+          pageCount={totalPages}
+          marginPagesDisplayed={2}
+          pageRangeDisplayed={5}
+          onPageChange={updateCurrentPage}
+          containerClassName={Style.pagination}
+          activeClassName={Style.active}
+        />
+      )}
     </>
   );
 }

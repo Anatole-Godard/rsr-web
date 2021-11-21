@@ -1,39 +1,31 @@
 import { AppLayoutAdmin } from "components/layouts/AppLayoutAdmin";
+import { ListAllEntities } from "components/listAllEntities/ListAllEntities";
 import type { NextPage } from "next";
-import { CustomTable } from '@components/customTable/CustomTable';
-import Link from 'next/link';
 import { GetServerSideProps } from 'next';
 
 const theadList = [
-  { name : 'type', label : 'Type', width : 20 },
-  { name : 'name', label : 'Nom', width : 80 }
+  { name : 'type', label : 'Type', width : 50 },
+  { name : 'name', label : 'Nom', width : 50 }
 ];
 
 
-const Tags: NextPage<any> = ({
-                               resources,
-                             }: {
-  resources: [{
-    type: string;
-    name: string;
-  }];
-}) => {
+const Tags: NextPage<any> = ({ resources }: { resources: any }) => {
+  const deleteTag = (element: number) => {
+    //TODO: do DELETE call to back
+    console.log(element)
+  }
+
   return (
     <AppLayoutAdmin>
-      <div className="flex flex-col bg-gray-100 dark:bg-gray-900 h-full w-full p-3">
-        <h1 className="pl-1 mb-1 text-2xl font-bold ">Catégories</h1>
-        <CustomTable theadList={theadList} valuesList={resources}/>
-        <div className="inline-flex justify-end w-full p-3 px-6">
-          <Link href="tag/create">
-            <button className="btn-blue">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true" className="w-4 h-4 mr-1 -mt-1 rotate-45">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
-              </svg>
-              Créer
-            </button>
-          </Link>
-        </div>
-      </div>
+      <ListAllEntities title="Catégories"
+                       url="tag/create"
+                       valuesList={resources}
+                       theadList={theadList}
+                       deleteEntity={deleteTag}
+                       totalPage={5}
+                       updateCurrentPage={() => {
+                       }}
+      />
     </AppLayoutAdmin>
   );
 };
@@ -46,54 +38,67 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     props : {
       resources : [
         {
+          id   : 1,
           type : "general",
           name : "General",
         },
         {
+          id   : 2,
           type : "random",
           name : "Random",
         },
         {
+          id   : 3,
           type : "cool",
           name : "Cool",
         },
         {
+          id   : 4,
           type : "fun",
           name : "Fun",
         },
         {
+          id   : 5,
           type : "programming",
           name : "Programming",
         },
         {
+          id   : 6,
           type : "javascript",
           name : "Javascript",
         },
         {
+          id   : 7,
           type : "typescript",
           name : "Typescript",
         },
         {
+          id   : 8,
           type : "react",
           name : "React",
         },
         {
+          id   : 9,
           type : "node",
           name : "Node",
         },
         {
+          id   : 10,
           type : "express",
           name : "Express",
         },
         {
+          id   : 11,
           type : "mongodb",
           name : "MongoDB",
         },
         {
+          id   : 12,
           type : "mysql",
           name : "MySQL",
         },
         {
+          id   : 13,
           type : "postgresql",
           name : "PostgreSQL",
         },
