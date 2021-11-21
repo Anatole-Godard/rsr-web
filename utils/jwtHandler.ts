@@ -74,6 +74,7 @@ export const isTokenValid_middleware = (
 };
 
 export const withAuth = (handler: Function) => async (req: NextApiRequest, res: NextApiResponse) => {
+  console.log(req.headers.authorization);
   const headerAuth = req.headers.authorization;
   const validation = isTokenValid(headerAuth, req, res);
   if (validation) {

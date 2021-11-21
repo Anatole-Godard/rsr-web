@@ -47,7 +47,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         { upsert: true, new: true }
       );
 
-      return res.status(200).json({ session, user });
+      return res.status(200).json({ session, data: user });
     }
   } catch (err) {
     return res.status(500).json({
