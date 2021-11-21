@@ -61,15 +61,15 @@ export default function Login() {
           </div>
 
           <div className="mt-6">
-            <div className="space-y-6">
-              <div>
+            <div className="space-y-4">
+              <div className="space-y-1">
                 <label
                   htmlFor="email"
                   className="block text-sm font-medium text-gray-700 dark:text-gray-300"
                 >
                   Adresse email
                 </label>
-                <div className="mt-1">
+                <div className="">
                   <input
                     id="email"
                     name="email"
@@ -90,7 +90,7 @@ export default function Login() {
                 >
                   Mot de passe
                 </label>
-                <div className="mt-1">
+                <div className="">
                   <input
                     id="password"
                     name="password"

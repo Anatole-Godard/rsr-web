@@ -33,7 +33,7 @@ export default function Register() {
           <div>
             <div>
               <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                Connectez-vous avec
+                Enregistrez-vous avec
               </p>
 
               <div className="grid grid-cols-1 gap-3 mt-1">
@@ -62,14 +62,22 @@ export default function Register() {
               </div>
               <div className="relative flex justify-center text-sm">
                 <span className="px-2 text-gray-500 bg-white dark:bg-gray-900">
-                  Ou continuez avec
+                  Ou enregistrer vous avec
                 </span>
               </div>
             </div>
           </div>
 
           <div className="mt-6">
-            <div className="space-y-6">
+            <div className="space-y-4">
+              {/* <div className="w-full h-2 bg-gray-300 rounded-full">
+                <div
+                  className={[
+                    step === 1 ? "w-[10px]" : "w-1/2",
+                    "bg-blue-500 h-2 rounded-l-full transition-all duration-500 ease-in-out",
+                  ].join(" ")}
+                ></div>
+              </div> */}
               {step === 1 && (
                 <>
                   <div className="space-y-1">
