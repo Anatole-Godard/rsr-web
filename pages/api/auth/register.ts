@@ -1,6 +1,6 @@
 import SessionToken from "@models/SessionToken";
 import User from "@models/User";
-import { genToken } from "@utils/jwtHandler";
+import { genToken } from "@middleware/auth";
 import { NextApiRequest, NextApiResponse } from "next";
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {

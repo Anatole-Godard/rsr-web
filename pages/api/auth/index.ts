@@ -1,5 +1,5 @@
 import User from "@models/User";
-import { genToken } from "@utils/jwtHandler";
+import { genToken } from "@middleware/auth";
 import type { NextApiRequest, NextApiResponse } from "next";
 import SessionToken from "@models/SessionToken";
 import withDatabase from "@middleware/mongoose";
