@@ -35,7 +35,6 @@ const UserSchema = new Schema({
   },
 });
 
-// mongoose.models = {};
 
 UserSchema.post("findOne", function (doc) {
   if (doc) {

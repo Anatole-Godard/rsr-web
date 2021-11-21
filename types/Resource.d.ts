@@ -4,8 +4,8 @@ import type { PhysicalItem } from "./Resource/PhysicalItem";
 import type { UserMinimum } from "./User";
 
 export type Resource = {
-  // id: number;
   slug: string;
+
   owner: UserMinimum;
   createdAt: Date | string;
   description?: string;
