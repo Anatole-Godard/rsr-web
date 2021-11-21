@@ -12,13 +12,17 @@ export const fetchRSR = async (
   options?: any
 ): Promise<Response> => {
   return fetch(url, {
-    // TODO: authorization header isnt send when using fetch; - WTF is this? -
+    /*
+     * - WTF is this? *
+     * - Mybad I'm so dumb -
+     * - Sorry, it's late -
+     */
+    ...options,
     headers: {
+      ...options?.headers,
       appsource: "web",
       Authorization: "Bearer " + session.token,
       "Content-Type": "application/json",
-      ...options?.headers,
     },
-    ...options,
   });
 };
