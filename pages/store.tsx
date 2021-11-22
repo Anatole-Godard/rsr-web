@@ -1,4 +1,5 @@
 import { AppLayout } from "@components/layouts/AppLayout";
+import { ChipList } from "@components/ui/ChipList";
 import {
   ArrowRightIcon,
   ExternalLinkIcon,
@@ -10,7 +11,7 @@ import { useTheme } from "next-themes";
 import Link from "next/link";
 
 const Store: NextPage = () => {
-  const { theme, setTheme } = useTheme();
+  const { theme } = useTheme();
 
   const background =
     theme === "light"
@@ -31,8 +32,9 @@ const Store: NextPage = () => {
           La ressource phare en ce moment! 😎
         </h5>
         <h5 className="text-3xl font-extrabold text-black dark:text-white filter font-marianne">
-          Le ministère de la santé et de la solidarité crée une plateforme
-          d'échange
+          {
+            "Le ministère de la santé et de la solidarité crée une plateforme d'échange"
+          }
         </h5>
         <Link href="/">
           <a className="inline-flex items-center mt-4 font-bold text-black duration-150 ease-in text-md dark:text-white filter font-marianne focus:outline-none focus:text-blue-700 dark:focus:text-blue-400 hover:text-blue-900 dark:hover:text-blue-300">
@@ -41,9 +43,9 @@ const Store: NextPage = () => {
           </a>
         </Link>
       </div>
-      <div className="w-full p-6">
-        <div className="z-50 hidden grid-cols-3 gap-3 -mt-16 md:grid xl:grid-cols-6 xl:gap-6">
-          {[1, 2, 3, 4, 5, 6].map((item) => (
+      <div className="w-full p-6 px-12">
+        <div className="z-50 hidden grid-cols-3 gap-3 -mt-16 md:grid xl:grid-cols-4 xl:gap-6">
+          {[1, 2, 3, 4].map((item) => (
             <ResourcePreview
               key={item}
               photoURL={"https://picsum.photos/400/" + (300 + item).toString()}
@@ -55,8 +57,8 @@ const Store: NextPage = () => {
             />
           ))}
         </div>
-        <div className="flex flex-col mt-6">
-          <div className="inline-flex justify-between px-12">
+        <div className="flex flex-col mt-12">
+          <div className="inline-flex justify-between mb-6">
             <h5 className="text-xl font-bold">Tendances 🥵</h5>
             <Link href="/">
               <a className="inline-flex items-center font-bold text-black duration-150 ease-in opacity-100 text-md dark:text-white filter font-marianne focus:outline-none focus:text-blue-700 dark:focus:text-blue-400 hover:text-blue-900 dark:hover:text-blue-300">
@@ -66,7 +68,7 @@ const Store: NextPage = () => {
             </Link>
           </div>
 
-          <div className="w-full p-6">
+          <div className="w-full">
             <div className="grid grid-cols-3 gap-6 xl:grid-cols-6">
               {[1, 2, 3, 4, 5, 6].map((item) => (
                 <ResourceTrending
@@ -79,7 +81,7 @@ const Store: NextPage = () => {
                       ? "external_link"
                       : "physical_item"
                   }
-                  tags={["tag1"]}
+                  tags={["tag1", "tag2", "tag3"]}
                 />
               ))}
             </div>
@@ -104,7 +106,7 @@ const ResourcePreview: React.FC<any> = ({
   return (
     <a
       href="#"
-      className="z-50 flex flex-col justify-end w-full duration-300 ease-linear shadow-lg cursor-pointer hover:shadow-lg h-28 rounded-xl hover:scale-105 focus:ring-2 ring-blue-500"
+      className="z-50 flex flex-col justify-end w-full duration-300 ease-linear shadow-lg cursor-pointer hover:shadow-lg h-36 rounded-xl hover:-translate-y-2 focus:ring-2 hover:ring hover:ring-opacity-50 ring-blue-500 dark:ring-red-500"
       style={{
         background:
           "-webkit-linear-gradient(top, transparent, #00000080), url('" +
@@ -136,7 +138,7 @@ const ResourceTrending: React.FC<any> = ({
   return (
     <a
       href="#"
-      className="flex flex-col w-full p-6 duration-300 ease-linear shadow cursor-pointer hover:shadow-lg rounded-xl hover:scale-105 focus:ring-2 ring-blue-500 group"
+      className="flex flex-col w-full p-3 duration-300 ease-linear border border-gray-100 shadow-lg cursor-pointer hover:-translate-y-2 focus:ring-2 hover:ring hover:ring-opacity-50 ring-blue-500 dark:ring-red-500 rounded-xl group"
     >
       <span
         className={
@@ -156,11 +158,11 @@ const ResourceTrending: React.FC<any> = ({
         {type === "physical_item" && <HandIcon className="w-6 h-6" />}
         {type === "external_link" && <ExternalLinkIcon className="w-6 h-6" />}
       </span>
-      <span className="mt-3 text-base font-medium text-gray-800 font-marianne dark:text-gray-200">
+      <span className="px-1.5 pb-1.5 mt-3 text-base font-medium text-gray-800 font-marianne dark:text-gray-200">
         {name}
       </span>
-      <span className="mt-0.5 text-xs font-medium text-gray-600 font-marianne dark:text-gray-400">
-        {tags?.[0]}
+      <span className="mt-0.5 font-marianne overflow-x-scroll">
+        {tags && tags.length > 0 && <ChipList list={tags} size="small" />}
       </span>
     </a>
   );

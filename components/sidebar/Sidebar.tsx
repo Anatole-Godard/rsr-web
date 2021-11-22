@@ -46,39 +46,27 @@ const SideBarIcon = ({
   href: string;
 }) => (
   <Link href={href}>
-    <div className="flex w-full cursor-pointer xl:items-center xl:px-2 group">
+    <a className="flex w-full cursor-pointer xl:items-center xl:px-2 group">
       <div
         className={
           (active
             ? " dark:bg-gray-100  text-blue-500 dark:text-red-500 dark:group-hover:bg-red-600 group-hover:bg-blue-600"
             : "dark:text-gray-100 text-gray-500 group-hover:bg-gray-600 ") +
-          " relative flex-row items-center justify-between w-full min-h-[4rem] min-w-[4rem] mx-auto my-2 transition-all duration-300 ease-linear bg-gray-100 cursor-pointer dark:bg-gray-800 group-hover:text-white group-hover:rounded-lg rounded-xl flex flex-shrink-0 sidebar-icon"
+          " relative flex-row items-center w-16 h-16 my-2 transition-all duration-300 ease-linear bg-gray-100 cursor-pointer flex-shrink-0 dark:bg-gray-800 group-hover:text-white group-hover:rounded-lg rounded-xl flex"
         }
       >
+        <div className="inline-flex items-center justify-between w-full">
+
         {active ? (
-          <motion.span layoutId={"activeIndicator"} className="w-1 h-6 duration-300 bg-blue-500 rounded-r dark:bg-red-500 group-hover:bg-blue-100 dark:group-hover:bg-red-100"></motion.span>
+          <motion.span layoutId="activeIndicator" className="flex-shrink-0 w-1 h-6 duration-300 bg-blue-500 rounded-r dark:bg-red-500 group-hover:bg-blue-100 dark:group-hover:bg-red-100"></motion.span>
         ) : (
-          <span></span>
+          <span className="w-px h-px"></span>
         )}
         {icon({ className: "flex-shrink-0 w-5 h-5" })}
-        <span></span>
+        <span className="w-px h-px"></span>
+        </div>
 
-        {/* <span
-          className={
-            (active ? "flex" : "hidden xl:flex") +
-            " text-[0.65rem] font-bold flex-col xl:flex-row xl:items-center"
-          }
-        >
-          <hr
-            className={
-              (active
-                ? "border-blue-500 dark:border-blue-100  "
-                : "border-gray-500 dark:border-gray-100 ") +
-              " hidden xl:flex pt-1 mx-2 mt-1 duration-300 ease-linear border-t-2  xl:pt-0 xl:mt-0 xl:h-4 group-hover:border-white xl:border-t-0 xl:border-l-2 "
-            }
-          />
-          {text}
-        </span> */}
+        
       </div>
       <span
         className={
@@ -88,7 +76,7 @@ const SideBarIcon = ({
       >
         {text}
       </span>
-    </div>
+    </a>
   </Link>
 );
 
