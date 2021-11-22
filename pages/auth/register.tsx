@@ -2,13 +2,15 @@ import { GuestLayout } from "@components/layouts/GuestLayout";
 import { useAuth } from "@hooks/useAuth";
 import Link from "next/link";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   ArrowLeftIcon,
   ArrowRightIcon,
   UserAddIcon,
 } from "@heroicons/react/outline";
 import { Logo } from "@components/ui/Logo";
+
+import zxcvbn from "zxcvbn";
 
 export default function Register() {
   const { register } = useAuth();
@@ -19,12 +21,32 @@ export default function Register() {
   const [birthDate, setBirthDate] = useState("");
   const [fullName, setFullName] = useState("");
 
+  const [validation, setValidation] = useState<{
+    email: boolean | null;
+    password: boolean | null;
+    birthDate: boolean | null;
+    fullName: boolean | null;
+  }>({
+    email: null,
+    password: null,
+    birthDate: null,
+    fullName: null,
+  });
+
+  const [passwordScore, setPasswordScore] = useState(0);
+  useEffect(() => {
+    if (password) {
+      const score = zxcvbn(password).score;
+      setPasswordScore(score);
+    }
+  }, [password]);
+
   return (
     <GuestLayout>
       <div className="w-full max-w-sm mx-auto lg:w-96">
         <div>
           <Logo className="inline-flex items-center text-5xl font-extrabold tracking-wider uppercase text-opacity-80" />
-          <h2 className="mt-6 text-3xl font-extrabold text-gray-900 dark:text-gray-100">
+          <h2 className="mt-6 text-3xl font-extrabold text-gray-900 font-marianne dark:text-gray-100">
             Se créer un compte RSR
           </h2>
         </div>
@@ -95,10 +117,24 @@ export default function Register() {
                         autoComplete="email"
                         required
                         value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        className="block w-full px-3 py-2 placeholder-gray-400 duration-300 border border-gray-300 rounded-md shadow-sm appearance-none dark:border-gray-700 focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:focus:outline-none dark:focus:ring-blue-500 dark:focus:border-blue-500 sm:text-sm disabled:opacity-75"
+                        onChange={(e) => {
+                          setEmail(e.target.value);
+                          setValidation({
+                            ...validation,
+                            email: true,
+                          });
+                        }}
+                        className={[
+                          "input-auth",
+                          validation.email === false ? "invalid" : "",
+                        ].join(" ")}
                       />
                     </div>
+                    {validation.email === false && (
+                      <small className="text-xs font-bold text-red-500">
+                        {"L'adresse email est invalide"}
+                      </small>
+                    )}
                   </div>
 
                   <div className="space-y-1">
@@ -108,7 +144,7 @@ export default function Register() {
                     >
                       Mot de passe
                     </label>
-                    <div className="mt-1">
+                    <div className="flex flex-col mt-1">
                       <input
                         id="password"
                         name="password"
@@ -116,10 +152,72 @@ export default function Register() {
                         autoComplete="current-password"
                         required
                         value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        className="block w-full px-3 py-2 placeholder-gray-400 duration-300 border border-gray-300 rounded-md shadow-sm appearance-none dark:border-gray-700 focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:focus:outline-none dark:focus:ring-blue-500 dark:focus:border-blue-500 sm:text-sm disabled:opacity-75"
+                        onChange={(e) => {
+                          setPassword(e.target.value);
+                          setValidation({
+                            ...validation,
+                            password: true,
+                          });
+                        }}
+                        className={[
+                          "input-auth",
+                          validation.password === false ? "invalid" : "",
+                        ].join(" ")}
                       />
+                      <div className="h-2 mt-2 bg-gray-200 rounded-full">
+                        <div
+                          className={[
+                            " h-2 rounded-l-full transition-all duration-500 ease-in-out",
+                            passwordScore === 0 && password !== ""
+                              ? "w-10 bg-red-500"
+                              : passwordScore === 1
+                              ? "w-1/4 bg-yellow-500"
+                              : passwordScore === 2
+                              ? "w-1/2 bg-green-500"
+                              : passwordScore === 3
+                              ? "w-3/4 bg-green-500"
+                              : passwordScore === 4
+                              ? "w-full bg-blue-500 animate-pulse rounded-r-full"
+                              : "w-0",
+                          ].join(" ")}
+                        ></div>
+                      </div>
+                      {password === "" && (
+                        <small className="text-xs font-bold text-gray-500">
+                          {"Le mot de passe est obligatoire"}
+                        </small>
+                      )}
+                      {passwordScore === 0 && password !== "" && (
+                        <small className="text-xs font-bold text-red-500">
+                          {"Le mot de passe est trop faible"}
+                        </small>
+                      )}
+                      {passwordScore === 1 && (
+                        <small className="text-xs font-bold text-yellow-500">
+                          {"Le mot de passe est assez faible"}
+                        </small>
+                      )}
+                      {passwordScore === 2 && (
+                        <small className="text-xs font-bold text-green-500">
+                          {"Le mot de passe est assez fort"}
+                        </small>
+                      )}
+                      {passwordScore === 3 && (
+                        <small className="text-xs font-bold text-green-500">
+                          {"Le mot de passe est fort"}
+                        </small>
+                      )}
+                      {passwordScore === 4 && (
+                        <small className="text-xs font-bold text-blue-500">
+                          {"Le mot de passe est très fort"}
+                        </small>
+                      )}
                     </div>
+                    {validation.password === false && (
+                      <small className="text-xs font-bold text-red-500">
+                        Le mot de passe doit contenir au moins 8 caractères
+                      </small>
+                    )}
                   </div>
                 </>
               )}
@@ -140,10 +238,21 @@ export default function Register() {
                         type="text"
                         required
                         value={fullName}
-                        onChange={(e) => setFullName(e.target.value)}
-                        className="block w-full px-3 py-2 placeholder-gray-400 duration-300 border border-gray-300 rounded-md shadow-sm appearance-none dark:border-gray-700 focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:focus:outline-none dark:focus:ring-blue-500 dark:focus:border-blue-500 sm:text-sm disabled:opacity-75"
+                        onChange={(e) => {
+                          setFullName(e.target.value);
+                          setValidation({ ...validation, fullName: true });
+                        }}
+                        className={[
+                          "input-auth",
+                          validation.fullName === false ? "invalid" : "",
+                        ].join(" ")}
                       />
                     </div>
+                    {validation.fullName === false && (
+                      <small className="text-xs font-bold text-red-500">
+                        {"Le nom complet n'est pas renseigné"}
+                      </small>
+                    )}
                   </div>
 
                   <div className="space-y-1">
@@ -153,17 +262,28 @@ export default function Register() {
                     >
                       Date de naissance
                     </label>
-                    <div className="mt-1">
+                    <div>
                       <input
                         id="birthDate"
                         name="birthDate"
                         type="date"
                         required
                         value={birthDate}
-                        onChange={(e) => setBirthDate(e.target.value)}
-                        className="block w-full px-3 py-2 placeholder-gray-400 duration-300 border border-gray-300 rounded-md shadow-sm appearance-none dark:border-gray-700 focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:focus:outline-none dark:focus:ring-blue-500 dark:focus:border-blue-500 sm:text-sm disabled:opacity-75"
+                        onChange={(e) => {
+                          setBirthDate(e.target.value);
+                          setValidation({ ...validation, birthDate: true });
+                        }}
+                        className={[
+                          "input-auth",
+                          validation.birthDate === false ? "invalid" : "",
+                        ].join(" ")}
                       />
                     </div>
+                    {validation.birthDate === false && (
+                      <small className="text-xs font-bold text-red-500">
+                        {"La date de naissance n'est pas renseignée"}
+                      </small>
+                    )}
                   </div>
                 </>
               )}
@@ -172,9 +292,21 @@ export default function Register() {
                 <div className="inline-flex justify-end w-full">
                   <button
                     onClick={() => {
-                      if (email && password) {
+                      if (
+                        email !== "" &&
+                        /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email) &&
+                        password !== "" &&
+                        password.length >= 8
+                      ) {
                         setStep(2);
-                      }
+                      } else
+                        setValidation({
+                          ...validation,
+                          email:
+                            email !== "" &&
+                            /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email),
+                          password: password !== "" && password.length >= 8,
+                        });
                     }}
                     className="inline-flex items-center justify-center w-1/2 px-4 py-2 text-sm font-medium text-white duration-300 bg-blue-600 rounded-md shadow-sm disabled:cursor-not-allowed hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-70"
                   >
@@ -197,11 +329,17 @@ export default function Register() {
                     onClick={() => {
                       if (email && password && fullName && birthDate) {
                         register(email, password, fullName, birthDate);
+                      } else {
+                        setValidation({
+                          ...validation,
+                          fullName: fullName !== "",
+                          birthDate: birthDate !== "",
+                        });
                       }
                     }}
                     className="inline-flex items-center justify-center flex-shrink-0 w-1/2 px-4 py-2 text-sm font-medium text-white duration-300 bg-blue-600 rounded-md shadow-sm disabled:cursor-not-allowed hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-70"
                   >
-                    S'enregistrer
+                    {"S'enregistrer"}
                     <UserAddIcon className="w-5 h-5 ml-2" />
                   </button>
                 </div>

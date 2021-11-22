@@ -6,6 +6,8 @@ import { NextApiRequest, NextApiResponse } from "next";
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== "POST") {
     return res.status(400).json({
+      error: "MethodNotAllowedError",
+      method: req.method,
       message: "Method not allowed",
     });
   }
@@ -14,6 +16,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 
   if (!email || !password || !birthDate || !fullName) {
     return res.status(400).json({
+      error: "MissingParametersError",
       message: "Missing required fields",
       fields: {
         email: !email,
@@ -25,6 +28,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   }
   if (!appsource) {
     return res.status(400).json({
+      error: "MissingAppSourceError",
       message: "Please provide appsource",
     });
   }
@@ -47,8 +51,9 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     res.status(201).json({ data: user, session });
   } catch (err) {
     return res.status(500).json({
+      error: err instanceof Error ? err.name : "InternalServerError",
       message:
-        err instanceof Error ? err.message : "an error occured on: register",
+        err instanceof Error ? err.message : "an error occured on: login",
     });
   }
 }
