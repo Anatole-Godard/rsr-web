@@ -200,6 +200,14 @@
     @apply w-full px-3 py-2 text-sm font-light text-gray-600 transition-all duration-300 bg-gray-100 rounded-lg hover:bg-gray-200 active:bg-gray-100 font-spectral focus:outline-none focus:ring focus:ring-offset-2 focus:ring-blue-400 focus:bg-gray-50 placeholder-shown:text-gray-400 dark:text-gray-200 dark:bg-gray-800 dark:placeholder-shown:text-gray-200;
   }
 
+  .input-auth {
+    @apply block w-full px-3 py-2 placeholder-gray-400 duration-300 border border-gray-300 rounded-md shadow-sm appearance-none dark:border-gray-700 focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:focus:outline-none dark:focus:ring-blue-500 dark:focus:border-blue-500 sm:text-sm disabled:opacity-75;
+  }
+
+  .invalid {
+    @apply text-red-500 dark:text-red-200 ring-red-500 ring-offset-2 ring-1;
+  }
+
   .btn {
     @apply inline-flex items-center px-2 py-2 text-sm font-light transition-all duration-300 rounded-lg sm:px-4 font-spectral;
   }
