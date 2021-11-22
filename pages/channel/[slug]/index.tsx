@@ -11,10 +11,12 @@ import {GetServerSideProps, NextPage} from "next";
 import {useRouter} from "next/router";
 import Link from "next/link";
 import {SetStateAction, useEffect, useState} from "react";
-import {Resource} from "@definitions/Resource";
+import {Resource} from "@definitions/Resource/Resource";
 import io, {Socket} from "socket.io-client";
 import {DefaultEventsMap} from "@socket.io/component-emitter";
 import {use} from "ast-types";
+import {Message} from "@definitions/Message";
+import Channel from "../index";
 
 const socket = io("http://localhost:3000")
 
@@ -37,7 +39,7 @@ const ChannelSlug: NextPage<any> = ({
     const description = "Hello world";
 
     const [message, setMessage] = useState<string>("");
-    const [chat, setChat] = useState<string[]>([]);
+    const [chat, setChat] = useState<Message[]>([]);
 
     const [resources, setResources] = useState<Resource[]>([
         fakeResource(),
@@ -60,6 +62,11 @@ const ChannelSlug: NextPage<any> = ({
                     console.log("New user message: " + message)
                 })
 
+                socket.on('get-messages', (messages: Message[]) => {
+                    setChat(messages);
+                    console.log("Messages: ", messages);
+                })
+
             }
         })
     }, [])
@@ -69,8 +76,7 @@ const ChannelSlug: NextPage<any> = ({
             socket.emit('new-message', message)
             setMessage("");
         }
-        chat.push(message)
-        setChat([...chat])
+        socket.emit('refresh-chat');
     }
 
     const handleSubmitMessage = (e: { preventDefault: () => void; }) => {
@@ -139,7 +145,7 @@ const ChannelSlug: NextPage<any> = ({
                                 value={message}
                                 onChange={(e) => setMessage(e.target.value)}
                                 className="z-40 mr-2 input"
-                            ></input>
+                            />
                             <button className="btn-blue">
                                 <PaperAirplaneIcon className="w-[1.25rem] h-[1.25rem] "/>
                             </button>

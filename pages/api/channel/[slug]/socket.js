@@ -18,6 +18,7 @@ const postMessage = async (message) => {
 }
 
 const getMessages = async () => {
+    console.log('Initializing chat')
     return await Message.find({});
 }
 
@@ -27,7 +28,9 @@ const ioHandler = (req, res) => {
 
         const io = new Server(res.socket.server)
 
-        io.on('connection', socket => {
+        io.on('connection', async socket => {
+            let messages = await getMessages();
+            io.emit('get-messages', messages);
             socket.broadcast.emit('notification', 'New user connected')
         })
 
@@ -38,6 +41,8 @@ const ioHandler = (req, res) => {
         const io = res.socket.server.io
 
         io.on('connection', async socket => {
+            let messages = await getMessages();
+            io.emit('get-messages', messages);
             socket.on('new-message', async message => {
                 try {
                     await postMessage(message)
@@ -47,8 +52,15 @@ const ioHandler = (req, res) => {
                 }
             })
 
-            let messages = await getMessages();
-            io.emit('get-messages', messages);
+            socket.on('refresh-chat', async () => {
+                try {
+                    io.emit('get-messages', await getMessages());
+                    console.log('chat refreshed')
+                }
+                catch (e) {
+                    io.emit('notification', e)
+                }
+            })
 
             socket.on('disconnect', () => {
                 socket.broadcast.emit('notification', 'User disconnected')
