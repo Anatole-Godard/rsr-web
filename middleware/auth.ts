@@ -27,13 +27,10 @@ export const genToken = (userData: { uid: string; role: string }) => ({
     }
   ),
   issuedAt: new Date().getTime(),
-  
-
 });
 
 export const parseAuthorization = (authorization: string | undefined) =>
   authorization != null ? authorization.replace("Bearer ", "") : null;
-
 
 export const isTokenValid = (
   authorization: string | undefined,
@@ -46,11 +43,13 @@ export const isTokenValid = (
       if (err) {
         if (err.name === "TokenExpiredError") {
           res.status(401).json({
+            error: err.name,
             message: err.message,
             statusCode: res.statusCode,
           });
         } else {
           res.status(403).json({
+            error: err.name,
             message: err.message,
             statusCode: res.statusCode,
           });
@@ -73,20 +72,24 @@ export const isTokenValid_middleware = (
   if (validation) next();
 };
 
-export const withAuth = (handler: Function) => async (req: NextApiRequest, res: NextApiResponse) => {
-  console.log(req.headers.authorization);
-  const headerAuth = req.headers.authorization;
-  const validation = isTokenValid(headerAuth, req, res);
-  if (validation) {
-    return handler(req, res);
-  }
-  res.status(403).json({
-    message: "Forbidden",
-    statusCode: res.statusCode,
-  });
-};
+export const withAuth =
+  (handler: Function) => async (req: NextApiRequest, res: NextApiResponse) => {
+    console.log(req.headers.authorization);
+    const headerAuth = req.headers.authorization;
+    const validation = isTokenValid(headerAuth, req, res);
+    if (validation) {
+      return handler(req, res);
+    }
+    return res.status(403).json({
+      message: "Forbidden",
+      statusCode: res.statusCode,
+    });
+  };
 
-export const refreshTokenHandler = (req: NextApiRequest, res: NextApiResponse) => {
+export const refreshTokenHandler = (
+  req: NextApiRequest,
+  res: NextApiResponse
+) => {
   const RefreshAuth = req.body.refreshToken;
 
   if (RefreshAuth === null) {
@@ -105,11 +108,13 @@ export const refreshTokenHandler = (req: NextApiRequest, res: NextApiResponse) =
       if (err || !decoded?.refresh) {
         if (err?.name === "TokenExpiredError") {
           res.status(401).json({
+            error: err.name,
             message: err.message,
             statusCode: res.statusCode,
           });
         } else {
           res.status(403).json({
+            error: "TokenInvalidError",
             message: "wrong token",
             statusCode: res.statusCode,
           });
@@ -130,4 +135,3 @@ export const refreshTokenHandler = (req: NextApiRequest, res: NextApiResponse) =
     }
   );
 };
-

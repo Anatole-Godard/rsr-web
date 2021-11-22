@@ -7,13 +7,20 @@ import withDatabase from "@middleware/mongoose";
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== "POST") {
     return res.status(400).json({
+      error: "MethodNotAllowedError",
+      method: req.method,
       message: "Method not allowed",
     });
   }
 
   if (!req.body.email || !req.body.password) {
     return res.status(400).json({
+      error: "MissingParametersError",
       message: "Please provide email and password",
+      fields: {
+        email: !req.body.email,
+        password: !req.body.password,
+      },
     });
   }
 
@@ -22,6 +29,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 
   if (!appsource) {
     return res.status(400).json({
+      error: "MissingAppSourceError",
       message: "Please provide appsource",
     });
   }
@@ -31,6 +39,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     if (user.password !== password) {
       // TODO : hash password
       return res.status(400).json({
+        error: "InvalidCredentialsError",
         message: "Invalid email or password",
       });
     } else {
@@ -51,6 +60,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     }
   } catch (err) {
     return res.status(500).json({
+      error: err instanceof Error ? err.name : "InternalServerError",
       message:
         err instanceof Error ? err.message : "an error occured on: login",
     });
