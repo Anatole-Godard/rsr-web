@@ -1,7 +1,11 @@
 import { UserDropdown } from "@components/dropdowns/UserDropdown";
 import { MoonIcon, SearchIcon, SunIcon } from "@heroicons/react/outline";
+import { useSearch } from "@hooks/useSearch";
+import { fakeResource } from "@utils/faker.dev";
 import { useTheme } from "next-themes";
 import Link from "next/link";
+import { useEffect, useState } from "react";
+import { SearchComponent } from "./Search";
 
 export const TopNavigation: React.FC<any> = ({
   config = { shadow: true, backgroundColor: "bg-white dark:bg-gray-900" },
@@ -40,16 +44,36 @@ const ThemeIcon = () => {
   );
 };
 
-const Search = () => (
-  <div className="items-center hidden w-2/5 px-2 text-gray-500 transition duration-300 ease-in-out bg-gray-100 rounded-md md:flex dark:bg-gray-800 h-9 focus-within:bg-gray-200 font-marianne">
-    <input
-      className="w-full pl-1 font-bold text-gray-500 placeholder-gray-500 bg-transparent rounded outline-none"
-      type="text"
-      placeholder="Rechercher une ressource, un canal, un utilisateur..."
-    />
-    <SearchIcon className="w-5 h-5 my-auto text-secondary" />
-  </div>
-);
+const Search = () => {
+  const [resources, setResources] = useState([fakeResource(), fakeResource()]);
+  const { search, onChange, filtered } = useSearch("slug", resources);
+  const [isOpen, setIsOpen] = useState(false);
+
+  useEffect(() => {
+    if (search !== "") {
+      setIsOpen(true);
+    }
+  }, [search]);
+  return (
+    <>
+      <div className="items-center hidden w-2/5 px-2 text-gray-500 transition duration-300 ease-in-out bg-gray-100 rounded-md md:flex dark:bg-gray-800 h-9 focus-within:bg-gray-200 font-marianne">
+        <input
+          className="w-full pl-1 font-bold text-gray-500 placeholder-gray-500 bg-transparent rounded outline-none"
+          type="text"
+          placeholder="Rechercher une ressource, un canal, un utilisateur..."
+          onChange={onChange}
+          value={search}
+        />
+        <SearchIcon className="w-5 h-5 my-auto text-secondary" />
+      </div>
+      <SearchComponent
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+        filtered={filtered}
+      />
+    </>
+  );
+};
 
 const Title = () => (
   <Link href="/">

@@ -1,3 +1,5 @@
+import { classes } from "@utils/classes";
+
 export const Chip = ({
   onClick,
   color = "green",
@@ -101,10 +103,10 @@ export const Chip = ({
       className={chipClassName}
     >
       <div
-        className={[
+        className={classes(
           "inline-flex items-center font-semibold leading-none select-none min-w-max ",
-          size === "normal" ? "text-sm" : "text-xs",
-        ].join(" ")}
+          size === "normal" ? "text-sm" : "text-xs"
+        )}
       >
         {name}
         {checked && (

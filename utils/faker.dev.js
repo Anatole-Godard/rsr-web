@@ -66,7 +66,11 @@ export const fakeResource = () => {
   return {
     id: faker.datatype.number(),
     slug: faker.lorem.slug(),
-    owner: faker.internet.userName(),
+    owner: {
+      fullName: faker.internet.userName(),
+      photoURL: faker.image.avatar(),
+      uid: faker.datatype.uuid(),
+    },
     createdAt: faker.date.past(),
     description: faker.lorem.sentence(),
     data: {

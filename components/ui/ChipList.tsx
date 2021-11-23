@@ -1,3 +1,4 @@
+import { classes } from "@utils/classes";
 import { Chip } from "./Chip";
 
 export const ChipList = ({
@@ -15,10 +16,10 @@ export const ChipList = ({
 }) => {
   return (
     <div
-      className={[
+      className={classes(
         "inline-flex items-center max-w-max  overflow-x-auto ",
-        size === "normal" ? "space-x-3 p-1.5" : " space-x-1 p-0.5",
-      ].join(" ")}
+        size === "normal" ? "space-x-3 p-1.5" : " space-x-1 p-0.5"
+      )}
     >
       {list.map((el, index) => (
         <Chip

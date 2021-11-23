@@ -106,7 +106,7 @@ const ResourcePreview: React.FC<any> = ({
   return (
     <a
       href="#"
-      className="z-50 flex flex-col justify-end w-full duration-300 ease-linear shadow-lg cursor-pointer hover:shadow-lg h-36 rounded-xl hover:-translate-y-2 focus:ring-2 hover:ring hover:ring-opacity-50 ring-blue-500 dark:ring-red-500"
+      className="z-20 flex flex-col justify-end w-full duration-300 ease-linear shadow-lg cursor-pointer hover:shadow-lg h-36 rounded-xl hover:-translate-y-2 focus:ring-2 hover:ring hover:ring-opacity-50 ring-blue-500 dark:ring-red-500"
       style={{
         background:
           "-webkit-linear-gradient(top, transparent, #00000080), url('" +

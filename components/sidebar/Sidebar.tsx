@@ -10,7 +10,7 @@ export const SideBar = ({ config = { size: "normal" } }: { config?: any }) => {
   const { pathname } = router;
 
   return (
-    <div className="min-h-[calc(100vh-4rem)] z-[41] flex-col hidden px-2 bg-white shadow-lg top-16 xl:items-start md:flex min-w-max dark:bg-black dark:border-r dark:border-gray-900">
+    <div className="min-h-[calc(100vh-4rem)] z-[39] flex-col hidden px-2 bg-white shadow-lg top-16 xl:items-start md:flex min-w-max dark:bg-black dark:border-r dark:border-gray-900">
       <SideBarIcon
         icon={HomeIcon}
         active={pathname === "/"}
