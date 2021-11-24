@@ -10,38 +10,63 @@ import { NextPage } from "next";
 import { useTheme } from "next-themes";
 import Link from "next/link";
 
+import { useRef } from "react";
+import { Rerousel } from "rerousel";
+
 const Store: NextPage = () => {
   const { theme } = useTheme();
+  const carouselRef = useRef(null);
 
-  const background =
+  const background = (url: string) =>
     theme === "light"
-      ? "-webkit-linear-gradient(top, #000091C0, #ffffffff), url('https://picsum.photos/1600/600')"
-      : "-webkit-linear-gradient(top, #E1000FC0, #000000ff), url('https://picsum.photos/1600/600')";
+      ? "-webkit-linear-gradient(top, #000091C0, #ffffffff), url('" + url + "')"
+      : "-webkit-linear-gradient(top, #E1000FC0, #000000ff), url('" +
+        url +
+        "')";
 
   return (
     <AppLayout>
       {/* <div className="w-screen min-h-screen"> */}
-      <div
-        className="z-20 flex flex-col items-start justify-center object-cover w-full p-12 rounded-tl-xl h-96"
-        style={{
-          background: background,
-          opacity: 0.9,
-        }}
-      >
-        <h5 className="text-gray-900 dark:text-gray-200 text-md filter font-marianne">
-          La ressource phare en ce moment! 😎
-        </h5>
-        <h5 className="text-3xl font-extrabold text-black dark:text-white filter font-marianne">
-          {
-            "Le ministère de la santé et de la solidarité crée une plateforme d'échange"
-          }
-        </h5>
-        <Link href="/">
-          <a className="inline-flex items-center mt-4 font-bold text-black duration-150 ease-in text-md dark:text-white filter font-marianne focus:outline-none focus:text-blue-700 dark:focus:text-blue-400 hover:text-blue-900 dark:hover:text-blue-300">
-            Voir plus
-            <ArrowRightIcon className="w-4 h-4 ml-2 -mb-1" />
-          </a>
-        </Link>
+      <div className="w-full h-96">
+        <Rerousel itemRef={carouselRef} interval={5000}>
+          {[
+            {
+              header: "La ressource phare en ce moment! 😎",
+              paragraph:
+                "Le ministère de la santé et de la solidarité crée une plateforme d'échange",
+              backgroundUrl: "https://picsum.photos/1600/600",
+            },
+            {
+              header: "JEU CONCOURS: Un iPhone 13 Pro à gagner! 😎",
+              paragraph:
+                "Le ministère de la santé et de la solidarité offre un iPhone 13 Pro au gagnant",
+              backgroundUrl: "https://picsum.photos/1600/601",
+            },
+          ].map((el, key) => (
+            <div
+              key={key}
+              className="z-20 flex flex-col items-start justify-center object-cover w-full p-12 rounded-tl-xl h-96"
+              style={{
+                background: background(el.backgroundUrl),
+                opacity: 0.9,
+              }}
+              ref={carouselRef}
+            >
+              <h5 className="text-gray-900 dark:text-gray-200 text-md filter font-marianne">
+                {el.header}
+              </h5>
+              <h5 className="text-3xl font-extrabold text-black dark:text-white filter font-marianne">
+                {el.paragraph}
+              </h5>
+              <Link href="/">
+                <a className="inline-flex items-center mt-4 font-bold text-black duration-150 ease-in text-md dark:text-white filter font-marianne focus:outline-none focus:text-blue-700 dark:focus:text-blue-400 hover:text-blue-900 dark:hover:text-blue-300">
+                  Voir plus
+                  <ArrowRightIcon className="w-4 h-4 ml-2 -mb-1" />
+                </a>
+              </Link>
+            </div>
+          ))}
+        </Rerousel>
       </div>
       <div className="w-full p-6 px-12">
         <div className="z-50 hidden grid-cols-3 gap-3 -mt-16 md:grid xl:grid-cols-4 xl:gap-6">
