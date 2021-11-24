@@ -6,9 +6,11 @@ import {
   HandIcon,
   LocationMarkerIcon,
 } from "@heroicons/react/outline";
+import { fakeResource } from "@utils/faker.dev";
 import { NextPage } from "next";
 import { useTheme } from "next-themes";
 import Link from "next/link";
+import { useState } from "react";
 
 import { useRef } from "react";
 import { Rerousel } from "rerousel";
@@ -16,6 +18,19 @@ import { Rerousel } from "rerousel";
 const Store: NextPage = () => {
   const { theme } = useTheme();
   const carouselRef = useRef(null);
+  const [resources, setResources] = useState([
+    fakeResource(),
+    fakeResource(),
+    fakeResource(),
+    fakeResource(),
+  ]);
+
+  const [resourcesTrending, setResourcesTrending] = useState([
+    fakeResource(),
+    fakeResource(),
+    fakeResource(),
+    fakeResource(),
+  ]);
 
   const background = (url: string) =>
     theme === "light"
@@ -68,17 +83,19 @@ const Store: NextPage = () => {
           ))}
         </Rerousel>
       </div>
-      <div className="w-full p-6 px-12">
-        <div className="z-50 hidden grid-cols-3 gap-3 -mt-16 md:grid xl:grid-cols-4 xl:gap-6">
-          {[1, 2, 3, 4].map((item) => (
+      <div className="w-full p-6">
+        <div className="z-50 hidden grid-cols-3 gap-3 -mt-16 md:grid xl:grid-cols-6 xl:gap-6">
+          {resources.map((item, key) => (
             <ResourcePreview
-              key={item}
-              photoURL={"https://picsum.photos/400/" + (300 + item).toString()}
-              name={"Ressource " + item}
-              tagline={
-                item % 2 === 0 &&
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+              key={key}
+              slug={item.slug}
+              photoURL={"https://picsum.photos/400/" + (300 + key).toString()}
+              name={
+                item.data.type === "location"
+                  ? item.data.attributes.properties.name
+                  : item.data.attributes.name
               }
+              description={item.description}
             />
           ))}
         </div>
@@ -95,18 +112,12 @@ const Store: NextPage = () => {
 
           <div className="w-full">
             <div className="grid grid-cols-3 gap-6 xl:grid-cols-6">
-              {[1, 2, 3, 4, 5, 6].map((item) => (
+              {resourcesTrending.map((item) => (
                 <ResourceTrending
-                  key={item}
-                  name={"Ressource " + item}
-                  type={
-                    item % 3 === 0
-                      ? "location"
-                      : item % 3 === 1
-                      ? "external_link"
-                      : "physical_item"
-                  }
-                  tags={["tag1", "tag2", "tag3"]}
+                  key={item.slug}
+                  slug={item.slug}
+                  type={item.data.type}
+                  tags={["tag1"]}
                 />
               ))}
             </div>
@@ -123,31 +134,34 @@ const ResourcePreview: React.FC<any> = ({
   photoURL,
   name,
   tagline,
+  slug,
 }: {
   photoURL: string;
   name: string;
   tagline?: string;
+  slug: string;
 }) => {
   return (
-    <a
-      href="#"
-      className="z-20 flex flex-col justify-end w-full duration-300 ease-linear shadow-lg cursor-pointer hover:shadow-lg h-36 rounded-xl hover:-translate-y-2 focus:ring-2 hover:ring hover:ring-opacity-50 ring-blue-500 dark:ring-red-500"
-      style={{
-        background:
-          "-webkit-linear-gradient(top, transparent, #00000080), url('" +
-          photoURL +
-          "')",
-      }}
-    >
-      <div className="flex flex-col w-full p-2 ">
-        <h4 className="text-xs font-normal font-marianne text-gray-50">
-          {name}
-        </h4>
-        <p className="text-[0.6rem] text-gray-300 font-marianne font-thin mt-0.5 truncate">
-          {tagline}
-        </p>
-      </div>
-    </a>
+    <Link href={`/resource/${slug}`}>
+      <a
+        className="z-50 flex flex-col justify-end w-full duration-300 ease-linear shadow-lg cursor-pointer hover:shadow-lg h-28 rounded-xl hover:scale-105 focus:ring-2 ring-blue-500"
+        style={{
+          background:
+            "-webkit-linear-gradient(top, transparent, #00000080), url('" +
+            photoURL +
+            "')",
+        }}
+      >
+        <div className="flex flex-col w-full p-2 ">
+          <h4 className="text-xs font-normal font-marianne text-gray-50">
+            {name}
+          </h4>
+          <p className="text-[0.6rem] text-gray-300 font-marianne font-thin mt-0.5 truncate">
+            {tagline}
+          </p>
+        </div>
+      </a>
+    </Link>
   );
 };
 
@@ -155,41 +169,42 @@ const ResourceTrending: React.FC<any> = ({
   name,
   type,
   tags,
+  slug,
 }: {
   name: string;
   type: "location" | "physical_item" | "external_link" | string;
   tags?: string[];
+  slug: string;
 }) => {
   return (
-    <a
-      href="#"
-      className="flex flex-col w-full p-3 duration-300 ease-linear border border-gray-100 shadow-lg cursor-pointer hover:-translate-y-2 focus:ring-2 hover:ring hover:ring-opacity-50 ring-blue-500 dark:ring-red-500 rounded-xl group"
-    >
-      <span
-        className={
-          (type === "location"
-            ? "bg-indigo-100 text-indigo-600 dark:bg-indigo-900 dark:text-indigo-500"
-            : "") +
-          (type === "physical_item"
-            ? "bg-emerald-100 text-emerald-600 dark:bg-emerald-900 dark:text-emerald-500"
-            : "") +
-          (type === "external_link"
-            ? "bg-amber-100 text-amber-600 dark:bg-amber-900 dark:text-amber-500"
-            : "") +
-          " rounded-3xl w-20 h-20 flex items-center justify-center mx-auto"
-        }
-      >
-        {type === "location" && <LocationMarkerIcon className="w-6 h-6" />}
-        {type === "physical_item" && <HandIcon className="w-6 h-6" />}
-        {type === "external_link" && <ExternalLinkIcon className="w-6 h-6" />}
-      </span>
-      <span className="px-1.5 pb-1.5 mt-3 text-base font-medium text-gray-800 font-marianne dark:text-gray-200">
-        {name}
-      </span>
-      <span className="mt-0.5 font-marianne overflow-x-scroll">
-        {tags && tags.length > 0 && <ChipList list={tags} size="small" />}
-      </span>
-    </a>
+    <Link href={`/resource/${slug}`}>
+      <a className="flex flex-col w-full p-6 duration-300 ease-linear shadow cursor-pointer hover:shadow-lg rounded-xl hover:scale-105 focus:ring-2 ring-blue-500 group">
+        <span
+          className={
+            (type === "location"
+              ? "bg-indigo-100 text-indigo-600 dark:bg-indigo-900 dark:text-indigo-500"
+              : "") +
+            (type === "physical_item"
+              ? "bg-emerald-100 text-emerald-600 dark:bg-emerald-900 dark:text-emerald-500"
+              : "") +
+            (type === "external_link"
+              ? "bg-amber-100 text-amber-600 dark:bg-amber-900 dark:text-amber-500"
+              : "") +
+            " rounded-3xl w-20 h-20 flex items-center justify-center mx-auto"
+          }
+        >
+          {type === "location" && <LocationMarkerIcon className="w-6 h-6" />}
+          {type === "physical_item" && <HandIcon className="w-6 h-6" />}
+          {type === "external_link" && <ExternalLinkIcon className="w-6 h-6" />}
+        </span>
+        <span className="mt-3 text-base font-medium text-gray-800 font-marianne dark:text-gray-200">
+          {name}
+        </span>
+        <span className="mt-0.5 text-xs font-medium text-gray-600 font-marianne dark:text-gray-400">
+          {tags?.[0]}
+        </span>
+      </a>
+    </Link>
   );
 };
 

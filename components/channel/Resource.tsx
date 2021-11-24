@@ -104,7 +104,7 @@ export const ChannelResource: React.FC<any> = ({
                 leaveTo="opacity-0 scale-95 "
               >
                 <div className="flex flex-col px-4 mt-2 space-y-2 overflow-y-auto rounded-md xl:rounded-xl">
-                  {comments.map(
+                  {comments?.map(
                     (
                       comment: {
                         owner: {
@@ -127,7 +127,7 @@ export const ChannelResource: React.FC<any> = ({
                           className="w-10 h-10 rounded-full"
                         ></img>
                         <div className="flex flex-col">
-                          <p className="text-sm text-gray-700 font-marianne">
+                          <p className="text-sm font-semibold text-gray-700 font-spectral">
                             {comment.owner.fullName}
                           </p>
                           <p className="text-xs text-gray-600">
