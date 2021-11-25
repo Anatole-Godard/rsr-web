@@ -1,7 +1,13 @@
 /* eslint-disable @next/next/no-img-element */
 import { AppLayout } from "@components/layouts/AppLayout";
 import { Resource } from "@definitions/Resource";
-import { PaperAirplaneIcon } from "@heroicons/react/outline";
+import {
+  ChatIcon,
+  HeartIcon,
+  PaperAirplaneIcon,
+  ShareIcon,
+  ThumbUpIcon,
+} from "@heroicons/react/outline";
 import {
   ExternalLinkIcon,
   HandIcon,
@@ -23,69 +29,104 @@ const ResourceSlug: NextPage<any> = ({
   owner,
   description,
   comments,
+  likes,
+  tags,
 }: Resource) => {
   const [message, setMessage] = useState<string>("");
 
   return (
     <AppLayout>
-      <div className="flex flex-col w-full h-full px-4 pb-4 space-y-2 lg:flex-row lg:space-y-0 lg:space-x-4">
-        <div className="flex flex-col items-center w-full h-full p-6 space-y-2 bg-gray-100 shadow-inner lg:py-20 lg:w-1/4 lg:rounded-xl">
-          <span
-            className={
-              (data.type === "location"
-                ? "bg-indigo-300 text-indigo-800 dark:bg-indigo-900 dark:text-indigo-500"
-                : "") +
-              (data.type === "physical_item"
-                ? "bg-emerald-300 text-emerald-800 dark:bg-emerald-900 dark:text-emerald-500"
-                : "") +
-              (data.type === "external_link"
-                ? "bg-amber-300 text-amber-800 dark:bg-amber-900 dark:text-amber-500"
-                : "") +
-              " rounded-3xl w-32 h-32 flex items-center justify-center mx-auto"
-            }
-          >
-            {data.type === "location" && (
-              <LocationMarkerIcon className="w-10 h-10" />
-            )}
-            {data.type === "physical_item" && (
-              <HandIcon className="w-10 h-10" />
-            )}
-            {data.type === "external_link" && (
-              <ExternalLinkIcon className="w-10 h-10" />
-            )}
-          </span>
-          <h2 className="text-xl font-extrabold font-marianne">
-            {data.type === "location"
-              ? data.attributes.properties.name
-              : data.attributes.name}
-          </h2>
-          <p className="font-semibold font-spectral">{owner}</p>
-          {/* Chip component (merge ref/global-layout) */}
+      <div className="flex flex-col w-full h-full max-h-full px-4 pb-4 space-y-2 lg:flex-row lg:space-y-0 lg:space-x-4">
+        <div className="flex flex-col items-center justify-between w-full h-full max-h-full p-6 bg-gray-100 shadow-inner lg:w-1/4 lg:rounded-xl">
+          <div className="flex-col items-center flex-shrink-0 w-full max-h-full space-y-2 lg:py-16">
+            <span
+              className={
+                (data.type === "location"
+                  ? "bg-indigo-300 text-indigo-800 dark:bg-indigo-900 dark:text-indigo-500"
+                  : "") +
+                (data.type === "physical_item"
+                  ? "bg-emerald-300 text-emerald-800 dark:bg-emerald-900 dark:text-emerald-500"
+                  : "") +
+                (data.type === "external_link"
+                  ? "bg-amber-300 text-amber-800 dark:bg-amber-900 dark:text-amber-500"
+                  : "") +
+                " rounded-3xl w-32 h-32 flex items-center justify-center mx-auto"
+              }
+            >
+              {data.type === "location" && (
+                <LocationMarkerIcon className="w-10 h-10" />
+              )}
+              {data.type === "physical_item" && (
+                <HandIcon className="w-10 h-10" />
+              )}
+              {data.type === "external_link" && (
+                <ExternalLinkIcon className="w-10 h-10" />
+              )}
+            </span>
+            <h2 className="text-xl font-extrabold text-center font-marianne">
+              {data.type === "location"
+                ? data.attributes.properties.name
+                : data.attributes.name}
+            </h2>
+            <p className="font-semibold text-center font-spectral">{owner}</p>
+            {/* Chip component (merge ref/global-layout) */}
+
+            <div className="inline-flex justify-center w-full divide-x">
+              <div className="flex flex-col items-center w-24 space-y-2">
+                <ChatIcon className="w-6 h-6" />
+                <p className="font-semibold font-spectral">
+                  {comments?.length}
+                </p>
+              </div>
+              <div className="flex flex-col items-center w-24 space-y-2">
+                <ThumbUpIcon className="w-6 h-6" />
+                <p className="font-semibold font-spectral">{likes}</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="inline-flex justify-between w-full">
+            <div className="inline-flex flex-grow w-full space-x-2">
+              {tags?.map((tag: string) => (
+                <>{tag}</>
+              ))}
+            </div>
+            <div className="inline-flex items-center flex-shrink-0 space-x-2">
+              <button className="px-2 text-gray-700 bg-gray-100 btn-red">
+                <HeartIcon className="w-4 h-4" />
+              </button>
+              <button className="px-2 btn-gray">
+                <ShareIcon className="w-4 h-4" />
+              </button>
+            </div>
+          </div>
         </div>
+
         <div className="flex flex-col items-center w-full h-full space-y-2 overflow-y-auto lg:space-y-4 lg:w-3/4">
-          <div className="w-full bg-gray-100 shadow-inner lg:rounded-xl">
+          <div className="w-full bg-gray-100 shadow-inner lg:rounded-xl h-2/5 ">
             <h2 className="w-full px-3 pb-2 my-2 text-xs font-bold tracking-wider text-gray-500 uppercase border-b font-marianne">
               Aperçu de la ressource
             </h2>
-            {/* <div className="w-full h-64 my-2">
+            <div className="relative w-full h-64 p-2">
               <ResourceView {...data} slug={slug} />
-            </div> */}
+            </div>
           </div>
 
-          <div className="w-full bg-gray-100 shadow-inner lg:rounded-xl">
+          <div className="w-full bg-gray-100 shadow-inner h-1/5 lg:rounded-xl">
             <h2 className="w-full px-3 pb-2 my-2 text-xs font-bold tracking-wider text-gray-500 uppercase border-b font-marianne">
               Description
             </h2>
             <p className="px-3 pb-2 text-sm prose">{description}</p>
           </div>
-          <div className="flex-shrink w-full max-h-full bg-gray-100 shadow-inner lg:rounded-xl">
+
+          <div className="flex flex-col flex-grow flex-shrink w-full bg-gray-100 shadow-inner max-h-[2/5] lg:rounded-xl">
             <h2 className="inline-flex items-center w-full px-3 pb-2 my-2 text-xs font-bold tracking-wider text-gray-500 uppercase border-b font-marianne">
               Commentaires et avis
               <span className="h-3 px-1.5 ml-2 py-1 flex items-center justify-center bg-gray-200 rounded-full text-[0.6rem]">
                 {comments?.length}
               </span>
             </h2>
-            <div className="flex flex-col px-4 my-2 space-y-2 overflow-y-auto rounded-md max-hfull xl:rounded-xl">
+            <div className="flex flex-col flex-grow-0 flex-shrink px-4 my-2 space-y-2 overflow-y-auto rounded-md h-full max-h-[12rem] xl:rounded-xl">
               {comments && comments?.length > 0 ? (
                 comments.map(
                   (
@@ -175,13 +216,16 @@ const ResourceView: React.FC<any> = ({
   switch (type) {
     case "location":
       return (
-        <Map point={attributes.geometry.coordinates as number[]} className="" />
+        <Map
+          point={attributes.geometry.coordinates as number[]}
+          className="lg:rounded-xl"
+        />
       );
       break;
     case "physical_item":
       return (
         <img
-          className="object-cover w-full max-h-full"
+          className="object-cover w-auto h-full lg:rounded-xl"
           src={attributes.photoURL}
           alt={attributes.name}
         />
@@ -191,12 +235,12 @@ const ResourceView: React.FC<any> = ({
     case "external_link":
       return (
         <a
-          className="flex items-center justify-center w-full max-h-full text-green-500 bg-green-100"
+          className="flex items-center justify-center w-auto h-full text-green-500 bg-green-100 lg:rounded-xl"
           href={attributes.url}
         >
           {attributes.image ? (
             <img
-              className="object-cover w-full h-full rounded-xl"
+              className="object-cover h-full rounded-xl"
               src={attributes.image}
               alt={attributes.name}
             />
