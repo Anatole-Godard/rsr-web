@@ -88,7 +88,7 @@ export const fakeResource = () => {
       createdAt: faker.date.past(),
       content: faker.lorem.sentence(),
     })),
-
+    tags: faker.lorem.words().split(" "),
     validated: faker.datatype.boolean(),
   };
 };
