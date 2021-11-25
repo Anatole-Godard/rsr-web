@@ -2,6 +2,7 @@ import SessionToken from "@models/SessionToken";
 import User from "@models/User";
 import { genToken } from "@middleware/auth";
 import { NextApiRequest, NextApiResponse } from "next";
+import withDatabase from "@middleware/mongoose";
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== "POST") {
@@ -58,4 +59,4 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   }
 }
 
-export default handler;
+export default withDatabase(handler);
