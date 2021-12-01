@@ -20,6 +20,8 @@ import { useState } from "react";
 
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import { Chip } from "@components/ui/Chip";
+import { ChipList } from "@components/ui/ChipList";
 
 const Map: any = dynamic(() => import("@components/map/Map") as any, {
   ssr: false,
@@ -70,8 +72,13 @@ const ResourceSlug: NextPage<any> = ({
                 ? data.attributes.properties.name
                 : data.attributes.name}
             </h2>
-            <p className="font-semibold text-center font-spectral">{owner}</p>
+            <p className="font-semibold text-center font-spectral">
+              {owner.fullName}
+            </p>
             {/* Chip component (merge ref/global-layout) */}
+            <div className="flex justify-center w-full pb-2">
+              <Chip name={data.type} size="small" color="gray" />
+            </div>
 
             <div className="inline-flex justify-center w-full divide-x">
               <div className="flex flex-col items-center w-24 space-y-2">
@@ -87,13 +94,15 @@ const ResourceSlug: NextPage<any> = ({
             </div>
           </div>
 
-          <div className="inline-flex justify-between w-full">
-            <div className="inline-flex flex-grow w-full space-x-2">
-              {tags?.map((tag: string) => (
-                <>{tag}</>
-              ))}
+          <div className="inline-flex justify-between w-full -mb-4">
+            <div className="inline-flex flex-grow w-1/2 space-x-2 overflow-x-auto">
+              <ChipList
+                color="blue"
+                list={tags?.map((tag: string) => tag.toString()) || []}
+                size="small"
+              />
             </div>
-            <div className="inline-flex items-center flex-shrink-0 space-x-2">
+            <div className="inline-flex items-center justify-end flex-shrink-0 w-full space-x-2 max-w-max">
               <button className="px-2 text-gray-700 bg-gray-100 btn-red">
                 <HeartIcon className="w-4 h-4" />
               </button>
