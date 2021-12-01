@@ -33,15 +33,15 @@ services:
       ME_CONFIG_MONGODB_ADMINPASSWORD: root
       ME_CONFIG_MONGODB_URL: mongodb://root:root@mongo:27017/
 
-    web-app:
-        build: "."
-        image: rsr/web-app
-        networks:
-            - rsr-network
-        restart: always
-        volumes:
-            - .:/app
-            - /app/node_modules
-            - /app/.next
-        ports:
-            - "3000:3000"
+  web-app:
+    build: "."
+    image: rsr/web-app
+    networks:
+        - rsr-network
+    restart: always
+    volumes:
+        - .:/app
+        - /app/node_modules
+        - /app/.next
+    ports:
+        - "3000:3000"

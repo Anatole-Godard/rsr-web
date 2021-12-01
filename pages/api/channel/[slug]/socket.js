@@ -1,7 +1,7 @@
 import {Server} from 'socket.io'
 import Message from "@models/message"
 
-import connectDB from "@middleware/mongoose";
+import withDatabase from "@middleware/mongoose";
 
 const postMessage = async (message) => {
     const msg = new Message({
@@ -76,4 +76,4 @@ export const config = {
     }
 }
 
-export default connectDB(ioHandler)
+export default withDatabase(ioHandler)
