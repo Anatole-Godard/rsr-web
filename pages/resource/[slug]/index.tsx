@@ -187,7 +187,7 @@ const ResourceSlug: NextPage<any> = ({
                   value={message}
                   placeholder="Écrivez un commentaire"
                   onChange={(e) => setMessage(e.target.value)}
-                  className="mr-2 input"
+                  className="mr-2 bg-gray-200 input"
                 ></input>
                 <button className="btn-green">
                   <PaperAirplaneIcon className="w-[1.25rem] h-[1.25rem] " />
