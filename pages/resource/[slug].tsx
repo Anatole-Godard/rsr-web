@@ -5,6 +5,7 @@ import {
   ChatIcon,
   HeartIcon,
   PaperAirplaneIcon,
+  PencilIcon,
   ShareIcon,
   ThumbUpIcon,
 } from "@heroicons/react/outline";
@@ -18,6 +19,7 @@ import { GetServerSideProps, NextPage } from "next";
 import { useState } from "react";
 
 import dynamic from "next/dynamic";
+import Link from "next/link";
 
 const Map: any = dynamic(() => import("@components/map/Map") as any, {
   ssr: false,
@@ -98,12 +100,17 @@ const ResourceSlug: NextPage<any> = ({
               <button className="px-2 btn-gray">
                 <ShareIcon className="w-4 h-4" />
               </button>
+              <Link href={"/resource/" + slug + "/edit"}>
+                <button className="px-2 btn-gray">
+                  <PencilIcon className="w-4 h-4" />
+                </button>
+              </Link>
             </div>
           </div>
         </div>
 
         <div className="flex flex-col items-center w-full h-full space-y-2 overflow-y-auto lg:space-y-4 lg:w-3/4">
-          <div className="w-full bg-gray-100 shadow-inner lg:rounded-xl h-2/5 ">
+          <div className="w-full bg-gray-100 shadow-inner lg:rounded-xl lg:h-2/5 ">
             <h2 className="w-full px-3 pb-2 my-2 text-xs font-bold tracking-wider text-gray-500 uppercase border-b font-marianne">
               Aperçu de la ressource
             </h2>
@@ -143,7 +150,7 @@ const ResourceSlug: NextPage<any> = ({
                   ) => (
                     <div
                       className="inline-flex p-2 space-x-6 rounded-md bg-gray-50"
-                      key={i}
+                      key={comment.createdAt.toString() + i}
                     >
                       <img
                         src={comment.owner.photoURL}
