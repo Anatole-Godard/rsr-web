@@ -176,6 +176,16 @@
 }
 
 @layer components {
+  @variants responsive {
+    .masonry {
+      column-gap: 1.5em;
+      column-count: 2;
+    }
+    .break-inside {
+      break-inside: avoid;
+    }
+  }
+
   .sidebar {
     @apply min-h-[calc(100vh-4rem)] z-[41] flex-col hidden px-2 bg-white shadow-lg top-16 xl:items-start md:flex min-w-max dark:bg-black dark:border-r dark:border-gray-900;
   }

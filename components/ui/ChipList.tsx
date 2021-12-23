@@ -1,4 +1,5 @@
 import { classes } from "@utils/classes";
+import { Dispatch, SetStateAction } from "react";
 import { Chip } from "./Chip";
 
 export const ChipList = ({
@@ -10,7 +11,7 @@ export const ChipList = ({
 }: {
   list: string[];
   selected?: string[];
-  setSelected?: ((selected: string[]) => void) | null;
+  setSelected?: ((selected: string[]) => void) | Dispatch<SetStateAction<string[]>> | null;
   color?: string;
   size: "normal" | "small";
 }) => {

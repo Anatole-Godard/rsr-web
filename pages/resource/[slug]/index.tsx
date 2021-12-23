@@ -41,7 +41,7 @@ const ResourceSlug: NextPage<any> = ({
   return (
     <AppLayout>
       <div className="flex flex-col w-full h-full max-h-full px-4 pb-4 space-y-2 lg:flex-row lg:space-y-0 lg:space-x-4">
-        <div className="flex flex-col items-center justify-between w-full h-full max-h-full p-6 bg-gray-100 shadow-inner lg:w-1/4 lg:rounded-xl">
+        <div className="flex flex-col items-center justify-between w-full p-6 bg-gray-100 shadow-inner lg:h-full lg:max-h-full lg:w-1/4 lg:rounded-xl">
           <div className="flex-col items-center flex-shrink-0 w-full max-h-full space-y-2 lg:py-16">
             <span
               className={
