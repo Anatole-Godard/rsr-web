@@ -4,9 +4,12 @@ import { ChipList } from "@components/ui/ChipList";
 import { Resource } from "@definitions/Resource";
 import { Menu, Transition } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/outline";
+import { PlusIcon } from "@heroicons/react/solid";
 import { fakeResource } from "@utils/faker.dev";
 import { NextPage } from "next";
 import { useEffect, useState } from "react";
+
+import Link from "next/link";
 
 const ResourceIndex: NextPage<any> = ({
   resources,
@@ -36,13 +39,21 @@ const ResourceIndex: NextPage<any> = ({
   return (
     <AppLayout>
       <div className="flex flex-col w-full max-h-full bg-white dark:bg-gray-900">
-        <div className="flex flex-col w-full px-6 py-6 bg-white shrink-0 lg:px-12 dark:bg-black dark:border-gray-800">
-          <h3 className="mb-2 text-2xl font-extrabold text-gray-800 font-marianne dark:text-gray-200">
-            Toutes les
-            <span className="ml-1 text-green-600 dark:text-green-400">
-              ressources
-            </span>
-          </h3>
+        <div className="flex flex-col w-full px-6 py-6 bg-white shrink-0 grow lg:px-12 dark:bg-black dark:border-gray-800">
+          <div className="inline-flex justify-between w-full">
+            <h3 className="mb-2 text-2xl font-extrabold text-gray-800 font-marianne dark:text-gray-200">
+              Toutes les
+              <span className="ml-1 text-blue-600 dark:text-blue-400">
+                ressources
+              </span>
+            </h3>
+            <Link href={"/resource/create"}>
+              <a className="btn-blue">
+                <PlusIcon className="w-4 h-4 sm:mr-2" />
+                <span className="hidden sm:block">Poster une ressource</span>
+              </a>
+            </Link>
+          </div>
 
           <div className="flex flex-col items-center w-full divide-y divide-gray-300 md:flex-row md:divide-y-0 md:divide-x dark:divide-gray-700">
             <div className="inline-flex items-center pb-3 lg:pr-3 md:pb-0">
@@ -51,7 +62,7 @@ const ResourceIndex: NextPage<any> = ({
                 {/* <CategorySelect category={category} setCategory={setCategory} /> */}
                 <div className="flex items-center mr-2">
                   <button
-                    className="flex text-sm font-medium transition duration-300 hover:text-green-500"
+                    className="flex text-sm font-medium transition duration-300 hover:text-blue-500"
                     onClick={() => {
                       setSelected([]);
                       setType(null);
@@ -71,6 +82,7 @@ const ResourceIndex: NextPage<any> = ({
                 selected={selected}
                 setSelected={setSelected}
                 size="small"
+                color="blue"
               />
             </div>
           </div>
@@ -102,7 +114,7 @@ const TypeSelect = ({ type, setType }: any) => {
     <Menu as="div" className="relative flex items-center h-full">
       {({ open }) => (
         <>
-          <Menu.Button className="flex items-center justify-between px-2 py-1 mr-2 text-sm font-medium transition duration-300 rounded-xl max-h-12 w-max hover:bg-green-200 hover:text-green-700 dark:hover:bg-green-800 dark:hover:text-green-300">
+          <Menu.Button className="flex items-center justify-between px-2 py-1 mr-2 text-sm font-medium transition duration-300 rounded-xl max-h-12 w-max hover:bg-blue-200 hover:text-blue-700 dark:hover:bg-blue-800 dark:hover:text-blue-300">
             {type?.label || "Tout type"}
             <span className="ml-2">
               <ChevronDownIcon className="w-3 h-3" />
@@ -129,7 +141,7 @@ const TypeSelect = ({ type, setType }: any) => {
                   // closeDropdownPopover();
                 }}
                 className={
-                  "text-sm py-2 px-4 font-normal block w-full text-center whitespace-nowrap hover:text-green-500 dark:hover:text-green-500 transition duration-300 text-gray-700 dark:text-gray-300"
+                  "text-sm py-2 px-4 font-normal block w-full text-center whitespace-nowrap hover:text-blue-500 dark:hover:text-blue-500 transition duration-300 text-gray-700 dark:text-gray-300"
                 }
               >
                 Tout type
@@ -147,7 +159,7 @@ const TypeSelect = ({ type, setType }: any) => {
                     // closeDropdownPopover();
                   }}
                   className={
-                    "text-sm py-2 px-4 font-normal block w-full text-center whitespace-nowrap hover:text-green-500 dark:hover:text-green-500 transition duration-300 text-gray-700 dark:text-gray-300"
+                    "text-sm py-2 px-4 font-normal block w-full text-center whitespace-nowrap hover:text-blue-500 dark:hover:text-blue-500 transition duration-300 text-gray-700 dark:text-gray-300"
                   }
                 >
                   {el.label}
@@ -166,7 +178,7 @@ const CategorySelect = ({ category, setCategory }: any) => {
     <Menu as="div" className="relative flex items-center h-full">
       {({ open }) => (
         <>
-          <Menu.Button className="flex items-center justify-between px-2 py-1 mr-2 text-sm font-medium transition duration-300 rounded-xl max-h-12 w-max hover:bg-green-200 hover:text-green-700 dark:hover:bg-green-800 dark:hover:text-green-300">
+          <Menu.Button className="flex items-center justify-between px-2 py-1 mr-2 text-sm font-medium transition duration-300 rounded-xl max-h-12 w-max hover:bg-blue-200 hover:text-blue-700 dark:hover:bg-blue-800 dark:hover:text-blue-300">
             {category?.label || "Any category"}
             <span className="ml-2">
               <ChevronDownIcon className="w-3 h-3" />
@@ -193,7 +205,7 @@ const CategorySelect = ({ category, setCategory }: any) => {
                   // closeDropdownPopover();
                 }}
                 className={
-                  "text-sm py-2 px-4 font-normal block w-full text-center whitespace-nowrap hover:text-green-500 dark:hover:text-green-500 transition duration-300 text-gray-700 dark:text-gray-300"
+                  "text-sm py-2 px-4 font-normal block w-full text-center whitespace-nowrap hover:text-blue-500 dark:hover:text-blue-500 transition duration-300 text-gray-700 dark:text-gray-300"
                 }
               >
                 Any category
@@ -230,7 +242,7 @@ const CategorySelect = ({ category, setCategory }: any) => {
                     // closeDropdownPopover();
                   }}
                   className={
-                    "text-sm py-2 px-4 font-normal block w-full text-center whitespace-nowrap hover:text-green-500 dark:hover:text-green-500 transition duration-300 text-gray-700 dark:text-gray-300"
+                    "text-sm py-2 px-4 font-normal block w-full text-center whitespace-nowrap hover:text-blue-500 dark:hover:text-blue-500 transition duration-300 text-gray-700 dark:text-gray-300"
                   }
                 >
                   {el.label}

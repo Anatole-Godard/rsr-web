@@ -84,7 +84,7 @@ export const ChannelResource: React.FC<any> = ({
 
       {showComments ? (
         <>
-          {comments?.length > 0 && (
+          {comments && comments?.length > 0 && (
             <>
               <button
                 className="inline-flex items-center w-full p-2 mt-2 text-sm duration-300 ease-linear rounded-md text-emerald-500 hover:bg-emerald-100 active:bg-emerald-300 active:text-emerald-700 max-w-max "
