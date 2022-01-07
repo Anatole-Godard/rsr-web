@@ -38,8 +38,8 @@ const ResourceIndex: NextPage<any> = ({
 
   return (
     <AppLayout>
-      <div className="flex flex-col w-full max-h-full bg-white dark:bg-gray-900">
-        <div className="flex flex-col w-full px-6 py-6 bg-white shrink-0 grow lg:px-12 dark:bg-black dark:border-gray-800">
+      <div className="flex flex-col w-full max-h-full bg-white dark:bg-gray-900 grow">
+        <div className="flex flex-col w-full px-6 py-6 bg-white shrink-0 lg:px-12 dark:bg-black dark:border-gray-800">
           <div className="inline-flex justify-between w-full">
             <h3 className="mb-2 text-2xl font-extrabold text-gray-800 font-marianne dark:text-gray-200">
               Toutes les

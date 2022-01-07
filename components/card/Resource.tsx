@@ -5,7 +5,7 @@ import Link from "next/link";
 
 export const ResourceCard = (props: Resource) => {
   return (
-    <div className="flex flex-col w-full p-2 duration-300 bg-white rounded-xl dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-900">
+    <div className="flex flex-col w-full p-2 duration-300 bg-white h-fit max-h-max grow-0 rounded-xl dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-900">
       <span className="flex items-center justify-center w-full h-32 bg-blue-200 rounded-lg dark:bg-blue-900"></span>
 
       <Link href={"/resource/" + props.slug}>
@@ -23,7 +23,7 @@ export const ResourceCard = (props: Resource) => {
         </a>
       </Link>
       <div className="inline-flex p-3">
-        <div className="inline-flex flex-grow overflow-x-hidden">
+        <div className="inline-flex overflow-x-hidden grow">
           <ChipList list={props.tags || []} size="small" color="blue"/>
         </div>
         <button
