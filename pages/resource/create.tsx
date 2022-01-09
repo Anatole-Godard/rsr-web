@@ -1,9 +1,8 @@
 import { AppLayout } from "@components/layouts/AppLayout";
+import { Tab } from "@headlessui/react";
 import {
-  BadgeCheckIcon,
   CheckIcon,
   CloudUploadIcon,
-  PlusCircleIcon,
   XCircleIcon,
   XIcon,
 } from "@heroicons/react/solid";
@@ -18,16 +17,44 @@ const Map: any = dynamic(() => import("@components/map/Map") as any, {
   ssr: false,
 });
 
+const Select: any = dynamic(() => import("react-select/creatable") as any, {
+  ssr: false,
+});
+
+const types = [
+  {
+    label: "Objet physique",
+    value: "physical_item",
+  },
+  {
+    label: "Emplacement GPS",
+    value: "location",
+  },
+  {
+    label: "Lien externe",
+    value: "external_link",
+  },
+];
+
 const ResourceCreate: NextPage<any> = () => {
   const router = useRouter();
 
   const [pictureUrl, setPictureUrl] = useState(null);
   const [pictureFile, setPictureFile] = useState(null);
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
+  const [name, setName] = useState<string>("");
+  const [description, setDescription] = useState<string | null>(null);
+  const [tags, setTags] = useState<{ label: string; value: string }[]>([]);
+  const [tagInputValue, setTagInputValue] = useState<string>("");
+
+  const [type, setType] = useState(types[0]);
 
   const [position, setPosition] = useState(null);
   const [location, setLocation] = useState("");
+
+  const [price, setPrice] = useState<string | null>(null);
+  const [category, setCategory] = useState<string | null>(null);
+
+  const [externalLink, setExternalLink] = useState<string | null>(null);
 
   const [validForm, setValidForm] = useState<boolean>(false);
   const [requestOk, setRequestOk] = useState<boolean | null>(null);
@@ -66,6 +93,37 @@ const ResourceCreate: NextPage<any> = () => {
       // router.push(`/resource/${body.slug}`);
     }
   };
+
+  useEffect(() => {
+    // Form Verifications
+    switch (type.value) {
+      case "physical_item":
+        if (name && description && pictureFile && category) setValidForm(true);
+        break;
+
+      case "location":
+        if (name && description && position && location) setValidForm(true);
+        break;
+
+      case "external_link":
+        if (name && description && externalLink) setValidForm(true);
+        break;
+
+      default:
+        setValidForm(false);
+        break;
+    }
+  }, [
+    pictureUrl,
+    name,
+    description,
+    tags,
+    type,
+    position,
+    price,
+    externalLink,
+    category,
+  ]);
 
   return (
     <AppLayout>
@@ -127,81 +185,258 @@ const ResourceCreate: NextPage<any> = () => {
           className="flex flex-col flex-grow px-2 py-3 bg-gray-100 rounded-tl-xl md:flex-row"
         >
           <div className="flex flex-col w-full px-2 space-y-3 md:w-1/2">
-            {pictureUrl && (
-              <div className="relative w-full">
-                <img
-                  src={pictureUrl}
-                  className="object-cover object-center w-full rounded-lg max-h-52"
-                ></img>
-                <div
-                  className="absolute top-0 right-0 flex items-center justify-center w-6 h-6 -mt-1 -mr-1 transition duration-300 bg-red-600 rounded-full cursor-pointer hover:bg-red-800"
-                  onClick={() => {
-                    setPictureUrl(null);
-                    setPictureFile(null);
-                  }}
-                >
-                  <XIcon className="w-4 h-4 text-white" />
-                </div>
-              </div>
-            )}
-            {!pictureUrl && (
-              <div className="w-full">
-                <input
-                  id="filePicture"
-                  type="file"
-                  accept="image/*"
-                  onChange={(e) => {
-                    let file = e.target.files[0];
-                    setPictureUrl(URL.createObjectURL(e.target.files[0]));
-                    setPictureFile(file);
-                  }}
-                  className="hidden"
-                ></input>
-                <label
-                  htmlFor="filePicture"
-                  className="inline-flex items-center w-full text-2xl font-extrabold"
-                >
-                  <div className="flex items-center justify-center w-full h-48 p-3 leading-tight text-gray-700 bg-gray-200 border-2 border-gray-200 rounded-lg appearance-none focus:outline-none focus:bg-gray-50 focus:border-gray-200">
-                    <PlusCircleIcon className="w-8 h-8 mr-4" />
-                    Ajouter une photo
+            <label>
+              <h4 className="mb-1 text-sm font-semibold text-gray-700 font-marianne">
+                Titre de la ressource
+              </h4>
+              <input
+                type="text"
+                className="bg-gray-200 input"
+                placeholder="Titre"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              ></input>
+            </label>
+            <label className="flex flex-col grow">
+              <h4 className="mb-1 text-sm font-semibold text-gray-700 font-marianne">
+                Description de la ressource
+              </h4>
+              <textarea
+                className="bg-gray-200 input grow"
+                onChange={(e) => setDescription(e.target.value)}
+                rows={10}
+                value={description}
+                placeholder="Description"
+              ></textarea>
+            </label>
+            <label>
+              <h4 className="mb-1 text-sm font-semibold text-gray-700 font-marianne">
+                Étiquettes
+              </h4>
+              <Select
+                name="tags"
+                className="w-full"
+                isClearable
+                isMulti
+                menuIsOpen={false}
+                value={tags}
+                inputValue={tagInputValue}
+                onInputChange={(e: string) => setTagInputValue(e)}
+                onChange={(e: any[]) => setTags(e?.map((e: any) => e.value))}
+                placeholder={
+                  <div className="text-sm font-semibold font-spectral">
+                    Entrez des étiquettes pour mieux identifier la ressource
                   </div>
-                </label>
-              </div>
-            )}
-
-            <input
-              type="text"
-              className="bg-gray-200 input"
-              placeholder="Titre"
-              onChange={(e) => setTitle(e.target.value)}
-            ></input>
-            <textarea
-              className="bg-gray-200 input grow"
-              onChange={(e) => setDescription(e.target.value)}
-              rows={10}
-              placeholder="Description de la ressource"
-            ></textarea>
+                }
+                formatOptionLabel={(tag: { label: string; value: string }) => (
+                  <div className="inline-flex items-center">
+                    <span className="text-xs font-spectral">{tag.label}</span>
+                  </div>
+                )}
+                onKeyDown={(event: {
+                  key: any;
+                  preventDefault: () => void;
+                }) => {
+                  if (!tagInputValue) return;
+                  switch (event.key) {
+                    case "Enter":
+                    case "Tab":
+                      setTags([
+                        ...tags,
+                        { value: tagInputValue, label: tagInputValue },
+                      ]);
+                      setTagInputValue("");
+                      console.group("Value Added");
+                      console.log(tags);
+                      console.groupEnd();
+                      event.preventDefault();
+                  }
+                }}
+              />
+            </label>
           </div>
           <div className="flex flex-col justify-between w-full px-2 mt-3 space-y-3 md:w-1/2 md:mt-0">
-            <div className="flex flex-col w-full h-full mt-1 space-y-3">
-              <div className="w-full">
-                <input
-                  type="text"
-                  value={location}
-                  className="bg-gray-200 input"
-                  placeholder="Emplacement"
-                  onChange={(e) => setLocation(e.target.value)}
-                ></input>
-              </div>
-              <div className="flex-grow rounded-lg">
-                <Map
-                  className="relative inset-0 w-full h-64 rounded-lg md:h-full"
-                  center={[46.227638, 2.213749]}
-                  zoom="4.5"
-                  onClick={(e) => setPosition(e.latlng)}
-                  point={position as number[]}
-                ></Map>
-              </div>
+            <div className="flex flex-col w-full h-full space-y-3">
+              <label>
+                <h4 className="-mb-2 text-sm font-semibold text-gray-700 font-marianne">
+                  Type de la ressource
+                </h4>
+              </label>
+
+              <Tab.Group
+                onChange={(selected) => {
+                  setRequestOk(null);
+                  setType(types[selected]);
+                }}
+              >
+                <div className="inline-flex items-center w-full">
+                  <Tab.List className="flex space-x-2 bg-gray-100 grow rounded-xl">
+                    {types.map((type, i) => (
+                      <Tab
+                        key={type.value}
+                        className={({ selected }) =>
+                          classes(
+                            "w-full py-2.5 text-xs leading-5 font-medium rounded-md",
+                            "focus:outline-none transition-all duration-300 focus:ring-2 ring-offset-2 ring-blue-500",
+                            selected
+                              ? "bg-blue-700  text-blue-100 font-semibold shadow"
+                              : "text-blue-700 bg-blue-100 hover:bg-blue-300 hover:text-blue-800",
+                            i === 0 ? "rounded-l-lg" : "",
+                            i === types.length - 1 ? "rounded-r-lg" : ""
+                          )
+                        }
+                      >
+                        {type.label}
+                      </Tab>
+                    ))}
+                  </Tab.List>
+                </div>
+              </Tab.Group>
+
+              {(type.value === "external_link" ||
+                type.value === "physical_item") && (
+                <label className="flex flex-col grow">
+                  <h4 className="mb-1 text-sm font-semibold text-gray-700 font-marianne">
+                    Image de la ressource
+                  </h4>
+                  {pictureUrl && (
+                    <div className="relative w-full grow">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={pictureUrl}
+                        className="object-cover object-center w-full rounded-lg aspect-video"
+                        alt="Event picture"
+                      ></img>
+                      <div
+                        className="absolute top-0 right-0 flex items-center justify-center w-6 h-6 -mt-1 -mr-1 text-red-700 transition duration-300 bg-red-200 rounded-full cursor-pointer hover:bg-red-300"
+                        onClick={() => {
+                          setPictureUrl(null);
+                          setPictureFile(null);
+                        }}
+                      >
+                        <XIcon className="w-3 h-3 stroke-2"></XIcon>
+                      </div>
+                    </div>
+                  )}
+                  {!pictureUrl && (
+                    <div className="w-full grow">
+                      <input
+                        id="filePicture"
+                        type="file"
+                        accept="image/*"
+                        onChange={(e) => {
+                          let file =
+                            e.target.files instanceof FileList
+                              ? e.target.files[0]
+                              : null;
+                          if (file) {
+                            setPictureFile(file);
+                            setPictureUrl(URL.createObjectURL(file));
+                          }
+                        }}
+                        className="hidden"
+                      ></input>
+                      <label
+                        htmlFor="filePicture"
+                        className="relative flex flex-col items-center justify-center w-full h-full p-12 duration-300 border-2 border-gray-300 border-dashed rounded-lg hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                      >
+                        <svg
+                          className="w-12 h-12 mx-auto text-gray-400"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"
+                          />
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"
+                          />
+                        </svg>
+
+                        <span className="block mt-2 text-sm font-medium text-gray-900">
+                          Ajouter une image
+                        </span>
+                      </label>
+                    </div>
+                  )}
+                </label>
+              )}
+              {type.value === "physical_item" && (
+                <>
+                  <label>
+                    <h4 className="mb-1 text-sm font-semibold text-gray-700 font-marianne">
+                      Prix
+                    </h4>
+                    <input
+                      type="number"
+                      className="bg-gray-200 input"
+                      value={price}
+                      onChange={(e) => setPrice(e.target.value)}
+                    />
+                  </label>
+                  <label>
+                    <h4 className="mb-1 text-sm font-semibold text-gray-700 font-marianne">
+                      Catégorie
+                    </h4>
+                    <input
+                      type="text"
+                      className="bg-gray-200 input"
+                      value={category}
+                      onChange={(e) => setCategory(e.target.value)}
+                    />
+                  </label>
+                </>
+              )}
+
+              {type.value === "external_link" && (
+                <>
+                  <label>
+                    <h4 className="mb-1 text-sm font-semibold text-gray-700 font-marianne">
+                      Lien externe
+                    </h4>
+                    <input
+                      type="text"
+                      className="bg-gray-200 input"
+                      value={externalLink}
+                      onChange={(e) => setExternalLink(e.target.value)}
+                    />
+                  </label>
+                </>
+              )}
+
+              {type.value === "location" && (
+                <label className="flex flex-col grow">
+                  <h4 className="mb-1 text-sm font-semibold text-gray-700 font-marianne">
+                    Emplacement de la ressource
+                  </h4>
+                  <div className="w-full mb-3">
+                    <input
+                      type="text"
+                      value={location}
+                      className="bg-gray-200 input"
+                      placeholder="Emplacement"
+                      onChange={(e) => setLocation(e.target.value)}
+                    ></input>
+                  </div>
+                  <div className="flex-grow rounded-lg">
+                    <Map
+                      className="relative inset-0 w-full h-64 rounded-lg md:h-full"
+                      center={[46.227638, 2.213749]}
+                      zoom="4.5"
+                      onClick={(e) => setPosition(e.latlng)}
+                      point={position as number[]}
+                    ></Map>
+                  </div>
+                </label>
+              )}
             </div>
           </div>
         </form>
