@@ -119,11 +119,11 @@ const ResourceSlug: NextPage<any> = ({
         </div>
 
         <div className="flex flex-col items-center w-full h-full space-y-2 overflow-y-auto lg:space-y-4 lg:w-3/4">
-          <div className="w-full bg-gray-100 shadow-inner lg:rounded-xl lg:h-2/5 ">
+          <div className="flex flex-col w-full bg-gray-100 shadow-inner lg:rounded-xl lg:h-2/5 ">
             <h2 className="w-full px-3 pb-2 my-2 text-xs font-bold tracking-wider text-gray-500 uppercase border-b font-marianne">
               Aperçu de la ressource
             </h2>
-            <div className="relative w-full h-64 p-2">
+            <div className="relative w-full p-2 grow">
               <ResourceView {...data} slug={slug} />
             </div>
           </div>
@@ -132,7 +132,7 @@ const ResourceSlug: NextPage<any> = ({
             <h2 className="w-full px-3 pb-2 my-2 text-xs font-bold tracking-wider text-gray-500 uppercase border-b font-marianne">
               Description
             </h2>
-            <p className="px-3 pb-2 text-sm prose">{description}</p>
+            <p className="px-3 pb-2 text-sm prose shrink-0">{description}</p>
           </div>
 
           <div className="flex flex-col flex-grow flex-shrink w-full bg-gray-100 shadow-inner max-h-[2/5] lg:rounded-xl">
@@ -142,7 +142,7 @@ const ResourceSlug: NextPage<any> = ({
                 {comments?.length}
               </span>
             </h2>
-            <div className="flex flex-col flex-grow-0 flex-shrink px-4 my-2 space-y-2 overflow-y-auto rounded-md h-full max-h-[12rem] xl:rounded-xl">
+            <div className="flex flex-col grow-0 shrink px-4 my-2 space-y-2 overflow-y-auto rounded-md h-full max-h-[12rem] xl:rounded-xl">
               {comments && comments?.length > 0 ? (
                 comments.map(
                   (

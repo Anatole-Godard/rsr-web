@@ -110,16 +110,15 @@ const ResourceSlugEdit: NextPage<any> = ({
         </div>
 
         <div className="flex flex-col items-center w-full h-full space-y-2 overflow-y-auto lg:space-y-4 lg:w-3/4">
-          <div className="w-full bg-gray-100 shadow-inner h-2/5 lg:rounded-xl">
-            <h2 className="w-full px-3 pb-2 my-2 text-xs font-bold tracking-wider text-gray-500 uppercase border-b font-marianne">
+          <div className="flex flex-col w-full bg-gray-100 shadow-inner h-2/5 lg:rounded-xl">
+            <h2 className="w-full px-3 py-2 text-xs font-bold tracking-wider text-gray-500 uppercase border-b font-marianne">
               Description
             </h2>
-            <div className="min-h-full px-4 py-2">
+            <div className="flex px-4 py-4 h-fit grow">
               <textarea
-                rows={10}
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
-                className="h-full px-3 pb-2 text-sm bg-gray-200 input active:bg-gray-300"
+                className="px-3 pb-2 text-sm bg-gray-200 grow input active:bg-gray-300"
               ></textarea>
             </div>
           </div>

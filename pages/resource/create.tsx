@@ -138,7 +138,8 @@ const ResourceCreate: NextPage<any> = () => {
             </h3>
             <button
               className={classes(
-                requestOk ? "btn-green" : validForm ? "btn-blue" : "btn-red"
+                requestOk ? "btn-green" : validForm ? "btn-blue" : "btn-red",
+                "group"
               )}
             >
               {loading ? (
@@ -164,16 +165,16 @@ const ResourceCreate: NextPage<any> = () => {
                 </svg>
               ) : requestOk ? (
                 <>
-                  <CheckIcon className="w-4 h-4 mr-1 text-green-700" /> Envoyé
+                  <CheckIcon className="w-4 h-4 mr-1 text-green-700 duration-300 group-active:text-white" /> Envoyé
                 </>
               ) : validForm ? (
                 <>
-                  <CloudUploadIcon className="w-4 h-4 mr-1 text-blue-700" />
+                  <CloudUploadIcon className="w-4 h-4 mr-1 text-blue-700 duration-300 group-active:text-white" />
                   Envoyer
                 </>
               ) : (
                 <>
-                  <XCircleIcon className="w-4 h-4 mr-1 text-red-700" /> Non
+                  <XCircleIcon className="w-4 h-4 mr-1 text-red-700 duration-300 group-active:text-white" /> Non
                   valide
                 </>
               )}
@@ -182,7 +183,7 @@ const ResourceCreate: NextPage<any> = () => {
         </div>
         <form
           onSubmit={handleSubmit}
-          className="flex flex-col flex-grow px-2 py-3 bg-gray-100 rounded-tl-xl md:flex-row"
+          className="flex flex-col flex-grow px-4 py-3 pb-6 bg-gray-100 rounded-tl-xl md:flex-row"
         >
           <div className="flex flex-col w-full px-2 space-y-3 md:w-1/2">
             <label>
@@ -225,7 +226,7 @@ const ResourceCreate: NextPage<any> = () => {
                 onChange={(e: any[]) => setTags(e?.map((e: any) => e.value))}
                 placeholder={
                   <div className="text-sm font-semibold font-spectral">
-                    Entrez des étiquettes pour mieux identifier la ressource
+                    Utilisez des étiquettes pour mieux identifier la ressource
                   </div>
                 }
                 formatOptionLabel={(tag: { label: string; value: string }) => (
