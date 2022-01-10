@@ -10,6 +10,7 @@ import { makeRequest } from "@utils/asyncXHR";
 import { classes } from "@utils/classes";
 import type { NextPage } from "next";
 import dynamic from "next/dynamic";
+import Image from "next/image";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
@@ -129,17 +130,22 @@ const ResourceCreate: NextPage<any> = () => {
     <AppLayout>
       <div className="flex flex-col w-full max-h-full bg-white dark:bg-gray-900 grow">
         <div className="flex flex-col w-full px-6 py-6 bg-white shrink-0 lg:px-12 dark:bg-black dark:border-gray-800">
-          <div className="inline-flex justify-between w-full">
-            <h3 className="mb-2 text-2xl font-extrabold text-gray-800 font-marianne dark:text-gray-200">
-              Créer une
-              <span className="ml-1 text-blue-600 dark:text-blue-400">
-                ressource
-              </span>
-            </h3>
+          <div className="inline-flex items-end justify-between w-full">
+            <div className="flex flex-col space-y-2">
+              <div className="w-auto h-auto">
+                <Image src="/img/partypopper.png" width={64} height={64} />
+              </div>
+              <h3 className="mb-2 text-2xl font-extrabold text-gray-800 font-marianne dark:text-gray-200">
+                Créer une
+                <span className="ml-1 text-blue-600 dark:text-blue-400">
+                  ressource
+                </span>
+              </h3>
+            </div>
             <button
               className={classes(
                 requestOk ? "btn-green" : validForm ? "btn-blue" : "btn-red",
-                "group"
+                "group h-fit"
               )}
             >
               {loading ? (
@@ -165,7 +171,8 @@ const ResourceCreate: NextPage<any> = () => {
                 </svg>
               ) : requestOk ? (
                 <>
-                  <CheckIcon className="w-4 h-4 mr-1 text-green-700 duration-300 group-active:text-white" /> Envoyé
+                  <CheckIcon className="w-4 h-4 mr-1 text-green-700 duration-300 group-active:text-white" />{" "}
+                  Envoyé
                 </>
               ) : validForm ? (
                 <>
@@ -174,8 +181,8 @@ const ResourceCreate: NextPage<any> = () => {
                 </>
               ) : (
                 <>
-                  <XCircleIcon className="w-4 h-4 mr-1 text-red-700 duration-300 group-active:text-white" /> Non
-                  valide
+                  <XCircleIcon className="w-4 h-4 mr-1 text-red-700 duration-300 group-active:text-white" />{" "}
+                  Non valide
                 </>
               )}
             </button>
