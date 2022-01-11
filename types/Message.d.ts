@@ -1,7 +1,9 @@
 import {User, UserMinimum} from "@definitions/User";
+import {Resource} from "@definitions/Resource/Resource";
 
 export type Message = {
     user: UserMinimum;
     text: string;
-    channel: string | string[] | undefined;
+    attachment: Resource | null;
+    channel: string;
 }
