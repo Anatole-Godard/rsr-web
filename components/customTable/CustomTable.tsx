@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
-import { TrashIcon, PencilAltIcon } from "@heroicons/react/outline";
+import { PencilAltIcon, ThumbUpIcon, TrashIcon } from "@heroicons/react/outline";
 import ReactPaginate from 'react-paginate';
 import Style from "/components/customTable/pagination.module.css";
 import Link from 'next/link';
@@ -13,7 +13,7 @@ export const CustomTable = ({
                                 updateCurrentPage
                             }: {
                                 theadList: object[],
-                                valuesList: object[],
+                                valuesList: any[],
                                 deleteEntity: any,
                                 editUrl: string,
                                 totalPages: number,
@@ -36,14 +36,17 @@ export const CustomTable = ({
     };
 
     const displayValue = (theadValue: any, value: any) => {
-        let displayedValue = '';
+        let displayedValue     = undefined
+        let displayedFullValue = '';
+        let isJsx              = false;
         // TODO add other type like date, dateTime...
         switch (theadValue.type) {
             case 'isArray':
                 displayedValue = value[theadValue.name].map((v: { label: string }) => v.label).join(', ');
                 break;
             case 'isObject':
-                displayedValue = value[theadValue.name].label;
+                const object   = value[theadValue.name]
+                displayedValue = object[theadValue.subName];
                 break;
             case 'isStatus':
                 displayedValue = value[theadValue.name] ? 'Actif' : 'Inactif';
@@ -51,14 +54,20 @@ export const CustomTable = ({
             case 'isLength':
                 displayedValue = value[theadValue.name].length || '-';
                 break;
+            case 'isLikeNumber':
+                isJsx          = true
+                displayedValue = (<div className="flex items-center">{value[theadValue.name]} <ThumbUpIcon className="text-green-800 flex-shrink-0 w-5 h-5 ml-1" /></div>)
+                break;
             default:
                 displayedValue = value[theadValue.name];
                 break;
         }
 
-        const displayedFullValue = displayedValue;
-        if (displayedValue.length > 50) {
-            displayedValue = `${displayedValue.substring(0, 50)}...`;
+        if (!isJsx) {
+            displayedFullValue = displayedValue;
+            if (displayedValue?.length > 50) {
+                displayedValue = `${displayedValue.substring(0, 50)}...`;
+            }
         }
 
         return { title : displayedFullValue, value : displayedValue };
@@ -66,7 +75,7 @@ export const CustomTable = ({
 
     return (
         <>
-            <table className="w-full">
+            <table className="w-full" key={uuidv4()}>
                 <thead>
                     <tr className="bg-gray-500 dark:bg-gray-100 text-white dark:text-black text-left">
                         {displayTableHeader(theadList)}
@@ -74,27 +83,29 @@ export const CustomTable = ({
                         <th/>
                     </tr>
                 </thead>
-                {valuesList.length > 0 &&
-                <tbody className="bg-gray-300 dark:bg-gray-500">
-                    {valuesList.length > 0 && valuesList.map((value: any) => (
-                        <tr /** TODO edit entity on click  */ key={uuidv4()} className="cursor-pointer">
-                            {theadList && theadList.map((theadValue: any, index: number) => (
-                                <td key={index} className="px-4 py-3 border-b border-gray-200 dark:border-gray-800">
-                  <span title={displayValue(theadValue, value).title}>
-                                    {displayValue(theadValue, value).value}
-                  </span>
+                {valuesList && valuesList.length > 0 &&
+                    <tbody className="bg-gray-300 dark:bg-gray-500">
+                        {valuesList && valuesList.length > 0 && valuesList.map((value: any) => (
+                            <tr /** TODO edit entity on click  */ key={uuidv4()} className="cursor-pointer">
+                                {theadList && theadList.map((theadValue: any, index: number) => (
+                                    <td key={index} className="px-4 py-3 border-b border-gray-200 dark:border-gray-800">
+                                        <span
+                                            title={displayValue(theadValue, value).title}>
+                                            {displayValue(theadValue, value).value}
+                                        </span>
+                                    </td>
+                                ))}
+                                <Link href={editUrl}>
+                                    <td className="px-4 py-3 border-b border-gray-200 dark:border-gray-800">
+                                        {PencilAltIcon({ className : "text-blue-800 flex-shrink-0 w-5 h-5" })}
+                                    </td>
+                                </Link>
+                                <td className="px-4 py-3 border-b border-gray-200 dark:border-gray-800" onClick={() => deleteEntity(value.id)}>
+                                    {TrashIcon({ className : "text-red-800 flex-shrink-0 w-5 h-5" })}
                                 </td>
-                            ))}
-                            <Link href={editUrl}>
-                            <td className="px-4 py-3 border-b border-gray-200 dark:border-gray-800">
-                                {PencilAltIcon({ className : "text-blue-800 flex-shrink-0 w-5 h-5" })}
-                            </td></Link>
-                            <td className="px-4 py-3 border-b border-gray-200 dark:border-gray-800" onClick={() => deleteEntity(value.id)}>
-                                {TrashIcon({ className : "text-red-800 flex-shrink-0 w-5 h-5" })}
-                            </td>
-                        </tr>
-                    ))}
-                </tbody>
+                            </tr>
+                        ))}
+                    </tbody>
                 }
             </table>
             {totalPages !== null && (

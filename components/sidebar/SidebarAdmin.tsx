@@ -24,12 +24,6 @@ export const SideBarAdmin = ({ config = { size : "normal" } }: { config?: any })
         text="Ressources"
         href="/admin/resource"
       />
-      <SideBarIcon
-        icon={TagIcon}
-        active={pathname.includes("/admin/tag")}
-        text="Catégories"
-        href="/admin/tag"
-      />
     </div>
   );
 };
