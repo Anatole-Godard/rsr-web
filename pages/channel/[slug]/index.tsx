@@ -1,4 +1,5 @@
 import {ChannelResource} from "@components/channel/Resource";
+import {Message as ChannelMessage} from "@components/channel/Message";
 import {Sidebar} from "@components/channel/Sidebar";
 import {AppLayout} from "@components/layouts/AppLayout";
 import {
@@ -37,7 +38,7 @@ const ChannelSlug: NextPage<any> = ({
     const description = "Hello world";
 
     const [message, setMessage] = useState<string>("");
-    const [chat, setChat] = useState<Message[]>([fakeMessage()]);
+    const [chat, setChat] = useState<Message[]>([]);
     const [connected, setConnected] = useState<boolean>(false);
 
     const user = fakeUserMin();
@@ -46,6 +47,10 @@ const ChannelSlug: NextPage<any> = ({
         const socket = io("http://172.20.10.8:3000", {
             path: "/api/channel/[slug]/socket",
         });
+
+        fetch("http://172.20.10.8:3000/api/channel/"+ slug +"/all").then((res) => {
+            return res.json()
+        }).then((body) => setChat(body))
 
         socket.on("connect", () => {
             console.log("SOCKET CONNECTED!", socket.id);
@@ -66,7 +71,7 @@ const ChannelSlug: NextPage<any> = ({
         const message: Message = {
             user: user,
             text: msg,
-            createdAt: "123"
+            channel: slug,
         };
         const resp = await fetch("/api/channel/[slug]/all", {
             method: "POST",
@@ -137,7 +142,7 @@ const ChannelSlug: NextPage<any> = ({
                             {/*    <ChannelResource {...e} key={key}/>*/}
                             {/*))}*/}
                             {chat.map((e,key) => (
-                                <p key={key}>{e.text}</p>
+                                <ChannelMessage key={key} message={e}/>
                             ))}
                         </div>
 
