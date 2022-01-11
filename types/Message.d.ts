@@ -1,7 +1,7 @@
-import {User} from "@definitions/User";
+import {User, UserMinimum} from "@definitions/User";
 
 export type Message = {
-    user: User;
+    user: UserMinimum;
     text: string;
     createdAt: Date | string;
 }
