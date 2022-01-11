@@ -36,9 +36,9 @@ export const CustomTable = ({
     };
 
     const displayValue = (theadValue: any, value: any) => {
-        let displayedValue     = undefined
-        let displayedFullValue = '';
-        let isJsx              = false;
+        let displayedValue: any        = ''
+        let displayedFullValue: string = '';
+        let isJsx: boolean             = false;
         // TODO add other type like date, dateTime...
         switch (theadValue.type) {
             case 'isArray':
@@ -56,7 +56,8 @@ export const CustomTable = ({
                 break;
             case 'isLikeNumber':
                 isJsx          = true
-                displayedValue = (<div className="flex items-center">{value[theadValue.name]} <ThumbUpIcon className="text-green-800 flex-shrink-0 w-5 h-5 ml-1" /></div>)
+                displayedValue = (<div className="flex items-center">{value[theadValue.name]}
+                    <ThumbUpIcon className="text-green-800 flex-shrink-0 w-5 h-5 ml-1"/></div>)
                 break;
             default:
                 displayedValue = value[theadValue.name];
