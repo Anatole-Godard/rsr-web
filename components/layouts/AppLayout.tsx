@@ -1,6 +1,6 @@
 import { Navbar } from "@components/navbar/AppNavbar";
 import { Sidebar } from "components/sidebar/Sidebar";
-import React, { ReactNode } from "react";
+import React from "react";
 
 import { motion } from "framer-motion";
 
@@ -8,16 +8,16 @@ const variants = {
   hidden: { opacity: 0, x: -200, y: 0 },
   enter: { opacity: 1, x: 0, y: 0 },
   exit: { opacity: 0, x: 0, y: -100 },
-}
+};
 
 export const AppLayout: React.FC<any> = ({
   topNavigation = { shadow: false },
-  sidebar = { },
+  sidebar = {},
   children,
 }: {
   topNavigation?: any;
   sidebar?: any;
-  children?: ReactNode;
+  children?: React.ReactNode;
 }) => {
   return (
     <div className="flex flex-col w-screen min-h-screen">

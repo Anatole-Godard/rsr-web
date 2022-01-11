@@ -54,7 +54,7 @@ export const ChannelResource: React.FC<any> = ({
                 : data.attributes.name}
             </h4>
             <p className="text-sm text-gray-700 font-marianne">
-              crée par {owner}{" "}
+              crée par {owner.fullName}{" "}
               {typeof createdAt === "string"
                 ? formatDistanceToNow(new Date(createdAt), {
                     addSuffix: true,
@@ -71,7 +71,7 @@ export const ChannelResource: React.FC<any> = ({
               <CheckCircleIcon className="w-4 h-4 text-green-400" />
             )}
             <ChatAltIcon className="w-4 h-4 ml-2 mr-1 text-gray-400" />
-            <span className="text-gray-400">{comments.length}</span>
+            <span className="text-gray-400">{comments?.length}</span>
             <HeartIcon className="w-4 h-4 ml-2 mr-1 text-gray-400 " />
             <span className="text-gray-400">{likes}</span>
           </div>
@@ -84,7 +84,7 @@ export const ChannelResource: React.FC<any> = ({
 
       {showComments ? (
         <>
-          {comments.length > 0 && (
+          {comments && comments?.length > 0 && (
             <>
               <button
                 className="inline-flex items-center w-full p-2 mt-2 text-sm duration-300 ease-linear rounded-md text-emerald-500 hover:bg-emerald-100 active:bg-emerald-300 active:text-emerald-700 max-w-max "
@@ -104,7 +104,7 @@ export const ChannelResource: React.FC<any> = ({
                 leaveTo="opacity-0 scale-95 "
               >
                 <div className="flex flex-col px-4 mt-2 space-y-2 overflow-y-auto rounded-md xl:rounded-xl">
-                  {comments.map(
+                  {comments?.map(
                     (
                       comment: {
                         owner: {
@@ -127,7 +127,7 @@ export const ChannelResource: React.FC<any> = ({
                           className="w-10 h-10 rounded-full"
                         ></img>
                         <div className="flex flex-col">
-                          <p className="text-sm text-gray-700 font-marianne">
+                          <p className="text-sm font-semibold text-gray-700 font-spectral">
                             {comment.owner.fullName}
                           </p>
                           <p className="text-xs text-gray-600">
@@ -159,7 +159,7 @@ export const ChannelResource: React.FC<any> = ({
           onClick={() => setShowComments(true)}
         >
           <ChevronDownIcon className="w-4 h-4 mr-1 text-emerald-500" />
-          Afficher les commentaires ({comments.length})
+          Afficher les commentaires ({comments?.length || 0})
         </button>
       )}
     </div>

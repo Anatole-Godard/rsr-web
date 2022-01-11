@@ -176,6 +176,7 @@
 }
 
 @layer components {
+
   .sidebar {
     @apply min-h-[calc(100vh-4rem)] z-[41] flex-col hidden px-2 bg-white shadow-lg top-16 xl:items-start md:flex min-w-max dark:bg-black dark:border-r dark:border-gray-900;
   }
@@ -209,23 +210,27 @@
   }
 
   .btn {
-    @apply inline-flex items-center px-2 py-2 text-sm font-light transition-all duration-300 rounded-lg sm:px-4 font-spectral;
+    @apply inline-flex items-center px-2 py-2 text-sm font-light transition-all duration-300 rounded-lg sm:px-4 font-spectral active:ring ring-offset-1 focus:outline-none;
   }
 
   .btn-blue {
-    @apply text-blue-600 bg-blue-200 btn dark:bg-blue-800 dark:text-blue-200 hover:bg-blue-300 active:bg-blue-100;
+    @apply text-blue-600 bg-blue-200 btn dark:bg-blue-800 dark:text-blue-200 hover:bg-blue-300 active:bg-blue-700 active:text-blue-100 ring-blue-500;
   }
 
   .btn-green {
-    @apply text-green-700 bg-green-100 btn hover:bg-green-300 active:bg-green-100 hover:text-green-800 dark:bg-green-800 dark:text-green-200;
+    @apply text-green-700 bg-green-100 btn hover:bg-green-300 active:bg-green-700 active:text-green-100 hover:text-green-800 dark:bg-green-800 dark:text-green-200 ring-green-500;
   }
 
   .btn-red {
-    @apply text-red-700 bg-red-100 btn hover:bg-red-300 active:bg-red-100 hover:text-red-800 dark:bg-red-800 dark:text-red-200;
+    @apply text-red-700 bg-red-100 btn hover:bg-red-300 active:bg-red-700 active:text-red-100 hover:text-red-800 dark:bg-red-800 dark:text-red-200 ring-red-500;
   }
 
   .btn-yellow {
-    @apply text-yellow-700 bg-yellow-100 btn hover:bg-yellow-300 active:bg-yellow-100 hover:text-yellow-800 dark:bg-yellow-800 dark:text-yellow-200;
+    @apply text-yellow-700 bg-yellow-100 btn hover:bg-yellow-300 active:bg-yellow-700 active:text-yellow-100 hover:text-yellow-800 dark:bg-yellow-800 dark:text-yellow-200 ring-yellow-500;
+  }
+
+  .btn-gray {
+    @apply text-gray-700 bg-gray-100 btn hover:bg-gray-300 active:bg-gray-700 active:text-gray-100 hover:text-gray-800 dark:bg-gray-800 dark:text-gray-200 ring-gray-500;
   }
 
   .btn-text {

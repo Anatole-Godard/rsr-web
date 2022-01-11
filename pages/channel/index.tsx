@@ -50,51 +50,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
           name: "Fun",
           photoURL: "https://picsum.photos/203",
         },
-        {
-          slug: "programming",
-          name: "Programming",
-          photoURL: "https://picsum.photos/204",
-        },
-        {
-          slug: "javascript",
-          name: "Javascript",
-          photoURL: "https://picsum.photos/205",
-        },
-        {
-          slug: "typescript",
-          name: "Typescript",
-          photoURL: "https://picsum.photos/206",
-        },
-        {
-          slug: "react",
-          name: "React",
-          photoURL: "https://picsum.photos/207",
-        },
-        {
-          slug: "node",
-          name: "Node",
-          photoURL: "https://picsum.photos/208",
-        },
-        {
-          slug: "express",
-          name: "Express",
-          photoURL: "https://picsum.photos/209",
-        },
-        {
-          slug: "mongodb",
-          name: "MongoDB",
-          photoURL: "https://picsum.photos/210",
-        },
-        {
-          slug: "mysql",
-          name: "MySQL",
-          photoURL: "https://picsum.photos/211",
-        },
-        {
-          slug: "postgresql",
-          name: "PostgreSQL",
-          photoURL: "https://picsum.photos/212",
-        },
+        
       ],
     },
   };

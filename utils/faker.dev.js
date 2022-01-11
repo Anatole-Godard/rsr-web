@@ -28,10 +28,12 @@ export const fakeUser = () => ({
 });
 
 export const fakeExternalLink = () => ({
-  url: faker.internet.url(),
-  name: faker.lorem.words(),
-  description: faker.lorem.sentences(),
-  image: faker.image.imageUrl(),
+  properties: {
+    url: faker.internet.url(),
+    name: faker.lorem.words(),
+    description: faker.lorem.sentences(),
+    image: faker.image.imageUrl(),
+  },
 });
 export const fakeGeoJSON_Point = () => {
   // const type = faker.random.arrayElement(["Feature", "FeatureCollection"]);
@@ -49,11 +51,13 @@ export const fakeGeoJSON_Point = () => {
 };
 
 export const fakePhysicalItem = () => ({
-  name: faker.commerce.productName(),
-  description: faker.lorem.paragraph(),
-  photoURL: faker.image.imageUrl(),
-  price: faker.datatype.number(),
-  category: faker.commerce.department(),
+  properties: {
+    name: faker.commerce.productName(),
+    description: faker.lorem.paragraph(),
+    photoURL: faker.image.imageUrl(),
+    price: faker.datatype.number(),
+    category: faker.commerce.department(),
+  },
 });
 
 export const fakeResource = () => {
@@ -66,7 +70,11 @@ export const fakeResource = () => {
   return {
     id: faker.datatype.number(),
     slug: faker.lorem.slug(),
-    owner: faker.internet.userName(),
+    owner: {
+      fullName: faker.internet.userName(),
+      photoURL: faker.image.avatar(),
+      uid: faker.datatype.uuid(),
+    },
     createdAt: faker.date.past(),
     description: faker.lorem.sentence(),
     data: {
@@ -88,7 +96,7 @@ export const fakeResource = () => {
       createdAt: faker.date.past(),
       content: faker.lorem.sentence(),
     })),
-
+    tags: faker.lorem.words().split(" "),
     validated: faker.datatype.boolean(),
   };
 };
