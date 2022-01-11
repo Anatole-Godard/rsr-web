@@ -11,11 +11,12 @@ const postMessage = async (msg: ChannelMessage) => {
         attachment: msg.attachment,
         channel: msg.channel
     });
+    console.log("--- Message sent to DB ---")
     return await msgObject.save();
 }
 
 const getMessages = async (channel: string) => {
-    console.log('Initializing chat')
+    console.log('--- Initializing chat ---')
     return Message.find({channel});
 }
 
@@ -27,12 +28,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponseServerIO) => {
         // dispatch to channel "message"
         res?.socket?.server?.io?.emit("message", message);
 
-        postMessage(req.body).then((e) => console.log("--- Message sent to DB ---"))
+        const msg = await postMessage(req.body)
+
         // return message
-        res.status(201).json(message);
+        res.status(201).json(msg);
     } else if (req.method === "GET"){
         const messages = await getMessages(req.query.slug.toString());
-        console.log("Messages: " + JSON.stringify(messages));
         res.status(200).json(messages);
     }
 };

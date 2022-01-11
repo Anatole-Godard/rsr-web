@@ -18,6 +18,7 @@ import {DefaultEventsMap} from "@socket.io/component-emitter";
 import {use} from "ast-types";
 import {Message} from "@definitions/Message";
 import Channel from "../index";
+import {useAuth} from "@hooks/useAuth";
 
 const ChannelSlug: NextPage<any> = ({
                                         sideBarChannels,
@@ -35,13 +36,13 @@ const ChannelSlug: NextPage<any> = ({
     const router = useRouter();
     const {slug} = router.query;
 
+    const {user} = useAuth();
+
     const description = "Hello world";
 
     const [message, setMessage] = useState<string>("");
     const [chat, setChat] = useState<Message[]>([]);
     const [connected, setConnected] = useState<boolean>(false);
-
-    const user = fakeUserMin();
 
     useEffect((): any => {
         const socket = io("http://172.20.10.8:3000", {
@@ -59,8 +60,8 @@ const ChannelSlug: NextPage<any> = ({
 
         // update chat on new message dispatched
         socket.on("message", (message: Message) => {
-            chat.push(message);
-            setChat([...chat]);
+            // chat.push(message);
+            setChat(oldChat =>[...oldChat, message]);
         });
 
         if (socket) return () => socket.disconnect();
@@ -69,7 +70,7 @@ const ChannelSlug: NextPage<any> = ({
 
     const sendMessage = async (msg: string) => {
         const message: Message = {
-            user: user,
+            user: user.data,
             text: msg,
             attachment: null,
             channel: slug,
