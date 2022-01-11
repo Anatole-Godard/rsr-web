@@ -14,6 +14,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   }
 
   const {} = req.body;
+  console.log(req.body);
 }
 
 export default withAuth(withDatabase(handler));

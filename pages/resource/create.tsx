@@ -1,4 +1,5 @@
 import { AppLayout } from "@components/layouts/AppLayout";
+import { Resource } from "@definitions/Resource/Resource";
 import { Tab } from "@headlessui/react";
 import {
   CheckIcon,
@@ -6,8 +7,10 @@ import {
   XCircleIcon,
   XIcon,
 } from "@heroicons/react/solid";
+import { useAuth } from "@hooks/useAuth";
 import { makeRequest } from "@utils/asyncXHR";
 import { classes } from "@utils/classes";
+import { fetchRSR } from "@utils/fetchRSR";
 import type { NextPage } from "next";
 import dynamic from "next/dynamic";
 import Image from "next/image";
@@ -39,6 +42,7 @@ const types = [
 
 const ResourceCreate: NextPage<any> = () => {
   const router = useRouter();
+  const { user } = useAuth();
 
   const [pictureUrl, setPictureUrl] = useState(null);
   const [pictureFile, setPictureFile] = useState(null);
@@ -61,7 +65,50 @@ const ResourceCreate: NextPage<any> = () => {
   const [requestOk, setRequestOk] = useState<boolean | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
 
-  // const {user} = useAuth();
+  const formatResource = (): Resource => {
+    let data: Resource["data"] = {
+      type: type.value,
+      attributes: {},
+    };
+    if (type.value === "physical_item") {
+      data.attributes = {
+        properties: {
+          name,
+          description,
+          price,
+          category,
+          photoURL: pictureUrl,
+        },
+      };
+    } else if (type.value === "location") {
+      data.attributes = {
+        type: "Feature",
+        geometry: {
+          type: "Point",
+          coordinates: position,
+        },
+        properties: {
+          name,
+          location,
+        },
+      };
+    } else if (type.value === "external_link") {
+      data.attributes = {
+        properties: {
+          name,
+          description,
+          externalLink,
+          image: pictureUrl,
+        },
+      };
+    }
+
+    return {
+      description,
+      tags: tags.map((tag) => tag.value),
+      data,
+    } as Resource;
+  };
 
   useEffect(() => {
     const fetchLocation = async () => {
@@ -82,19 +129,23 @@ const ResourceCreate: NextPage<any> = () => {
     e.preventDefault();
     if (validForm) {
       setLoading(true);
-      // const response = await fetchRSR("/api/resource", user, {
-      //   method: "POST",
-      //   body: JSON.stringify({
-
-      //   }),
-      // });
-      // setRequestOk(response.ok);
-      // const body = await response.json();
+      try {
+        const response = await fetchRSR("/api/resource/create", user?.session, {
+          method: "POST",
+          body: JSON.stringify(formatResource()),
+        });
+        setRequestOk(response.ok);
+        const body = await response.json();
+        console.log(body);
+      } catch (err) {
+        console.log(err);
+      }
       setLoading(false);
       // router.push(`/resource/${body.slug}`);
     }
   };
 
+  // Form validations
   useEffect(() => {
     // Form Verifications
     switch (type.value) {
@@ -128,7 +179,10 @@ const ResourceCreate: NextPage<any> = () => {
 
   return (
     <AppLayout>
-      <div className="flex flex-col w-full max-h-full bg-white dark:bg-gray-900 grow">
+      <form
+        onSubmit={handleSubmit}
+        className="flex flex-col w-full max-h-full bg-white dark:bg-gray-900 grow"
+      >
         <div className="flex flex-col w-full px-6 py-6 bg-white shrink-0 lg:px-12 dark:bg-black dark:border-gray-800">
           <div className="inline-flex items-end justify-between w-full">
             <div className="flex flex-col space-y-2">
@@ -143,6 +197,7 @@ const ResourceCreate: NextPage<any> = () => {
               </h3>
             </div>
             <button
+              type="submit"
               className={classes(
                 requestOk ? "btn-green" : validForm ? "btn-blue" : "btn-red",
                 "group h-fit"
@@ -188,10 +243,7 @@ const ResourceCreate: NextPage<any> = () => {
             </button>
           </div>
         </div>
-        <form
-          onSubmit={handleSubmit}
-          className="flex flex-col flex-grow px-4 py-3 pb-6 bg-gray-100 rounded-tl-xl md:flex-row"
-        >
+        <div className="flex flex-col flex-grow px-4 py-3 pb-6 bg-gray-100 rounded-tl-xl md:flex-row">
           <div className="flex flex-col w-full px-2 space-y-3 md:w-1/2">
             <label>
               <h4 className="mb-1 text-sm font-semibold text-gray-700 font-marianne">
@@ -254,9 +306,6 @@ const ResourceCreate: NextPage<any> = () => {
                         { value: tagInputValue, label: tagInputValue },
                       ]);
                       setTagInputValue("");
-                      console.group("Value Added");
-                      console.log(tags);
-                      console.groupEnd();
                       event.preventDefault();
                   }
                 }}
@@ -447,8 +496,8 @@ const ResourceCreate: NextPage<any> = () => {
               )}
             </div>
           </div>
-        </form>
-      </div>
+        </div>
+      </form>
     </AppLayout>
   );
 };
