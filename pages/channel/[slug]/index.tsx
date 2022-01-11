@@ -7,17 +7,12 @@ import {
     PencilIcon,
     PlusIcon,
 } from "@heroicons/react/outline";
-import {fakeMessage, fakeResource, fakeUser, fakeUserMin} from "@utils/faker.dev";
 import {GetServerSideProps, NextPage} from "next";
 import {useRouter} from "next/router";
 import Link from "next/link";
-import {SetStateAction, useEffect, useState} from "react";
-import {Resource} from "@definitions/Resource/Resource";
-import io, {Socket} from "socket.io-client";
-import {DefaultEventsMap} from "@socket.io/component-emitter";
-import {use} from "ast-types";
+import {useEffect, useState} from "react";
+import io from "socket.io-client";
 import {Message} from "@definitions/Message";
-import Channel from "../index";
 import {useAuth} from "@hooks/useAuth";
 
 const ChannelSlug: NextPage<any> = ({
@@ -76,7 +71,7 @@ const ChannelSlug: NextPage<any> = ({
             channel: slug,
         };
 
-        const resp = await fetch("/api/channel/[slug]/all", {
+        const resp = await fetch("/api/channel/"+ slug +"/all", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
