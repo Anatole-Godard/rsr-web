@@ -1,7 +1,6 @@
 import {
   ChatIcon,
   HomeIcon,
-  LibraryIcon,
   ShoppingBagIcon,
 } from "@heroicons/react/outline";
 import { useRouter } from "next/router";
@@ -9,46 +8,36 @@ import Link from "next/link";
 
 import { motion } from "framer-motion";
 
-export const SideBar = ({ config = { size: "normal" } }: { config?: any }) => {
+export const Sidebar = ({ config = { size: "normal" } }: { config?: any }) => {
   const router = useRouter();
   const { pathname } = router;
 
   return (
-    <div className="min-h-[calc(100vh-4rem)] z-[41] flex-col hidden px-2 bg-white shadow-lg top-16 md:flex min-w-max dark:bg-black dark:border-r dark:border-gray-900 justify-between">
-      <div>
-        <SideBarIcon
-          icon={HomeIcon}
-          active={pathname === "/"}
-          href="/"
-          text="Accueil"
-        />
-        <Divider />
-        <SideBarIcon
-          active={pathname === "/store"}
-          icon={ShoppingBagIcon}
-          text="Catalogue"
-          href="/store"
-        />
-        <SideBarIcon
-          icon={ChatIcon}
-          active={pathname.includes("/channel")}
-          text="Salons"
-          href="/channel"
-        />
-      </div>
-      <div className="mb-4">
-        <SideBarIcon
-          icon={LibraryIcon}
-          active={pathname.includes("/resource")}
-          text="Bibliothèque"
-          href="/resource"
-        />
-      </div>
+    <div className="min-h-[calc(100vh-4rem)] z-[41] flex-col hidden px-2 bg-white shadow-lg top-16 xl:items-start md:flex min-w-max dark:bg-black dark:border-r dark:border-gray-900">
+      <SidebarIcon
+        icon={HomeIcon}
+        active={pathname === "/"}
+        href="/"
+        text="Accueil"
+      />
+      <Divider />
+      <SidebarIcon
+        active={pathname === "/store"}
+        icon={ShoppingBagIcon}
+        text="Catalogue"
+        href="/store"
+      />
+      <SidebarIcon
+        icon={ChatIcon}
+        active={pathname.includes("/channel")}
+        text="Salons"
+        href="/channel"
+      />
     </div>
   );
 };
 
-const SideBarIcon = ({
+const SidebarIcon = ({
   icon,
   text = "tooltip 💡",
   active = false,

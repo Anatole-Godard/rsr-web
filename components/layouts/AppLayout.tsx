@@ -1,5 +1,5 @@
-import { TopNavigation } from "components/navbar/TopNavigation";
-import { SideBar } from "components/sidebar/Sidebar";
+import { Navbar } from "@components/navbar/AppNavbar";
+import { Sidebar } from "components/sidebar/Sidebar";
 import React from "react";
 
 import { motion } from "framer-motion";
@@ -21,10 +21,9 @@ export const AppLayout: React.FC<any> = ({
 }) => {
   return (
     <div className="flex flex-col w-screen min-h-screen">
-      <TopNavigation config={topNavigation} />
+      <Navbar config={topNavigation} />
       <div className="flex flex-row w-full min-h-[calc(100vh-4rem)] bg-white dark:bg-black">
-        <SideBar config={sidebar} />
-
+        <Sidebar config={sidebar} />
         <motion.div
           variants={variants} // Pass the variant object into Framer Motion
           initial="hidden" // Set the initial state to variants.hidden

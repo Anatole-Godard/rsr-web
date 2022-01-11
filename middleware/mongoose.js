@@ -9,12 +9,16 @@ const withDatabase = (handler) => async (req, res) => {
   console.log(
     `mongodb://${process.env.DB_USER}:${process.env.DB_PASS}@${
       process.env.DB_HOST
-    }/${process.env.DB_NAME || "rsr"}?retryWrites=true&w=majority&authSource=admin`
+    }/${
+      process.env.DB_NAME || "rsr"
+    }?retryWrites=true&w=majority&authSource=admin`
   );
   await mongoose.connect(
     `mongodb://${process.env.DB_USER}:${process.env.DB_PASS}@${
       process.env.DB_HOST
-    }/${process.env.DB_NAME || "rsr"}?retryWrites=true&w=majority&authSource=admin`,
+    }/${
+      process.env.DB_NAME || "rsr"
+    }?retryWrites=true&w=majority&authSource=admin`,
 
     {
       useUnifiedTopology: true,

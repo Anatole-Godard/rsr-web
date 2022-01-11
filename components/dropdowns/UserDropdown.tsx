@@ -14,17 +14,10 @@ import {
   UserAddIcon,
   UserIcon,
 } from "@heroicons/react/outline";
+import { useAuth } from "@hooks/useAuth";
 
 export const UserDropdown = () => {
-  const { user, signout } = {
-    user: {
-      fullName: "John Doe",
-      photoURL: "https://avatars3.githubusercontent.com/u/1234?s=460&v=4",
-      uid: "1234567890",
-      superuser: true,
-    },
-    signout: () => {},
-  };
+  const { user, signOut } = useAuth();
   const { theme, setTheme } = useTheme();
 
   return (
@@ -36,13 +29,13 @@ export const UserDropdown = () => {
               {user ? (
                 <span className="inline-flex items-center justify-center w-8 h-8 text-sm rounded-full">
                   <img
-                    alt={user?.fullName}
+                    alt={user.data.fullName}
                     className="w-full h-full align-middle border-none rounded-full select-none "
                     src={
-                      user?.photoURL
-                        ? user.photoURL
+                      user.data.photoURL
+                        ? user.data.photoURL
                         : "https://ui-avatars.com/api/?name=" +
-                          user?.fullName +
+                          user.data.fullName +
                           "&color=007bff&background=054880"
                     }
                   />
@@ -71,19 +64,19 @@ export const UserDropdown = () => {
             >
               {user ? (
                 <>
-                  <Link href={"/profile/" + user?.uid}>
+                  <Link href={"/profile/" + user.data.uid}>
                     <a className="flex flex-col items-center justify-center w-full min-h-[6rem] px-2 py-4 duration-300 rounded-t-xl hover:bg-blue-50 dark:hover:bg-blue-900">
                       <div className="relative flex items-center justify-center w-16 h-16 m-1 mr-2 text-xl text-white bg-white rounded-full">
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img
                           className="object-cover h-full rounded-full"
-                          alt={user.fullName}
-                          src={user.photoURL}
+                          alt={user.data.fullName}
+                          src={user.data.photoURL}
                         />
                       </div>
                       <div className="flex flex-col items-center justify-center w-full px-1">
                         <span className="text-[0.7rem] overflow-ellipsis text-center tracking-tight leading-[1.12rem] text-gray-800 dark:text-gray-200">
-                          {user?.fullName || "Name not provided"}
+                          {user.data.fullName || "Name not provided"}
                         </span>
                       </div>
                     </a>
@@ -91,13 +84,13 @@ export const UserDropdown = () => {
 
                   <a
                     className="inline-flex items-center w-full px-4 py-2 text-sm leading-5 text-gray-700 transition duration-150 ease-in-out cursor-pointer dark:text-gray-300 hover:text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-800"
-                    onClick={signout}
+                    onClick={signOut}
                   >
                     <LogoutIcon className="w-6 h-6 pr-2 mr-2 text-center border-r border-gray-200 dark:border-gray-800" />
                     Déconnexion
                   </a>
 
-                  {user.superuser && (
+                  {user.data.role === "admin" && (
                     <>
                       <div className="block px-4 py-2 text-xs text-gray-400">
                         Administration de la plateforme
@@ -116,7 +109,7 @@ export const UserDropdown = () => {
                   <div className="block px-4 py-2 pt-4 text-xs text-gray-400">
                     Connexion
                   </div>
-                  <Link href="/auth">
+                  <Link href="/auth/login">
                     <a className="inline-flex items-center w-full px-4 py-2 text-sm leading-5 text-gray-700 transition duration-150 ease-in-out dark:text-gray-300 hover:text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-800">
                       <LoginIcon className="w-6 h-6 pr-2 mr-2 text-center border-r border-gray-200 dark:border-gray-800 " />
                       Connexion

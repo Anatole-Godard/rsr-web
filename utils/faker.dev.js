@@ -100,3 +100,23 @@ export const fakeResource = () => {
     validated: faker.datatype.boolean(),
   };
 };
+
+export const fakeChannel = () => ({
+    id: faker.datatype.number(),
+    owner: faker.internet.userName(),
+    name: faker.lorem.word(),
+    messages:
+        new Array(faker.datatype.number(10)).fill(null).map(() => fakeMessage()),
+    users:
+        new Array(faker.datatype.number(5)).fill(null).map(() => fakeUser()),
+    createdAt: faker.date.past(),
+    resources:
+        new Array(faker.datatype.number(5)).fill(null).map(() => fakeResource()),
+    photoUrl: faker.image.avatar()
+})
+
+export const fakeMessage = () => ({
+    user: faker.internet.userName(),
+    text: faker.lorem.sentence(),
+    createdAt: faker.date.past(),
+})

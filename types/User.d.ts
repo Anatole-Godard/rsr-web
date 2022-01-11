@@ -6,6 +6,13 @@ export type User = {
   role: string;
   createdAt: Date;
   photoURL: string;
+  uid: string;
+};
+
+export type UserMinimum = {
+  fullName: string;
+  photoURL: string;
+  uid: string;
 };
 
 export type UserMinimum = {
