@@ -90,7 +90,7 @@ export const UserDropdown = () => {
                     Déconnexion
                   </a>
 
-                  {user.data.role === "admin" && (
+                  {user.data.role === "admin" ||true && (
                     <>
                       <div className="block px-4 py-2 text-xs text-gray-400">
                         Administration de la plateforme
