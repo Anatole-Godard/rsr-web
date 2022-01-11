@@ -1,4 +1,4 @@
-import { ChatIcon, DocumentTextIcon, HomeIcon, TagIcon } from "@heroicons/react/outline";
+import { DocumentTextIcon, HomeIcon, UserIcon } from "@heroicons/react/outline";
 import { useRouter } from "next/router";
 import Link from "next/link";
 
@@ -23,6 +23,12 @@ export const SideBarAdmin = ({ config = { size : "normal" } }: { config?: any })
         icon={DocumentTextIcon}
         text="Ressources"
         href="/admin/resource"
+      />
+      <SideBarIcon
+        active={pathname === "/admin/user"}
+        icon={UserIcon}
+        text="Ressources"
+        href="/admin/user"
       />
     </div>
   );
