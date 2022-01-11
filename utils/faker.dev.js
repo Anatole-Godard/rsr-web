@@ -27,6 +27,11 @@ export const fakeUser = () => ({
   photoURL: faker.image.avatar(),
 });
 
+export const fakeUserMin = () => ({
+  fullName: faker.name.findName(),
+  photoURL: faker.image.avatar(),
+})
+
 export const fakeExternalLink = () => ({
   url: faker.internet.url(),
   name: faker.lorem.words(),

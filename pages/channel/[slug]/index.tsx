@@ -6,7 +6,7 @@ import {
     PencilIcon,
     PlusIcon,
 } from "@heroicons/react/outline";
-import {fakeResource} from "@utils/faker.dev";
+import {fakeMessage, fakeResource, fakeUser, fakeUserMin} from "@utils/faker.dev";
 import {GetServerSideProps, NextPage} from "next";
 import {useRouter} from "next/router";
 import Link from "next/link";
@@ -17,8 +17,6 @@ import {DefaultEventsMap} from "@socket.io/component-emitter";
 import {use} from "ast-types";
 import {Message} from "@definitions/Message";
 import Channel from "../index";
-
-const socket = io("http://localhost:3000")
 
 const ChannelSlug: NextPage<any> = ({
                                         sideBarChannels,
@@ -39,44 +37,45 @@ const ChannelSlug: NextPage<any> = ({
     const description = "Hello world";
 
     const [message, setMessage] = useState<string>("");
-    const [chat, setChat] = useState<Message[]>([]);
+    const [chat, setChat] = useState<Message[]>([fakeMessage()]);
+    const [connected, setConnected] = useState<boolean>(false);
 
-    const [resources, setResources] = useState<Resource[]>([
-        fakeResource(),
-        fakeResource(),
-    ]);
+    const user = fakeUserMin();
 
-    useEffect(() => {
-        fetch('/api/channel/slug/socket').finally(() => {
-            console.log(socket)
-            if (socket) {
-                socket.on('connect', () => {
-                    console.log('Connection')
-                })
+    useEffect((): any => {
+        const socket = io("http://172.20.10.8:3000", {
+            path: "/api/channel/[slug]/socket",
+        });
 
-                socket.on('notification', (message) => {
-                    console.log(message)
-                })
+        socket.on("connect", () => {
+            console.log("SOCKET CONNECTED!", socket.id);
+            setConnected(true);
+        });
 
-                socket.on('res-new-message', (message: string) => {
-                    console.log("New user message: " + message)
-                })
+        // update chat on new message dispatched
+        socket.on("message", (message: Message) => {
+            chat.push(message);
+            setChat([...chat]);
+        });
 
-                socket.on('get-messages', (messages: Message[]) => {
-                    setChat(messages);
-                    console.log("Messages: ", messages);
-                })
+        if (socket) return () => socket.disconnect();
 
-            }
-        })
     }, [])
 
-    const sendMessage = async (message: string) => {
-        if (socket) {
-            socket.emit('new-message', message)
-            setMessage("");
-        }
-        socket.emit('refresh-chat');
+    const sendMessage = async (msg: string) => {
+        const message: Message = {
+            user: user,
+            text: msg,
+            createdAt: "123"
+        };
+        const resp = await fetch("/api/channel/[slug]/all", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(message),
+        });
+        if (resp.ok) setMessage("");
     }
 
     const handleSubmitMessage = (e: { preventDefault: () => void; }) => {
@@ -134,8 +133,11 @@ const ChannelSlug: NextPage<any> = ({
                         {/* BODY */}
                         <div
                             className="flex flex-col max-h-[65vh] md:max-h-full  p-3 space-y-4 overflow-y-auto bg-white xl:ml-6 xl:rounded-l-xl xl:p-6">
-                            {resources.map((e, key) => (
-                                <ChannelResource {...e} key={key}/>
+                            {/*{resources.map((e, key) => (*/}
+                            {/*    <ChannelResource {...e} key={key}/>*/}
+                            {/*))}*/}
+                            {chat.map((e,key) => (
+                                <p key={key}>{e.text}</p>
                             ))}
                         </div>
 
