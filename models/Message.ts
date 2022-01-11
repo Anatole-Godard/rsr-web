@@ -17,6 +17,10 @@ const message = new Schema({
     attachment: {
         type: Object,
         required: false,
+    },
+    channel: {
+        type: String,
+        required: true,
     }
 });
 

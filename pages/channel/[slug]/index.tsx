@@ -71,8 +71,10 @@ const ChannelSlug: NextPage<any> = ({
         const message: Message = {
             user: user,
             text: msg,
+            attachment: null,
             channel: slug,
         };
+
         const resp = await fetch("/api/channel/[slug]/all", {
             method: "POST",
             headers: {
