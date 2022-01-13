@@ -7,6 +7,8 @@ import { Transition } from '@headlessui/react';
 import React, { Fragment, useEffect, useRef, useState } from 'react';
 import { ChipList } from '@components/ui/ChipList';
 import { classes } from '@utils/classes';
+import { fetchRSR } from '@utils/fetchRSR';
+import { useAuth } from '@hooks/useAuth';
 
 export const CustomTable = ({
                                 theadList,
@@ -19,7 +21,7 @@ export const CustomTable = ({
                                 theadList: object[],
                                 valuesList: any[],
                                 deleteEntity: any,
-                                editUrl: string,
+                                editUrl?: string,
                                 totalPages: number,
                                 updateCurrentPage: any
                             }
@@ -67,9 +69,8 @@ export const CustomTable = ({
                     </div>)
                 break;
             case 'isRolePopUp':
-                console.log(value)
                 isJsx          = true
-                displayedValue = UserRolePopUp(value[theadValue.name], value.uid)
+                displayedValue = UserRolePopUp(value[theadValue.name], value.uid, theadValue.setEntity)
                 break;
             default:
                 displayedValue = value[theadValue.name];
@@ -92,7 +93,7 @@ export const CustomTable = ({
                 <thead>
                     <tr className="bg-gray-500 dark:bg-gray-100 text-white dark:text-black text-left">
                         {displayTableHeader(theadList)}
-                        <th/>
+                        {editUrl && <th/>}
                         <th/>
                     </tr>
                 </thead>
@@ -108,11 +109,13 @@ export const CustomTable = ({
                                         </span>
                                     </td>
                                 ))}
-                                <Link href={editUrl}>
-                                    <td className="px-4 py-3 border-b border-gray-200 dark:border-gray-800">
-                                        {PencilAltIcon({ className : "text-blue-800 flex-shrink-0 w-5 h-5" })}
-                                    </td>
-                                </Link>
+                                {editUrl && (
+                                    <Link href={editUrl}>
+                                        <td className="px-4 py-3 border-b border-gray-200 dark:border-gray-800">
+                                            {PencilAltIcon({ className : "text-blue-800 flex-shrink-0 w-5 h-5" })}
+                                        </td>
+                                    </Link>
+                                )}
                                 <td className="px-4 py-3 border-b border-gray-200 dark:border-gray-800" onClick={() => deleteEntity(value.id)}>
                                     {TrashIcon({ className : "text-red-800 flex-shrink-0 w-5 h-5" })}
                                 </td>
@@ -139,13 +142,19 @@ export const CustomTable = ({
     );
 }
 
-const UserRolePopUp = (role, id) => {
+const UserRolePopUp = (role: string, id: number, setEntity: any) => {
+    const { user }                               = useAuth();
     const ref: any                               = useRef();
     const [roleSelected, setRoleSelected]: any[] = useState([]);
     const [open, setOpen]: any[]                 = useState(false);
 
     const updateRole = () => {
-        console.log(id)
+        console.log('la', id)
+        fetchRSR(`/api/user/admin/${id}/edit`, user.session).then((res) => res.json()).then((body) => {
+            if (body.data.attributes) {
+                setEntity(body.data.attributes)
+            }
+        }).catch()
     }
 
     useEffect(() => {
@@ -179,14 +188,18 @@ const UserRolePopUp = (role, id) => {
                 >
                     <div className={classes("absolute -left-20 z-10 bg-white rounded-lg shadow-lg")}>
                         <div className="w-max p-3">
-                            <ChipList key={uuidv4()}
-                                      list={['Utilisateur', 'Modérateur', 'Administrateur', 'Super-administrateur']}
-                                      color='purple'
-                                      selected={roleSelected}
-                                      setSelected={(e) => {
-                                          setRoleSelected(e)
-                                      }}
-                                      size='normal'
+                            <ChipList
+                                list={[
+                                    { label : 'Utilisateur', value : 'user' },
+                                    { label : 'Modérateur', value : 'moderator' },
+                                    { label : 'Administrateur', value : 'admin' },
+                                    { label : 'Super-administrateur', value : 'superadmin' }
+                                ]}
+                                color='purple'
+                                selected={roleSelected}
+                                setSelected={setRoleSelected}
+                                size='normal'
+                                isOnlyOne={true}
                             />
                         </div>
                         <div className="p-4 bg-gray-50 p-3 rounded-lg w-full">

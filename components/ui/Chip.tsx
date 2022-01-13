@@ -4,13 +4,13 @@ export const Chip = ({
   onClick,
   color = "green",
   checked,
-  name,
+  element,
   size = "normal",
 }: {
   onClick?: any;
   color?: string;
   checked?: boolean;
-  name: string;
+  element: {label, value};
   size: "normal" | "small";
 }) => {
   let chipClassName =
@@ -108,7 +108,7 @@ export const Chip = ({
           size === "normal" ? "text-sm" : "text-xs"
         )}
       >
-        {name}
+        {element.label}
         {checked && (
           <div className="ml-3">
             <div style={{ fontSize: size === "normal" ? "0.6rem" : "0.5rem" }}>

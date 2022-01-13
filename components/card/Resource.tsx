@@ -33,7 +33,7 @@ export const ResourceCard = (props: Resource) => {
       </Link>
       <div className="inline-flex p-3">
         <div className="inline-flex overflow-x-hidden grow">
-          <ChipList list={props.tags || []} size="small" color="blue" />
+          <ChipList list={props.tags?.map((el, i)=>({label:el, value:i})) || []} size="small" color="blue"/>
         </div>
         <button
           onClick={() => {

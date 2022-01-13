@@ -7,16 +7,15 @@ import { User } from '@definitions/User';
 import { useAuth } from '@hooks/useAuth';
 import { fetchRSR } from '@utils/fetchRSR';
 
-
-const theadList = [
-    { name : 'email', label : 'Email', width : 33 },
-    { name : 'fullName', label : 'Nom', width : 33 },
-    { name : 'role', label : 'Rôle', type : 'isRolePopUp', width : 33 },
-];
-
 const UserAdmin: NextPage = () => {
     const [users, setUsers] = useState<User[]>([]);
     const { user }          = useAuth();
+
+    const theadList         = [
+        { name : 'email', label : 'Email', width : 33 },
+        { name : 'fullName', label : 'Nom', width : 33 },
+        { name : 'role', label : 'Rôle', type : 'isRolePopUp', setEntity : setUsers, width : 33 },
+    ];
 
     useEffect(() => {
         fetchRSR("/api/user/all", user.session).then((res) => res.json()).then((body) => {
@@ -66,7 +65,6 @@ const UserAdmin: NextPage = () => {
                     <CustomTable theadList={theadList}
                                  valuesList={users}
                                  deleteEntity={validUser}
-                                 editUrl="user/edit"
                                  totalPages={5}
                                  updateCurrentPage={() => {
                                  }}/>

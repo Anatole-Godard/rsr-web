@@ -17,7 +17,7 @@ const ResourceIndex: NextPage<any> = ({
   resources: Resource[];
 }) => {
   const [displayables, setDisplayables] = useState(resources);
-  const [selected, setSelected] = useState<string[]>([]);
+  const [selected, setSelected] = useState<{label, value}[]>([]);
 
   const [type, setType] = useState(null);
   const [category, setCategory] = useState(null);
@@ -83,7 +83,7 @@ const ResourceIndex: NextPage<any> = ({
               <ChipList
                 list={[
                   ...Array.from(new Set(resources.map((r) => r.data.type))),
-                ]}
+                ]?.map((el, i)=>({label:el, value:i}))}
                 selected={selected}
                 setSelected={setSelected}
                 size="small"

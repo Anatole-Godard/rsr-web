@@ -76,7 +76,7 @@ const ResourceSlug: NextPage<any> = ({
             </p>
             {/* Chip component (merge ref/global-layout) */}
             <div className="flex justify-center w-full pb-2">
-              <Chip name={data.type} size="small" color="gray" />
+              <Chip element={{ label: data.type, value: data.type }} size="small" color="gray" />
             </div>
 
             <div className="inline-flex justify-center w-full divide-x">
@@ -97,7 +97,7 @@ const ResourceSlug: NextPage<any> = ({
             <div className="inline-flex flex-grow w-1/2 space-x-2 overflow-x-auto">
               <ChipList
                 color="blue"
-                list={tags?.map((tag: string) => tag.toString()) || []}
+                list={tags?.map((el, i)=>({label:el, value:i})) || []}
                 size="small"
               />
             </div>
