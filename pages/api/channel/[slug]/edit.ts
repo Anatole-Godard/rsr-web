@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import Resource from "@models/Resource";
+import Channel from "@models/Channel";
 import withDatabase from "@middleware/mongoose";
 import { handleError } from "@utils/handleError";
 import { withAuth } from "@middleware/auth";
@@ -17,22 +17,22 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   }
 
   try {
-    let resource = await Resource.findOne({
+    let channel = await Channel.findOne({
       slug: req.query.slug,
     }).lean();
 
-    if (!resource) {
+    if (!channel) {
       res.status(404).json({
         data: null,
         error: {
           code: 404,
-          message: "resource not found",
+          message: "channel not found",
         },
       });
       return;
     }
 
-    if (resource.owner.uid !== req.headers.uid) {
+    if (channel.owner.uid !== req.headers.uid) {
       res.status(403).json({
         data: null,
         error: {
@@ -43,16 +43,16 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       return;
     }
 
-    resource = await Resource.findOneAndUpdate(
+    channel = await Channel.findOneAndUpdate(
       { slug: req.query.slug },
       req.body
     ).lean();
 
     res.status(200).json({
       data: {
-        type: "resource",
-        id: resource._id,
-        attributes: await Resource.findOne({
+        type: "channel",
+        id: channel._id,
+        attributes: await Channel.findOne({
           slug: req.query.slug,
         }).lean(),
         payload: {
@@ -61,7 +61,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       },
     });
   } catch (err) {
-    handleError(res, err, "resource:slug/edit");
+    handleError(res, err, "channel:slug/edit");
   }
 }
 

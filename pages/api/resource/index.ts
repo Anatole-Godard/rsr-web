@@ -22,6 +22,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
           id: "all",
           type: "resource",
           attributes: resources,
+          search: false,
         },
       });
     } catch (err) {
