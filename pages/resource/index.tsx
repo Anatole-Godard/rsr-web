@@ -1,11 +1,10 @@
 import { ResourceCard } from "@components/card/Resource";
 import { AppLayout } from "@components/layouts/AppLayout";
 import { ChipList } from "@components/ui/ChipList";
-import { Resource } from "@definitions/Resource";
+import { Resource } from "@definitions/Resource/Resource";
 import { Menu, Transition } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/outline";
 import { PlusIcon } from "@heroicons/react/solid";
-import { fakeResource } from "@utils/faker.dev";
 import { NextPage } from "next";
 import { useEffect, useState } from "react";
 
@@ -106,9 +105,10 @@ const ResourceIndex: NextPage<any> = ({
 export default ResourceIndex;
 
 export async function getServerSideProps() {
-  const resources: Resource[] = JSON.parse(
-    JSON.stringify([fakeResource(), fakeResource()])
-  ); // workaround for Date serialization
+  const res = await fetch("http://localhost:3000/api/resource");
+  const body = await res.json();
+
+  const resources: Resource[] = body?.data?.attributes;
 
   return {
     props: { resources },

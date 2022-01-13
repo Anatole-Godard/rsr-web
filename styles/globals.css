@@ -176,7 +176,6 @@
 }
 
 @layer components {
-
   .sidebar {
     @apply min-h-[calc(100vh-4rem)] z-[41] flex-col hidden px-2 bg-white shadow-lg top-16 xl:items-start md:flex min-w-max dark:bg-black dark:border-r dark:border-gray-900;
   }
@@ -229,6 +228,10 @@
     @apply text-yellow-700 bg-yellow-100 btn hover:bg-yellow-300 active:bg-yellow-700 active:text-yellow-100 hover:text-yellow-800 dark:bg-yellow-800 dark:text-yellow-200 ring-yellow-500;
   }
 
+  .btn-amber {
+    @apply text-amber-700 bg-amber-100 btn hover:bg-amber-300 active:bg-amber-700 active:text-amber-100 hover:text-amber-800 dark:bg-amber-800 dark:text-amber-200 ring-amber-500;
+  }
+
   .btn-gray {
     @apply text-gray-700 bg-gray-100 btn hover:bg-gray-300 active:bg-gray-700 active:text-gray-100 hover:text-gray-800 dark:bg-gray-800 dark:text-gray-200 ring-gray-500;
   }
@@ -242,6 +245,9 @@
   }
   .btn-text-yellow {
     @apply text-yellow-500 btn-text hover:bg-yellow-100 active:bg-yellow-300 active:text-yellow-700;
+  }
+  .btn-text-yellow {
+    @apply text-amber-500 btn-text hover:bg-amber-100 active:bg-amber-300 active:text-amber-700;
   }
   .btn-text-red {
     @apply text-red-500 btn-text hover:bg-red-100 active:bg-red-300 active:text-red-700;

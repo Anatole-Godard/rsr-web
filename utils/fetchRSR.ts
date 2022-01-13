@@ -23,6 +23,7 @@ export const fetchRSR = async (
       appsource: "web",
       Authorization: "Bearer " + session.token,
       "Content-Type": "application/json",
+      uid: session.uid
     },
   });
 };

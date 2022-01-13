@@ -36,13 +36,13 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 
   try {
     const user = await User.create({ email, password, birthDate, fullName });
-    const token = genToken({ uid: user.id, role: user.role });
+    const token = genToken({ uid: user._id, role: user.role });
 
     const session = await SessionToken.findOneAndUpdate(
-      { uid: user.uid, appSource: appsource },
+      { uid: user._id, appSource: appsource },
       {
         ...token,
-        uid: user.uid,
+        uid: user._id,
         role: user.role,
         appSource: appsource,
       },
