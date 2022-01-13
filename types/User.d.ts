@@ -3,7 +3,7 @@ export type User = {
   birthDate: Date | string;
   email: string;
   password?: string | undefined;
-  role: string;
+  role: "user" | "moderator" | "admin" | "superadmin";
   createdAt: Date;
   photoURL: string;
   uid: string;
