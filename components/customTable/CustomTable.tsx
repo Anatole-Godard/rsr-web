@@ -1,8 +1,12 @@
 import { v4 as uuidv4 } from 'uuid';
-import { PencilAltIcon, ThumbUpIcon, TrashIcon } from "@heroicons/react/outline";
+import { CheckCircleIcon, ChevronDownIcon, PencilAltIcon, ThumbUpIcon, TrashIcon } from "@heroicons/react/outline";
 import ReactPaginate from 'react-paginate';
 import Style from "/components/customTable/pagination.module.css";
 import Link from 'next/link';
+import { Transition } from '@headlessui/react';
+import React, { Fragment, useEffect, useRef, useState } from 'react';
+import { ChipList } from '@components/ui/ChipList';
+import { classes } from '@utils/classes';
 
 export const CustomTable = ({
                                 theadList,
@@ -56,8 +60,16 @@ export const CustomTable = ({
                 break;
             case 'isLikeNumber':
                 isJsx          = true
-                displayedValue = (<div className="flex items-center">{value[theadValue.name]}
-                    <ThumbUpIcon className="text-green-800 flex-shrink-0 w-5 h-5 ml-1"/></div>)
+                displayedValue = (
+                    <div className="flex items-center">
+                        {value[theadValue.name]}
+                        <ThumbUpIcon className="text-green-800 flex-shrink-0 w-5 h-5 ml-1"/>
+                    </div>)
+                break;
+            case 'isRolePopUp':
+                console.log(value)
+                isJsx          = true
+                displayedValue = UserRolePopUp(value[theadValue.name], value.uid)
                 break;
             default:
                 displayedValue = value[theadValue.name];
@@ -125,4 +137,66 @@ export const CustomTable = ({
             )}
         </>
     );
+}
+
+const UserRolePopUp = (role, id) => {
+    const ref: any                               = useRef();
+    const [roleSelected, setRoleSelected]: any[] = useState([]);
+    const [open, setOpen]: any[]                 = useState(false);
+
+    const updateRole = () => {
+        console.log(id)
+    }
+
+    useEffect(() => {
+        const checkIfClickedOutside = (e) => {
+            if (open && ref.current && !ref.current.contains(e.target)) {
+                setOpen(false)
+            }
+        }
+        document.addEventListener("mousedown", checkIfClickedOutside)
+    }, [open])
+
+    return (
+        <div className="relative" ref={ref}>
+            <>
+                <button onClick={() => {
+                    setOpen(!open)
+                }}>
+                    <div className="flex items-center">{role}
+                        <ChevronDownIcon className="text-black flex-shrink-0 w-5 h-5 ml-1"/>
+                    </div>
+                </button>
+                <Transition
+                    show={open}
+                    as={Fragment}
+                    enter="transition ease-out duration-200"
+                    enterFrom="opacity-0 translate-y-1"
+                    enterTo="opacity-100 translate-y-0"
+                    leave="transition ease-in duration-150"
+                    leaveFrom="opacity-100 translate-y-0"
+                    leaveTo="opacity-0 translate-y-1"
+                >
+                    <div className={classes("absolute -left-20 z-10 bg-white rounded-lg shadow-lg")}>
+                        <div className="w-max p-3">
+                            <ChipList key={uuidv4()}
+                                      list={['Utilisateur', 'Modérateur', 'Administrateur', 'Super-administrateur']}
+                                      color='purple'
+                                      selected={roleSelected}
+                                      setSelected={(e) => {
+                                          setRoleSelected(e)
+                                      }}
+                                      size='normal'
+                            />
+                        </div>
+                        <div className="p-4 bg-gray-50 p-3 rounded-lg w-full">
+                            <button className="flex content-between items-center" onClick={updateRole}>
+                                Valider {CheckCircleIcon({ className : "text-green-500 flex-shrink-0 w-5 h-5 ml-1" })}
+                            </button>
+                        </div>
+                    </div>
+                </Transition>
+            </>
+        </div>
+    )
 }

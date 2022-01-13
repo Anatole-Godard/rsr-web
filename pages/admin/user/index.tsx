@@ -11,7 +11,7 @@ import { fetchRSR } from '@utils/fetchRSR';
 const theadList = [
     { name : 'email', label : 'Email', width : 33 },
     { name : 'fullName', label : 'Nom', width : 33 },
-    { name : 'role', label : 'Rôle', width : 33 },
+    { name : 'role', label : 'Rôle', type : 'isRolePopUp', width : 33 },
 ];
 
 const UserAdmin: NextPage = () => {
@@ -26,7 +26,7 @@ const UserAdmin: NextPage = () => {
         }).catch()
     }, [])
 
-    const deleteUser = (id: number) => {
+    const validUser = (id: number) => {
         //TODO: do DELETE call to back
     }
 
@@ -65,7 +65,7 @@ const UserAdmin: NextPage = () => {
                     </div>
                     <CustomTable theadList={theadList}
                                  valuesList={users}
-                                 deleteEntity={deleteUser}
+                                 deleteEntity={validUser}
                                  editUrl="user/edit"
                                  totalPages={5}
                                  updateCurrentPage={() => {
