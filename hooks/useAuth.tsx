@@ -20,6 +20,12 @@ function AuthProvider({
   const [history, setHistory] = useState([]);
   const router = useRouter();
 
+  const getLastUrl = (): string => {
+    const lastUrl: string =
+      history.length > 1 ? history[history.length - 1] : "/";
+    return lastUrl;
+  };
+
   const signIn = async (email: string, password: string) => {
     const response = await fetch("/api/auth", {
       method: "POST",
@@ -32,8 +38,7 @@ function AuthProvider({
     const body = await response.json();
     if (response.ok && body.session && body.data) {
       setUser(body);
-      // router.push("/");
-      router.push(history[history.length - 1]);
+      router.push(getLastUrl());
     } else setUser(null);
   };
 
@@ -64,8 +69,7 @@ function AuthProvider({
     const body = await response.json();
     if (response.ok && body.session && body.data) {
       setUser(body);
-      // router.push("/");
-      router.push(history[history.length - 1]);
+      router.push(getLastUrl());
     } else setUser(null);
   };
 

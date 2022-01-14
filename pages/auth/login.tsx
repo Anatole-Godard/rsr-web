@@ -141,12 +141,18 @@ export default function Login() {
                   Se connecter
                 </button>
               </div>
-              <div className="my-1 text-sm">
+              <div className="inline-flex justify-between w-full my-1 text-sm">
                 <Link href="/auth/register">
                   <a className="font-medium text-blue-600 duration-150 hover:text-blue-500">
                     Se créer un compte
                   </a>
                 </Link>
+                <button
+                  onClick={() => signIn(process.env.NEXT_PUBLIC_DEV_USER, process.env.NEXT_PUBLIC_DEV_PASS)}
+                  className="font-medium text-blue-600 duration-150 hover:text-blue-500"
+                >
+                  Dev
+                </button>
               </div>
             </div>
           </div>

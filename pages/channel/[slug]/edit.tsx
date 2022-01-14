@@ -360,7 +360,7 @@ const ChannelCreate: NextPage<any> = (props) => {
         console.log(err);
       }
       setLoading(false);
-      // router.push(`/resource/${body.slug}`);
+      router.push(`/channel/${router.query.slug as string}`);
     }
   };
 
