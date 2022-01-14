@@ -33,9 +33,9 @@ const UserSchema = new Schema({
     default:
       "/uploads/user/default.png", // TODO: must depends on ourselves
   },
-  approval: {
+  validation: {
     type: Boolean,
-    default: false,
+    default: true,
   },
 });
 

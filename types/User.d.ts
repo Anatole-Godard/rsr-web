@@ -7,7 +7,7 @@ export type User = {
   createdAt: Date;
   photoURL: string;
   uid: string;
-  approval: boolean;
+  validation: boolean;
 };
 
 export type UserMinimum = {

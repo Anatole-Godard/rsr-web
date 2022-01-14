@@ -89,16 +89,16 @@ export const CustomTable = ({
                     return value[theadValue.name] === el.value
                 }), value.uid, theadValue.getEntity)
                 break;
-            case 'approval':
+            case 'validation':
                 isJsx          = true
                 console.log(value[theadValue.name])
                 displayedValue =
                     <div className="flex items-center" onClick={() => {
-                        theadValue.validEntity(value.uid)
+                        theadValue.validEntity(value.uid, !value[theadValue.name])
                     }}>
                         {value[theadValue.name]
                             ? <>Suspendre <BanIcon className="text-red-800 flex-shrink-0 w-5 h-5 ml-1"/></>
-                            : <>Valider <CheckIcon className="text-green-800 flex-shrink-0 w-5 h-5 ml-1"/></>
+                            : <>Réactiver <CheckIcon className="text-green-800 flex-shrink-0 w-5 h-5 ml-1"/></>
                         }
                     </div>
                 break;
@@ -189,7 +189,7 @@ const UserRolePopUp = (role: { label, value }, id: number, getEntity: any) => {
                 }
             ).then((res) => res.json()).then(() => {
                 getEntity()
-            }).catch()
+            })
         }
     }
 
