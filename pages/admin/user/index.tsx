@@ -11,18 +11,25 @@ const UserAdmin: NextPage = () => {
     const [users, setUsers] = useState<User[]>([]);
     const { user }          = useAuth();
 
-    const theadList         = [
+    const beforeSetUsers = () => {
+        getUsers()
+    }
+
+    const theadList = [
         { name : 'email', label : 'Email', width : 33 },
         { name : 'fullName', label : 'Nom', width : 33 },
-        { name : 'role', label : 'Rôle', type : 'isRolePopUp', setEntity : setUsers, width : 33 },
+        { name : 'role', label : 'Rôle', type : 'isRolePopUp', getEntity : beforeSetUsers, width : 33 },
     ];
-
-    useEffect(() => {
-        fetchRSR("/api/user/all", user.session).then((res) => res.json()).then((body) => {
-            if (body.data.attributes) {
-                setUsers(body.data.attributes)
+    const getUsers  = () => {
+        fetchRSR("/api/user/admin", user.session).then((res) => res.json()).then((body) => {
+            if (body.data?.attributes) {
+                setUsers(body.data?.attributes)
             }
         }).catch()
+    }
+
+    useEffect(() => {
+        getUsers()
     }, [])
 
     const validUser = (id: number) => {
@@ -62,12 +69,14 @@ const UserAdmin: NextPage = () => {
                             Filtrer
                         </button>
                     </div>
-                    <CustomTable theadList={theadList}
-                                 valuesList={users}
-                                 deleteEntity={validUser}
-                                 totalPages={5}
-                                 updateCurrentPage={() => {
-                                 }}/>
+                    {users && users?.length > 0 &&
+                        <CustomTable theadList={theadList}
+                                     valuesList={users}
+                                     deleteEntity={validUser}
+                                     totalPages={5}
+                                     updateCurrentPage={() => {
+                                     }}/>
+                    }
                     <div className="inline-flex justify-end w-full p-3 px-6">
                         <Link href="user/create">
                             <button className="btn-blue">
