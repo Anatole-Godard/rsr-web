@@ -15,10 +15,15 @@ const UserAdmin: NextPage = () => {
         getUsers()
     }
 
+    const validUser = (id: number) => {
+
+    }
+
     const theadList = [
-        { name : 'email', label : 'Email', width : 33 },
-        { name : 'fullName', label : 'Nom', width : 33 },
-        { name : 'role', label : 'Rôle', type : 'isRolePopUp', getEntity : beforeSetUsers, width : 33 },
+        { name : 'email', label : 'Email', width : 25 },
+        { name : 'fullName', label : 'Nom', width : 25 },
+        { name : 'role', label : 'Rôle', type : 'isRolePopUp', getEntity : beforeSetUsers, width : 25 },
+        { name : 'approval', label : 'Suspensions', type : 'approval', validEntity : validUser, width : 25 },
     ];
     const getUsers  = () => {
         fetchRSR("/api/user/admin", user.session).then((res) => res.json()).then((body) => {
@@ -32,9 +37,6 @@ const UserAdmin: NextPage = () => {
         getUsers()
     }, [])
 
-    const validUser = (id: number) => {
-        //TODO: do DELETE call to back
-    }
 
     const submitFilterForm = () => {
 
@@ -72,7 +74,6 @@ const UserAdmin: NextPage = () => {
                     {users && users?.length > 0 &&
                         <CustomTable theadList={theadList}
                                      valuesList={users}
-                                     deleteEntity={validUser}
                                      totalPages={5}
                                      updateCurrentPage={() => {
                                      }}/>

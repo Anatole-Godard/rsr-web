@@ -18,7 +18,6 @@ export default async function handler(
                 const update = { role };
                 await user.findOneAndUpdate(filter, update);
                 const newUser = await user.findOne(filter);
-                console.log('newUser', newUser, slug)
                 res.status(200).json({
                     data : {
                         id         : newUser._id,
