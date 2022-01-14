@@ -1,20 +1,21 @@
-import { ChannelResource } from "@components/channel/Resource";
-import { Sidebar } from "@components/channel/Sidebar";
-import { AppLayout } from "@components/layouts/AppLayout";
+
+import {ChannelResource} from "@components/channel/Resource";
+import {Message as ChannelMessage} from "@components/channel/Message";
+import {Sidebar} from "@components/channel/Sidebar";
+import {AppLayout} from "@components/layouts/AppLayout";
 import {
   PaperAirplaneIcon,
   PencilIcon,
   PlusIcon,
 } from "@heroicons/react/outline";
-import { GetServerSideProps, NextPage } from "next";
-import { useRouter } from "next/router";
-import Link from "next/link";
-import { useEffect, useState } from "react";
-import { Resource } from "@definitions/Resource/Resource";
-import io from "socket.io-client";
-import { Message } from "@definitions/Message";
 
-const socket = io("http://localhost:3000");
+import {GetServerSideProps, NextPage} from "next";
+import {useRouter} from "next/router";
+import Link from "next/link";
+import {useEffect, useState} from "react";
+import io from "socket.io-client";
+import {Message} from "@definitions/Message";
+import {useAuth} from "@hooks/useAuth";
 
 const ChannelSlug: NextPage<any> = ({
   sideBarChannels,
@@ -31,42 +32,58 @@ const ChannelSlug: NextPage<any> = ({
   }[];
   resources: Resource[];
 }) => {
-  const router = useRouter();
-  const { slug } = router.query;
 
-  const description = "Hello world";
+    const router = useRouter();
+    const {slug} = router.query;
 
-  const [message, setMessage] = useState<string>("");
-  const [chat, setChat] = useState<Message[]>([]);
+    const {user} = useAuth();
 
-  useEffect(() => {
-    fetch("/api/channel/slug/socket").finally(() => {
-      console.log(socket);
-      if (socket) {
+    const description = "Hello world";
+
+    const [message, setMessage] = useState<string>("");
+    const [chat, setChat] = useState<Message[]>([]);
+    const [connected, setConnected] = useState<boolean>(false);
+
+    useEffect((): any => {
+        const socket = io("http://172.20.10.8:3000", {
+            path: "/api/channel/[slug]/socket",
+        });
+
+        fetch("http://172.20.10.8:3000/api/channel/"+ slug +"/all").then((res) => {
+            return res.json()
+        }).then((body) => setChat(body))
+
         socket.on("connect", () => {
-          console.log("Connection");
+            console.log("SOCKET CONNECTED!", socket.id);
+            setConnected(true);
         });
 
-        socket.on("notification", (message) => {
-          console.log(message);
+        // update chat on new message dispatched
+        socket.on("message", (message: Message) => {
+            // chat.push(message);
+            setChat(oldChat =>[...oldChat, message]);
         });
 
-        socket.on("res-new-message", (message: string) => {
-          console.log("New user message: " + message);
-        });
+        if (socket) return () => socket.disconnect();
 
-        socket.on("get-messages", (messages: Message[]) => {
-          setChat(messages);
-          console.log("Messages: ", messages);
-        });
-      }
-    });
-  }, []);
+    }, [])
 
-  const sendMessage = async (message: string) => {
-    if (socket) {
-      socket.emit("new-message", message);
-      setMessage("");
+    const sendMessage = async (msg: string) => {
+        const message: Message = {
+            user: user.data,
+            text: msg,
+            attachment: null,
+            channel: slug,
+        };
+
+        const resp = await fetch("/api/channel/"+ slug +"/all", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(message),
+        });
+        if (resp.ok) setMessage("");
     }
     socket.emit("refresh-chat");
   };
@@ -118,9 +135,36 @@ const ChannelSlug: NextPage<any> = ({
                     <span className="hidden sm:block">
                       Poster une ressource
                     </span>
-                  </a>
-                </Link>
-              </div>
+
+                                    </a>
+                                </Link>
+                            </div>
+                        </div>
+
+                        {/* BODY */}
+                        <div
+                            className="flex flex-col max-h-[65vh] md:max-h-full  p-3 space-y-4 overflow-y-auto bg-white xl:ml-6 xl:rounded-l-xl xl:p-6">
+                            {/*{resources.map((e, key) => (*/}
+                            {/*    <ChannelResource {...e} key={key}/>*/}
+                            {/*))}*/}
+                            {chat.map((e,key) => (
+                                <ChannelMessage key={key} message={e}/>
+                            ))}
+                        </div>
+
+                        {/* FOOTER */}
+                        <form onSubmit={handleSubmitMessage} className="inline-flex items-center w-full p-3 px-6">
+                            <input
+                                value={message}
+                                onChange={(e) => setMessage(e.target.value)}
+                                className="z-40 mr-2 input"
+                            />
+                            <button className="btn-blue">
+                                <PaperAirplaneIcon className="w-[1.25rem] h-[1.25rem] "/>
+                            </button>
+                        </form>
+                    </div>
+                </div>
             </div>
 
             {/* BODY */}

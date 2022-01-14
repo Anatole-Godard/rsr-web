@@ -14,4 +14,3 @@ export type UserMinimum = {
   photoURL: string;
   uid: string;
 };
-

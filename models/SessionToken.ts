@@ -37,14 +37,9 @@ const SessionTokenSchema = new Schema({
   },
 });
 
-// SessionTokenSchema.pre("update", function (next) {
-//     console.log("on est la")
-//     this.uidAppSource = `${this.uid}:${this.appSource}`;
-//     next();
-// });
-
 
 const SessionToken =
-  mongoose.models.SessionToken ||
-  mongoose.model("SessionToken", SessionTokenSchema);
+          mongoose.models.SessionToken ||
+          mongoose.model("SessionToken", SessionTokenSchema);
+
 export default SessionToken;
