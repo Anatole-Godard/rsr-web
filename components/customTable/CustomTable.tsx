@@ -10,6 +10,13 @@ import { classes } from '@utils/classes';
 import { fetchRSR } from '@utils/fetchRSR';
 import { useAuth } from '@hooks/useAuth';
 
+const roleType = [
+    { label : 'Utilisateur', value : 'user' },
+    { label : 'Modérateur', value : 'moderator' },
+    { label : 'Administrateur', value : 'admin' },
+    { label : 'Super-administrateur', value : 'superadmin' }
+]
+
 export const CustomTable = ({
                                 theadList,
                                 valuesList,
@@ -70,7 +77,9 @@ export const CustomTable = ({
                 break;
             case 'isRolePopUp':
                 isJsx          = true
-                displayedValue = UserRolePopUp(value[theadValue.name], value.uid, theadValue.setEntity)
+                displayedValue = UserRolePopUp(roleType.find((el) => {
+                    return value[theadValue.name] === el.value
+                }), value.uid, theadValue.getEntity)
                 break;
             default:
                 displayedValue = value[theadValue.name];
@@ -142,19 +151,24 @@ export const CustomTable = ({
     );
 }
 
-const UserRolePopUp = (role: string, id: number, setEntity: any) => {
+const UserRolePopUp = (role: { label, value }, id: number, getEntity: any) => {
     const { user }                               = useAuth();
     const ref: any                               = useRef();
-    const [roleSelected, setRoleSelected]: any[] = useState([]);
+    const [roleSelected, setRoleSelected]: any[] = useState([role]);
     const [open, setOpen]: any[]                 = useState(false);
 
     const updateRole = () => {
-        console.log('la', id)
-        fetchRSR(`/api/user/admin/${id}/edit`, user.session).then((res) => res.json()).then((body) => {
-            if (body.data.attributes) {
-                setEntity(body.data.attributes)
-            }
-        }).catch()
+        //TODO: verify the current user role (only admin | super-admin)
+        if (roleSelected && roleSelected.length === 1) {
+            const body = JSON.stringify({ action : 'change-role', role : roleSelected[0].value })
+            fetchRSR(`/api/user/admin/${id}/edit`, user.session, {
+                    method : "PUT",
+                    body
+                }
+            ).then((res) => res.json()).then(() => {
+                getEntity()
+            }).catch()
+        }
     }
 
     useEffect(() => {
@@ -172,7 +186,7 @@ const UserRolePopUp = (role: string, id: number, setEntity: any) => {
                 <button onClick={() => {
                     setOpen(!open)
                 }}>
-                    <div className="flex items-center">{role}
+                    <div className="flex items-center">{role.label}
                         <ChevronDownIcon className="text-black flex-shrink-0 w-5 h-5 ml-1"/>
                     </div>
                 </button>
@@ -189,12 +203,7 @@ const UserRolePopUp = (role: string, id: number, setEntity: any) => {
                     <div className={classes("absolute -left-20 z-10 bg-white rounded-lg shadow-lg")}>
                         <div className="w-max p-3">
                             <ChipList
-                                list={[
-                                    { label : 'Utilisateur', value : 'user' },
-                                    { label : 'Modérateur', value : 'moderator' },
-                                    { label : 'Administrateur', value : 'admin' },
-                                    { label : 'Super-administrateur', value : 'superadmin' }
-                                ]}
+                                list={roleType}
                                 color='purple'
                                 selected={roleSelected}
                                 setSelected={setRoleSelected}
@@ -202,9 +211,10 @@ const UserRolePopUp = (role: string, id: number, setEntity: any) => {
                                 isOnlyOne={true}
                             />
                         </div>
-                        <div className="p-4 bg-gray-50 p-3 rounded-lg w-full">
-                            <button className="flex content-between items-center" onClick={updateRole}>
-                                Valider {CheckCircleIcon({ className : "text-green-500 flex-shrink-0 w-5 h-5 ml-1" })}
+                        <div className="p-4 bg-gray-50 p-3 rounded-lg w-full  hover:bg-gray-100 dark:hover:bg-gray-300" onClick={updateRole}>
+                            <button className="flex content-between items-center">
+                                Valider
+                                {CheckCircleIcon({ className : "text-green-500 flex-shrink-0 w-5 h-5 ml-1" })}
                             </button>
                         </div>
                     </div>

@@ -27,7 +27,7 @@ export const SideBarAdmin = ({ config = { size : "normal" } }: { config?: any })
       <SideBarIcon
         active={pathname === "/admin/user"}
         icon={UserIcon}
-        text="Ressources"
+        text="Utilisateurs"
         href="/admin/user"
       />
     </div>
