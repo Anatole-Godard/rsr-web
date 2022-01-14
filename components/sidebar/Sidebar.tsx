@@ -1,6 +1,7 @@
 import {
   ChatIcon,
   HomeIcon,
+  LibraryIcon,
   ShoppingBagIcon,
 } from "@heroicons/react/outline";
 import { useRouter } from "next/router";
@@ -13,7 +14,8 @@ export const Sidebar = ({ config = { size: "normal" } }: { config?: any }) => {
   const { pathname } = router;
 
   return (
-    <div className="min-h-[calc(100vh-4rem)] z-[41] flex-col hidden px-2 bg-white shadow-lg top-16 xl:items-start md:flex min-w-max dark:bg-black dark:border-r dark:border-gray-900">
+    <div className="min-h-[calc(100vh-4rem)] z-[41] flex-col hidden px-2 bg-white shadow-lg top-16 md:flex min-w-max dark:bg-black dark:border-r dark:border-gray-900 justify-between">
+      <div>
       <SidebarIcon
         icon={HomeIcon}
         active={pathname === "/"}
@@ -33,6 +35,15 @@ export const Sidebar = ({ config = { size: "normal" } }: { config?: any }) => {
         text="Salons"
         href="/channel"
       />
+      </div>
+      <div className="mb-4">
+        <SidebarIcon
+          icon={LibraryIcon}
+          active={pathname.includes("/resource")}
+          text="Bibliothèque"
+          href="/resource"
+        />
+      </div>
     </div>
   );
 };

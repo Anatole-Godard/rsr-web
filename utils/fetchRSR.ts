@@ -11,18 +11,28 @@ export const fetchRSR = async (
   session: any, // TODO: check if we can only define one part of the type here
   options?: any
 ): Promise<Response> => {
-  return fetch(url, {
-    /*
-     * - WTF is this? *
-     * - Mybad I'm so dumb -
-     * - Sorry, it's late -
-     */
-    ...options,
-    headers: {
-      ...options?.headers,
-      appsource: "web",
-      Authorization: "Bearer " + session.token,
-      "Content-Type": "application/json",
-    },
-  });
+  try {
+    return fetch(url, {
+      /*
+       * - WTF is this? *
+       * - Mybad I'm so dumb -
+       * - Sorry, it's late -
+       */
+      ...options,
+      headers: {
+        ...options?.headers,
+        appsource: "web",
+        Authorization: "Bearer " + session.token,
+        "Content-Type": "application/json",
+        uid: session.uid,
+      },
+    });
+  } catch (err) {
+    return Promise.reject({
+      error: {
+        message: err.message,
+        location: "fetchRSR",
+      },
+    });
+  }
 };

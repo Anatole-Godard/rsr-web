@@ -176,7 +176,6 @@
 }
 
 @layer components {
-
   .sidebar {
     @apply min-h-[calc(100vh-4rem)] z-[41] flex-col hidden px-2 bg-white shadow-lg top-16 xl:items-start md:flex min-w-max dark:bg-black dark:border-r dark:border-gray-900;
   }
@@ -229,6 +228,10 @@
     @apply text-yellow-700 bg-yellow-100 btn hover:bg-yellow-300 active:bg-yellow-700 active:text-yellow-100 hover:text-yellow-800 dark:bg-yellow-800 dark:text-yellow-200 ring-yellow-500;
   }
 
+  .btn-amber {
+    @apply text-amber-700 bg-amber-100 btn hover:bg-amber-300 active:bg-amber-700 active:text-amber-100 hover:text-amber-800 dark:bg-amber-800 dark:text-amber-200 ring-amber-500;
+  }
+
   .btn-gray {
     @apply text-gray-700 bg-gray-100 btn hover:bg-gray-300 active:bg-gray-700 active:text-gray-100 hover:text-gray-800 dark:bg-gray-800 dark:text-gray-200 ring-gray-500;
   }
@@ -240,8 +243,15 @@
   .btn-text-green {
     @apply text-green-500 btn-text hover:bg-green-100 active:bg-green-300 active:text-green-700;
   }
+
+  .btn-text-blue {
+    @apply text-blue-500 btn-text hover:bg-blue-100 active:bg-blue-300 active:text-blue-700;
+  }
   .btn-text-yellow {
     @apply text-yellow-500 btn-text hover:bg-yellow-100 active:bg-yellow-300 active:text-yellow-700;
+  }
+  .btn-text-yellow {
+    @apply text-amber-500 btn-text hover:bg-amber-100 active:bg-amber-300 active:text-amber-700;
   }
   .btn-text-red {
     @apply text-red-500 btn-text hover:bg-red-100 active:bg-red-300 active:text-red-700;
@@ -267,4 +277,21 @@
 
 .leaflet-pane {
   z-index: 0 !important;
+}
+
+
+
+.form-checkbox:checked {
+  background-image: url(
+    "data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='M6 10l3 3l6-6'/%3e%3c/svg%3e"
+  );
+}
+
+.form-checkbox:checked,
+.form-radio:checked {
+  border-color: transparent;
+  background-color: currentColor;
+  background-size: 100% 100%;
+  background-position: 50%;
+  background-repeat: no-repeat;
 }

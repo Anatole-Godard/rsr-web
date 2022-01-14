@@ -12,4 +12,5 @@ export type User = {
 export type UserMinimum = {
   fullName: string;
   photoURL: string;
+  uid: string;
 };

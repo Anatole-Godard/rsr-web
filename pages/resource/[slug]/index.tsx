@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import { AppLayout } from "@components/layouts/AppLayout";
-import { Resource } from "@definitions/Resource";
+import { Resource } from "@definitions/Resource/Resource";
 import {
   ChatIcon,
   HeartIcon,
@@ -204,11 +204,15 @@ const ResourceSlug: NextPage<any> = ({
 export default ResourceSlug;
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
+  const res = await fetch(
+    "http://localhost:3000/api/resource/" + context.params.slug
+  );
+  const body = await res.json();
+
+  const resource: Resource[] = body?.data?.attributes;
+
   return {
-    props: {
-      ...JSON.parse(JSON.stringify(fakeResource())),
-      slug: context.query.slug,
-    },
+    props: { ...resource },
   };
 };
 
