@@ -1,5 +1,13 @@
 import { v4 as uuidv4 } from 'uuid';
-import { CheckCircleIcon, ChevronDownIcon, PencilAltIcon, ThumbUpIcon, TrashIcon } from "@heroicons/react/outline";
+import {
+    BanIcon,
+    CheckCircleIcon,
+    CheckIcon,
+    ChevronDownIcon,
+    PencilAltIcon,
+    ThumbUpIcon,
+    TrashIcon
+} from "@heroicons/react/outline";
 import ReactPaginate from 'react-paginate';
 import Style from "/components/customTable/pagination.module.css";
 import Link from 'next/link';
@@ -27,7 +35,7 @@ export const CustomTable = ({
                             }: {
                                 theadList: object[],
                                 valuesList: any[],
-                                deleteEntity: any,
+                                deleteEntity?: any,
                                 editUrl?: string,
                                 totalPages: number,
                                 updateCurrentPage: any
@@ -81,6 +89,19 @@ export const CustomTable = ({
                     return value[theadValue.name] === el.value
                 }), value.uid, theadValue.getEntity)
                 break;
+            case 'approval':
+                isJsx          = true
+                console.log(value[theadValue.name])
+                displayedValue =
+                    <div className="flex items-center" onClick={() => {
+                        theadValue.validEntity(value.uid)
+                    }}>
+                        {value[theadValue.name]
+                            ? <>Suspendre <BanIcon className="text-red-800 flex-shrink-0 w-5 h-5 ml-1"/></>
+                            : <>Valider <CheckIcon className="text-green-800 flex-shrink-0 w-5 h-5 ml-1"/></>
+                        }
+                    </div>
+                break;
             default:
                 displayedValue = value[theadValue.name];
                 break;
@@ -103,7 +124,7 @@ export const CustomTable = ({
                     <tr className="bg-gray-500 dark:bg-gray-100 text-white dark:text-black text-left">
                         {displayTableHeader(theadList)}
                         {editUrl && <th/>}
-                        <th/>
+                        {deleteEntity && (<th/>)}
                     </tr>
                 </thead>
                 {valuesList && valuesList.length > 0 &&
@@ -125,9 +146,10 @@ export const CustomTable = ({
                                         </td>
                                     </Link>
                                 )}
-                                <td className="px-4 py-3 border-b border-gray-200 dark:border-gray-800" onClick={() => deleteEntity(value.id)}>
-                                    {TrashIcon({ className : "text-red-800 flex-shrink-0 w-5 h-5" })}
-                                </td>
+                                {deleteEntity && (
+                                    <td className="px-4 py-3 border-b border-gray-200 dark:border-gray-800" onClick={() => deleteEntity(value.id)}>
+                                        {TrashIcon({ className : "text-red-800 flex-shrink-0 w-5 h-5" })}
+                                    </td>)}
                             </tr>
                         ))}
                     </tbody>

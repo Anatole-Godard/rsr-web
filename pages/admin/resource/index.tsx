@@ -20,8 +20,8 @@ const Resources: NextPage<any> = () => {
     const { user }                  = useAuth();
 
     useEffect(() => {
-            fetchRSR("/api/resource/all", user.session).then((res) => res.json()).then((body) => {
-                if (body.data.attributes) {
+            fetchRSR("/api/resource", user.session).then((res) => res.json()).then((body) => {
+                if (body.data?.attributes) {
                     setResources(body.data.attributes)
                 }
             }).catch()
