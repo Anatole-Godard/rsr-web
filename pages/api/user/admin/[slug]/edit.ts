@@ -11,21 +11,29 @@ export default async function handler(
 
         if (req.method === 'PUT') {
             const { action, }: { action: "validate" | "change-role" } = req.body;
+            let filter                                                = {}
+            let update                                                = {}
             if (action === 'change-role') {
                 const { role }: { role: "user" | "moderator" | "admin" | "superadmin" } = req.body;
+                filter = { _id : slug };
+                update = { role };
 
-                const filter = { _id : slug };
-                const update = { role };
-                await user.findOneAndUpdate(filter, update);
-                const newUser = await user.findOne(filter);
-                res.status(200).json({
-                    data : {
-                        id         : newUser._id,
-                        type       : "user",
-                        attributes : newUser
-                    },
-                });
+            } else if (action === 'validate') {
+                const { validation }: { validation: Boolean } = req.body;
+                filter = { _id : slug };
+                update = { validation };
+
             }
+
+            await user.findOneAndUpdate(filter, update);
+            const newUser = await user.findOne(filter);
+            res.status(200).json({
+                data : {
+                    id         : newUser._id,
+                    type       : "user",
+                    attributes : newUser
+                },
+            });
         }
     } catch (err) {
         res.status(500).json({

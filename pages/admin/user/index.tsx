@@ -15,15 +15,22 @@ const UserAdmin: NextPage = () => {
         getUsers()
     }
 
-    const validUser = (id: number) => {
-
+    const validUser = (id: number, validation: Boolean) => {
+        const body = JSON.stringify({ action : 'validate', validation })
+        fetchRSR(`/api/user/admin/${id}/edit`, user.session, {
+                method : "PUT",
+                body
+            }
+        ).then((res) => res.json()).then(() => {
+            getUsers()
+        })
     }
 
     const theadList = [
         { name : 'email', label : 'Email', width : 25 },
         { name : 'fullName', label : 'Nom', width : 25 },
         { name : 'role', label : 'Rôle', type : 'isRolePopUp', getEntity : beforeSetUsers, width : 25 },
-        { name : 'approval', label : 'Suspensions', type : 'approval', validEntity : validUser, width : 25 },
+        { name : 'validation', label : 'Suspensions', type : 'validation', validEntity : validUser, width : 25 },
     ];
     const getUsers  = () => {
         fetchRSR("/api/user/admin", user.session).then((res) => res.json()).then((body) => {
