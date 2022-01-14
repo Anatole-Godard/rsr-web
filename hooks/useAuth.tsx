@@ -17,6 +17,7 @@ function AuthProvider({
   children: React.ReactNode;
 }): JSX.Element {
   const [user, setUser] = useState<any | null>(null);
+  const [history, setHistory] = useState([]);
   const router = useRouter();
 
   const signIn = async (email: string, password: string) => {
@@ -31,7 +32,8 @@ function AuthProvider({
     const body = await response.json();
     if (response.ok && body.session && body.data) {
       setUser(body);
-      router.push("/");
+      // router.push("/");
+      router.push(history[history.length - 1]);
     } else setUser(null);
   };
 
@@ -62,9 +64,14 @@ function AuthProvider({
     const body = await response.json();
     if (response.ok && body.session && body.data) {
       setUser(body);
-      router.push("/");
+      // router.push("/");
+      router.push(history[history.length - 1]);
     } else setUser(null);
   };
+
+  useEffect(() => {
+    setHistory([...history, window.location.pathname]);
+  }, []);
 
   return (
     <AuthContext.Provider value={{ user, signIn, signOut, register }}>

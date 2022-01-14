@@ -19,21 +19,19 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   }
 
   try {
-    const {
-      description,
-      tags,
-      data: { type, attributes },
-    } = req.body;
-    const {
-      properties: { name },
-    } = attributes;
+    const { description, members, name, photoURL, visibility } = req.body;
 
-    if (!description || !type || !attributes || !name) {
+    if (!description || !name || !members || members.length < 1) {
       res.status(400).json({
         data: null,
         error: {
           code: 400,
           message: "bad request",
+          fields: {
+            description: !description,
+            members: !members || members.length < 1,
+            name: !name,
+          },
         },
       });
       return;
@@ -53,25 +51,32 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       return;
     }
 
-    // const channel = await Channel.create({
-    //   slug: slugChannel,
-    //   description,
-    //   tags,
-    //   data: { type, attributes },
-    //   owner: {
-    //     fullName: user.fullName,
-    //     photoURL: user.photoURL,
-    //     uid: user.uid,
-    //   },
-    // });
+    const channel = await Channel.create({
+      slug: slugChannel,
+      name,
+      members: [
+        ...members,
+        {
+          fullName: user.fullName,
+          photoURL: user.photoURL,
+          uid: user.uid,
+        },
+      ],
+      visibility,
+      description,
+      owner: {
+        fullName: user.fullName,
+        photoURL: user.photoURL,
+        uid: user.uid,
+      },
+    });
 
     res.status(201).json({
       data: {
         message: "ok",
         type: "channel",
         attributes: {
-          // channel,
-          slugChannel
+          channel,
         },
         payload: {
           ...req.body,
