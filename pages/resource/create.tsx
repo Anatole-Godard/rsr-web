@@ -56,7 +56,7 @@ const ResourceCreate: NextPage<any> = () => {
   const [position, setPosition] = useState(null);
   const [location, setLocation] = useState("");
 
-  const [price, setPrice] = useState<string | null>(null);
+  const [price, setPrice] = useState<string | null>("0.00");
   const [category, setCategory] = useState<string | null>(null);
 
   const [externalLink, setExternalLink] = useState<string | null>(null);
@@ -134,9 +134,27 @@ const ResourceCreate: NextPage<any> = () => {
           method: "POST",
           body: JSON.stringify(formatResource()),
         });
-        setRequestOk(response.ok);
+
         const body = await response.json();
-        console.log(body);
+        if (response.ok && pictureFile) {
+          const fd = new FormData();
+          fd.append("file", pictureFile);
+          fd.append("name", pictureFile.name);
+          fd.append("type", pictureFile.type);
+          fd.append("size", pictureFile.size.toString());
+          const responseFileUpload = await fetch(
+            `/api/resource/${body.data.attributes.slug}/upload`,
+            {
+              method: "POST",
+              body: fd,
+            }
+          );
+          if (!responseFileUpload.ok) {
+            setRequestOk(false);
+          } else setRequestOk(true);
+        } else if (response.ok && !pictureFile) {
+          setRequestOk(true);
+        }
       } catch (err) {
         console.log(err);
       }
@@ -246,7 +264,7 @@ const ResourceCreate: NextPage<any> = () => {
         <div className="flex flex-col flex-grow px-4 py-3 pb-6 bg-gray-100 rounded-tl-xl md:flex-row">
           <div className="flex flex-col w-full px-2 space-y-3 md:w-1/2">
             <label>
-              <h4 className="mb-1 text-sm font-semibold text-gray-700 font-marianne">
+              <h4 className="mb-1 text-sm font-semibold after:content-['*'] after:ml-0.5 after:text-red-500 text-gray-700 font-marianne">
                 Titre de la ressource
               </h4>
               <input
@@ -258,7 +276,7 @@ const ResourceCreate: NextPage<any> = () => {
               ></input>
             </label>
             <label className="flex flex-col grow">
-              <h4 className="mb-1 text-sm font-semibold text-gray-700 font-marianne">
+              <h4 className="mb-1 text-sm font-semibold after:content-['*'] after:ml-0.5 after:text-red-500 text-gray-700 font-marianne">
                 Description de la ressource
               </h4>
               <textarea
@@ -315,7 +333,7 @@ const ResourceCreate: NextPage<any> = () => {
           <div className="flex flex-col justify-between w-full px-2 mt-3 space-y-3 md:w-1/2 md:mt-0">
             <div className="flex flex-col w-full h-full space-y-3">
               <label>
-                <h4 className="-mb-2 text-sm font-semibold text-gray-700 font-marianne">
+                <h4 className="-mb-2 text-sm after:content-['*'] after:ml-0.5 after:text-red-500 font-semibold text-gray-700 font-marianne">
                   Type de la ressource
                 </h4>
               </label>
@@ -353,7 +371,14 @@ const ResourceCreate: NextPage<any> = () => {
               {(type.value === "external_link" ||
                 type.value === "physical_item") && (
                 <label className="flex flex-col grow">
-                  <h4 className="mb-1 text-sm font-semibold text-gray-700 font-marianne">
+                  <h4
+                    className={classes(
+                      "mb-1 text-sm font-semibold text-gray-700 font-marianne",
+                      type.value === "physical_item"
+                        ? "after:content-['*'] after:ml-0.5 after:text-red-500"
+                        : ""
+                    )}
+                  >
                     Image de la ressource
                   </h4>
                   {pictureUrl && (
@@ -429,7 +454,7 @@ const ResourceCreate: NextPage<any> = () => {
               {type.value === "physical_item" && (
                 <>
                   <label>
-                    <h4 className="mb-1 text-sm font-semibold text-gray-700 font-marianne">
+                    <h4 className="mb-1 text-sm font-semibold after:content-['*'] after:ml-0.5 after:text-red-500 text-gray-700 font-marianne">
                       Prix
                     </h4>
                     <input
@@ -440,7 +465,7 @@ const ResourceCreate: NextPage<any> = () => {
                     />
                   </label>
                   <label>
-                    <h4 className="mb-1 text-sm font-semibold text-gray-700 font-marianne">
+                    <h4 className="mb-1 text-sm font-semibold after:content-['*'] after:ml-0.5 after:text-red-500 text-gray-700 font-marianne">
                       Catégorie
                     </h4>
                     <input
@@ -456,7 +481,7 @@ const ResourceCreate: NextPage<any> = () => {
               {type.value === "external_link" && (
                 <>
                   <label>
-                    <h4 className="mb-1 text-sm font-semibold text-gray-700 font-marianne">
+                    <h4 className="mb-1 after:content-['*'] after:ml-0.5 after:text-red-500 text-sm font-semibold text-gray-700 font-marianne">
                       Lien externe
                     </h4>
                     <input
@@ -471,7 +496,7 @@ const ResourceCreate: NextPage<any> = () => {
 
               {type.value === "location" && (
                 <label className="flex flex-col grow">
-                  <h4 className="mb-1 text-sm font-semibold text-gray-700 font-marianne">
+                  <h4 className="mb-1 text-sm after:content-['*'] after:ml-0.5 after:text-red-500 font-semibold text-gray-700 font-marianne">
                     Emplacement de la ressource
                   </h4>
                   <div className="w-full mb-3">

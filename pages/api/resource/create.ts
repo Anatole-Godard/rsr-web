@@ -69,9 +69,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       data: {
         message: "ok",
         type: "resource",
-        attributes: {
-          resource,
-        },
+        attributes: resource,
         payload: {
           ...req.body,
         },

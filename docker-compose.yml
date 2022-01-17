@@ -18,7 +18,7 @@ services:
       - database-data:/data/db
     ports:
       - "27017:27017"
-    command: mongod --quiet
+    command: mongod --quiet --logpath /dev/null 
 
   mongoex:
     image: mongo-express

@@ -7,6 +7,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
     const resource = await Resource.findOne({
       slug: req.query.slug,
+      validated: true,
     }).lean();
 
     if (!resource) {
