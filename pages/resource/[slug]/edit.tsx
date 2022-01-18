@@ -10,6 +10,7 @@ import {
 } from "@heroicons/react/solid";
 import { makeRequest } from "@utils/asyncXHR";
 import { classes } from "@utils/classes";
+import { types } from "constants/resourcesTypes";
 import type { GetServerSideProps, NextPage } from "next";
 import dynamic from "next/dynamic";
 import Image from "next/image";
@@ -25,20 +26,6 @@ const Select: any = dynamic(() => import("react-select/creatable") as any, {
   ssr: false,
 });
 
-const types = [
-  {
-    label: "Objet physique",
-    value: "physical_item",
-  },
-  {
-    label: "Emplacement GPS",
-    value: "location",
-  },
-  {
-    label: "Lien externe",
-    value: "external_link",
-  },
-];
 
 const ResourceEdit: NextPage<any> = (props: Resource) => {
   const router = useRouter();

@@ -16,7 +16,9 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     });
   } else {
     try {
-      const resources = await Resource.find({});
+      const resources = await Resource.find({
+        validated: true,
+      });
       res.status(200).json({
         data: {
           id: "all",

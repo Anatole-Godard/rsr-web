@@ -10,5 +10,5 @@ export type Channel = {
     users: User[];
     createdAt: Date | string;
     resources: Resource[];
-    photoURL?: string;
+    image?: any;
 }

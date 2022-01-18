@@ -10,6 +10,11 @@ const ChannelSchema = new Schema({
     type: String,
     required: true,
   },
+  slug: {
+    type: String,
+    required: true,
+    unique: true,
+  },
   messages: {
     type: Array,
   },
@@ -23,8 +28,8 @@ const ChannelSchema = new Schema({
   resources: {
     type: Array,
   },
-  photoURL: {
-    type: String,
+  image: {
+    type: Object,
   },
   visibility: {
     type: String,
@@ -35,7 +40,6 @@ const ChannelSchema = new Schema({
     type: String,
   },
 });
-
 
 const Channel =
   mongoose.models.Channel || mongoose.model("Channel", ChannelSchema);

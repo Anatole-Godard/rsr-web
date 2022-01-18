@@ -3,6 +3,7 @@ import User from "@models/User";
 import { genToken } from "@middleware/auth";
 import { NextApiRequest, NextApiResponse } from "next";
 import withDatabase from "@middleware/mongoose";
+const argon2 = require("argon2");
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== "POST") {
@@ -35,7 +36,12 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   }
 
   try {
-    const user = await User.create({ email, password, birthDate, fullName });
+    const user = await User.create({
+      email,
+      password: await argon2.hash(password),
+      birthDate,
+      fullName,
+    });
     const token = genToken({ uid: user._id, role: user.role });
 
     const session = await SessionToken.findOneAndUpdate(

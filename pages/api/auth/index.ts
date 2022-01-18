@@ -3,6 +3,7 @@ import { genToken } from "@middleware/auth";
 import type { NextApiRequest, NextApiResponse } from "next";
 import SessionToken from "@models/SessionToken";
 import withDatabase from "@middleware/mongoose";
+const argon2 = require("argon2");
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== "POST") {
@@ -36,13 +37,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 
   try {
     const user = await User.findOne({ email }).lean();
-    if (user.password !== password) {
-      // TODO : hash password
-      return res.status(400).json({
-        error: "InvalidCredentialsError",
-        message: "Invalid email or password",
-      });
-    } else {
+    if (await argon2.verify(user.password, password)) {
       const token = genToken({ uid: user.id, role: user.role });
 
       const session = await SessionToken.findOneAndUpdate(
@@ -57,7 +52,23 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         { upsert: true, new: true }
       );
 
-      return res.status(200).json({ session, data: user });
+      return res.status(200).json({
+        session,
+        data: {
+          _id: user._id,
+          uid: user._id,
+          fullName: user.fullName,
+          birthDate: user.birthDate,
+          email: user.email,
+          photoURL: user.photoURL,
+          createdAt: user.createdAt,
+        },
+      });
+    } else {
+      return res.status(400).json({
+        error: "InvalidCredentialsError",
+        message: "Invalid email or password",
+      });
     }
   } catch (err) {
     return res.status(500).json({

@@ -14,7 +14,6 @@ import {
   HandIcon,
   LocationMarkerIcon,
 } from "@heroicons/react/solid";
-import { fakeResource } from "@utils/faker.dev";
 import { GetServerSideProps, NextPage } from "next";
 import { useState } from "react";
 

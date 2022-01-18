@@ -59,7 +59,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         {
           fullName: user.fullName,
           photoURL: user.photoURL,
-          uid: user.uid,
+          uid: user._id,
         },
       ],
       visibility,
@@ -67,7 +67,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       owner: {
         fullName: user.fullName,
         photoURL: user.photoURL,
-        uid: user.uid,
+        uid: user._id,
       },
     });
 
@@ -75,9 +75,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       data: {
         message: "ok",
         type: "channel",
-        attributes: {
-          channel,
-        },
+        attributes: channel,
         payload: {
           ...req.body,
         },

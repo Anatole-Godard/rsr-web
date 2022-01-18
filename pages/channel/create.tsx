@@ -60,14 +60,35 @@ const ChannelCreate: NextPage<any> = ({
             })),
           }),
         });
-        setRequestOk(response.ok);
+
         const body = await response.json();
-        console.log(body);
+        if (response.ok && pictureFile) {
+          const fd = new FormData();
+          fd.append("file", pictureFile);
+          fd.append("name", pictureFile.name);
+          fd.append("type", pictureFile.type);
+          fd.append("size", pictureFile.size.toString());
+          const responseFileUpload = await fetch(
+            `/api/channel/${body.data.attributes.slug}/upload`,
+            {
+              method: "POST",
+              body: fd,
+            }
+          );
+          if (!responseFileUpload.ok) {
+            setRequestOk(false);
+          } else {
+            router.push(`/resource/${body.data.attributes.slug}`);
+            setRequestOk(true);
+          }
+        } else if (response.ok && !pictureFile) {
+          router.push(`/resource/${body.data.attributes.slug}`);
+          setRequestOk(true);
+        }
       } catch (err) {
         console.log(err);
       }
       setLoading(false);
-      // router.push(`/resource/${body.slug}`);
     }
   };
 
@@ -318,25 +339,11 @@ const ChannelCreate: NextPage<any> = ({
 export default ChannelCreate;
 
 export async function getServerSideProps() {
+  const users = await (await fetch("http://localhost:3000/api/user")).json();
+
   return {
     props: {
-      membersOptions: [
-        {
-          fullName: "John Doe",
-          uid: "uid-1",
-          photoURL: "https://picsum.photos/200",
-        },
-        {
-          fullName: "Jane Doe",
-          uid: "uid-2",
-          photoURL: "https://picsum.photos/201",
-        },
-        {
-          fullName: "Jack Doe",
-          uid: "uid-3",
-          photoURL: "https://picsum.photos/202",
-        },
-      ],
+      membersOptions: users?.data?.attributes,
     },
   };
 }
