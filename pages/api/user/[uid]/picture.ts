@@ -1,14 +1,13 @@
 import { withAuth } from "@middleware/auth";
 import withDatabase from "@middleware/mongoose";
-import Resource from "@models/Resource";
+import User from "@models/User";
 import { handleError } from "@utils/handleError";
-import { ResourceType, types } from "constants/resourcesTypes";
 import { NextApiRequest, NextApiResponse } from "next";
 const fs = require("fs").promises;
 const formidable = require("formidable");
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
-  const { slug } = req.query;
+  const { uid } = req.query;
   const form = new formidable.IncomingForm();
 
   form.parse(
@@ -29,13 +28,13 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         return;
       }
 
-      if (!slug) {
+      if (!uid) {
         res.status(400).json({
           data: null,
           error: {
             code: 400,
             message: "bad request",
-            fields: { slug },
+            fields: { uid },
           },
         });
         return;
@@ -52,9 +51,9 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         return;
       }
 
-      const resource = await Resource.findOne({ slug });
+      const user = await User.findOne({ _id: uid });
 
-      if (!resource) {
+      if (!user) {
         res.status(404).json({
           data: null,
           error: {
@@ -65,42 +64,22 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         return;
       }
 
-      if (
-        types.find((type: ResourceType) => type.value === resource.data.type) === undefined ||
-        !types.find((type: ResourceType) => type.value === resource.data.type).hasImage
-      ) {
-        res.status(400).json({
-          data: null,
-          error: {
-            code: 400,
-            message: "bad request",
-            fields: {
-              type: resource.data.type,
-            },
-          },
-        });
-        return;
-      }
-
       try {
         await fs.writeFile(
-          `/app/public/uploads/resource/${resource.slug}.${fields.name.split(".").at(-1)}`,
+          `/app/public/uploads/user/${uid}.${fields.name.split(".").at(-1)}`,
           await fs.readFile(files.file.filepath)
         );
-        resource.data.attributes.properties.image = {
-          ...fields,
-          url: `/uploads/resource/${resource.slug}.${fields.name.split(".").at(-1)}`,
-        };
-        await resource.save();
+        user.photoURL = `/uploads/user/${uid}.${fields.name.split(".").at(-1)}`
+        await user.save();
 
         res.status(200).json({
           data: {
-            attributes: resource,
+            attributes: user,
           },
           error: null,
         });
       } catch (err) {
-        handleError(res, err, "resource/upload");
+        handleError(res, err, "user/picture");
       }
     }
   );

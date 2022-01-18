@@ -1,3 +1,4 @@
+import { withAuth } from "@middleware/auth";
 import withDatabase from "@middleware/mongoose";
 import Channel from "@models/Channel";
 import { handleError } from "@utils/handleError";
@@ -87,7 +88,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   );
 }
 
-export default withDatabase(handler);
+export default withAuth(withDatabase(handler));
 
 export const config = {
   api: {

@@ -12,9 +12,13 @@ import {
   MoonIcon,
   SunIcon,
   UserAddIcon,
-  UserIcon,
 } from "@heroicons/react/outline";
+
+import { UserIcon } from "@heroicons/react/solid";
+
 import { useAuth } from "@hooks/useAuth";
+import { classes } from "@utils/classes";
+import Image from "next/image";
 
 export const UserDropdown = () => {
   const { user, signOut } = useAuth();
@@ -27,22 +31,39 @@ export const UserDropdown = () => {
           <Menu.Button>
             <div className="flex items-center">
               {user ? (
-                <span className="inline-flex items-center justify-center w-8 h-8 text-sm rounded-full">
-                  <img
-                    alt={user.data.fullName}
-                    className="w-full h-full align-middle border-none rounded-full select-none "
-                    src={
-                      user.data.photoURL
-                        ? user.data.photoURL
-                        : "https://ui-avatars.com/api/?name=" +
-                          user.data.fullName +
-                          "&color=007bff&background=054880"
-                    }
-                  />
+                <span
+                  className={classes(
+                    "inline-flex items-center justify-center w-8 h-8 text-sm duration-300  rounded-full hover:bg-gray-300 active:bg-gray-100",
+                    open ? "bg-gray-300" : "bg-gray-200"
+                  )}
+                >
+                  <div className="w-5/6 align-middle border-none rounded-full select-none h-5/6 ">
+                    <Image
+                      layout="responsive"
+                      alt={user.data.fullName}
+                      width={24}
+                      height={24}
+                      src={
+                        user.data.photoURL
+                          ? user.data.photoURL
+                          : "https://ui-avatars.com/api/?name=" +
+                            user.data.fullName +
+                            "&color=007bff&background=054880"
+                      }
+                    />
+                  </div>
                 </span>
               ) : (
-                <span className="flex items-center justify-center w-8 h-8 text-sm transition duration-150 ease-in-out bg-blue-200 rounded-full dark:bg-blue-800 focus:outline-none focus:border-gray-300 dark:border-gray-800">
-                  <UserIcon className="w-5 h-5 text-blue-500" />
+                <span
+                  className={classes(
+                    "flex items-center justify-center h-8 px-2 text-sm transition duration-150 ease-in-out rounded-full min-w-min dark:bg-blue-800 focus:outline-none focus:border-gray-300 dark:border-gray-800 active:bg-blue-300 hover:bg-blue-100",
+                    open ? "bg-blue-100" : "bg-blue-200 "
+                  )}
+                >
+                  <UserIcon className="w-4 h-4 mr-1 text-blue-500" />
+                  <span className="text-xs font-semibold text-blue-500">
+                    Se connecter
+                  </span>
                 </span>
               )}
             </div>
@@ -90,19 +111,20 @@ export const UserDropdown = () => {
                     Déconnexion
                   </a>
 
-                  {user.data.role === "admin" ||true && (
-                    <>
-                      <div className="block px-4 py-2 text-xs text-gray-400">
-                        Administration de la plateforme
-                      </div>
-                      <Link href="/admin">
-                        <a className="inline-flex items-center w-full px-4 py-2 text-sm leading-5 text-gray-700 transition duration-150 ease-in-out dark:text-gray-300 hover:text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-800">
-                          <CogIcon className="w-6 h-6 pr-2 mr-2 text-center border-r border-gray-200 dark:border-gray-800 " />
-                          Administration
-                        </a>
-                      </Link>
-                    </>
-                  )}
+                  {user.data.role === "admin" ||
+                    (true && (
+                      <>
+                        <div className="block px-4 py-2 text-xs text-gray-400">
+                          Administration de la plateforme
+                        </div>
+                        <Link href="/admin">
+                          <a className="inline-flex items-center w-full px-4 py-2 text-sm leading-5 text-gray-700 transition duration-150 ease-in-out dark:text-gray-300 hover:text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-800">
+                            <CogIcon className="w-6 h-6 pr-2 mr-2 text-center border-r border-gray-200 dark:border-gray-800 " />
+                            Administration
+                          </a>
+                        </Link>
+                      </>
+                    ))}
                 </>
               ) : (
                 <>
