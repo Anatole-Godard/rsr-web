@@ -11,6 +11,7 @@ import { useAuth } from "@hooks/useAuth";
 import { makeRequest } from "@utils/asyncXHR";
 import { classes } from "@utils/classes";
 import { fetchRSR } from "@utils/fetchRSR";
+import { types } from "constants/resourcesTypes";
 import type { NextPage } from "next";
 import dynamic from "next/dynamic";
 import Image from "next/image";
@@ -24,21 +25,6 @@ const Map: any = dynamic(() => import("@components/map/Map") as any, {
 const Select: any = dynamic(() => import("react-select/creatable") as any, {
   ssr: false,
 });
-
-const types = [
-  {
-    label: "Objet physique",
-    value: "physical_item",
-  },
-  {
-    label: "Emplacement GPS",
-    value: "location",
-  },
-  {
-    label: "Lien externe",
-    value: "external_link",
-  },
-];
 
 const ResourceCreate: NextPage<any> = () => {
   const router = useRouter();
@@ -77,7 +63,7 @@ const ResourceCreate: NextPage<any> = () => {
           description,
           price,
           category,
-          photoURL: pictureUrl,
+          photoURL: null,
         },
       };
     } else if (type.value === "location") {
@@ -98,7 +84,7 @@ const ResourceCreate: NextPage<any> = () => {
           name,
           description,
           externalLink,
-          image: pictureUrl,
+          image: null,
         },
       };
     }
@@ -151,15 +137,18 @@ const ResourceCreate: NextPage<any> = () => {
           );
           if (!responseFileUpload.ok) {
             setRequestOk(false);
-          } else setRequestOk(true);
+          } else {
+            setRequestOk(true);
+            router.push(`/resource/${body.data.attributes.slug}`);
+          }
         } else if (response.ok && !pictureFile) {
           setRequestOk(true);
+          router.push(`/resource/${body.data.attributes.slug}`);
         }
       } catch (err) {
         console.log(err);
       }
       setLoading(false);
-      // router.push(`/resource/${body.slug}`);
     }
   };
 

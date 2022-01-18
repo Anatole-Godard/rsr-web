@@ -61,7 +61,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       owner: {
         fullName: user.fullName,
         photoURL: user.photoURL,
-        uid: user.uid,
+        uid: user._id,
       },
     });
 

@@ -5,6 +5,7 @@ const ResourceSchema = new Schema({
   slug: {
     type: String,
     required: true,
+    unique: true,
   },
   owner: {
     type: Object,
