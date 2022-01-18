@@ -3,9 +3,9 @@ import { AppLayout } from "@components/layouts/AppLayout";
 import { GetServerSideProps, NextPage } from "next";
 
 const Channel: NextPage<any> = ({
-  channels,
+  sideBarChannels,
 }: {
-  channels: {
+  sideBarChannels: {
     slug: string;
     name: string;
     messages: {
@@ -18,7 +18,7 @@ const Channel: NextPage<any> = ({
   return (
     <AppLayout sidebar={{ size: "small" }}>
       <div className="flex flex-col w-full h-full max-h-[calc(100vh-4rem)] xl:flex-row">
-        <Sidebar channels={channels} canExpand isExpanded canReturn={false} />
+        <Sidebar channels={sideBarChannels} canExpand isExpanded canReturn={false} />
       </div>
     </AppLayout>
   );
@@ -27,31 +27,19 @@ const Channel: NextPage<any> = ({
 export default Channel;
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
+  const channels = await (
+    await fetch("http://localhost:3000/api/channel/")
+  ).json();
+
   return {
     props: {
-      channels: [
-        {
-          slug: "general",
-          name: "General",
-          photoURL: "https://picsum.photos/200",
-        },
-        {
-          slug: "random",
-          name: "Random",
-          photoURL: "https://picsum.photos/201",
-        },
-        {
-          slug: "cool",
-          name: "Cool",
-          photoURL: "https://picsum.photos/202",
-        },
-        {
-          slug: "fun",
-          name: "Fun",
-          photoURL: "https://picsum.photos/203",
-        },
-        
-      ],
+      sideBarChannels: channels?.data?.attributes?.map(
+        (e: { slug: string; name: string; image?: { url: string } }) => ({
+          slug: e.slug,
+          name: e.name,
+          photoURL: e.image?.url || "https://via.placeholder.com/150",
+        })
+      ),
     },
   };
 };
