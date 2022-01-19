@@ -1,19 +1,53 @@
+import { useAuth } from "@hooks/useAuth";
+import { fetchRSR } from "@utils/fetchRSR";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import zxcvbn from "zxcvbn";
 
 export const ChangePassword = () => {
+  const { user } = useAuth();
+
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
   const [passwordScore, setPasswordScore] = useState(0);
+
+  const [loading, setLoading] = useState(false);
+
   useEffect(() => {
     if (newPassword) {
       const score = zxcvbn(newPassword).score;
       setPasswordScore(score);
     }
   }, [newPassword]);
+
+  const post = async () => {
+    if (
+      oldPassword &&
+      newPassword &&
+      confirmPassword &&
+      newPassword !== "" &&
+      newPassword === confirmPassword &&
+      newPassword !== oldPassword
+    ) {
+      setLoading(true);
+      const res = await fetchRSR("/api/auth/change-password", user.session, {
+        method: "POST",
+        body: JSON.stringify({
+          oldPassword,
+          newPassword,
+        }),
+      });
+
+      if (res.ok) {
+        alert("Mot de passe modifié");
+      } else {
+        alert(JSON.stringify(await res.json()));
+      }
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="flex flex-col p-4 space-y-3 bg-white rounded-lg">
@@ -86,7 +120,32 @@ export const ChangePassword = () => {
         ></input>
       </label>
       <div className="inline-flex justify-end w-full pt-3 mt-3">
-        <button className="btn-green">Envoyer</button>
+        <button className="btn-green" onClick={post}>
+          {loading ? (
+            <svg
+              className="w-5 h-5 text-white animate-spin"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <circle
+                className="opacity-25"
+                cx={12}
+                cy={12}
+                r={10}
+                stroke="currentColor"
+                strokeWidth={4}
+              />
+              <path
+                className="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+              />
+            </svg>
+          ) : (
+            <>Envoyer</>
+          )}
+        </button>
       </div>
     </div>
   );
