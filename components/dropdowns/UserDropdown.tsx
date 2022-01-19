@@ -43,8 +43,8 @@ export const UserDropdown = () => {
                     <Image
                       layout="responsive"
                       alt={user.data.fullName}
-                      width={24}
-                      height={24}
+                      width={16}
+                      height={16}
                       src={
                         user.data.photoURL
                           ? user.data.photoURL
