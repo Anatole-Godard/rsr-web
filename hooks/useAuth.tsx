@@ -1,6 +1,7 @@
 import { fetchRSR } from "@utils/fetchRSR";
 import { useRouter } from "next/router";
 import React, { createContext, useContext, useState, useEffect } from "react";
+import { useCookies } from "react-cookie";
 const AuthContext = createContext({});
 
 /**
@@ -16,7 +17,8 @@ function AuthProvider({
 }: {
   children: React.ReactNode;
 }): JSX.Element {
-  const [user, setUser] = useState<any | null>(null);
+  const [cookie, setCookie, removeCookie] = useCookies(["user"]);
+  const [user, setUser] = useState<any | null>(cookie.user || null);
   const [history, setHistory] = useState([]);
   const router = useRouter();
 
@@ -37,6 +39,11 @@ function AuthProvider({
     });
     const body = await response.json();
     if (response.ok && body.session && body.data) {
+      setCookie("user", JSON.stringify(body), {
+        path: "/",
+        maxAge: 3600 * 24, // Expires after 1day
+        sameSite: true,
+      });
       setUser(body);
       router.push(getLastUrl());
     } else setUser(null);
@@ -47,6 +54,7 @@ function AuthProvider({
       method: "POST",
     });
     if (response.ok) {
+      removeCookie("user", { path: "/" });
       setUser(null);
       router.push("/");
     }
@@ -69,12 +77,17 @@ function AuthProvider({
     const body = await response.json();
     if (response.ok && body.session && body.data) {
       setUser(body);
+      setCookie("user", JSON.stringify(body), {
+        path: "/",
+        maxAge: 3600 * 24, // Expires after 1day
+        sameSite: true,
+      });
       router.push(getLastUrl());
     } else setUser(null);
   };
 
   useEffect(() => {
-    setHistory([...history, window.location.pathname]);
+    setHistory((oldHistory) => [...oldHistory, window.location.pathname]);
   }, []);
 
   return (
