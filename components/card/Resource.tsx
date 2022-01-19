@@ -1,6 +1,15 @@
 import { ChipList } from "@components/ui/ChipList";
-import { Resource } from "@definitions/Resource";
+import { Resource } from "@definitions/Resource/Resource";
+import {
+  ExternalLinkIcon,
+  HandIcon,
+  LocationMarkerIcon,
+} from "@heroicons/react/outline";
 import { ShareIcon } from "@heroicons/react/solid";
+import { classes } from "@utils/classes";
+import { types } from "constants/resourcesTypes";
+import { formatDistance } from "date-fns";
+import { fr } from "date-fns/locale";
 import Link from "next/link";
 
 export const ResourceCard = (props: Resource) => {
@@ -24,7 +33,7 @@ export const ResourceCard = (props: Resource) => {
       </Link>
       <div className="inline-flex p-3">
         <div className="inline-flex overflow-x-hidden grow">
-          <ChipList list={props.tags || []} size="small" color="blue"/>
+          <ChipList list={props.tags || []} size="small" color="blue" />
         </div>
         <button
           onClick={() => {
@@ -52,5 +61,84 @@ export const ResourceCard = (props: Resource) => {
         </button>
       </div>
     </div>
+  );
+};
+
+export const ResourceCardSmall = (props: Resource) => {
+  const { data, slug, createdAt } = props;
+  const {
+    attributes: { properties },
+    type,
+  } = data;
+  const { name } = properties;
+  return (
+    <Link href={`/resource/${slug}`}>
+      <a
+        className={classes(
+          "p-3 rounded-md h-24 w-72 inline-flex group duration-300",
+          type === "location" &&
+            "bg-indigo-100 hover:bg-indigo-200 dark:bg-indigo-800",
+          type === "physical_item" &&
+            "bg-emerald-100 hover:bg-emerald-200 dark:bg-emerald-800",
+          type === "external_link" &&
+            "bg-amber-100 hover:bg-amber-200 dark:bg-amber-800"
+        )}
+      >
+        <div
+          className={classes(
+            "h-full aspect-square rounded-md flex items-center justify-center duration-300",
+            type === "location" &&
+              "bg-indigo-200 group-hover:bg-indigo-300 dark:bg-indigo-800",
+            type === "physical_item" &&
+              "bg-emerald-200 group-hover:bg-emerald-300 dark:bg-emerald-800",
+            type === "external_link" &&
+              "bg-amber-200 group-hover:bg-amber-300 dark:bg-amber-800"
+          )}
+        >
+          {type === "location" && (
+            <LocationMarkerIcon className="w-6 h-6 text-indigo-700" />
+          )}
+          {type === "physical_item" && (
+            <HandIcon className="w-6 h-6 text-emerald-700" />
+          )}
+          {type === "external_link" && (
+            <ExternalLinkIcon className="w-6 h-6 text-amber-700" />
+          )}
+        </div>
+        <div className="flex-col ml-3">
+          <h3
+            className={classes(
+              "font-semibold font-marianne capitalize text-lg text-ellipsis",
+              type === "location" && "text-indigo-800",
+              type === "physical_item" && "text-emerald-800",
+              type === "external_link" && "text-amber-800"
+            )}
+          >
+            {name}
+          </h3>
+          <p
+            className={classes(
+              "font-normal font-spectral text-sm",
+              type === "location" && "text-indigo-600",
+              type === "physical_item" && "text-emerald-600",
+              type === "external_link" && "text-amber-600"
+            )}
+          >
+            {types.find((t) => t.value === type)?.label}
+          </p>
+          <p
+            className={classes(
+              "font-normal font-spectral text-sm",
+              type === "location" && "text-indigo-600",
+              type === "physical_item" && "text-emerald-600",
+              type === "external_link" && "text-amber-600"
+            )}
+          >
+            {formatDistance(new Date(createdAt), new Date(), { locale: fr })}
+            
+          </p>
+        </div>
+      </a>
+    </Link>
   );
 };

@@ -28,7 +28,7 @@ export const Navbar: React.FC<any> = ({
 const Search = () => (
   <div className="items-center hidden w-2/5 px-2 text-gray-500 transition duration-300 ease-in-out bg-gray-100 rounded-md md:flex dark:bg-gray-800 h-9 focus-within:bg-gray-200 font-marianne ring-offset-2 ring-blue-500 focus-within:ring-2">
     <input
-      className="w-full pl-1 font-bold text-gray-500 placeholder-gray-500 bg-transparent rounded outline-none"
+      className="w-full pl-1 font-bold text-gray-500 placeholder-gray-500 bg-transparent rounded outline-none text-ellipsis"
       type="text"
       placeholder="Rechercher une ressource, un canal, un utilisateur..."
     />

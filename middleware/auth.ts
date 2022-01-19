@@ -1,3 +1,4 @@
+import SessionToken from "@models/SessionToken";
 import jwt from "jsonwebtoken";
 import { NextApiRequest, NextApiResponse } from "next";
 
@@ -32,12 +33,19 @@ export const genToken = (userData: { uid: string; role: string }) => ({
 export const parseAuthorization = (authorization: string | undefined) =>
   authorization != null ? authorization.replace("Bearer ", "") : null;
 
-export const isTokenValid = (
+export const isTokenValid = async (
   authorization: string | undefined,
   req: NextApiRequest,
   res: NextApiResponse
 ) => {
   const token = parseAuthorization(authorization);
+  if (!(await SessionToken.exists({ token }))) {
+    // res.redirect("/login"); //TODO: redirect to login page
+    return res.status(401).json({
+      error: "TokenInexistantError",
+      message: "Token does not exist",
+    });
+  }
   if (token !== null) {
     return jwt.verify(token, process.env.JWT_SECRET as string, (err) => {
       if (err) {
@@ -62,21 +70,11 @@ export const isTokenValid = (
   return false;
 };
 
-export const isTokenValid_middleware = (
-  req: NextApiRequest,
-  res: NextApiResponse,
-  next: Function
-) => {
-  const headerAuth = req.headers.authorization;
-  const validation = isTokenValid(headerAuth, req, res);
-  if (validation) next();
-};
-
 export const withAuth =
   (handler: Function) => async (req: NextApiRequest, res: NextApiResponse) => {
     const headerAuth = req.headers.authorization;
     const validation = isTokenValid(headerAuth, req, res);
-    if (validation || req.headers.host === "localhost:3000") {
+    if (validation) {
       return handler(req, res);
     }
     return res.status(403).json({

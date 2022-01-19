@@ -14,11 +14,13 @@ import {
   UserAddIcon,
 } from "@heroicons/react/outline";
 
-import { UserIcon } from "@heroicons/react/solid";
+import { ArrowRightIcon, UserIcon } from "@heroicons/react/solid";
 
 import { useAuth } from "@hooks/useAuth";
 import { classes } from "@utils/classes";
 import Image from "next/image";
+import { formatDistance } from "date-fns";
+import { fr } from "date-fns/locale";
 
 export const UserDropdown = () => {
   const { user, signOut } = useAuth();
@@ -60,8 +62,8 @@ export const UserDropdown = () => {
                     open ? "bg-blue-100" : "bg-blue-200 "
                   )}
                 >
-                  <UserIcon className="w-4 h-4 mr-1 text-blue-500" />
-                  <span className="text-xs font-semibold text-blue-500">
+                  <UserIcon className="w-4 h-4 text-blue-500 lg:mr-1" />
+                  <span className="hidden text-xs font-semibold text-blue-500 lg:block">
                     Se connecter
                   </span>
                 </span>
@@ -85,20 +87,34 @@ export const UserDropdown = () => {
             >
               {user ? (
                 <>
-                  <Link href={"/profile/" + user.data.uid}>
-                    <a className="flex flex-col items-center justify-center w-full min-h-[6rem] px-2 py-4 duration-300 rounded-t-xl hover:bg-blue-50 dark:hover:bg-blue-900">
-                      <div className="relative flex items-center justify-center w-16 h-16 m-1 mr-2 text-xl text-white bg-white rounded-full">
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img
-                          className="object-cover h-full rounded-full"
-                          alt={user.data.fullName}
-                          src={user.data.photoURL}
-                        />
+                  <Link href="/user">
+                    <a className="inline-flex justify-between items-center  w-full min-h-[6rem] px-2 py-4 duration-300 rounded-t-xl hover:bg-blue-50 dark:hover:bg-blue-900 border-b border-gray-100 ">
+                      <div className="inline-flex items-center">
+                        <div className="relative flex items-center justify-center w-12 h-12 m-1 mr-2 text-xl text-white bg-white rounded-full shrink-0">
+                          <Image
+                            alt={user.data.fullName}
+                            layout="fill"
+                            src={
+                              user.data.photoURL || "/uploads/user/default.png"
+                            }
+                          />
+                        </div>
+                        <div className="flex flex-col px-1 space-y-1">
+                          <span className="text-sm font-marianne font-medium overflow-ellipsis tracking-tight leading-[1.12rem] text-gray-800 dark:text-gray-200">
+                            {user.data.fullName || "Name not provided"}
+                          </span>
+                          <span className="text-xs font-normal text-gray-600 font-marianne overflow-ellipsis dark:text-gray-200">
+                            inscrit il y a{" "}
+                            {formatDistance(
+                              new Date(user.data.createdAt),
+                              new Date(),
+                              { locale: fr }
+                            )}
+                          </span>
+                        </div>
                       </div>
-                      <div className="flex flex-col items-center justify-center w-full px-1">
-                        <span className="text-[0.7rem] overflow-ellipsis text-center tracking-tight leading-[1.12rem] text-gray-800 dark:text-gray-200">
-                          {user.data.fullName || "Name not provided"}
-                        </span>
+                      <div className="pr-3">
+                        <ArrowRightIcon className="w-4 h-4 text-gray-600 dark:text-gray-200" />
                       </div>
                     </a>
                   </Link>

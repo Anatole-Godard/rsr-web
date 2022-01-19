@@ -13,16 +13,11 @@ export const fetchRSR = async (
 ): Promise<Response> => {
   try {
     return fetch(url, {
-      /*
-       * - WTF is this? *
-       * - Mybad I'm so dumb -
-       * - Sorry, it's late -
-       */
       ...options,
       headers: {
+        Authorization: "Bearer " + session.token,
         ...options?.headers,
         appsource: "web",
-        Authorization: "Bearer " + session.token,
         "Content-Type": "application/json",
         uid: session.uid,
       },

@@ -9,6 +9,7 @@ import {
   HeartIcon,
   PaperAirplaneIcon,
 } from "@heroicons/react/outline";
+import { types } from "constants/resourcesTypes";
 import { formatDistanceToNow } from "date-fns";
 import { fr } from "date-fns/locale";
 
@@ -39,14 +40,7 @@ export const ChannelResource: React.FC<any> = ({
         <div className="inline-flex justify-between">
           <div className="flex flex-col">
             <small className="-mb-2 text-xs text-gray-400 uppercase select-none font-spectral">
-              Ressource -{" "}
-              {data.type === "location"
-                ? "Emplacement"
-                : data.type === "external_link"
-                ? "Lien externe"
-                : data.type === "physical_item"
-                ? "Objet"
-                : ""}
+              Ressource - {types.find((t) => t.value === data.type)?.label}
             </small>
             <h4 className="text-xl font-extrabold xl:text-2xl font-marianne">
               {data.type === "location"

@@ -69,7 +69,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
           `/app/public/uploads/user/${uid}.${fields.name.split(".").at(-1)}`,
           await fs.readFile(files.file.filepath)
         );
-        user.photoURL = `/uploads/user/${uid}.${fields.name.split(".").at(-1)}`
+        user.photoURL = `/uploads/user/${uid}.${fields.name.split(".").at(-1)}`;
         await user.save();
 
         res.status(200).json({
@@ -85,7 +85,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   );
 }
 
-export default withAuth(withDatabase(handler));
+export default withDatabase(handler);
 
 export const config = {
   api: {

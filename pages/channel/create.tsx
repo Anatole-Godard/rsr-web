@@ -110,7 +110,7 @@ const ChannelCreate: NextPage<any> = ({
           <div className="inline-flex items-end justify-between w-full">
             <div className="flex flex-col space-y-2">
               <div className="w-auto h-auto">
-                <Image src="/img/partypopper.png" width={64} height={64} />
+                <Image src="/img/partypopper.png" width={64} height={64} alt="Partypopper" />
               </div>
               <h3 className="mb-2 text-2xl font-extrabold text-gray-800 font-marianne dark:text-gray-200">
                 Créer
@@ -213,6 +213,7 @@ const ChannelCreate: NextPage<any> = ({
                   photoURL: string;
                 }) => (
                   <div className="inline-flex items-center">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
                       src={member.photoURL}
                       alt={member.label}
