@@ -7,30 +7,26 @@ import { Resource } from "@definitions/Resource/Resource";
 import { useAuth } from "@hooks/useAuth";
 import { NextPage } from "next";
 import Image from "next/image";
-import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 const UserIndexPage: NextPage = () => {
   const { user } = useAuth();
-  const router = useRouter();
   const [resources, setResources] = useState<Resource[]>([]);
 
   useEffect(() => {
-    if (!user) router.push("/auth/login");
-
-    if (user) {
-      fetch(
-        `${process.env.API_URL || "http://localhost:3000/api"}/user/${user.data.uid}`
-      )
-        .then((res) => res.json())
-        .then((body) => {
-          setResources(body?.data.attributes.resources);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
-  }, [router, user]);
+    fetch(
+      `${process.env.API_URL || "http://localhost:3000/api"}/user/${
+        user.data.uid
+      }`
+    )
+      .then((res) => res.json())
+      .then((body) => {
+        setResources(body?.data.attributes.resources);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [user]);
 
   return (
     <AppLayout>
@@ -67,3 +63,17 @@ const UserIndexPage: NextPage = () => {
 };
 
 export default UserIndexPage;
+
+export const getServerSideProps = async (ctx) => {
+  const {
+    cookies: { user },
+  } = ctx.req;
+  if (!user)
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/auth/login",
+      },
+    };
+  return { props: {} };
+};

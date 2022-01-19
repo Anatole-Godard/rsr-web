@@ -110,7 +110,12 @@ const ChannelCreate: NextPage<any> = ({
           <div className="inline-flex items-end justify-between w-full">
             <div className="flex flex-col space-y-2">
               <div className="w-auto h-auto">
-                <Image src="/img/partypopper.png" width={64} height={64} alt="Partypopper" />
+                <Image
+                  src="/img/partypopper.png"
+                  width={64}
+                  height={64}
+                  alt="Partypopper"
+                />
               </div>
               <h3 className="mb-2 text-2xl font-extrabold text-gray-800 font-marianne dark:text-gray-200">
                 Créer
@@ -339,9 +344,18 @@ const ChannelCreate: NextPage<any> = ({
 
 export default ChannelCreate;
 
-export async function getServerSideProps() {
+export async function getServerSideProps(ctx) {
+  const {
+    cookies: { user },
+  } = ctx.req;
+  if (!user)
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/auth/login",
+      },
+    };
   const users = await (await fetch("http://localhost:3000/api/user")).json();
-
   return {
     props: {
       membersOptions: users?.data?.attributes,

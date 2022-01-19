@@ -469,6 +469,17 @@ const ResourceEdit: NextPage<any> = (props: Resource) => {
 
 export default ResourceEdit;
 export const getServerSideProps: GetServerSideProps = async (context) => {
+  const {
+    cookies: { user },
+  } = context.req;
+  if (!user)
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/auth/login",
+      },
+    };
+
   const res = await fetch(
     "http://localhost:3000/api/resource/" + context.params.slug
   );
