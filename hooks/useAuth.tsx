@@ -53,6 +53,13 @@ function AuthProvider({
     const response = await fetchRSR("/api/auth/revoke", user.session, {
       method: "POST",
     });
+    const body = await response.json();
+    if (body.error) {
+      removeCookie("user", { path: "/" });
+      setUser(null);
+      router.push("/");
+    }
+
     if (response.ok) {
       removeCookie("user", { path: "/" });
       setUser(null);
@@ -86,12 +93,36 @@ function AuthProvider({
     } else setUser(null);
   };
 
+  const removeUser = (redirect = "/", flash?: string) => {
+    removeCookie("user", { path: "/" });
+    setUser(null);
+    router.push(redirect);
+  };
+
+  const changePicture = async (picture: string) => {
+    setUser({
+      ...user,
+      data: { ...user.data, photoURL: `${picture}?${Date.now()}` },
+    });
+    setCookie(
+      "user",
+      JSON.stringify({ ...user, photoURL: `${picture}?${Date.now()}` }),
+      {
+        path: "/",
+        maxAge: 3600 * 24, // Expires after 1day
+        sameSite: true,
+      }
+    );
+  };
+
   useEffect(() => {
     setHistory((oldHistory) => [...oldHistory, window.location.pathname]);
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, signIn, signOut, register }}>
+    <AuthContext.Provider
+      value={{ user, signIn, signOut, register, removeUser, changePicture }}
+    >
       {children}
     </AuthContext.Provider>
   );
@@ -107,6 +138,8 @@ interface AuthContextType {
     fullName: string,
     birthDate: string
   ) => void;
+  removeUser: (redirect: string, flash?: string) => void;
+  changePicture: (picture: string) => void;
 }
 
 /**

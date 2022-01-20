@@ -1,15 +1,18 @@
 import { useAuth } from "@hooks/useAuth";
 import { fetchRSR } from "@utils/fetchRSR";
 import Image from "next/image";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import zxcvbn from "zxcvbn";
 
 export const ChangePassword = () => {
-  const { user } = useAuth();
+  const { user, removeUser } = useAuth();
+  const router = useRouter();
 
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [disconnectAll, setDisconnectAll] = useState(false);
 
   const [passwordScore, setPasswordScore] = useState(0);
 
@@ -37,11 +40,13 @@ export const ChangePassword = () => {
         body: JSON.stringify({
           oldPassword,
           newPassword,
+          disconnectAll,
         }),
       });
 
       if (res.ok) {
         alert("Mot de passe modifié");
+        if (disconnectAll) removeUser("/");
       } else {
         alert(JSON.stringify(await res.json()));
       }
@@ -118,6 +123,22 @@ export const ChangePassword = () => {
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}
         ></input>
+      </label>
+      <label className="flex flex-col">
+        <h4 className="mb-1 text-sm font-semibold text-gray-700 font-marianne">
+          Sécurité
+        </h4>
+        <div className="inline-flex items-center my-2 space-x-3">
+          <input
+            type="checkbox"
+            value={disconnectAll as unknown as string}
+            onChange={(e) => setDisconnectAll(e.target.checked)}
+            className="w-4 h-4 duration-200 bg-green-200 border-0 rounded-md appearance-none form-checkbox hover:bg-green-400 dark:bg-green-800 dark:hover:bg-green-700 checked:bg-green-600 checked:border-transparent focus:outline-none focus:bg-green-400 dark:focus:bg-green-900 ring-green-500"
+          />
+          <span className="text-sm font-semibold text-gray-700 font-spectral dark:text-gray-300">
+            Déconnecter de tout les appareils
+          </span>
+        </div>
       </label>
       <div className="inline-flex justify-end w-full pt-3 mt-3">
         <button className="btn-green" onClick={post}>

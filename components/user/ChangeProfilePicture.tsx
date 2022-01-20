@@ -4,25 +4,38 @@ import Image from "next/image";
 import { useState } from "react";
 
 export const ChangeProfilePicture = () => {
-  const { user } = useAuth();
+  const { user, changePicture } = useAuth();
 
   const [pictureUrl, setPictureUrl] = useState(null);
   const [pictureFile, setPictureFile] = useState(null);
 
+  const [loading, setLoading] = useState(false);
+
   const post = async () => {
-    const fd = new FormData();
-    fd.append("file", pictureFile);
-    fd.append("name", pictureFile.name);
-    fd.append("type", pictureFile.type);
-    fd.append("size", pictureFile.size.toString());
-    const responseFileUpload = await fetch(
-      `/api/user/${user.data.uid}/picture`,
-      {
-        method: "POST",
-        body: fd,
+    if (pictureFile) {
+      setLoading(true);
+      const fd = new FormData();
+      fd.append("file", pictureFile);
+      fd.append("name", pictureFile.name);
+      fd.append("type", pictureFile.type);
+      fd.append("size", pictureFile.size.toString());
+      const responseFileUpload = await fetch(
+        `/api/user/${user.data.uid}/picture`,
+        {
+          method: "POST",
+          body: fd,
+        }
+      );
+      if (responseFileUpload.ok) {
+        const body = await responseFileUpload.json();
+        if (body?.data.attributes.photoURL) {
+          changePicture(body.data.attributes.photoURL);
+          setPictureUrl(null);
+          setPictureFile(null);
+        }
       }
-    );
-    // if(responseFileUpload.ok)
+      setLoading(false);
+    }
   };
 
   return (

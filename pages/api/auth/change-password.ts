@@ -9,7 +9,7 @@ const argon2 = require("argon2");
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
-    const { oldPassword, newPassword } = req.body;
+    const { oldPassword, newPassword, disconnectAll } = req.body;
     const user = await User.findOne({ _id: req.headers.uid });
 
     if (!(await argon2.verify(user.password, oldPassword))) {
@@ -21,7 +21,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     user.password = await argon2.hash(newPassword);
     await user.save();
 
-    await SessionToken.deleteMany({ uid: req.headers.uid });
+    if (disconnectAll) await SessionToken.deleteMany({ uid: req.headers.uid });
 
     return res.status(200).json({
       data: { attributes: { message: "Password changed" } },

@@ -51,7 +51,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         return;
       }
 
-      const user = await User.findOne({ _id: uid });
+      const user = await User.findOne({ _id: uid }).select("photoURL");
 
       if (!user) {
         res.status(404).json({

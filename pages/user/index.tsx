@@ -16,7 +16,7 @@ const UserIndexPage: NextPage = () => {
   useEffect(() => {
     fetch(
       `${process.env.API_URL || "http://localhost:3000/api"}/user/${
-        user.data.uid
+        user?.data.uid
       }`
     )
       .then((res) => res.json())

@@ -39,48 +39,34 @@ export const isTokenValid = async (
   res: NextApiResponse
 ) => {
   const token = parseAuthorization(authorization);
-  if (!(await SessionToken.exists({ token }))) {
-    // res.redirect("/login"); //TODO: redirect to login page
-    return res.status(401).json({
-      error: "TokenInexistantError",
-      message: "Token does not exist",
-    });
-  }
+  let result: { valid: boolean; code?: string } = { valid: false };
+
   if (token !== null) {
-    return jwt.verify(token, process.env.JWT_SECRET as string, (err) => {
-      if (err) {
-        if (err.name === "TokenExpiredError") {
-          res.status(401).json({
-            error: err.name,
-            message: err.message,
-            statusCode: res.statusCode,
-          });
-        } else {
-          res.status(403).json({
-            error: err.name,
-            message: err.message,
-            statusCode: res.statusCode,
-          });
-        }
-        return false;
-      }
-      return true;
+    if (!(await SessionToken.exists({ token })))
+      result = { valid: false, code: "TokenDatabaseInexistantError" };
+    jwt.verify(token, process.env.JWT_SECRET as string, (err) => {
+      if (err) result = { valid: false, code: err.name };
+      else result = { valid: true };
     });
-  }
-  return false;
+  } else result = { valid: false, code: "TokenHeaderInexistantError" };
+  return result;
 };
 
 export const withAuth =
   (handler: Function) => async (req: NextApiRequest, res: NextApiResponse) => {
     const headerAuth = req.headers.authorization;
-    const validation = isTokenValid(headerAuth, req, res);
-    if (validation) {
+    const validation = await isTokenValid(headerAuth, req, res);
+    if (validation.valid) {
       return handler(req, res);
-    }
-    return res.status(403).json({
-      message: "Forbidden",
-      statusCode: res.statusCode,
-    });
+    } else
+      return res.status(403).json({
+        data: null,
+        error: {
+          code: 403,
+          name: validation.code,
+          message: "Forbidden",
+        },
+      });
   };
 
 export const refreshTokenHandler = (
