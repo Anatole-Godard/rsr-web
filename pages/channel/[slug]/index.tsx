@@ -174,6 +174,16 @@ const ChannelSlug: NextPage<any> = ({
 export default ChannelSlug;
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
+  const {
+    cookies: { user },
+  } = context.req;
+  if (!user)
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/auth/login",
+      },
+    };
   const channels = await (
     await fetch("http://localhost:3000/api/channel/")
   ).json();
@@ -190,3 +200,4 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     },
   };
 };
+ 

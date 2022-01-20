@@ -1,4 +1,4 @@
-import { Resource } from "@definitions/Resource";
+import { Resource } from "@definitions/Resource/Resource";
 import { Dialog, Transition } from "@headlessui/react";
 import {
   ChatAltIcon,

@@ -88,7 +88,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   );
 }
 
-export default withAuth(withDatabase(handler));
+export default withDatabase(handler);
 
 export const config = {
   api: {

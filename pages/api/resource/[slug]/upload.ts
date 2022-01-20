@@ -66,8 +66,11 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       }
 
       if (
-        types.find((type: ResourceType) => type.value === resource.data.type) === undefined ||
-        !types.find((type: ResourceType) => type.value === resource.data.type).hasImage
+        types.find(
+          (type: ResourceType) => type.value === resource.data.type
+        ) === undefined ||
+        !types.find((type: ResourceType) => type.value === resource.data.type)
+          .hasImage
       ) {
         res.status(400).json({
           data: null,
@@ -84,12 +87,16 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 
       try {
         await fs.writeFile(
-          `/app/public/uploads/resource/${resource.slug}.${fields.name.split(".").at(-1)}`,
+          `/app/public/uploads/resource/${resource.slug}.${fields.name
+            .split(".")
+            .at(-1)}`,
           await fs.readFile(files.file.filepath)
         );
         resource.data.attributes.properties.image = {
           ...fields,
-          url: `/uploads/resource/${resource.slug}.${fields.name.split(".").at(-1)}`,
+          url: `/uploads/resource/${resource.slug}.${fields.name
+            .split(".")
+            .at(-1)}`,
         };
         await resource.save();
 
@@ -106,7 +113,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   );
 }
 
-export default withAuth(withDatabase(handler));
+export default withDatabase(handler);
 
 export const config = {
   api: {

@@ -33,9 +33,9 @@ services:
       ME_CONFIG_MONGODB_ADMINPASSWORD: root
       ME_CONFIG_MONGODB_URL: mongodb://root:root@mongo:27017/
 
-  web-app:
+  app:
     build: "."
-    image: rsr/web-app
+    image: rsr/app
     networks:
         - rsr-network
     restart: always

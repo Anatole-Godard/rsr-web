@@ -17,4 +17,6 @@ export const getUserFromRequest = async (req: NextApiRequest) => {
 };
 
 export const getUser = async (req: NextApiRequest) =>
-  req.headers.uid ? User.findOne({ _id: req.headers.uid }).lean() : null;
+  req.headers.uid
+    ? User.findOne({ _id: req.headers.uid }).select("-password").lean()
+    : null;

@@ -1,3 +1,4 @@
+import SessionToken from "@models/SessionToken";
 import jwt from "jsonwebtoken";
 import { NextApiRequest, NextApiResponse } from "next";
 
@@ -32,57 +33,40 @@ export const genToken = (userData: { uid: string; role: string }) => ({
 export const parseAuthorization = (authorization: string | undefined) =>
   authorization != null ? authorization.replace("Bearer ", "") : null;
 
-export const isTokenValid = (
+export const isTokenValid = async (
   authorization: string | undefined,
   req: NextApiRequest,
   res: NextApiResponse
 ) => {
   const token = parseAuthorization(authorization);
-  if (token !== null) {
-    return jwt.verify(token, process.env.JWT_SECRET as string, (err) => {
-      if (err) {
-        if (err.name === "TokenExpiredError") {
-          res.status(401).json({
-            error: err.name,
-            message: err.message,
-            statusCode: res.statusCode,
-          });
-        } else {
-          res.status(403).json({
-            error: err.name,
-            message: err.message,
-            statusCode: res.statusCode,
-          });
-        }
-        return false;
-      }
-      return true;
-    });
-  }
-  return false;
-};
+  let result: { valid: boolean; code?: string } = { valid: false };
 
-export const isTokenValid_middleware = (
-  req: NextApiRequest,
-  res: NextApiResponse,
-  next: Function
-) => {
-  const headerAuth = req.headers.authorization;
-  const validation = isTokenValid(headerAuth, req, res);
-  if (validation) next();
+  if (token !== null) {
+    if (!(await SessionToken.exists({ token })))
+      result = { valid: false, code: "TokenDatabaseInexistantError" };
+    jwt.verify(token, process.env.JWT_SECRET as string, (err) => {
+      if (err) result = { valid: false, code: err.name };
+      else result = { valid: true };
+    });
+  } else result = { valid: false, code: "TokenHeaderInexistantError" };
+  return result;
 };
 
 export const withAuth =
   (handler: Function) => async (req: NextApiRequest, res: NextApiResponse) => {
     const headerAuth = req.headers.authorization;
-    const validation = isTokenValid(headerAuth, req, res);
-    if (validation || req.headers.host === "localhost:3000") {
+    const validation = await isTokenValid(headerAuth, req, res);
+    if (validation.valid) {
       return handler(req, res);
-    }
-    return res.status(403).json({
-      message: "Forbidden",
-      statusCode: res.statusCode,
-    });
+    } else
+      return res.status(403).json({
+        data: null,
+        error: {
+          code: 403,
+          name: validation.code,
+          message: "Forbidden",
+        },
+      });
   };
 
 export const refreshTokenHandler = (

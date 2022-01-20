@@ -1,3 +1,4 @@
+import { SidebarDropdown } from "@components/dropdowns/SidebarDropdown";
 import { UserDropdown } from "@components/dropdowns/UserDropdown";
 import { Logo } from "@components/ui/Logo";
 import { SearchIcon } from "@heroicons/react/outline";
@@ -17,8 +18,9 @@ export const Navbar: React.FC<any> = ({
     >
       <Logo />
       <Search />
-      <div className="inline-flex items-center justify-end space-x-4 w-72">
+      <div className="inline-flex items-center justify-end pl-6 space-x-4 lg:w-72 shrink-0 lg:pl-0 ">
         {/* <ThemeIcon /> */}
+        <SidebarDropdown />
         <UserDropdown />
       </div>
     </div>
@@ -26,9 +28,9 @@ export const Navbar: React.FC<any> = ({
 };
 
 const Search = () => (
-  <div className="items-center hidden w-2/5 px-2 text-gray-500 transition duration-300 ease-in-out bg-gray-100 rounded-md md:flex dark:bg-gray-800 h-9 focus-within:bg-gray-200 font-marianne ring-offset-2 ring-blue-500 focus-within:ring-2">
+  <div className="inline-flex items-center w-full px-2 text-gray-500 transition duration-300 ease-in-out bg-gray-100 rounded-full grow md:w-3/5 md:rounded-md dark:bg-gray-800 h-9 focus-within:bg-gray-200 font-marianne ring-offset-2 ring-blue-500 focus-within:ring-2">
     <input
-      className="w-full pl-1 font-bold text-gray-500 placeholder-gray-500 bg-transparent rounded outline-none"
+      className="w-full pl-1 pr-3 font-bold text-gray-500 placeholder-gray-500 bg-transparent rounded outline-none placeholder:text-sm placeholder:mb-1 text-ellipsis"
       type="text"
       placeholder="Rechercher une ressource, un canal, un utilisateur..."
     />

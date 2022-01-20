@@ -517,3 +517,17 @@ const ResourceCreate: NextPage<any> = () => {
 };
 
 export default ResourceCreate;
+
+export const getServerSideProps = async (ctx) => {
+  const {
+    cookies: { user },
+  } = ctx.req;
+  if (!user)
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/auth/login",
+      },
+    };
+  return { props: {} };
+};

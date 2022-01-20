@@ -18,7 +18,12 @@ const Channel: NextPage<any> = ({
   return (
     <AppLayout sidebar={{ size: "small" }}>
       <div className="flex flex-col w-full h-full max-h-[calc(100vh-4rem)] xl:flex-row">
-        <Sidebar channels={sideBarChannels} canExpand isExpanded canReturn={false} />
+        <Sidebar
+          channels={sideBarChannels}
+          canExpand
+          isExpanded
+          canReturn={false}
+        />
       </div>
     </AppLayout>
   );
@@ -27,6 +32,16 @@ const Channel: NextPage<any> = ({
 export default Channel;
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
+  const {
+    cookies: { user },
+  } = context.req;
+  if (!user)
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/auth/login",
+      },
+    };
   const channels = await (
     await fetch("http://localhost:3000/api/channel/")
   ).json();

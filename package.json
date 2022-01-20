@@ -16,6 +16,7 @@
     "@types/react-leaflet": "^2.8.2",
     "@types/react-lottie": "^1.2.6",
     "argon2": "^0.28.3",
+    "cookie": "^0.4.1",
     "date-fns": "^2.25.0",
     "dotenv": "^10.0.0",
     "formidable": "^2.0.1",
@@ -28,6 +29,7 @@
     "next-themes": "^0.0.15",
     "qrcode.react": "^1.0.1",
     "react": "17.0.2",
+    "react-cookie": "^4.1.1",
     "react-dom": "17.0.2",
     "react-leaflet": "^3.2.2",
     "react-paginate": "^8.0.0",
@@ -36,6 +38,7 @@
     "slug": "^5.1.0",
     "socket.io": "^4.4.1",
     "socket.io-client": "^4.4.1",
+    "ua-parser-js": "^1.0.2",
     "uuid": "^8.3.2",
     "zxcvbn": "^4.4.2"
   },
