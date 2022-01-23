@@ -1,49 +1,48 @@
 import { ResourceCard } from "@components/card/Resource";
 import { AppLayout } from "@components/layouts/AppLayout";
-import { ChipList } from "@components/ui/ChipList";
 import { Resource } from "@definitions/Resource/Resource";
 import { Menu, Transition } from "@headlessui/react";
-import { ChevronDownIcon } from "@heroicons/react/outline";
+import { ChevronDownIcon, SearchIcon } from "@heroicons/react/outline";
 import { PlusIcon } from "@heroicons/react/solid";
 import { NextPage } from "next";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import Link from "next/link";
 import Image from "next/image";
+import { useRouter } from "next/router";
+import { types } from "constants/resourcesTypes";
 
 const ResourceIndex: NextPage<any> = ({
   resources,
 }: {
   resources: Resource[];
 }) => {
-  const [displayables, setDisplayables] = useState(resources);
-  const [selected, setSelected] = useState<string[]>([]);
+  const router = useRouter();
+  const { search, searchType } = router.query;
 
-  const [type, setType] = useState(null);
-  const [category, setCategory] = useState(null);
+  const [displayables, setDisplayables] = useState(resources);
+
+  const [query, setQuery] = useState(search || "");
+  const [type, setType] = useState(searchType || types[0].value);
 
   const prepareDisplayable = () => {
-    if (selected.length !== 0) {
-      let displayables: Resource[] = [];
-
-      resources.forEach((resource) => {
-        if (selected.includes(resource.data.type)) displayables.push(resource);
-      });
-      setDisplayables(displayables);
-    } else setDisplayables(resources);
+    setDisplayables(resources);
   };
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(() => prepareDisplayable(), [selected]);
 
   return (
     <AppLayout>
-      <div className="flex flex-col w-full max-h-full bg-white dark:bg-gray-900 grow">
+      <div className="flex flex-col w-full h-full bg-white dark:bg-gray-900 grow">
         <div className="flex flex-col w-full px-6 py-6 bg-white shrink-0 lg:px-12 dark:bg-black dark:border-gray-800">
           <div className="inline-flex items-end justify-between w-full mb-2">
             <div className="flex flex-col space-y-2">
               <div className="w-auto h-auto">
-                <Image src="/img/books.png" width={64} height={64} />
+                <Image
+                  src="/img/books.png"
+                  width={64}
+                  height={64}
+                  alt="Books"
+                />
               </div>
               <h3 className="text-2xl font-extrabold text-gray-800 font-marianne dark:text-gray-200">
                 Toutes les
@@ -52,6 +51,50 @@ const ResourceIndex: NextPage<any> = ({
                 </span>
               </h3>
             </div>
+          </div>
+
+          <div className="relative flex flex-row justify-between w-full space-x-3 text-sm">
+            <div className="inline-flex items-center space-x-3">
+            <label className="relative text-gray-400 focus-within:text-gray-600">
+              <SearchIcon className="absolute w-4 h-4 transform -translate-y-1/2 pointer-events-none top-1/2 left-3" />
+              <input
+                id="query"
+                name="query"
+                type="text"
+                autoComplete="off"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                required
+                className="input px-5 py-2 pl-[2.25rem] placeholder-gray-500   lg:w-96 "
+                placeholder="Rechercher ..."
+              />
+            </label>
+
+            <label className="relative text-gray-400 focus-within:text-gray-600">
+              {types
+                .find((t) => t.value === type)
+                .icon.outline({
+                  className:
+                    "absolute w-4 h-4 transform -translate-y-1/2 pointer-events-none top-1/2 left-3",
+                })}
+              <select
+                value={type}
+                onChange={(e) => setType(e.target.value)}
+                required
+                name="searchType"
+                className="input px-5 py-2 appearance-none pl-[2.25rem] placeholder-gray-500   lg:w-48 "
+                placeholder="Type de la ressource"
+              >
+                {types.map((type, idx) => (
+                  <option key={idx} value={type.value}>
+                    {type.label}
+                  </option>
+                ))}
+              </select>
+              <ChevronDownIcon className="absolute w-4 h-4 transform -translate-y-1/2 pointer-events-none top-1/2 right-3" />
+            </label>
+            </div>
+
             <Link href={"/resource/create"}>
               <a className="btn-blue">
                 <PlusIcon className="w-4 h-4 sm:mr-2" />
@@ -59,40 +102,8 @@ const ResourceIndex: NextPage<any> = ({
               </a>
             </Link>
           </div>
-
-          <div className="flex flex-col items-center w-full divide-y divide-gray-300 md:flex-row md:divide-y-0 md:divide-x dark:divide-gray-700">
-            <div className="inline-flex items-center pb-3 lg:pr-3 md:pb-0">
-              <div className="flex items-center overflow-x-auto sm:overflow-x-visible">
-                <TypeSelect type={type} setType={setType} />
-                {/* <CategorySelect category={category} setCategory={setCategory} /> */}
-                <div className="flex items-center mr-2">
-                  <button
-                    className="flex text-sm font-medium transition duration-300 hover:text-blue-500"
-                    onClick={() => {
-                      setSelected([]);
-                      setType(null);
-                      setCategory(null);
-                    }}
-                  >
-                    Réinitialiser
-                  </button>
-                </div>
-              </div>
-            </div>
-            <div className="inline-flex pt-3 overflow-x-hidden md:pt-0 md:pl-3">
-              <ChipList
-                list={[
-                  ...Array.from(new Set(resources.map((r) => r.data.type))),
-                ]}
-                selected={selected}
-                setSelected={setSelected}
-                size="small"
-                color="blue"
-              />
-            </div>
-          </div>
         </div>
-        <div className="grid grid-cols-1 gap-3 p-6 bg-gray-100 grow xl:rounded-tl-xl lg:grid-cols-3 2xl:grid-cols-4 md:grid-cols-2 lg:gap-6 lg:px-32 md:overflow-y-auto">
+        <div className="grid min-h-full grid-cols-1 gap-3 p-6 bg-gray-100 grow xl:rounded-tl-xl lg:grid-cols-3 2xl:grid-cols-4 md:grid-cols-2 lg:gap-6 lg:px-32 md:overflow-y-auto">
           {displayables.map((el, index) => (
             <ResourceCard key={index} {...el} />
           ))}

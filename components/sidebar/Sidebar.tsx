@@ -9,12 +9,12 @@ import Link from "next/link";
 
 import { motion } from "framer-motion";
 
-export const Sidebar = ({ config = { size: "normal" } }: { config?: any }) => {
+export const Sidebar = () => {
   const router = useRouter();
   const { pathname } = router;
 
   return (
-    <div className="min-h-[calc(100vh-4rem)] z-[41] flex-col hidden px-2 bg-white shadow-lg top-16 md:flex min-w-max dark:bg-black dark:border-r dark:border-gray-900 justify-between">
+    <div className="h-full z-[41] fixed flex-col hidden px-2 bg-white shadow-lg top-0 md:flex min-w-max dark:bg-black dark:border-r dark:border-gray-900 justify-between pt-12" >
       <div>
       <SidebarIcon
         icon={HomeIcon}
@@ -66,7 +66,7 @@ const SidebarIcon = ({
           (active
             ? " dark:bg-gray-100  text-blue-500 dark:text-red-500 dark:group-hover:bg-red-600 group-hover:bg-blue-600"
             : "dark:text-gray-100 text-gray-500 group-hover:bg-gray-600 ") +
-          " relative flex-row items-center w-16 h-16 my-2 transition-all duration-300 ease-linear bg-gray-100 cursor-pointer flex-shrink-0 dark:bg-gray-800 group-hover:text-white group-hover:rounded-lg rounded-xl flex"
+          " relative flex-row items-center w-12 h-12 my-2 transition-all duration-300 ease-linear bg-gray-100 cursor-pointer flex-shrink-0 dark:bg-gray-800 group-hover:text-white group-hover:rounded-lg rounded-xl flex"
         }
       >
         <div className="inline-flex items-center justify-between w-full">

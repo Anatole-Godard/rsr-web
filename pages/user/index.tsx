@@ -30,7 +30,7 @@ const UserIndexPage: NextPage = () => {
 
   return (
     <AppLayout>
-      <div className="flex flex-col w-full max-h-full bg-white dark:bg-gray-900 ">
+      <div className="flex flex-col w-full h-full bg-white dark:bg-gray-900 ">
         <div className="flex flex-col w-full px-6 py-6 bg-white shrink-0 lg:px-12 dark:bg-black dark:border-gray-800">
           <div className="inline-flex items-end w-full">
             <div className="w-auto h-auto">

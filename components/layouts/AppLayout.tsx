@@ -12,7 +12,6 @@ const variants = {
 
 export const AppLayout: React.FC<any> = ({
   topNavigation = { shadow: false },
-  sidebar = {},
   children,
 }: {
   topNavigation?: any;
@@ -20,17 +19,17 @@ export const AppLayout: React.FC<any> = ({
   children?: React.ReactNode;
 }) => {
   return (
-    <div className="flex flex-col w-screen min-h-screen">
-      <Navbar config={topNavigation} />
-      <div className="flex flex-row w-full min-h-[calc(100vh-4rem)] bg-white dark:bg-black">
-        <Sidebar config={sidebar} />
+    <div className="flex flex-row max-w-[100vw] min-h-screen">
+      <Sidebar />
+      <div className="flex flex-col h-full bg-white md:pl-[5rem] grow dark:bg-black">
+        <Navbar config={topNavigation} />
         <motion.div
           variants={variants} // Pass the variant object into Framer Motion
           initial="hidden" // Set the initial state to variants.hidden
           animate="enter" // Animated state to variants.enter
           exit="exit" // Exit state (used later) to variants.exit
           transition={{ type: "linear" }} // Set the transition to linear
-          className="flex flex-col w-full min-h-full"
+          className="relative flex flex-col max-h-full min-h-full h-[calc(100vh-4rem)] overflow-y-auto overflow-hidden top-16 grow"
         >
           {children}
         </motion.div>
