@@ -33,7 +33,7 @@ export const UserDropdown = () => {
           <Menu.Button>
             <div className="flex items-center">
               {user ? (
-                <span
+                <div
                   className={classes(
                     "inline-flex items-center justify-center w-8 h-8 text-sm duration-300  rounded-full hover:bg-gray-300 active:bg-gray-100",
                     open ? "bg-gray-300" : "bg-gray-200"
@@ -54,7 +54,7 @@ export const UserDropdown = () => {
                       }
                     />
                   </div>
-                </span>
+                </div>
               ) : (
                 <span
                   className={classes(

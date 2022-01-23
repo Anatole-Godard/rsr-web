@@ -41,14 +41,20 @@ export const isTokenValid = async (
   const token = parseAuthorization(authorization);
   let result: { valid: boolean; code?: string } = { valid: false };
 
-  if (token !== null) {
-    if (!(await SessionToken.exists({ token })))
-      result = { valid: false, code: "TokenDatabaseInexistantError" };
-    jwt.verify(token, process.env.JWT_SECRET as string, (err) => {
-      if (err) result = { valid: false, code: err.name };
-      else result = { valid: true };
-    });
-  } else result = { valid: false, code: "TokenHeaderInexistantError" };
+  try {
+    if (token !== null) {
+      if (!(await SessionToken.exists({ token })))
+        result = { valid: false, code: "TokenDatabaseInexistantError" };
+      jwt.verify(token, process.env.JWT_SECRET as string, (err) => {
+        if (err) result = { valid: false, code: err.name };
+        else result = { valid: true };
+      });
+    } else result = { valid: false, code: "TokenHeaderInexistantError" };
+  } catch (err) {
+    console.error(err)
+    result = { valid: false, code: err.name };
+  }
+  
   return result;
 };
 
