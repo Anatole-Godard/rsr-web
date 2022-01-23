@@ -6,26 +6,30 @@ import { useEffect, useState } from 'react';
 import { fetchRSR } from '@utils/fetchRSR'
 import { useAuth } from '@hooks/useAuth';
 import { Resource } from '@definitions/Resource/Resource';
+import { User } from '@definitions/User';
 
 
 const theadList = [
     { name : 'owner', label : 'Créateur', width : 20 },
     { name : 'slug', label : 'Identifiant', width : 20 },
-    { name : 'data', subName: 'type', label : 'Type', type:'isObject', width : 20 },
-    { name : 'likes', label : 'Likes', type:'isLikeNumber', width : 20 },
+    { name : 'data', subName : 'type', label : 'Type', type : 'isObject', width : 20 },
+    { name : 'likes', label : 'Likes', type : 'isLikeNumber', width : 20 },
 ];
 
 const Resources: NextPage<any> = () => {
     const [resources, setResources] = useState<Resource[]>([]);
     const { user }                  = useAuth();
 
+    const getRessources = () => {
+        fetchRSR("/api/resource", user.session).then((res) => res.json()).then((body) => {
+            if (body.data?.attributes) {
+                setResources(body.data?.attributes)
+            }
+        }).catch()
+    }
     useEffect(() => {
-            fetchRSR("/api/resource", user.session).then((res) => res.json()).then((body) => {
-                if (body.data?.attributes) {
-                    setResources(body.data.attributes)
-                }
-            }).catch()
-        }, [])
+        getRessources()
+    }, [])
 
     const deleteResource = (id: number) => {
         //TODO: do DELETE call to back

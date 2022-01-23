@@ -1,15 +1,17 @@
 import { NextPage } from 'next';
 import { AppLayoutAdmin } from '@components/layouts/AppLayoutAdmin';
 import { CustomTable } from '@components/customTable/CustomTable';
-import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { User } from '@definitions/User';
 import { useAuth } from '@hooks/useAuth';
 import { fetchRSR } from '@utils/fetchRSR';
 
 const UserAdmin: NextPage = () => {
-    const [users, setUsers] = useState<User[]>([]);
-    const { user }          = useAuth();
+    const [users, setUsers]               = useState<User[]>([]);
+    const [currentPage, setCurrentPage]   = useState<number>(1);
+    const [limitPerPage, setLimitPerPage] = useState<number>(1);
+    const [totalPages, setTotalPages]     = useState<number>(0);
+    const { user }                        = useAuth();
 
     const beforeSetUsers = () => {
         getUsers()
@@ -32,9 +34,17 @@ const UserAdmin: NextPage = () => {
         { name : 'role', label : 'Rôle', type : 'isRolePopUp', getEntity : beforeSetUsers, width : 25 },
         { name : 'validation', label : 'Suspensions', type : 'validation', validEntity : validUser, width : 25 },
     ];
-    const getUsers  = () => {
-        fetchRSR("/api/user/admin", user.session).then((res) => res.json()).then((body) => {
+
+    const updatePage = (data) => {
+        const currentPage = data.selected + 1;
+        setCurrentPage(currentPage);
+    };
+
+    const getUsers = () => {
+        fetchRSR("/api/user/admin?limit=" + limitPerPage + '&page=' + currentPage, user.session)
+            .then((res) => res.json()).then((body) => {
             if (body.data?.attributes) {
+                setTotalPages(body.data?.totalPages)
                 setUsers(body.data?.attributes)
             }
         }).catch()
@@ -43,6 +53,10 @@ const UserAdmin: NextPage = () => {
     useEffect(() => {
         getUsers()
     }, [])
+
+    useEffect(() => {
+        getUsers()
+    }, [currentPage, totalPages])
 
 
     const submitFilterForm = () => {
@@ -81,20 +95,9 @@ const UserAdmin: NextPage = () => {
                     {users && users?.length > 0 &&
                         <CustomTable theadList={theadList}
                                      valuesList={users}
-                                     totalPages={5}
-                                     updateCurrentPage={() => {
-                                     }}/>
+                                     totalPages={totalPages}
+                                     updateCurrentPage={updatePage}/>
                     }
-                    <div className="inline-flex justify-end w-full p-3 px-6">
-                        <Link href="user/create">
-                            <button className="btn-blue">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true" className="w-4 h-4 mr-1 -mt-1 rotate-45">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
-                                </svg>
-                                Créer
-                            </button>
-                        </Link>
-                    </div>
                 </div>
             </AppLayoutAdmin>
         </>
