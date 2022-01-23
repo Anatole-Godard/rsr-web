@@ -3,6 +3,7 @@ import { Sidebar } from "components/sidebar/Sidebar";
 import React from "react";
 
 import { motion } from "framer-motion";
+import { Toasts } from "@components/helpers/Toasts";
 
 const variants = {
   hidden: { opacity: 0, x: -200, y: 0 },
@@ -31,6 +32,8 @@ export const AppLayout: React.FC<any> = ({
           transition={{ type: "linear" }} // Set the transition to linear
           className="relative flex flex-col max-h-full min-h-full h-[calc(100vh-4rem)] overflow-y-auto overflow-hidden top-16 grow"
         >
+          {/* <Toasts /> */}
+
           {children}
         </motion.div>
       </div>
