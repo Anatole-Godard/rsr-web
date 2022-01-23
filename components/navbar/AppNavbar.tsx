@@ -5,6 +5,7 @@ import { SearchIcon as HISearchIcon } from "@heroicons/react/outline";
 import { useState } from "react";
 
 import { motion } from "framer-motion";
+import { NotificationsDropdown } from "@components/dropdowns/NotificationsDropdown";
 
 export const Navbar: React.FC<any> = ({
   config = { shadow: true, backgroundColor: "bg-white dark:bg-gray-900" },
@@ -25,6 +26,7 @@ export const Navbar: React.FC<any> = ({
       <Search query={query} setQuery={setQuery} />
       <div className="inline-flex items-center justify-end pl-6 space-x-4 lg:w-48 shrink-0 lg:pl-0 ">
         {/* <ThemeIcon /> */}
+        <NotificationsDropdown />
         <SidebarDropdown />
         <UserDropdown />
       </div>
