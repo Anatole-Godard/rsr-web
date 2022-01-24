@@ -8,14 +8,14 @@ export const ChipList = ({
   setSelected = null,
   color = "green",
   size = "normal",
-  isOnlyOne = false,
+  multiple = true,
 }: {
   list: {label, value}[];
   selected?: {label, value}[];
   setSelected?: ((selected?: {label, value}[]) => void) | Dispatch<SetStateAction<{label, value}[]>> | null;
   color?: string;
   size: "normal" | "small";
-  isOnlyOne?: boolean;
+  multiple?: boolean;
 }) => {
   return (
     <div
@@ -25,7 +25,7 @@ export const ChipList = ({
       )}
     >
       {list.map((el, index) => {
-        const accSelected = isOnlyOne ? [] : [...selected]
+        const accSelected = !multiple ? [] : [...selected]
         return(
             <Chip
                 color={color}

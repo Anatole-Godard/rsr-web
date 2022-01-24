@@ -229,7 +229,7 @@ const UserRolePopUp = ({ role, id, getEntity }) => {
                                 selected={roleSelected}
                                 setSelected={setRoleSelected}
                                 size='normal'
-                                isOnlyOne={true}
+                                multiple={false}
                             />
                         </div>
                         <div className="p-4 bg-gray-50 p-3 rounded-lg w-full  hover:bg-gray-100 dark:hover:bg-gray-300" onClick={updateRole}>
