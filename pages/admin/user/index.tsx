@@ -17,13 +17,13 @@ const UserAdmin: NextPage = () => {
         getUsers()
     }
 
-    const validUser = (id: number, validation: Boolean) => {
-        const body = JSON.stringify({ action : 'validate', validation })
+    const validUser = (id: number, validated: Boolean) => {
+        const body = JSON.stringify({ action : 'validate', validated })
         fetchRSR(`/api/user/admin/${id}/edit`, user.session, {
                 method : "PUT",
                 body
             }
-        ).then((res) => res.json()).then(() => {
+        ).then(() => {
             getUsers()
         })
     }
@@ -32,7 +32,7 @@ const UserAdmin: NextPage = () => {
         { name : 'email', label : 'Email', width : 25 },
         { name : 'fullName', label : 'Nom', width : 25 },
         { name : 'role', label : 'Rôle', type : 'isRolePopUp', getEntity : beforeSetUsers, width : 25 },
-        { name : 'validation', label : 'Suspensions', type : 'validation', validEntity : validUser, width : 25 },
+        { name : 'validated', label : 'Suspensions', type : 'validated', validEntity : validUser, width : 25 },
     ];
 
     const updatePage = (data) => {

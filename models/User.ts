@@ -33,7 +33,7 @@ const UserSchema = new Schema({
     default:
       "/uploads/user/default.png", // TODO: must depends on ourselves
   },
-  validation: {
+  validated: {
     type: Boolean,
     default: true,
   },
