@@ -16,13 +16,22 @@ const theadList = [
 ];
 
 const Resources: NextPage<any> = () => {
-    const [resources, setResources] = useState<Resource[]>([]);
-    const { user }                  = useAuth();
+    const [resources, setResources]       = useState<Resource[]>([]);
+    const [currentPage, setCurrentPage]   = useState<number>(1);
+    const [limitPerPage, setLimitPerPage] = useState<number>(2);
+    const [totalPages, setTotalPages]     = useState<number>(0);
+    const { user }                        = useAuth();
 
-    const getRessources = () => {
-        fetchRSR("/api/resource", user.session).then((res) => res.json()).then((body) => {
+    const getRessources = (search?) => {
+        let filter = ''
+        if (search) {
+            filter = search
+        }
+
+        fetchRSR("/api/resource/admin?limit=" + limitPerPage + '&page=' + currentPage + '&search=' + filter, user.session).then((res) => res.json()).then((body) => {
             if (body.data?.attributes) {
                 setResources(body.data?.attributes)
+                setTotalPages(body.data?.totalPages)
             }
         }).catch()
     }
@@ -30,15 +39,16 @@ const Resources: NextPage<any> = () => {
         getRessources()
     }, [])
 
+    const updatePage = (data) => {
+        const currentPage = data.selected + 1;
+        setCurrentPage(currentPage);
+    };
+
     const deleteResource = (id: number) => {
         //TODO: do DELETE call to back
     }
 
-    const submitFilterForm = () => {
-
-    }
-
-    const [type, setType] = useState<string>("")
+    const [search, setSearch] = useState<string>("")
 
     return (
         <AppLayoutAdmin>
@@ -47,19 +57,21 @@ const Resources: NextPage<any> = () => {
                 <div className="flex justify-between h-full w-full bg-gray-400 p-4 mb-1 rounded">
                     <div className="inline-flex items-center space-x-2">
                   <span>
-                    Type
+                    Recherhe
                   </span>
                         <input
                             type="text"
-                            id="type"
-                            name="type"
-                            value={type}
-                            onChange={(e) => setType(e.target.value)}
+                            id="search"
+                            name="search"
+                            value={search}
+                            onChange={(e) => setSearch(e.target.value)}
                             className="input"
                         />
                     </div>
 
-                    <button className="btn-blue pl-1" onClick={submitFilterForm}>
+                    <button className="btn-blue pl-1" onClick={()=>{
+                        getRessources(search)
+                    }}>
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true" className="w-4 h-4 mr-1 -mt-1 rotate-45">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
                         </svg>
@@ -70,9 +82,8 @@ const Resources: NextPage<any> = () => {
                              valuesList={resources}
                              deleteEntity={deleteResource}
                              editUrl="resource/edit"
-                             totalPages={5}
-                             updateCurrentPage={() => {
-                             }}/>
+                             totalPages={totalPages}
+                             updateCurrentPage={updatePage}/>
                 <div className="inline-flex justify-end w-full p-3 px-6">
                     <Link href="resource/create">
                         <button className="btn-blue">
