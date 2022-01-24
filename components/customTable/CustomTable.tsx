@@ -139,7 +139,7 @@ export const CustomTable = ({
                                     </td>
                                 ))}
                                 {editUrl && (
-                                    <Link href={editUrl}>
+                                    <Link href={editUrl+"/"+ value.slug +"/edit"}>
                                         <td className="px-4 py-3 border-b border-gray-200 dark:border-gray-800">
                                             {PencilAltIcon({ className : "text-blue-800 flex-shrink-0 w-5 h-5" })}
                                         </td>

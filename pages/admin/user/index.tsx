@@ -73,7 +73,7 @@ const UserAdmin: NextPage = () => {
                     <div className="flex justify-between h-full w-full bg-gray-400 p-4 mb-1 rounded">
                         <div className="inline-flex items-center space-x-2">
                   <span>
-                    Type
+                    Recherche
                   </span>
                             <input
                                 type="text"
