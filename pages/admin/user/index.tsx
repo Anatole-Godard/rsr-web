@@ -1,4 +1,4 @@
-import { NextPage } from 'next';
+import { GetServerSideProps, NextPage } from 'next';
 import { AppLayoutAdmin } from '@components/layouts/AppLayoutAdmin';
 import { CustomTable } from '@components/customTable/CustomTable';
 import { useEffect, useState } from 'react';
@@ -6,11 +6,11 @@ import { User } from '@definitions/User';
 import { useAuth } from '@hooks/useAuth';
 import { fetchRSR } from '@utils/fetchRSR';
 
-const UserAdmin: NextPage = () => {
-    const [users, setUsers]               = useState<User[]>([]);
+const UserAdmin: NextPage<any> = (props) => {
+    const [users, setUsers]               = useState<User[]>(props?.data?.attributes);
     const [currentPage, setCurrentPage]   = useState<number>(1);
     const [limitPerPage, setLimitPerPage] = useState<number>(2);
-    const [totalPages, setTotalPages]     = useState<number>(0);
+    const [totalPages, setTotalPages]     = useState<number>(props?.data?.totalPages);
     const { user }                        = useAuth();
 
     const beforeSetUsers = () => {
@@ -94,10 +94,10 @@ const UserAdmin: NextPage = () => {
                             Filtrer
                         </button>
                     </div>
-                        <CustomTable theadList={theadList}
-                                     valuesList={users}
-                                     totalPages={totalPages}
-                                     updateCurrentPage={updatePage}/>
+                    <CustomTable theadList={theadList}
+                                 valuesList={users}
+                                 totalPages={totalPages}
+                                 updateCurrentPage={updatePage}/>
                 </div>
             </AppLayoutAdmin>
         </>
@@ -105,3 +105,25 @@ const UserAdmin: NextPage = () => {
 };
 
 export default UserAdmin;
+export const getServerSideProps: GetServerSideProps = async (context) => {
+    const {
+              cookies : { user },
+          } = context.req;
+    if (!user) {
+        return {
+            redirect : {
+                permanent   : false,
+                destination : "/auth/login",
+            },
+        };
+    }
+
+    const res  = await fetch(
+        "http://localhost:3000/api/user/admin?limit=5&page=1"
+    );
+    const body = await res.json();
+    return {
+        props : body,
+    };
+};
+

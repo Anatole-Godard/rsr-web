@@ -1,17 +1,17 @@
 import { AppLayoutAdmin } from "components/layouts/AppLayoutAdmin";
-import { NextPage } from "next";
+import { GetServerSideProps, NextPage } from "next";
 import { CustomTable } from '@components/customTable/CustomTable';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { fetchRSR } from '@utils/fetchRSR'
 import { useAuth } from '@hooks/useAuth';
 import { Resource } from '@definitions/Resource/Resource';
 
 
-const Resources: NextPage<any> = () => {
-    const [resources, setResources]       = useState<Resource[]>([]);
+const Resources: NextPage<any> = (props) => {
+    const [resources, setResources]       = useState<Resource[]>(props?.data?.attributes);
     const [currentPage, setCurrentPage]   = useState<number>(1);
     const [limitPerPage, setLimitPerPage] = useState<number>(2);
-    const [totalPages, setTotalPages]     = useState<number>(0);
+    const [totalPages, setTotalPages]     = useState<number>(props?.data?.totalPages);
     const { user }                        = useAuth();
 
     const validResource = (id: number, validated: Boolean) => {
@@ -25,13 +25,14 @@ const Resources: NextPage<any> = () => {
         })
     }
 
-    const theadList     = [
+    const theadList = [
         { name : 'owner', subName : 'fullName', label : 'Créateur', type : 'isObject', width : 20 },
         { name : 'slug', label : 'Identifiant', width : 20 },
         { name : 'data', subName : 'type', label : 'Type', type : 'isObject', width : 20 },
         { name : 'likes', label : 'Likes', type : 'isLikeNumber', width : 20 },
         { name : 'validated', label : 'Validation', type : 'validated', validEntity : validResource, width : 25 },
     ];
+
     const getRessources = (search?) => {
         let filter = ''
         if (search) {
@@ -45,9 +46,6 @@ const Resources: NextPage<any> = () => {
             }
         }).catch()
     }
-    useEffect(() => {
-        getRessources()
-    }, [])
 
     const updatePage = (data) => {
         const currentPage = data.selected + 1;
@@ -100,3 +98,25 @@ const Resources: NextPage<any> = () => {
 };
 
 export default Resources;
+export const getServerSideProps: GetServerSideProps = async (context) => {
+    const {
+              cookies : { user },
+          } = context.req;
+    if (!user) {
+        return {
+            redirect : {
+                permanent   : false,
+                destination : "/auth/login",
+            },
+        };
+    }
+
+    const res  = await fetch(
+        "http://localhost:3000/api/resource/admin?limit=5&page=1"
+    );
+    const body = await res.json();
+    return {
+        props : body,
+    };
+};
+
