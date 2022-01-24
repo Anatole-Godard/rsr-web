@@ -6,22 +6,14 @@ const message = new Schema({
         type: Object,
         required: true,
     },
-    text: {
-        type: String,
+    data: {
+        type: Object,
         required: true,
     },
     createdAt: {
         type: Date,
         default: Date.now,
     },
-    attachment: {
-        type: Object,
-        required: false,
-    },
-    channel: {
-        type: String,
-        required: true,
-    }
 });
 
 // mongoose.models = {};

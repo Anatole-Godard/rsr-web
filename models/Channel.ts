@@ -17,6 +17,11 @@ const ChannelSchema = new Schema({
   },
   messages: {
     type: Array,
+    default: [],
+  },
+  activities: {
+    type: Array,
+    default: [],
   },
   members: {
     type: Array,
@@ -25,9 +30,7 @@ const ChannelSchema = new Schema({
     type: Date,
     default: Date.now,
   },
-  resources: {
-    type: Array,
-  },
+
   image: {
     type: Object,
   },

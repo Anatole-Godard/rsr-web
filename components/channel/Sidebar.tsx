@@ -44,17 +44,17 @@ export const Sidebar = ({
   return (
     <div
       className={
-        "w-full h-auto m-0 items-center flex flex-row xl:flex-col justify-between bg-gray-100 dark:bg-gray-900 " +
-        (expanded ? "xl:w-64" : "xl:w-full xl:max-w-max") + (selectedChannelSlug || isCreatingChannel ? " xl:rounded-tl-xl" : " xl:rounded-t-xl")
+        "w-full h-full m-0 items-center flex flex-row md:flex-col justify-between bg-gray-100 dark:bg-gray-900 " +
+        (expanded ? "md:w-64" : "md:w-full md:max-w-max") + (selectedChannelSlug || isCreatingChannel ? " md:rounded-tl-xl" : " md:rounded-t-xl")
       }
     >
-      <div className="flex flex-row w-full xl:flex-col">
-        <div className="flex flex-row items-center justify-center p-0 m-0 xl:h-16 xl:flex-col">
+      <div className="flex flex-row w-full md:flex-col">
+        <div className="flex flex-row items-center justify-center p-0 m-0 md:h-16 md:flex-col">
           <div
             className={
-              "flex flex-col xl:flex-row items-center w-full px-4 " +
-              (expanded ? "justify-start xl:space-x-4" : "justify-center") +
-              (!expanded && canReturn && canExpand ? " xl:space-x-4" : "")
+              "flex flex-col md:flex-row items-center w-full px-4 " +
+              (expanded ? "justify-start md:space-x-4" : "justify-center") +
+              (!expanded && canReturn && canExpand ? " md:space-x-4" : "")
             }
           >
             {canReturn && (
@@ -66,14 +66,14 @@ export const Sidebar = ({
             )}
             {canExpand && (
               <button
-                className="items-center justify-center hidden w-8 h-8 p-1 m-1 text-gray-500 duration-300 ease-linear bg-gray-200 rounded-full xl:flex hover:bg-gray-300 hover:text-gray-600 active:bg-gray-400 active:text-gray-700 dark:bg-gray-700"
+                className="items-center justify-center hidden w-8 h-8 p-1 m-1 text-gray-500 duration-300 ease-linear bg-gray-200 rounded-full md:flex hover:bg-gray-300 hover:text-gray-600 active:bg-gray-400 active:text-gray-700 dark:bg-gray-700"
                 onClick={toggleExpanded}
               >
                 <ArrowsExpandIcon className="w-4 h-4" />
               </button>
             )}
             {expanded && (
-              <p className="hidden my-auto mr-auto text-lg font-bold tracking-wider text-gray-600 align-middle xl:flex dark:text-gray-400">
+              <p className="hidden my-auto mr-auto text-lg font-bold tracking-wider text-gray-600 align-middle md:flex dark:text-gray-400">
                 Salons
               </p>
             )}
@@ -82,11 +82,11 @@ export const Sidebar = ({
         {!isCreatingChannel && (
           <div
             className={
-              "p-2 m-2  flex flex-row xl:flex-col h-full  overflow-x-scroll xl:overflow-x-hidden xl:overflow-y-auto bg-gray-50 rounded-xl dark:bg-gray-800 " +
+              "p-2 m-2  flex flex-row md:flex-col h-full  overflow-x-scroll md:overflow-x-hidden md:overflow-y-auto bg-gray-50 rounded-xl dark:bg-gray-800 " +
               (expanded && selectedChannelSlug
-                ? "xl:max-h-[52vh] "
-                : "xl:max-h-[65vh] ") +
-              (expanded && !selectedChannelSlug ? " xl:max-h-[80vh] " : "") +
+                ? "md:max-h-[52vh] "
+                : "md:max-h-[65vh] ") +
+              (expanded && !selectedChannelSlug ? " md:max-h-[80vh] " : "") +
               (canExpand && !selectedChannelSlug
                 ? "max-w-[80vw] "
                 : "max-w-[70vw]")
@@ -108,7 +108,7 @@ export const Sidebar = ({
             <Link href="/channel/create">
               <a
                 className={
-                  "flex flex-row items-center w-full px-4 py-2 text-sm leading-5 text-gray-700 transition duration-300 ease-in-out dark:text-gray-200 hover:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900 focus:outline-none xl:rounded-b-xl rounded rounded-r-xl xl:rounded-r xl:rounded-br-xl active:bg-blue-50" +
+                  "flex flex-row items-center w-full px-4 py-2 text-sm leading-5 text-gray-700 transition duration-300 ease-in-out dark:text-gray-200 hover:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900 focus:outline-none md:rounded-b-xl rounded rounded-r-xl md:rounded-r md:rounded-br-xl active:bg-blue-50" +
                   (!expanded ? " justify-center" : "")
                 }
               >
@@ -117,7 +117,7 @@ export const Sidebar = ({
                 </span>
 
                 {expanded && (
-                  <div className="flex-col hidden ml-2 xl:flex">
+                  <div className="flex-col hidden ml-2 md:flex">
                     <span className="text-[0.65rem] select-none text-gray-400 dark:text-gray-300">
                       Create
                     </span>
@@ -129,7 +129,7 @@ export const Sidebar = ({
         )}
       </div>
       {selectedChannelSlug && (
-        <div className="justify-center hidden w-full p-4 xl:flex">
+        <div className="justify-center hidden w-full p-4 md:flex">
           {expanded ? (
             <span
               className="flex items-center justify-center p-1 text-blue-500 duration-300 ease-linear bg-blue-200 cursor-pointer active:bg-blue-100 hover:bg-blue-300 rounded-xl dark:bg-blue-700"
@@ -178,15 +178,15 @@ const ChatOverview = ({
   let rounded = " ";
   if (isFirst)
     rounded +=
-      "xl:rounded-t-xl xl:rounded-tl-xl rounded-l-xl xl:rounded-l rounded-b ";
+      "md:rounded-t-xl md:rounded-tl-xl rounded-l-xl md:rounded-l rounded-b ";
   // if (isLast) rounded += "rounded-b-xl rounded-t ";
-  if (!isFirst && !isLast) rounded += "rounded mx-1 xl:mx-0 xl:my-1";
+  if (!isFirst && !isLast) rounded += "rounded mx-1 md:mx-0 md:my-1";
 
   return (
     <Link href={"/channel/" + slug}>
       <a
         className={
-          "flex flex-row items-center w-full min-w-max px-3 xl:px-4 xl:py-2 text-sm leading-5 text-gray-700 transition duration-300 ease-in-out dark:text-gray-200 hover:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900 focus:outline-none active:bg-blue-50" +
+          "flex flex-row items-center w-full min-w-max px-3 md:px-4 md:py-2 text-sm leading-5 text-gray-700 transition duration-300 ease-in-out dark:text-gray-200 hover:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900 focus:outline-none active:bg-blue-50" +
           (active ? " bg-blue-200 dark:bg-blue-800" : "") +
           (!expanded ? " justify-center" : "") +
           rounded
@@ -205,7 +205,7 @@ const ChatOverview = ({
         )}
 
         {expanded && (
-          <div className="flex-col hidden ml-2 xl:flex">
+          <div className="flex-col hidden ml-2 md:flex">
             <span className="text-[0.65rem] select-none text-gray-400 dark:text-gray-300">
               {name}
             </span>
