@@ -19,7 +19,6 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
                 $or : [
                     { email : { $regex : `.*${search}.*` } },
                     { fullName : { $regex : `.*${search}.*` } },
-                    { role : { $regex : `.*${search}.*` } },
                 ]
             }
         }

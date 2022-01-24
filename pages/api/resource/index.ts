@@ -1,5 +1,4 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-// import type { ResourceResponse } from "@definitions/Resource/ResourceResponse";
 import Resource from "@models/Resource";
 import withDatabase from "@middleware/mongoose";
 
