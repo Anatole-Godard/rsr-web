@@ -89,7 +89,7 @@ export const CustomTable = ({
                     return value[theadValue.name] === el.value
                 })} id={value.uid} getEntity={theadValue.getEntity}/>
                 break;
-            case 'validation':
+            case 'validated':
                 isJsx          = true
                 displayedValue =
                     <div className="flex items-center" onClick={() => {

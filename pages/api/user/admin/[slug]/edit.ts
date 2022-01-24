@@ -19,9 +19,9 @@ export default async function handler(
                 update = { role };
 
             } else if (action === 'validate') {
-                const { validation }: { validation: Boolean } = req.body;
+                const { validated }: { validated: Boolean } = req.body;
                 filter = { _id : slug };
-                update = { validation };
+                update = { validated };
 
             }
 

@@ -22,27 +22,34 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
             }
         }
         Resource.find(query)
-            .skip(offset) //Notice here
-            .limit(limit)
-            .exec((err, resource) => {
-                if (err) {
-                    return res.json(err);
-                }
-                Resource.countDocuments(query).exec((count_error, count) => {
+                .skip(offset) //Notice here
+                .limit(limit)
+                .exec((err, resource) => {
                     if (err) {
-                        handleError(res, err, "resource/all");
+                        return res.json(err);
                     }
-                    return res.status(200).json({
-                        data : {
-                            type       : "resource",
-                            id         : "all",
-                            totalItems : count,
-                            totalPages : getTotalPages(count, limit),
-                            attributes : resource,
+                    Resource.countDocuments(query).exec((count_error, count) => {
+                        if (err) {
+                            handleError(res, err, "resource/all");
                         }
+                        return res.status(200).json({
+                            data : {
+                                type       : "resource",
+                                id         : "all",
+                                totalItems : count,
+                                totalPages : getTotalPages(count, limit),
+                                attributes : resource.map((element) => ({
+                                    uid       : element._id,
+                                    owner     : element.owner,
+                                    slug      : element.slug,
+                                    data      : element.data,
+                                    likes     : element.likes,
+                                    validated : element.validated,
+                                })),
+                            }
+                        });
                     });
                 });
-            });
     } catch (err) {
         res.status(500).json({
             error : {

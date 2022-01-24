@@ -8,12 +8,7 @@ import { useAuth } from '@hooks/useAuth';
 import { Resource } from '@definitions/Resource/Resource';
 
 
-const theadList = [
-    { name : 'owner', subName : 'fullName', label : 'Créateur', type : 'isObject', width : 20 },
-    { name : 'slug', label : 'Identifiant', width : 20 },
-    { name : 'data', subName : 'type', label : 'Type', type : 'isObject', width : 20 },
-    { name : 'likes', label : 'Likes', type : 'isLikeNumber', width : 20 },
-];
+
 
 const Resources: NextPage<any> = () => {
     const [resources, setResources]       = useState<Resource[]>([]);
@@ -22,6 +17,24 @@ const Resources: NextPage<any> = () => {
     const [totalPages, setTotalPages]     = useState<number>(0);
     const { user }                        = useAuth();
 
+    const validResource = (id: number, validated: Boolean) => {
+        const body = JSON.stringify({ action : 'validate', validated })
+        fetchRSR(`/api/resource/admin/${id}/edit`, user.session, {
+                method : "PUT",
+                body
+            }
+        ).then((res) => res.json()).then(() => {
+            getRessources()
+        })
+    }
+
+    const theadList = [
+        { name : 'owner', subName : 'fullName', label : 'Créateur', type : 'isObject', width : 20 },
+        { name : 'slug', label : 'Identifiant', width : 20 },
+        { name : 'data', subName : 'type', label : 'Type', type : 'isObject', width : 20 },
+        { name : 'likes', label : 'Likes', type : 'isLikeNumber', width : 20 },
+        { name : 'validated', label : 'Validation', type : 'validated', validEntity : validResource, width : 25 },
+    ];
     const getRessources = (search?) => {
         let filter = ''
         if (search) {
