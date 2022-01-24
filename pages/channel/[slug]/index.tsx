@@ -1,22 +1,25 @@
-import { ChannelResource } from "@components/channel/Resource";
-import { Message as ChannelMessage } from "@components/channel/Message";
 import { Sidebar } from "@components/channel/Sidebar";
 import { AppLayout } from "@components/layouts/AppLayout";
 import {
   PaperAirplaneIcon,
   PencilIcon,
   PlusIcon,
+  XIcon,
 } from "@heroicons/react/outline";
 import { GetServerSideProps, NextPage } from "next";
 import { useRouter } from "next/router";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import io from "socket.io-client";
 import { Message } from "@definitions/Message";
 import { useAuth } from "@hooks/useAuth";
+import { fetchRSR } from "@utils/fetchRSR";
+import { Channel } from "@definitions/Channel/Channel";
+import { HistoryItem } from "@components/channel/HistoryItem";
 
 const ChannelSlug: NextPage<any> = ({
   sideBarChannels,
+  channel,
 }: {
   sideBarChannels: {
     slug: string;
@@ -27,59 +30,68 @@ const ChannelSlug: NextPage<any> = ({
     }[];
     members: object[];
   }[];
+  channel: Channel;
 }) => {
   const router = useRouter();
   const { slug } = router.query;
-
   const { user } = useAuth();
-
-  const description = "Hello world";
-
   const [message, setMessage] = useState<string>("");
-  const [chat, setChat] = useState<Message[]>([]);
-  const [connected, setConnected] = useState<boolean>(false);
+  const [chat, setChat] = useState<Message[]>(channel.messages || []);
+  // const [connected, setConnected] = useState<boolean>(false);
+
+  const inputRef = useRef<null | HTMLInputElement>();
+  const bottomListRef = useRef<null | HTMLLIElement>();
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [inputRef]);
+
+  const [history, setHistory] = useState<any[]>([]);
 
   useEffect((): any => {
     const socket = io("http://localhost:3000", {
-      path: "/api/channel/[slug]/socket",
+      path: `/api/channel/[slug]/socket`,
     });
-
-    fetch("http://localhost:3000/api/channel/" + slug + "/messages")
-      .then((res) => {
-        return res.json();
-      })
-      .then((body) => setChat(body));
 
     socket.on("connect", () => {
       console.log("SOCKET CONNECTED!", socket.id);
-      setConnected(true);
+      // setConnected(true);
     });
 
     // update chat on new message dispatched
     socket.on("message", (message: Message) => {
-      // chat.push(message);
+      console.log("MESSAGE RECEIVED", message);
       setChat((oldChat) => [...oldChat, message]);
     });
 
     if (socket) return () => socket.disconnect();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const sendMessage = async (msg: string) => {
-    const message: Message = {
-      user: user.data,
-      text: msg,
-      attachment: null,
-      channel: slug as string,
+    const message = {
+      user: {
+        fullName: user.data.fullName,
+        photoURL: user.data.photoURL,
+        uid: user.data.uid,
+      },
+      data: { type: "message", text: msg },
     };
 
-    const resp = await fetch("/api/channel/" + slug + "/messages", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(message),
-    });
-    if (resp.ok) setMessage("");
+    const resp = await fetchRSR(
+      `/api/channel/${slug}/messages`,
+      user?.session,
+      {
+        method: "POST",
+        body: JSON.stringify(message),
+      }
+    );
+    if (resp.ok) {
+      setMessage("");
+      if (bottomListRef.current)
+        bottomListRef.current.scrollIntoView({ behavior: "smooth" });
+    }
   };
 
   const handleSubmitMessage = (e: { preventDefault: () => void }) => {
@@ -87,9 +99,23 @@ const ChannelSlug: NextPage<any> = ({
     sendMessage(message);
   };
 
+  useEffect(() => {
+    setHistory(
+      [...chat, ...channel.activities].sort(
+        (a, b) =>
+          new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+      )
+    );
+  }, [chat, channel.activities]);
+
+  useEffect(() => {
+    if (bottomListRef.current)
+      bottomListRef.current.scrollIntoView({ behavior: "smooth" });
+  }, []);
+
   return (
     <AppLayout>
-      <div className="flex flex-col w-full h-full max-h-[calc(100vh-4rem)] xl:flex-row ">
+      <div className="flex flex-col w-full h-full md:flex-row">
         <Sidebar
           channels={sideBarChannels}
           canExpand
@@ -97,8 +123,8 @@ const ChannelSlug: NextPage<any> = ({
           canReturn
           selectedChannelSlug={slug as string}
         />
-        <div className="flex justify-center w-full h-full">
-          <div className="flex flex-col w-full h-full bg-gray-700">
+        <div className="flex justify-center w-full max-h-[calc(100%-6rem)] md:max-h-full h-full">
+          <div className="flex flex-col w-full bg-gray-700">
             {/* HEADER */}
             <div className="inline-flex justify-between w-full p-3 px-6">
               <div className="flex flex-col ">
@@ -110,19 +136,25 @@ const ChannelSlug: NextPage<any> = ({
                     {chat.length}
                   </span> */}
                 </div>
-                {description && (
+                {channel.description && (
                   <p className="text-sm font-light text-gray-300 font-spectral">
-                    {description}
+                    {channel.description}
                   </p>
                 )}
               </div>
               <div className="inline-flex items-center space-x-3">
-                <Link href={`/channel/${slug}/edit`}>
-                  <a className="btn-green">
-                    <PencilIcon className="w-4 h-4 sm:mr-2" />
-                    <span className="hidden sm:block">Éditer le salon</span>
-                  </a>
-                </Link>
+                <button className="btn-red">
+                  <XIcon className="w-4 h-4 sm:mr-2" />
+                  <span className="hidden sm:block">Quitter le salon</span>
+                </button>
+                {user?.data.uid === channel.owner.uid && (
+                  <Link href={`/channel/${slug}/edit`}>
+                    <a className="btn-green">
+                      <PencilIcon className="w-4 h-4 sm:mr-2" />
+                      <span className="hidden sm:block">Éditer le salon</span>
+                    </a>
+                  </Link>
+                )}
                 <Link href={"/resource/create" + `?channel=${slug}`}>
                   <a className="btn-blue">
                     <PlusIcon className="w-4 h-4 sm:mr-2" />
@@ -135,19 +167,17 @@ const ChannelSlug: NextPage<any> = ({
             </div>
 
             {/* BODY */}
-            <div className="flex flex-col max-h-[65vh] md:max-h-full  p-3 space-y-4 overflow-y-auto bg-white xl:ml-6 xl:rounded-l-xl xl:p-6">
-              {/*{resources.map((e, key) => (*/}
-              {/*    <ChannelResource {...e} key={key}/>*/}
-              {/*))}*/}
-              {chat.length > 0 ? (
-                <>
-                  {chat.map((e, key) => (
-                    <ChannelMessage key={key} message={e} />
-                  ))}
-                </>
-              ) : (
-                <p>No messages yet</p>
-              )}
+            <div className="flex flex-col p-3 px-6 space-y-4 overflow-y-auto bg-white grow lg:max-h-full xl:ml-6 xl:rounded-l-xl xl:p-6">
+              <ol className="relative border-l border-gray-200 h-fit dark:border-gray-700">
+                {history.map((item, index) => (
+                  <HistoryItem
+                    {...item}
+                    key={index}
+                    context={{ name: channel.name }}
+                  />
+                ))}
+                <li ref={bottomListRef} />
+              </ol>
             </div>
 
             {/* FOOTER */}
@@ -158,10 +188,15 @@ const ChannelSlug: NextPage<any> = ({
               <input
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
-                className="z-40 mr-2 input"
+                className="z-40 h-10 mr-2 input"
+                ref={inputRef}
+                placeholder="Écrivez votre message..."
               />
-              <button className="btn-blue">
-                <PaperAirplaneIcon className="w-[1.25rem] h-[1.25rem] " />
+              <button
+                type="submit"
+                className="flex items-center justify-center w-10 h-10 p-0 btn-blue"
+              >
+                <PaperAirplaneIcon className="w-5 h-5 " />
               </button>
             </form>
           </div>
@@ -197,7 +232,13 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
           photoURL: e.image?.url || "https://via.placeholder.com/150",
         })
       ),
+      channel: channels?.data?.attributes?.find(
+        (e: { slug: string }) => e.slug === context.params.slug
+      ),
     },
   };
 };
- 
+
+/*
+
+*/

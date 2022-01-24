@@ -22,7 +22,7 @@ export const AppLayout: React.FC<any> = ({
   return (
     <div className="flex flex-row max-w-[100vw] min-h-screen">
       <Sidebar />
-      <div className="flex flex-col h-full bg-white md:pl-[5rem] grow dark:bg-black">
+      <div className="flex flex-col h-full bg-white md:pl-16 xl:pl-[5rem] grow dark:bg-black">
         <Navbar config={topNavigation} />
         <motion.div
           variants={variants} // Pass the variant object into Framer Motion
