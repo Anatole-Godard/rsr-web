@@ -17,13 +17,12 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         if (search && search.length > 0) {
             query = {
                 $or : [
-                    { email : `/${search}/` },
-                    { fullName : `/${search}/` },
-                    { role : `/${search}/` },
+                    { email : { $regex : `.*${search}.*` } },
+                    { fullName : { $regex : `.*${search}.*` } },
+                    { role : { $regex : `.*${search}.*` } },
                 ]
             }
         }
-        console.log(query)
 
         User.find(query)
             .skip(offset) //Notice here

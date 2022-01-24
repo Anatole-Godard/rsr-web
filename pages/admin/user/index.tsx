@@ -45,7 +45,7 @@ const UserAdmin: NextPage = () => {
         if (search) {
             filter = search
         }
-        fetchRSR("/api/user/admin?limit=" + limitPerPage + '&page=' + currentPage + 'search=' + filter, user.session)
+        fetchRSR("/api/user/admin?limit=" + limitPerPage + '&page=' + currentPage + '&search=' + filter, user.session)
             .then((res) => res.json()).then((body) => {
             if (body.data?.attributes) {
                 console.log(body.data?.attributes)
@@ -94,12 +94,10 @@ const UserAdmin: NextPage = () => {
                             Filtrer
                         </button>
                     </div>
-                    {users && users?.length > 0 &&
                         <CustomTable theadList={theadList}
                                      valuesList={users}
                                      totalPages={totalPages}
                                      updateCurrentPage={updatePage}/>
-                    }
                 </div>
             </AppLayoutAdmin>
         </>
