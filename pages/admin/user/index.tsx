@@ -9,7 +9,7 @@ import { fetchRSR } from '@utils/fetchRSR';
 const UserAdmin: NextPage = () => {
     const [users, setUsers]               = useState<User[]>([]);
     const [currentPage, setCurrentPage]   = useState<number>(1);
-    const [limitPerPage, setLimitPerPage] = useState<number>(1);
+    const [limitPerPage, setLimitPerPage] = useState<number>(2);
     const [totalPages, setTotalPages]     = useState<number>(0);
     const { user }                        = useAuth();
 
@@ -40,10 +40,15 @@ const UserAdmin: NextPage = () => {
         setCurrentPage(currentPage);
     };
 
-    const getUsers = () => {
-        fetchRSR("/api/user/admin?limit=" + limitPerPage + '&page=' + currentPage, user.session)
+    const getUsers = (search?) => {
+        let filter = ''
+        if (search) {
+            filter = search
+        }
+        fetchRSR("/api/user/admin?limit=" + limitPerPage + '&page=' + currentPage + 'search=' + filter, user.session)
             .then((res) => res.json()).then((body) => {
             if (body.data?.attributes) {
+                console.log(body.data?.attributes)
                 setTotalPages(body.data?.totalPages)
                 setUsers(body.data?.attributes)
             }
@@ -56,14 +61,9 @@ const UserAdmin: NextPage = () => {
 
     useEffect(() => {
         getUsers()
-    }, [currentPage, totalPages])
+    }, [currentPage])
 
-
-    const submitFilterForm = () => {
-
-    }
-
-    const [type, setType] = useState<string>("")
+    const [search, setSearch] = useState<string>("")
 
     return (
         <>
@@ -77,15 +77,17 @@ const UserAdmin: NextPage = () => {
                   </span>
                             <input
                                 type="text"
-                                id="type"
-                                name="type"
-                                value={type}
-                                onChange={(e) => setType(e.target.value)}
+                                id="search"
+                                name="search"
+                                value={search}
+                                onChange={(e) => setSearch(e.target.value)}
                                 className="input"
                             />
                         </div>
 
-                        <button className="btn-blue pl-1" onClick={submitFilterForm}>
+                        <button className="btn-blue pl-1" onClick={() => {
+                            getUsers(search)
+                        }}>
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true" className="w-4 h-4 mr-1 -mt-1 rotate-45">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
                             </svg>

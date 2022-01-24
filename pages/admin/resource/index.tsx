@@ -6,11 +6,10 @@ import { useEffect, useState } from 'react';
 import { fetchRSR } from '@utils/fetchRSR'
 import { useAuth } from '@hooks/useAuth';
 import { Resource } from '@definitions/Resource/Resource';
-import { User } from '@definitions/User';
 
 
 const theadList = [
-    { name : 'owner', label : 'Créateur', width : 20 },
+    { name : 'owner', subName : 'fullName', label : 'Créateur', type : 'isObject', width : 20 },
     { name : 'slug', label : 'Identifiant', width : 20 },
     { name : 'data', subName : 'type', label : 'Type', type : 'isObject', width : 20 },
     { name : 'likes', label : 'Likes', type : 'isLikeNumber', width : 20 },

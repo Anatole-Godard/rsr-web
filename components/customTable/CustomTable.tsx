@@ -85,13 +85,12 @@ export const CustomTable = ({
                 break;
             case 'isRolePopUp':
                 isJsx          = true
-                displayedValue = UserRolePopUp(roleType.find((el) => {
+                displayedValue = <UserRolePopUp role={roleType.find((el) => {
                     return value[theadValue.name] === el.value
-                }), value.uid, theadValue.getEntity)
+                })} id={value.uid} getEntity={theadValue.getEntity}/>
                 break;
             case 'validation':
                 isJsx          = true
-                console.log(value[theadValue.name])
                 displayedValue =
                     <div className="flex items-center" onClick={() => {
                         theadValue.validEntity(value.uid, !value[theadValue.name])
@@ -173,7 +172,7 @@ export const CustomTable = ({
     );
 }
 
-const UserRolePopUp = (role: { label, value }, id: number, getEntity: any) => {
+const UserRolePopUp = ({ role, id, getEntity }) => {
     const { user }                               = useAuth();
     const ref: any                               = useRef();
     const [roleSelected, setRoleSelected]: any[] = useState([role]);

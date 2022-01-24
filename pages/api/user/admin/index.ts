@@ -7,11 +7,24 @@ import type { NextApiRequest, NextApiResponse } from "next";
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
     try {
+        const param             = req.query;
+        const search            = param.search
         const { limit, offset } = getPagination(
-            parseInt(<string>req.query.page) || 0,
-            parseInt(<string>req.query.limit) || 3
+            parseInt(<string>param.page) || 0,
+            parseInt(<string>param.limit) || 3
         );
-        let query = {};
+        let query               = {};
+        if (search && search.length > 0) {
+            query = {
+                $or : [
+                    { email : `/${search}/` },
+                    { fullName : `/${search}/` },
+                    { role : `/${search}/` },
+                ]
+            }
+        }
+        console.log(query)
+
         User.find(query)
             .skip(offset) //Notice here
             .limit(limit)
@@ -27,8 +40,8 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
                         data : {
                             type       : "user",
                             id         : "all",
-                            totalItems: count,
-                            totalPages: getTotalPages(count, limit),
+                            totalItems : count,
+                            totalPages : getTotalPages(count, limit),
                             attributes : user.map((element) => ({
                                 uid        : element._id,
                                 fullName   : element.fullName,
