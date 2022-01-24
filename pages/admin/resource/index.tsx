@@ -1,13 +1,10 @@
 import { AppLayoutAdmin } from "components/layouts/AppLayoutAdmin";
 import { NextPage } from "next";
 import { CustomTable } from '@components/customTable/CustomTable';
-import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { fetchRSR } from '@utils/fetchRSR'
 import { useAuth } from '@hooks/useAuth';
 import { Resource } from '@definitions/Resource/Resource';
-
-
 
 
 const Resources: NextPage<any> = () => {
@@ -28,7 +25,7 @@ const Resources: NextPage<any> = () => {
         })
     }
 
-    const theadList = [
+    const theadList     = [
         { name : 'owner', subName : 'fullName', label : 'Créateur', type : 'isObject', width : 20 },
         { name : 'slug', label : 'Identifiant', width : 20 },
         { name : 'data', subName : 'type', label : 'Type', type : 'isObject', width : 20 },
@@ -82,7 +79,7 @@ const Resources: NextPage<any> = () => {
                         />
                     </div>
 
-                    <button className="btn-blue pl-1" onClick={()=>{
+                    <button className="btn-blue pl-1" onClick={() => {
                         getRessources(search)
                     }}>
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true" className="w-4 h-4 mr-1 -mt-1 rotate-45">
@@ -94,19 +91,9 @@ const Resources: NextPage<any> = () => {
                 <CustomTable theadList={theadList}
                              valuesList={resources}
                              deleteEntity={deleteResource}
-                             editUrl="resource/edit"
+                             editUrl="/resource"
                              totalPages={totalPages}
                              updateCurrentPage={updatePage}/>
-                <div className="inline-flex justify-end w-full p-3 px-6">
-                    <Link href="resource/create">
-                        <button className="btn-blue">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true" className="w-4 h-4 mr-1 -mt-1 rotate-45">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
-                            </svg>
-                            Créer
-                        </button>
-                    </Link>
-                </div>
             </div>
         </AppLayoutAdmin>
     );
