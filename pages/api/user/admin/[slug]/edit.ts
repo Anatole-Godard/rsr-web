@@ -22,7 +22,6 @@ export default async function handler(
                 const { validated }: { validated: Boolean } = req.body;
                 filter = { _id : slug };
                 update = { validated };
-
             }
 
             await user.findOneAndUpdate(filter, update);

@@ -46,7 +46,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
                                 email      : element.email,
                                 photoURL   : element.photoURL,
                                 role       : element.role,
-                                validation : element.validation,
+                                validated : element.validated,
                             })),
                         }
                     });
