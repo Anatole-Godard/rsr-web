@@ -14,7 +14,6 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         attributes: users.map((user) => ({
           uid: user._id,
           fullName: user.fullName,
-          email: user.email,
           photoURL: user.photoURL,
         })),
       },
@@ -24,4 +23,4 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   }
 }
 
-export default withAuth(withDatabase(handler));
+export default withDatabase(handler);
