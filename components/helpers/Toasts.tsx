@@ -1,6 +1,6 @@
-import { ChatIcon } from "@heroicons/react/solid";
+import { ChatAlt2Icon, ChatIcon } from "@heroicons/react/solid";
 import { ExternalLinkIcon, XIcon } from "@heroicons/react/outline";
-import { fakeUserMin, fakeResource } from "@utils/faker.dev.js";
+import { fakeUserMin, fakeResource, fakeChannel } from "@utils/faker.dev.js";
 import { formatDistance } from "date-fns";
 import fr from "date-fns/locale/fr";
 import { classes } from "@utils/classes";
@@ -19,14 +19,14 @@ const notifications = [
     message: "vous a envoyé un message",
     icon: {
       className: "bg-blue-100 text-blue-700",
-      component: ChatIcon,
+      component: ChatAlt2Icon,
     },
   },
 ];
 
 export const Toasts = () => {
   return (
-    <div className="fixed right-0 z-50 flex flex-col max-w-sm px-2 pt-2 space-y-4 top-20 w-max md:pt-0 md:px-0 md:right-12">
+    <div className="fixed right-0 z-50 flex flex-col w-full max-w-sm px-2 pt-2 space-y-4 top-20 md:pt-0 md:px-0 md:right-12">
       {[
         {
           user: fakeUserMin(),
@@ -42,7 +42,9 @@ export const Toasts = () => {
         },
         {
           user: fakeUserMin(),
-          document: {},
+          document: {
+            ...fakeChannel()
+          },
           type: "message",
           createdAt: new Date(
             new Date().getTime() -
@@ -59,7 +61,7 @@ export const Toasts = () => {
 const MessageToast = ({ user, document, type, createdAt }) => {
   return (
     <div
-      className="w-full p-2 text-gray-900 duration-300 bg-gray-100 border rounded-lg select-none lg:p-4 shrink md:max-w-sm hover:bg-gray-50 dark:bg-gray-800 dark:text-gray-300 hover:shadow-md"
+      className="w-full p-2 text-gray-900 duration-300 rounded-lg select-none bg-gray-50 lg:p-4 shrink md:max-w-sm hover:bg-gray-50 dark:bg-gray-800 dark:text-gray-300 hover:shadow-md"
       role="alert"
     >
       <div className="flex items-start justify-between w-full">

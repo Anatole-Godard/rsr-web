@@ -25,6 +25,13 @@ export const Chip = ({
         ? (chipClassName += "bg-green-400 dark:bg-green-700")
         : (chipClassName += "bg-green-200 dark:bg-green-900");
       break;
+    case "emerald":
+      chipClassName +=
+        " hover:bg-emerald-300 dark:hover:bg-emerald-800 text-emerald-700 dark:text-emerald-300 ";
+      checked
+        ? (chipClassName += "bg-emerald-400 dark:bg-emerald-700")
+        : (chipClassName += "bg-emerald-200 dark:bg-emerald-900");
+      break;
     case "amber":
       chipClassName +=
         " hover:bg-amber-300 dark:hover:bg-amber-800 text-amber-700 dark:text-amber-300 ";

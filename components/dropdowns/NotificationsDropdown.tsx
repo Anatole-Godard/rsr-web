@@ -1,12 +1,14 @@
 /* eslint-disable @next/next/no-img-element */
 import React from "react";
-import { Menu, Transition } from "@headlessui/react";
+import { Menu } from "@headlessui/react";
 import { classes } from "@utils/classes";
 import { BellIcon } from "@heroicons/react/outline";
 import { Toasts } from "@components/helpers/Toasts";
+import { useAuth } from "@hooks/useAuth";
 
 export const NotificationsDropdown = () => {
-  return (
+  const { user } = useAuth();
+  return user?.data ? (
     <Menu as="div" className="relative flex items-center h-full">
       {({ open }) => (
         <>
@@ -19,26 +21,18 @@ export const NotificationsDropdown = () => {
                 )}
               >
                 <div className="flex items-center justify-center w-full h-full align-middle border-none rounded-full select-none ">
-                  <BellIcon className="w-4 h-4 text-gray-600" />
+                  <BellIcon
+                    className={classes("w-4 h-4 text-gray-600", open ? "" : "")}
+                  />
                 </div>
               </span>
             </div>
           </Menu.Button>
-          <Menu.Items static>
-            <Transition
-              show={open}
-              enter="transform transition duration-100 ease-in"
-              enterFrom="opacity-0"
-              enterTo="opacity-100"
-              leave="transform transition duration-75 ease-out"
-              leaveFrom="opacity-100 "
-              leaveTo="opacity-0 "
-            >
-              <Toasts />
-            </Transition>
+          <Menu.Items>
+            <Toasts />
           </Menu.Items>
         </>
       )}
     </Menu>
-  );
+  ) : null;
 };
