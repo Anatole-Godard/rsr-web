@@ -101,6 +101,20 @@ export const HistoryItem = ({
               </div>
             </div>
           </div>
+          {data.text?.match(/(\/resource\/[\S]*)/) && (
+            <>
+              <div className="hidden p-3 mt-3 text-xs italic font-normal text-gray-500 border border-gray-200 rounded-lg md:block bg-gray-50 dark:bg-gray-600 dark:border-gray-500 dark:text-gray-300 w-fit">
+                <Iframe
+                  src={data.text?.match(/(\/resource\/[\S]*)/)[0]}
+                  height={400}
+                  width={600}
+                />
+              </div>
+              <div className="block p-3 mt-3 text-xs italic font-normal text-gray-500 border border-gray-200 rounded-lg md:hidden bg-gray-50 dark:bg-gray-600 dark:border-gray-500 dark:text-gray-300 w-fit">
+                Aperçu désactivé sur mobile
+              </div>
+            </>
+          )}
         </div>
       )}
       {data.type === "resource_create" && (

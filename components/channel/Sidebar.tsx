@@ -1,5 +1,6 @@
 import {
   ArrowsExpandIcon,
+  ArrowSmLeftIcon,
   ChevronLeftIcon,
   PlusIcon,
   QrcodeIcon,
@@ -10,208 +11,186 @@ import { useState } from "react";
 var QRCode = require("qrcode.react");
 
 import Link from "next/link";
-import { fakeChannelInvite } from "@utils/faker.dev";
+import { Channel } from "@definitions/Channel/Channel";
+import { classes } from "@utils/classes";
+import { UserMinimum } from "@definitions/User";
+import Image from "next/image";
+import { useSearch } from "@hooks/useSearch";
+
+
+
 
 export const Sidebar = ({
   channels,
-  canExpand,
-  canReturn,
-  isExpanded,
   selectedChannelSlug,
-  isCreatingChannel,
 }: {
-  channels: {
-    slug: string;
-    name: string;
-    messages: {
-      content: string;
-      createdAt: string;
-    }[];
-    photoURL?: string;
-  }[];
-  canExpand: boolean;
-  canReturn: boolean;
-  isExpanded: boolean;
+  channels: Channel[];
   selectedChannelSlug?: string;
-  isCreatingChannel?: boolean;
 }) => {
-  const [expanded, setExpanded] = useState<boolean>(isExpanded);
-
-  const toggleExpanded = () => {
-    if (canExpand) setExpanded(!expanded);
-  };
+  const { search, filtered, onChange } = useSearch<Channel>("name", channels);
 
   return (
-    <div
-      className={
-        "w-full h-full m-0 items-center flex flex-row md:flex-col justify-between bg-gray-100 dark:bg-gray-900 " +
-        (expanded ? "md:w-64" : "md:w-full md:max-w-max") + (selectedChannelSlug || isCreatingChannel ? " md:rounded-tl-xl" : " md:rounded-t-xl")
-      }
-    >
-      <div className="flex flex-row w-full md:flex-col">
-        <div className="flex flex-row items-center justify-center p-0 m-0 md:h-16 md:flex-col">
-          <div
-            className={
-              "flex flex-col md:flex-row items-center w-full px-4 " +
-              (expanded ? "justify-start md:space-x-4" : "justify-center") +
-              (!expanded && canReturn && canExpand ? " md:space-x-4" : "")
-            }
-          >
-            {canReturn && (
-              <Link href="/channel">
-                <a className="flex items-center justify-center w-8 h-8 p-1 m-1 text-blue-500 duration-300 ease-linear bg-blue-200 rounded-full hover:bg-blue-300 hover:text-blue-600 active:bg-blue-400 active:text-blue-700 dark:bg-blue-700">
-                  <ChevronLeftIcon className="w-4 h-4" />
-                </a>
-              </Link>
-            )}
-            {canExpand && (
-              <button
-                className="items-center justify-center hidden w-8 h-8 p-1 m-1 text-gray-500 duration-300 ease-linear bg-gray-200 rounded-full md:flex hover:bg-gray-300 hover:text-gray-600 active:bg-gray-400 active:text-gray-700 dark:bg-gray-700"
-                onClick={toggleExpanded}
-              >
-                <ArrowsExpandIcon className="w-4 h-4" />
-              </button>
-            )}
-            {expanded && (
-              <p className="hidden my-auto mr-auto text-lg font-bold tracking-wider text-gray-600 align-middle md:flex dark:text-gray-400">
-                Salons
-              </p>
-            )}
-          </div>
-        </div>
-        {!isCreatingChannel && (
-          <div
-            className={
-              "p-2 m-2  flex flex-row md:flex-col h-full  overflow-x-scroll md:overflow-x-hidden md:overflow-y-auto bg-gray-50 rounded-xl dark:bg-gray-800 " +
-              (expanded && selectedChannelSlug
-                ? "md:max-h-[52vh] "
-                : "md:max-h-[65vh] ") +
-              (expanded && !selectedChannelSlug ? " md:max-h-[80vh] " : "") +
-              (canExpand && !selectedChannelSlug
-                ? "max-w-[80vw] "
-                : "max-w-[70vw]")
-            }
-          >
-            {channels?.map((el, key) => (
-              <ChatOverview
-                key={key}
-                isFirst={key === 0}
-                isLast={false}
-                slug={el.slug}
-                name={el.name}
-                photoURL={el.photoURL}
-                expanded={expanded}
-                active={selectedChannelSlug === el.slug}
-              />
-            ))}
-
-            <Link href="/channel/create">
+    <>
+      <div
+        className={classes(
+          "w-full h-full items-center shrink-0 flex-col p-3 space-y-2 bg-gray-100 md:w-48 lg:w-56",
+          selectedChannelSlug ? "lg:rounded-tl-xl" : "lg:rounded-t-xl",
+          "hidden md:flex" //responsive
+        )}
+      >
+        <div className="inline-flex items-center w-full gap-2">
+          {selectedChannelSlug && (
+            <Link href="/channel">
               <a
-                className={
-                  "flex flex-row items-center w-full px-4 py-2 text-sm leading-5 text-gray-700 transition duration-300 ease-in-out dark:text-gray-200 hover:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900 focus:outline-none md:rounded-b-xl rounded rounded-r-xl md:rounded-r md:rounded-br-xl active:bg-blue-50" +
-                  (!expanded ? " justify-center" : "")
-                }
-              >
-                <span className="flex items-center justify-center w-8 h-8 p-2 text-blue-500 bg-blue-200 rounded-full dark:bg-blue-700">
-                  <PlusIcon className="w-4 h-4" />
-                </span>
-
-                {expanded && (
-                  <div className="flex-col hidden ml-2 md:flex">
-                    <span className="text-[0.65rem] select-none text-gray-400 dark:text-gray-300">
-                      Create
-                    </span>
-                  </div>
+                className={classes(
+                  "btn-gray px-2",
+                  selectedChannelSlug ? "w-[calc(50%-0.25rem)] " : ""
                 )}
+              >
+                <ArrowSmLeftIcon className="w-4 h-4 mr-1 shrink-0" />
+                Retour
               </a>
             </Link>
-          </div>
-        )}
-      </div>
-      {selectedChannelSlug && (
-        <div className="justify-center hidden w-full p-4 md:flex">
-          {expanded ? (
-            <span
-              className="flex items-center justify-center p-1 text-blue-500 duration-300 ease-linear bg-blue-200 cursor-pointer active:bg-blue-100 hover:bg-blue-300 rounded-xl dark:bg-blue-700"
-              onClick={toggleExpanded}
-            >
-              <QRCode
-                bgColor="rgba(191, 219, 254, 0)"
-                fgColor="rgb(59, 130, 246)"
-                renderAs="svg"
-                includeMargin
-                size={192}
-                value={JSON.stringify(fakeChannelInvite())}
-              />
-            </span>
-          ) : (
-            <button
-              onClick={toggleExpanded}
-              className="flex items-center justify-center w-16 h-16 p-1 m-1 text-blue-500 duration-300 ease-linear bg-blue-200 rounded-xl hover:bg-blue-300 hover:text-blue-600 active:bg-blue-400 active:text-blue-700 dark:bg-blue-700"
-            >
-              <QrcodeIcon className="w-8 h-8 fill-current " />
-            </button>
           )}
+          <Link href="/channel/create">
+            <a
+              className={classes(
+                "btn-blue px-2",
+                selectedChannelSlug ? "w-[calc(50%-0.25rem)]" : "w-full"
+              )}
+            >
+              <PlusIcon className="w-4 h-4 mr-1 shrink-0" />
+              Créer
+            </a>
+          </Link>
         </div>
-      )}
-    </div>
+        <div className="w-full">
+          <label className="relative text-gray-400 focus-within:text-gray-600">
+            <UserGroupIcon className="absolute w-4 h-4 transform -translate-y-1/2 pointer-events-none top-1/2 left-3" />
+            <input
+              id="search"
+              name="search"
+              type="text"
+              autoComplete="off"
+              value={search}
+              onChange={onChange}
+              required
+              className="input px-5 py-2 pl-[2.25rem] text-ellipsis bg-white placeholder-gray-500"
+              placeholder="Rechercher un salon"
+            />
+          </label>
+        </div>
+        <div className="flex flex-col w-full space-y-1 overflow-y-auto grow">
+          {filtered.map((el, key) => (
+            <ChatOverview
+              key={key}
+              {...el}
+              position={
+                key === 0 && filtered.length !== 1
+                  ? "first"
+                  : key === filtered.length - 1 && filtered.length !== 1
+                  ? "last"
+                  : null
+              }
+              active={selectedChannelSlug === el.slug}
+            />
+          ))}
+        </div>
+      </div>
+
+
+      <div className="inline-flex md:hidden items-center w-screen h-[4.5rem] p-2 space-x-3">
+        <div className="flex flex-col space-y-1">
+          {selectedChannelSlug && (
+            <Link href="/channel">
+              <a
+                className={classes(
+                  "btn-gray py-2 text-xs px-2",
+                  selectedChannelSlug ? "h-1/2" : ""
+                )}
+              >
+                <ArrowSmLeftIcon className="w-3 h-3 mr-0.5" />
+                Retour
+              </a>
+            </Link>
+          )}
+          <Link href="/channel/create">
+            <a
+              className={classes(
+                "btn-blue  py-2 text-xs px-2",
+                selectedChannelSlug ? "h-1/2" : " w-16"
+              )}
+            >
+              <PlusIcon className="w-3 h-3 mr-0.5" />
+              Créer
+            </a>
+          </Link>
+        </div>
+        <div className="inline-flex items-center h-full space-x-1 overflow-x-auto overflow-y-hidden w-max">
+          {filtered.map((el, key) => (
+            <ChatOverview
+              key={key}
+              {...el}
+              position={
+                key === 0 && filtered.length !== 1
+                  ? "first"
+                  : key === filtered.length - 1 && filtered.length !== 1
+                  ? "last"
+                  : null
+              }
+              active={selectedChannelSlug === el.slug}
+            />
+          ))}
+        </div>
+      </div>
+    </>
   );
 };
 
 const ChatOverview = ({
-  isFirst,
-  isLast,
   slug,
   name,
-  photoURL,
-  expanded,
-  active,
+  image = null,
+  active = false,
+  members = [],
+  position = null,
 }: {
-  isFirst: boolean;
-  isLast: boolean;
   slug: string;
   name: string;
-  photoURL?: string;
-  expanded: boolean;
-  active: boolean;
+  image?: any;
+  active?: boolean;
+  members: UserMinimum[];
+  position?: "first" | "last";
 }) => {
-  let rounded = " ";
-  if (isFirst)
-    rounded +=
-      "md:rounded-t-xl md:rounded-tl-xl rounded-l-xl md:rounded-l rounded-b ";
-  // if (isLast) rounded += "rounded-b-xl rounded-t ";
-  if (!isFirst && !isLast) rounded += "rounded mx-1 md:mx-0 md:my-1";
-
   return (
-    <Link href={"/channel/" + slug}>
+    <Link href={`/channel/${slug}`}>
       <a
-        className={
-          "flex flex-row items-center w-full min-w-max px-3 md:px-4 md:py-2 text-sm leading-5 text-gray-700 transition duration-300 ease-in-out dark:text-gray-200 hover:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900 focus:outline-none active:bg-blue-50" +
-          (active ? " bg-blue-200 dark:bg-blue-800" : "") +
-          (!expanded ? " justify-center" : "") +
-          rounded
-        }
+        className={classes(
+          "py-1 px-2 md:px-3 md:py-3 inline-flex items-center rounded-md w-max min-w-[5rem] md:w-full h-full md:h-16",
+          active ? "bg-blue-50 border-blue-300 md:border" : "bg-white",
+          position === "first" ? "rounded-l-xl md:rounded-t-xl" : "",
+          position === "last" ? "rounded-r-xl md:rounded-b-xl" : ""
+        )}
       >
-        {photoURL ? (
-          <img
-            src={photoURL}
-            alt={slug}
-            className="flex-shrink-0 w-8 h-8 rounded-full select-none"
-          />
+        {image ? (
+          <div className="flex items-center justify-center w-6 h-6 bg-blue-200 rounded-full select-none md:w-8 md:h-8 shrink-0">
+            <Image src={image.url} alt={slug} width={24} height={24} />
+          </div>
         ) : (
-          <span className="flex items-center justify-center flex-shrink-0 w-8 h-8 p-2 text-blue-500 bg-blue-200 rounded-full dark:bg-blue-700">
-            <UserGroupIcon className="w-4 h-4" />
+          <span className="flex items-center justify-center w-6 h-6 text-blue-500 bg-blue-200 rounded-full md:w-8 md:h-8 dark:bg-blue-700 shrink-0">
+            <UserGroupIcon className="w-3 h-3 md:w-4 md:h-4 shrink-0" />
           </span>
         )}
-
-        {expanded && (
-          <div className="flex-col hidden ml-2 md:flex">
-            <span className="text-[0.65rem] select-none text-gray-400 dark:text-gray-300">
-              {name}
-            </span>
-          </div>
-        )}
+        <div className="flex flex-col ml-2 w-max">
+          <h3 className="w-full text-sm text-gray-700 select-none text-ellipsis font-marianne dark:text-gray-300">
+            {name}
+          </h3>
+          <h4 className="hidden mt-1 text-xs text-gray-500 select-none md:block text-ellipsis font-spectral">
+            {members.length} {members.length < 1 ? "member" : "members"}
+          </h4>
+        </div>
       </a>
     </Link>
   );
 };
+

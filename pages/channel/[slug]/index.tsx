@@ -4,6 +4,7 @@ import {
   PaperAirplaneIcon,
   PencilIcon,
   PlusIcon,
+  UserGroupIcon,
   XIcon,
 } from "@heroicons/react/outline";
 import { GetServerSideProps, NextPage } from "next";
@@ -16,20 +17,14 @@ import { useAuth } from "@hooks/useAuth";
 import { fetchRSR } from "@utils/fetchRSR";
 import { Channel } from "@definitions/Channel/Channel";
 import { HistoryItem } from "@components/channel/HistoryItem";
+import Image from "next/image";
+
 
 const ChannelSlug: NextPage<any> = ({
   sideBarChannels,
   channel,
 }: {
-  sideBarChannels: {
-    slug: string;
-    name: string;
-    messages: {
-      content: string;
-      createdAt: string;
-    }[];
-    members: object[];
-  }[];
+  sideBarChannels: Channel[];
   channel: Channel;
 }) => {
   const router = useRouter();
@@ -51,7 +46,7 @@ const ChannelSlug: NextPage<any> = ({
 
   useEffect((): any => {
     const socket = io("http://localhost:3000", {
-      path: `/api/channel/[slug]/socket`,
+      path: `/api/channel/[slug]/socket`, // todo: dynamic
     });
 
     socket.on("connect", () => {
@@ -106,6 +101,8 @@ const ChannelSlug: NextPage<any> = ({
           new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
       )
     );
+
+    return () => setHistory([]);
   }, [chat, channel.activities]);
 
   useEffect(() => {
@@ -118,48 +115,74 @@ const ChannelSlug: NextPage<any> = ({
       <div className="flex flex-col w-full h-full md:flex-row">
         <Sidebar
           channels={sideBarChannels}
-          canExpand
-          isExpanded={false}
-          canReturn
           selectedChannelSlug={slug as string}
         />
         <div className="flex justify-center w-full max-h-[calc(100%-6rem)] md:max-h-full h-full">
-          <div className="flex flex-col w-full bg-gray-700">
+          <div className="flex flex-col w-full md:bg-gray-100 ">
             {/* HEADER */}
-            <div className="inline-flex justify-between w-full p-3 px-6">
-              <div className="flex flex-col ">
-                <div className="inline-flex items-center">
-                  <p className="text-xl font-medium text-gray-100 font-marianne">
-                    {"#" + slug}
-                  </p>
-                  {/* <span className=" text-[0.6rem] ml-3 h-3 min-w-max w-full bg-gray-200 text-black font-bold rounded-full">
+            <div className="inline-flex justify-between w-full p-3 pr-6 border-b border-gray-100 md:border-0">
+              <div className="inline-flex items-center">
+                {channel.image ? (
+                  <div className="flex items-center justify-center w-6 h-6 bg-blue-200 rounded-full select-none md:w-8 md:h-8 shrink-0">
+                    <Image
+                      src={channel.image.url}
+                      alt={channel.slug}
+                      width={24}
+                      height={24}
+                    />
+                  </div>
+                ) : (
+                  <span className="flex items-center justify-center w-6 h-6 text-blue-500 bg-blue-200 rounded-full md:w-8 md:h-8 dark:bg-blue-700 shrink-0">
+                    <UserGroupIcon className="w-3 h-3 md:w-4 md:h-4 shrink-0" />
+                  </span>
+                )}
+
+                <div className="flex flex-col ml-2">
+                  <div className="inline-flex items-center">
+                    <p className="text-xl font-medium text-gray-700 font-marianne">
+                      {"#" + slug}
+                    </p>
+                    {/* <span className=" text-[0.6rem] ml-3 h-3 min-w-max w-full bg-gray-200 text-black font-bold rounded-full">
                     {chat.length}
                   </span> */}
+                  </div>
+                  {channel.description && (
+                    <p className="text-sm font-light text-gray-500 font-spectral">
+                      {channel.description}
+                    </p>
+                  )}
                 </div>
-                {channel.description && (
-                  <p className="text-sm font-light text-gray-300 font-spectral">
-                    {channel.description}
-                  </p>
-                )}
               </div>
+
               <div className="inline-flex items-center space-x-3">
                 <button className="btn-red">
                   <XIcon className="w-4 h-4 sm:mr-2" />
-                  <span className="hidden sm:block">Quitter le salon</span>
+                  <span className="items-center hidden sm:inline-flex">
+                    Quitter{" "}
+                    <span className="hidden ml-1 lg:inline-flex">le salon</span>
+                  </span>
                 </button>
                 {user?.data.uid === channel.owner.uid && (
                   <Link href={`/channel/${slug}/edit`}>
                     <a className="btn-green">
                       <PencilIcon className="w-4 h-4 sm:mr-2" />
-                      <span className="hidden sm:block">Éditer le salon</span>
+                      <span className="items-center hidden sm:inline-flex">
+                        Éditer{" "}
+                        <span className="hidden ml-1 lg:inline-flex">
+                          le salon
+                        </span>
+                      </span>
                     </a>
                   </Link>
                 )}
                 <Link href={"/resource/create" + `?channel=${slug}`}>
                   <a className="btn-blue">
                     <PlusIcon className="w-4 h-4 sm:mr-2" />
-                    <span className="hidden sm:block">
-                      Poster une ressource
+                    <span className="items-center hidden sm:inline-flex">
+                      Poster
+                      <span className="hidden ml-1 lg:inline-flex">
+                        une ressource
+                      </span>
                     </span>
                   </a>
                 </Link>
@@ -167,7 +190,7 @@ const ChannelSlug: NextPage<any> = ({
             </div>
 
             {/* BODY */}
-            <div className="flex flex-col p-3 px-6 space-y-4 overflow-y-auto bg-white grow lg:max-h-full xl:ml-6 xl:rounded-l-xl xl:p-6">
+            <div className="flex flex-col p-6 pr-6 space-y-4 overflow-y-auto bg-white grow lg:max-h-full md:rounded-l-xl ">
               <ol className="relative border-l border-gray-200 h-fit dark:border-gray-700">
                 {history.map((item, index) => (
                   <HistoryItem
@@ -183,12 +206,12 @@ const ChannelSlug: NextPage<any> = ({
             {/* FOOTER */}
             <form
               onSubmit={handleSubmitMessage}
-              className="inline-flex items-center w-full p-3 px-6"
+              className="inline-flex items-center w-full px-6 py-3 md:pl-0"
             >
               <input
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
-                className="z-40 h-10 mr-2 input"
+                className="z-40 h-10 mr-2 bg-white hover:bg-gray-200 input"
                 ref={inputRef}
                 placeholder="Écrivez votre message..."
               />
@@ -225,13 +248,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   return {
     props: {
-      sideBarChannels: channels?.data?.attributes?.map(
-        (e: { slug: string; name: string; image?: { url: string } }) => ({
-          slug: e.slug,
-          name: e.name,
-          photoURL: e.image?.url || "https://via.placeholder.com/150",
-        })
-      ),
+      sideBarChannels: channels?.data?.attributes,
       channel: channels?.data?.attributes?.find(
         (e: { slug: string }) => e.slug === context.params.slug
       ),

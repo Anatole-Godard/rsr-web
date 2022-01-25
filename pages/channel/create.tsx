@@ -78,11 +78,11 @@ const ChannelCreate: NextPage<any> = ({
           if (!responseFileUpload.ok) {
             setRequestOk(false);
           } else {
-            router.push(`/resource/${body.data.attributes.slug}`);
+            router.push(`/channel/${body.data.attributes.slug}`);
             setRequestOk(true);
           }
         } else if (response.ok && !pictureFile) {
-          router.push(`/resource/${body.data.attributes.slug}`);
+          router.push(`/channel/${body.data.attributes.slug}`);
           setRequestOk(true);
         }
       } catch (err) {
@@ -355,10 +355,10 @@ export async function getServerSideProps(ctx) {
         destination: "/auth/login",
       },
     };
-  const users = await (await fetch("http://localhost:3000/api/user")).json();
+  const body = await (await fetch("http://localhost:3000/api/user")).json();
   return {
     props: {
-      membersOptions: users?.data?.attributes,
+      membersOptions: body?.data?.attributes,
     },
   };
 }
