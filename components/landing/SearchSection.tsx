@@ -5,19 +5,28 @@ import {
   LibraryIcon,
 } from "@heroicons/react/outline";
 import { types } from "constants/resourcesTypes";
+import { useRouter } from "next/router";
 import { useState } from "react";
 
 export const SearchSection = () => {
   const [query, setQuery] = useState("");
-  const [type, setType] = useState(types[0].value);
+  const [type, setType] = useState(null);
+  const router = useRouter();
 
+  const post = (e) => {
+    e.preventDefault();
+    router.push({
+      pathname: "/resource",
+      query: { q: query, ...(type ? { type } : null) },
+    });
+  };
 
   return (
     <div className="flex-col hidden w-full px-32 my-4 mb-12 space-y-4 lg:flex lg:my-12">
       <h4 className="mb-1 text-xl font-bold tracking-tight text-center font-marianne sm:text-2xl">
         Que recherchez-vous ?
       </h4>
-      <form className="relative w-full" method="POST" action="/resource">
+      <form className="relative w-full" onSubmit={(e) => post(e)}>
         <div className="absolute inset-0 flex items-center" aria-hidden="true">
           <div className="w-full mx-12 border-t border-gray-300 dark:border-gray-700" />
         </div>
@@ -37,20 +46,28 @@ export const SearchSection = () => {
             />
           </label>
           <label className="relative text-gray-400 focus-within:text-gray-600">
-            {types
-              .find((t) => t.value === type)
-              .icon.outline({
-                className:
-                  "absolute w-4 h-4 transform -translate-y-1/2 pointer-events-none top-1/2 left-3",
-              })}
+            {type === null ? (
+              <SearchIcon className="absolute w-4 h-4 transform -translate-y-1/2 pointer-events-none top-1/2 left-3" />
+            ) : (
+              types
+                .find((t) => t.value === type)
+                ?.icon.outline({
+                  className:
+                    "absolute w-4 h-4 transform -translate-y-1/2 pointer-events-none top-1/2 left-3",
+                })
+            )}
             <select
               value={type}
-              onChange={(e) => setType(e.target.value)}
+              onChange={(e) => {
+                if (e.target.value === "null") setType(null);
+                else setType(e.target.value);
+              }}
               required
               name="searchType"
               className="input px-5 py-2 appearance-none pl-[2.25rem] placeholder-gray-500   lg:w-48 "
               placeholder="Type de la ressource"
             >
+              <option value="null">Tout type</option>
               {types.map((type, idx) => (
                 <option key={idx} value={type.value}>
                   {type.label}

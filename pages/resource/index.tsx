@@ -1,34 +1,44 @@
 import { ResourceCard } from "@components/card/Resource";
 import { AppLayout } from "@components/layouts/AppLayout";
 import { Resource } from "@definitions/Resource/Resource";
-import { Menu, Transition } from "@headlessui/react";
 import { ChevronDownIcon, SearchIcon } from "@heroicons/react/outline";
 import { PlusIcon } from "@heroicons/react/solid";
 import { NextPage } from "next";
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import Link from "next/link";
 import Image from "next/image";
-import { useRouter } from "next/router";
 import { types } from "constants/resourcesTypes";
 
 const ResourceIndex: NextPage<any> = ({
   resources,
+  q,
+  type,
 }: {
   resources: Resource[];
+  q: string;
+  type: string;
 }) => {
-  const router = useRouter();
-  const { search, searchType } = router.query;
-
   const [displayables, setDisplayables] = useState(resources);
 
-  const [query, setQuery] = useState(search || "");
-  const [type, setType] = useState(searchType || types[0].value);
+  const [query, setQuery] = useState(q || "");
+  const [selectedType, setType] = useState(type || null);
 
-  const prepareDisplayable = () => {
-    setDisplayables(resources);
-  };
+  useEffect(() => {
+    const fetchData = async () => {
+      const res = await fetch(`/api/resource?q=${query}&type=${selectedType}`);
+      const body = await res.json();
+      res.ok
+        ? setDisplayables(body?.data.attributes)
+        : setDisplayables(resources);
+    };
 
+    const delayDebounce = setTimeout(() => {
+      fetchData();
+    }, 1000);
+
+    return () => clearTimeout(delayDebounce);
+  }, [query, selectedType, resources]);
 
   return (
     <AppLayout>
@@ -55,44 +65,54 @@ const ResourceIndex: NextPage<any> = ({
 
           <div className="relative flex flex-row justify-between w-full space-x-3 text-sm">
             <div className="inline-flex items-center space-x-3">
-            <label className="relative text-gray-400 focus-within:text-gray-600">
-              <SearchIcon className="absolute w-4 h-4 transform -translate-y-1/2 pointer-events-none top-1/2 left-3" />
-              <input
-                id="query"
-                name="query"
-                type="text"
-                autoComplete="off"
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                required
-                className="input px-5 py-2 pl-[2.25rem] placeholder-gray-500   lg:w-96 "
-                placeholder="Rechercher ..."
-              />
-            </label>
+              <label className="relative text-gray-400 focus-within:text-gray-600">
+                <SearchIcon className="absolute w-4 h-4 transform -translate-y-1/2 pointer-events-none top-1/2 left-3" />
+                <input
+                  id="query"
+                  name="query"
+                  type="text"
+                  autoComplete="off"
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
+                  required
+                  className="input px-5 py-2 pl-[2.25rem] placeholder-gray-500   lg:w-96 "
+                  placeholder="Rechercher ..."
+                />
+              </label>
 
-            <label className="relative text-gray-400 focus-within:text-gray-600">
-              {types
-                .find((t) => t.value === type)
-                .icon.outline({
-                  className:
-                    "absolute w-4 h-4 transform -translate-y-1/2 pointer-events-none top-1/2 left-3",
-                })}
-              <select
-                value={type}
-                onChange={(e) => setType(e.target.value)}
-                required
-                name="searchType"
-                className="input px-5 py-2 appearance-none pl-[2.25rem] placeholder-gray-500   lg:w-48 "
-                placeholder="Type de la ressource"
-              >
-                {types.map((type, idx) => (
-                  <option key={idx} value={type.value}>
-                    {type.label}
-                  </option>
-                ))}
-              </select>
-              <ChevronDownIcon className="absolute w-4 h-4 transform -translate-y-1/2 pointer-events-none top-1/2 right-3" />
-            </label>
+              <label className="relative text-gray-400 focus-within:text-gray-600">
+                {type === null ? (
+                  <SearchIcon className="absolute w-4 h-4 transform -translate-y-1/2 pointer-events-none top-1/2 left-3" />
+                ) : (
+                  types
+                    .find((t) => t.value === selectedType)
+                    ?.icon.outline({
+                      className:
+                        "absolute w-4 h-4 transform -translate-y-1/2 pointer-events-none top-1/2 left-3",
+                    })
+                )}
+
+                <select
+                  value={selectedType}
+                  onChange={(e) => {
+                    if (e.target.value === "null") setType(null);
+                    else setType(e.target.value);
+                  }}
+                  required
+                  name="searchType"
+                  className="input px-5 py-2 appearance-none pl-[2.25rem] placeholder-gray-500   lg:w-48 "
+                  placeholder="Type de la ressource"
+                >
+                  <option value="null">Tout type</option>
+
+                  {types.map((type, idx) => (
+                    <option key={idx} value={type.value}>
+                      {type.label}
+                    </option>
+                  ))}
+                </select>
+                <ChevronDownIcon className="absolute w-4 h-4 transform -translate-y-1/2 pointer-events-none top-1/2 right-3" />
+              </label>
             </div>
 
             <Link href={"/resource/create"}>
@@ -103,7 +123,7 @@ const ResourceIndex: NextPage<any> = ({
             </Link>
           </div>
         </div>
-        <div className="grid min-h-full grid-cols-1 gap-3 p-6 bg-gray-100 grow xl:rounded-tl-xl lg:grid-cols-3 2xl:grid-cols-4 md:grid-cols-2 lg:gap-6 lg:px-32 md:overflow-y-auto">
+        <div className="grid min-h-full grid-cols-1 gap-3 p-6 bg-gray-100 grow xl:rounded-tl-xl lg:grid-cols-4 2xl:grid-cols-4 md:grid-cols-2 lg:gap-6 lg:p-12 md:overflow-y-auto">
           {displayables.map((el, index) => (
             <ResourceCard key={index} {...el} />
           ))}
@@ -115,160 +135,15 @@ const ResourceIndex: NextPage<any> = ({
 
 export default ResourceIndex;
 
-export async function getServerSideProps() {
+export async function getServerSideProps(context) {
   const res = await fetch("http://localhost:3000/api/resource");
   const body = await res.json();
 
   const resources: Resource[] = body?.data?.attributes;
 
+  const { q, type = null } = context.query;
+
   return {
-    props: { resources },
+    props: { resources, q, type },
   };
 }
-
-const TypeSelect = ({ type, setType }: any) => {
-  return (
-    <Menu as="div" className="relative flex items-center h-full">
-      {({ open }) => (
-        <>
-          <Menu.Button className="flex items-center justify-between px-2 py-1 mr-2 text-sm font-medium transition duration-300 rounded-xl max-h-12 w-max hover:bg-blue-200 hover:text-blue-700 dark:hover:bg-blue-800 dark:hover:text-blue-300">
-            {type?.label || "Tout type"}
-            <span className="ml-2">
-              <ChevronDownIcon className="w-3 h-3" />
-            </span>
-          </Menu.Button>
-          <Transition
-            show={open}
-            enter="transform transition duration-100 ease-in"
-            enterFrom="opacity-0 scale-95"
-            enterTo="opacity-100 scale-100"
-            leave="transform transition duration-75 ease-out"
-            leaveFrom="opacity-100 scale-100"
-            leaveTo="opacity-0 scale-95"
-          >
-            <Menu.Items
-              static
-              className={
-                "bg-white md:origin-top-left absolute left-0 mt-6 dark:bg-gray-900 text-base z-50 float-left py-2 list-none text-left rounded-xl shadow-lg min-w-48"
-              }
-            >
-              <button
-                onClick={() => {
-                  setType(null);
-                  // closeDropdownPopover();
-                }}
-                className={
-                  "text-sm py-2 px-4 font-normal block w-full text-center whitespace-nowrap hover:text-blue-500 dark:hover:text-blue-500 transition duration-300 text-gray-700 dark:text-gray-300"
-                }
-              >
-                Tout type
-              </button>
-              {[
-                { label: "Objet physique", value: "physical_item" },
-                { label: "Lien externe", value: "external_link" },
-                { label: "Emplacement GPS", value: "location" },
-                { label: "Autre", value: "other" },
-              ].map((el, key) => (
-                <button
-                  key={key}
-                  onClick={() => {
-                    setType(el);
-                    // closeDropdownPopover();
-                  }}
-                  className={
-                    "text-sm py-2 px-4 font-normal block w-full text-center whitespace-nowrap hover:text-blue-500 dark:hover:text-blue-500 transition duration-300 text-gray-700 dark:text-gray-300"
-                  }
-                >
-                  {el.label}
-                </button>
-              ))}
-            </Menu.Items>
-          </Transition>
-        </>
-      )}
-    </Menu>
-  );
-};
-
-const CategorySelect = ({ category, setCategory }: any) => {
-  return (
-    <Menu as="div" className="relative flex items-center h-full">
-      {({ open }) => (
-        <>
-          <Menu.Button className="flex items-center justify-between px-2 py-1 mr-2 text-sm font-medium transition duration-300 rounded-xl max-h-12 w-max hover:bg-blue-200 hover:text-blue-700 dark:hover:bg-blue-800 dark:hover:text-blue-300">
-            {category?.label || "Any category"}
-            <span className="ml-2">
-              <ChevronDownIcon className="w-3 h-3" />
-            </span>
-          </Menu.Button>
-          <Transition
-            show={open}
-            enter="transform transition duration-100 ease-in"
-            enterFrom="opacity-0 scale-95"
-            enterTo="opacity-100 scale-100"
-            leave="transform transition duration-75 ease-out"
-            leaveFrom="opacity-100 scale-100"
-            leaveTo="opacity-0 scale-95"
-          >
-            <Menu.Items
-              static
-              className={
-                "bg-white origin-top-left absolute left-0 mt-6 dark:bg-gray-900 text-base z-50 float-left py-2 list-none text-left rounded-xl shadow-lg min-w-48"
-              }
-            >
-              <button
-                onClick={() => {
-                  setCategory(null);
-                  // closeDropdownPopover();
-                }}
-                className={
-                  "text-sm py-2 px-4 font-normal block w-full text-center whitespace-nowrap hover:text-blue-500 dark:hover:text-blue-500 transition duration-300 text-gray-700 dark:text-gray-300"
-                }
-              >
-                Any category
-              </button>
-              {[
-                { label: "Art & Culture", value: "art_culture" },
-                { label: "Career & Business", value: "career_business" },
-                {
-                  label: "Community & Environment",
-                  value: "community_environment",
-                },
-                // { label: "Dancing", value: "dancing" },
-                { label: "Games", value: "games" },
-                // { label: "Health & Wellbeing", value: "health_wellbeing" },
-                { label: "Hobbies & Passions", value: "hobbies_passions" },
-                // { label: "Identity & Language", value: "identity_language" },
-                { label: "Movements & Politics", value: "movements_politics" },
-                { label: "Music", value: "music" },
-                // { label: "Parents & Family", value: "parents_family" },
-                { label: "Pets & Animals", value: "pets_animals" },
-                // { label: "Religion & Spirituality", value: "religion_spirituality" },
-                { label: "Science & Education", value: "science_education" },
-                { label: "Social Activities", value: "socialactivities" },
-                { label: "Sports & Fitness", value: "sports_fitness" },
-                // { label: "Support & Coaching", value: "support_coaching" },
-                { label: "Technology", value: "technology" },
-                { label: "Travel & Outdoor", value: "travel_outdoor" },
-                // { label: "Writing", value: "writing" },
-              ].map((el, key) => (
-                <button
-                  key={key}
-                  onClick={() => {
-                    setCategory(el);
-                    // closeDropdownPopover();
-                  }}
-                  className={
-                    "text-sm py-2 px-4 font-normal block w-full text-center whitespace-nowrap hover:text-blue-500 dark:hover:text-blue-500 transition duration-300 text-gray-700 dark:text-gray-300"
-                  }
-                >
-                  {el.label}
-                </button>
-              ))}
-            </Menu.Items>
-          </Transition>
-        </>
-      )}
-    </Menu>
-  );
-};
