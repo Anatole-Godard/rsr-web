@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 /* eslint-disable jsx-a11y/alt-text */
 import { ResourceCardSmall } from "@components/card/Resource";
-import { Resource } from "@definitions/Resource/Resource";
+import { Resource } from "@definitions/Resource";
 import { classes } from "@utils/classes";
 import Image from "next/image";
 

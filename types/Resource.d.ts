@@ -1,3 +1,4 @@
+import { Comment } from "./Resource/Comment";
 import type { ExternalLink } from "./Resource/ExternalLink";
 import type { GeoJSON_Point } from "./Resource/GeoJSON";
 import type { PhysicalItem } from "./Resource/PhysicalItem";
@@ -15,14 +16,6 @@ export type Resource = {
     attributes: GeoJSON_Point | PhysicalItem | ExternalLink | any;
   }; // à définir,
   likes: UserMinimum[];
-  comments?: {
-    owner: {
-      uid: string;
-      fullName: string;
-      photoURL: string;
-    };
-    content: string;
-    createdAt: Date | string;
-  }[];
+  comments?: Comment[];
   validated: boolean;
 };

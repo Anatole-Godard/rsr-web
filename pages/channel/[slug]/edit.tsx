@@ -1,5 +1,5 @@
 import { AppLayout } from "@components/layouts/AppLayout";
-import { Channel } from "@definitions/Channel/Channel";
+import { Channel } from "@definitions/Channel";
 import {
   CheckIcon,
   CloudUploadIcon,
@@ -24,7 +24,7 @@ const ChannelCreate: NextPage<any> = (props) => {
   const router = useRouter();
   const { user } = useAuth();
 
-  const [pictureUrl, setPictureUrl] = useState(null);
+  const [pictureUrl, setPictureUrl] = useState(props.image.url || null);
   const [pictureFile, setPictureFile] = useState(null);
   const [name, setName] = useState<string>(props.name || "");
   const [description, setDescription] = useState<string | null>(
@@ -98,7 +98,7 @@ const ChannelCreate: NextPage<any> = (props) => {
           }))
         )
       );
-  }, []);
+  }, [user?.session]);
 
   return (
     <AppLayout>
@@ -110,7 +110,12 @@ const ChannelCreate: NextPage<any> = (props) => {
           <div className="inline-flex items-end justify-between w-full">
             <div className="flex flex-col space-y-2">
               <div className="w-auto h-auto">
-                <Image src="/img/partypopper.png" width={64} height={64} alt="Partypopper" />
+                <Image
+                  src="/img/partypopper.png"
+                  width={64}
+                  height={64}
+                  alt="Partypopper"
+                />
               </div>
               <h3 className="mb-2 text-2xl font-extrabold text-gray-800 font-marianne dark:text-gray-200">
                 Éditer
@@ -183,10 +188,11 @@ const ChannelCreate: NextPage<any> = (props) => {
               </h4>
               <input
                 type="text"
-                className="bg-gray-200 input"
+                className="bg-gray-200 input disabled:bg-gray-300 disabled:cursor-not-allowed"
                 placeholder="Titre"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
+                disabled
               ></input>
             </label>
             <label>

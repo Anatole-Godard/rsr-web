@@ -11,7 +11,6 @@ function MyApp({ Component, pageProps }: AppProps) {
     <ThemeProvider attribute="class">
       <AuthProvider>
         <AnimatePresence onExitComplete={() => window.scrollTo(0, 0)}>
-          
           <Component {...pageProps} />
           <DarkModeToggler />
         </AnimatePresence>

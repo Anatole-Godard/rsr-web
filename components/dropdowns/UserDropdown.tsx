@@ -33,10 +33,10 @@ export const UserDropdown = () => {
           <Menu.Button>
             <div className="flex items-center">
               {user ? (
-                <span
+                <div
                   className={classes(
-                    "inline-flex items-center justify-center w-8 h-8 text-sm duration-300  rounded-full hover:bg-gray-300 active:bg-gray-100",
-                    open ? "bg-gray-300" : "bg-gray-200"
+                    "inline-flex items-center justify-center w-8 h-8 text-sm duration-300  rounded-full hover:bg-gray-300 active:bg-gray-100  dark:bg-gray-900 dark:active:bg-gray-900  dark:hover:bg-gray-700",
+                    open ? "bg-gray-300 dark:bg-gray-700" : "bg-gray-200  dark:bg-gray-800"
                   )}
                 >
                   <div className="w-5/6 align-middle border-none rounded-full select-none h-5/6 ">
@@ -54,7 +54,7 @@ export const UserDropdown = () => {
                       }
                     />
                   </div>
-                </span>
+                </div>
               ) : (
                 <span
                   className={classes(
@@ -88,7 +88,7 @@ export const UserDropdown = () => {
               {user ? (
                 <>
                   <Link href="/user">
-                    <a className="inline-flex justify-between items-center  w-full min-h-[6rem] px-2 py-4 duration-300 rounded-t-xl hover:bg-blue-50 dark:hover:bg-blue-900 border-b border-gray-100 ">
+                    <a className="inline-flex justify-between items-center  w-full min-h-[6rem] px-2 py-4 duration-300 rounded-t-xl hover:bg-blue-50 dark:hover:bg-blue-900 border-b dark:border-gray-800 border-gray-100 ">
                       <div className="inline-flex items-center">
                         <div className="relative flex items-center justify-center w-12 h-12 m-1 mr-2 text-xl text-white bg-white rounded-full shrink-0">
                           <Image
