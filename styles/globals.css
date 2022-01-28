@@ -221,7 +221,7 @@
   }
 
   .btn-red {
-    @apply text-red-700 bg-red-100 btn hover:bg-red-300 active:bg-red-700 active:text-red-100 hover:text-red-800 dark:bg-red-800 dark:text-red-200 ring-red-500;
+    @apply text-red-700 bg-red-100 btn hover:bg-red-300 active:bg-red-700 active:text-red-100 hover:text-red-800 ring-red-500;
   }
 
   .btn-yellow {
