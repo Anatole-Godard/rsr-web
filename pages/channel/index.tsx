@@ -1,6 +1,6 @@
 import { Sidebar } from "@components/channel/Sidebar";
 import { AppLayout } from "@components/layouts/AppLayout";
-import { Channel } from "@definitions/Channel/Channel";
+import { Channel } from "@definitions/Channel";
 import { GetServerSideProps, NextPage } from "next";
 
 const Channel: NextPage<any> = ({

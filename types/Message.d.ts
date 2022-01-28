@@ -1,7 +1,8 @@
 import { UserMinimum } from "@definitions/User";
-import { Resource } from "@definitions/Resource/Resource";
+import { Resource } from "@definitions/Resource";
 
 export type Message = {
+  _id?: string;
   user: UserMinimum;
   data: {
     type: "message";

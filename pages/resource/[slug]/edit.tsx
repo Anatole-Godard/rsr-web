@@ -1,5 +1,5 @@
 import { AppLayout } from "@components/layouts/AppLayout";
-import { Resource } from "@definitions/Resource/Resource";
+import { Resource } from "@definitions/Resource";
 import { Tab } from "@headlessui/react";
 import {
   CheckIcon,
@@ -120,17 +120,7 @@ const ResourceEdit: NextPage<any> = (props: Resource) => {
         setValidForm(false);
         break;
     }
-  }, [
-    pictureUrl,
-    name,
-    description,
-    tags,
-    type,
-    position,
-    price,
-    externalLink,
-    category,
-  ]);
+  }, [pictureUrl, name, description, tags, type, position, price, externalLink, category, location]);
 
   return (
     <AppLayout>
@@ -139,7 +129,7 @@ const ResourceEdit: NextPage<any> = (props: Resource) => {
           <div className="inline-flex items-end justify-between w-full">
             <div className="flex flex-col space-y-2">
               <div className="w-auto h-auto">
-                <Image src="/img/pencil.png" width={64} height={64} />
+                <Image src="/img/pencil.png" width={64} height={64} alt="Pencil" />
               </div>
               <h3 className="mb-2 text-2xl font-extrabold text-gray-800 font-marianne dark:text-gray-200">
                 Éditer

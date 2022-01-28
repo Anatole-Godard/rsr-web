@@ -1,5 +1,5 @@
 import { ChipList } from "@components/ui/ChipList";
-import { Resource } from "@definitions/Resource/Resource";
+import { Resource } from "@definitions/Resource";
 import {
   ExternalLinkIcon,
   HandIcon,
@@ -13,7 +13,7 @@ import { fr } from "date-fns/locale";
 import Link from "next/link";
 
 export const ResourceCard = (props: Resource) => {
-  const { data, slug, createdAt, tags, owner } = props;
+  const { data, slug, owner } = props;
   const {
     attributes: { properties },
     type,

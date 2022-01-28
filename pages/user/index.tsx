@@ -3,7 +3,7 @@ import { ChangePassword } from "@components/user/ChangePassword";
 import { ChangeProfilePicture } from "@components/user/ChangeProfilePicture";
 import { SessionsViewer } from "@components/user/SessionsViewer";
 import { UserResources } from "@components/user/UserResources";
-import { Resource } from "@definitions/Resource/Resource";
+import { Resource } from "@definitions/Resource";
 import { useAuth } from "@hooks/useAuth";
 import { NextPage } from "next";
 import Image from "next/image";

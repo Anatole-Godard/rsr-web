@@ -1,6 +1,6 @@
 import { ResourceCard } from "@components/card/Resource";
 import { AppLayout } from "@components/layouts/AppLayout";
-import { Resource } from "@definitions/Resource/Resource";
+import { Resource } from "@definitions/Resource";
 import { ChevronDownIcon, SearchIcon } from "@heroicons/react/outline";
 import { PlusIcon } from "@heroicons/react/solid";
 import { NextPage } from "next";
@@ -13,7 +13,7 @@ import { useRouter } from "next/router";
 
 const ResourceIndex: NextPage<any> = ({
   resources,
-  q,
+  q = null,
   type,
 }: {
   resources: Resource[];
@@ -32,7 +32,7 @@ const ResourceIndex: NextPage<any> = ({
 
   useEffect(() => {
     const fetchData = async () => {
-      const res = await fetch(`/api/resource?q=${query}&type=${selectedType}`);
+      const res = await fetch(`/api/resource?q=${query || ""}&type=${selectedType || ""}`);
       const body = await res.json();
       res.ok
         ? setDisplayables(body?.data.attributes)
@@ -147,7 +147,7 @@ export async function getServerSideProps(context) {
 
   const resources: Resource[] = body?.data?.attributes;
 
-  const { q, type = null } = context.query;
+  const { q = null, type = null } = context.query;
 
   return {
     props: { resources, q, type },

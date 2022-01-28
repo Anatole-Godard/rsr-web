@@ -8,7 +8,7 @@ import {
 // var QRCode = require("qrcode.react");
 
 import Link from "next/link";
-import { Channel } from "@definitions/Channel/Channel";
+import { Channel } from "@definitions/Channel";
 import { classes } from "@utils/classes";
 import { UserMinimum } from "@definitions/User";
 import Image from "next/image";

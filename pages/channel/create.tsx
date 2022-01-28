@@ -207,11 +207,13 @@ const ChannelCreate: NextPage<any> = ({
                     Qui souhaitez-vous inviter ?
                   </div>
                 }
-                options={membersOptions.map((member) => ({
-                  value: member.uid,
-                  label: member.fullName,
-                  photoURL: member.photoURL,
-                }))}
+                options={membersOptions
+                  .filter((member) => member.uid !== user?.data.uid)
+                  .map((member) => ({
+                    value: member.uid,
+                    label: member.fullName,
+                    photoURL: member.photoURL,
+                  }))}
                 formatOptionLabel={(member: {
                   value: string;
                   label: string;

@@ -15,10 +15,10 @@ import io from "socket.io-client";
 import { Message } from "@definitions/Message";
 import { useAuth } from "@hooks/useAuth";
 import { fetchRSR } from "@utils/fetchRSR";
-import { Channel } from "@definitions/Channel/Channel";
+import { Channel } from "@definitions/Channel";
 import { HistoryItem } from "@components/channel/HistoryItem";
 import Image from "next/image";
-
+import { Activity } from "@definitions/Activity";
 
 const ChannelSlug: NextPage<any> = ({
   sideBarChannels,
@@ -28,7 +28,7 @@ const ChannelSlug: NextPage<any> = ({
   channel: Channel;
 }) => {
   const router = useRouter();
-  const { slug } = router.query;
+  const slug = router.query.slug as string;
   const { user } = useAuth();
   const [message, setMessage] = useState<string>("");
   const [chat, setChat] = useState<Message[]>(channel.messages || []);
@@ -42,7 +42,7 @@ const ChannelSlug: NextPage<any> = ({
     }
   }, [inputRef]);
 
-  const [history, setHistory] = useState<any[]>([]);
+  const [history, setHistory] = useState<(Message | Activity)[]>([]);
 
   useEffect((): any => {
     const socket = io("http://localhost:3000", {
@@ -110,6 +110,13 @@ const ChannelSlug: NextPage<any> = ({
       bottomListRef.current.scrollIntoView({ behavior: "smooth" });
   }, []);
 
+  const quit = async () => {
+    const resp = await fetchRSR(`/api/channel/${slug}/quit`, user?.session);
+    if (resp.ok) {
+      router.push("/channel");
+    }
+  };
+
   return (
     <AppLayout>
       <div className="flex flex-col w-full h-full md:flex-row">
@@ -155,7 +162,7 @@ const ChannelSlug: NextPage<any> = ({
               </div>
 
               <div className="inline-flex items-center space-x-3">
-                <button className="btn-red">
+                <button className="btn-red" onClick={quit}>
                   <XIcon className="w-4 h-4 sm:mr-2" />
                   <span className="items-center hidden sm:inline-flex">
                     Quitter{" "}

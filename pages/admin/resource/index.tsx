@@ -4,7 +4,7 @@ import { CustomTable } from "@components/customTable/CustomTable";
 import { useState } from "react";
 import { fetchRSR } from "@utils/fetchRSR";
 import { useAuth } from "@hooks/useAuth";
-import { Resource } from "@definitions/Resource/Resource";
+import { Resource } from "@definitions/Resource";
 import { LibraryIcon, SearchIcon } from "@heroicons/react/outline";
 
 const Resources: NextPage<any> = (props) => {

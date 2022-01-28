@@ -5,7 +5,7 @@ import Channel from "@models/Channel";
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
-    const channels = await Channel.find({}).lean();
+    const channels = await Channel.find({ visibility: "public" }).lean();
 
     return res.status(200).json({
       data: {

@@ -1,9 +1,9 @@
 /* eslint-disable @next/next/no-img-element */
 import { AppLayout } from "@components/layouts/AppLayout";
-import { Resource } from "@definitions/Resource/Resource";
+import { Resource } from "@definitions/Resource";
 import {
   ChatIcon,
-  HeartIcon,
+  HeartIcon as HeartIconOutline,
   PaperAirplaneIcon,
   PencilIcon,
   ShareIcon,
@@ -12,6 +12,7 @@ import {
 import {
   ExternalLinkIcon,
   HandIcon,
+  HeartIcon,
   LocationMarkerIcon,
 } from "@heroicons/react/solid";
 import { GetServerSideProps, NextPage } from "next";
@@ -21,6 +22,10 @@ import dynamic from "next/dynamic";
 import Link from "next/link";
 import { Chip } from "@components/ui/Chip";
 import { ChipList } from "@components/ui/ChipList";
+import { fetchRSR } from "@utils/fetchRSR";
+import { useAuth } from "@hooks/useAuth";
+import { UserMinimum } from "@definitions/User";
+import { Comment } from "@definitions/Resource/Comment";
 
 const Map: any = dynamic(() => import("@components/map/Map") as any, {
   ssr: false,
@@ -36,6 +41,31 @@ const ResourceSlug: NextPage<any> = ({
   tags,
 }: Resource) => {
   const [message, setMessage] = useState<string>("");
+  const [newLikes, setNewLikes] = useState<UserMinimum[]>(likes || []);
+  const [newComments, setNewComments] = useState<Comment[]>(comments || []);
+
+  const { user } = useAuth();
+
+  const like = async () => {
+    const res = await fetchRSR(`/api/resource/${slug}/like`, user?.session);
+    if (res.ok) {
+      const body = await res.json();
+      setNewLikes(body?.data.attributes.likes);
+    }
+  };
+  const comment = async (e) => {
+    e.preventDefault();
+    const res = await fetchRSR(`/api/resource/${slug}/comment`, user?.session, {
+      method: "POST",
+      body: JSON.stringify({
+        commentContent: message,
+      }),
+    });
+    if (res.ok) {
+      const body = await res.json();
+      setNewComments(body?.data.attributes.comments);
+    }
+  };
 
   return (
     <AppLayout>
@@ -76,7 +106,11 @@ const ResourceSlug: NextPage<any> = ({
             </p>
             {/* Chip component (merge ref/global-layout) */}
             <div className="flex justify-center w-full pb-2">
-              <Chip element={{ label: data.type, value: data.type }} size="small" color="gray" />
+              <Chip
+                element={{ label: data.type, value: data.type }}
+                size="small"
+                color="gray"
+              />
             </div>
 
             <div className="inline-flex justify-center w-full divide-x">
@@ -88,7 +122,9 @@ const ResourceSlug: NextPage<any> = ({
               </div>
               <div className="flex flex-col items-center w-24 space-y-2">
                 <ThumbUpIcon className="w-6 h-6" />
-                <p className="font-semibold font-spectral">{likes}</p>
+                <p className="font-semibold font-spectral">
+                  {newLikes?.length}
+                </p>
               </div>
             </div>
           </div>
@@ -97,22 +133,33 @@ const ResourceSlug: NextPage<any> = ({
             <div className="inline-flex flex-grow w-1/2 space-x-2 overflow-x-auto">
               <ChipList
                 color="blue"
-                list={tags?.map((el, i)=>({label:el, value:i})) || []}
+                list={tags?.map((el, i) => ({ label: el, value: i })) || []}
                 size="small"
               />
             </div>
             <div className="inline-flex items-center justify-end flex-shrink-0 w-full space-x-2 max-w-max">
-              <button className="px-2 text-gray-700 bg-gray-100 btn-red">
-                <HeartIcon className="w-4 h-4" />
-              </button>
+              {user?.data && (
+                <button
+                  onClick={like}
+                  className="px-2 text-gray-700 bg-gray-100 btn-red"
+                >
+                  {newLikes.find((u) => u.uid === user.data.uid) === null ? (
+                    <HeartIconOutline className="w-4 h-4" />
+                  ) : (
+                    <HeartIcon className="w-4 h-4" />
+                  )}
+                </button>
+              )}
               <button className="px-2 btn-gray">
                 <ShareIcon className="w-4 h-4" />
               </button>
-              <Link href={"/resource/" + slug + "/edit"}>
-                <button className="px-2 btn-gray">
-                  <PencilIcon className="w-4 h-4" />
-                </button>
-              </Link>
+              {owner.uid === user?.data.uid && (
+                <Link href={"/resource/" + slug + "/edit"}>
+                  <a className="px-2 btn-gray">
+                    <PencilIcon className="w-4 h-4" />
+                  </a>
+                </Link>
+              )}
             </div>
           </div>
         </div>
@@ -142,56 +189,46 @@ const ResourceSlug: NextPage<any> = ({
               </span>
             </h2>
             <div className="flex flex-col grow-0 shrink px-4 my-2 space-y-2 overflow-y-auto rounded-md h-full max-h-[12rem] xl:rounded-xl">
-              {comments && comments?.length > 0 ? (
-                comments.map(
-                  (
-                    comment: {
-                      owner: {
-                        photoURL: string;
-                        fullName: string;
-                        uid: string;
-                      };
-                      createdAt: Date | string;
-                      content: string;
-                    },
-                    i
-                  ) => (
-                    <div
-                      className="inline-flex p-2 space-x-6 rounded-md bg-gray-50"
-                      key={comment.createdAt.toString() + i}
-                    >
-                      <img
-                        src={comment.owner.photoURL}
-                        alt={comment.owner.fullName}
-                        className="w-10 h-10 rounded-full"
-                      ></img>
-                      <div className="flex flex-col">
-                        <p className="text-sm font-semibold text-gray-700 font-spectral">
-                          {comment.owner.fullName}
-                        </p>
-                        <p className="text-xs text-gray-600">
-                          {comment.content}
-                        </p>
-                      </div>
+              {newComments && newComments?.length > 0 ? (
+                newComments.map((comment: Comment, i) => (
+                  <div
+                    className="inline-flex p-2 space-x-6 rounded-md bg-gray-50"
+                    key={comment.createdAt.toString() + i}
+                  >
+                    <img
+                      src={comment.owner.photoURL}
+                      alt={comment.owner.fullName}
+                      className="w-10 h-10 rounded-full"
+                    ></img>
+                    <div className="flex flex-col">
+                      <p className="text-sm font-semibold text-gray-700 font-spectral">
+                        {comment.owner.fullName}
+                      </p>
+                      <p className="text-xs text-gray-600">{comment.content}</p>
                     </div>
-                  )
-                )
+                  </div>
+                ))
               ) : (
                 <p className="text-sm text-gray-600">
                   Aucun commentaire pour le moment.
                 </p>
               )}
-              <div className="inline-flex items-center pb-2">
+              <form
+                onSubmit={comment}
+                className="inline-flex items-center pb-2"
+              >
                 <input
                   value={message}
                   placeholder="Écrivez un commentaire"
                   onChange={(e) => setMessage(e.target.value)}
                   className="mr-2 bg-gray-200 input"
+                  required
+                  autoComplete="off"
                 ></input>
-                <button className="btn-green">
+                <button type="submit" className="btn-green">
                   <PaperAirplaneIcon className="w-[1.25rem] h-[1.25rem] " />
                 </button>
-              </div>
+              </form>
             </div>
           </div>
         </div>

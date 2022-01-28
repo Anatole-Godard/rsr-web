@@ -1,27 +1,16 @@
 import { Iframe } from "@components/helpers/Iframe";
-import { Resource } from "@definitions/Resource/Resource";
-import { UserMinimum } from "@definitions/User";
+import { Activity } from "@definitions/Activity";
+import { Message } from "@definitions/Message";
 import { ChatAlt2Icon, ChatIcon, UserAddIcon } from "@heroicons/react/outline";
 import { formatDistance } from "date-fns";
 import { fr } from "date-fns/locale";
 import Image from "next/image";
 
-export const HistoryItem = ({
-  user,
-  data,
-  createdAt,
-  context,
-}: {
-  user: UserMinimum;
-  data: {
-    type: string;
-    resource?: Resource;
-    user?: UserMinimum;
-    text?: string;
-  };
-  createdAt: string;
-  context: any;
-}) => {
+type History = (Message | Activity) & {
+  context: { name: string };
+};
+
+export const HistoryItem = ({ user, data, createdAt, context }: History) => {
   return (
     <li className="mb-6 ml-6 last:pb-6">
       <span className="absolute flex items-center justify-center w-6 h-6 bg-blue-200 rounded-full -left-3 ring-8 ring-white dark:ring-gray-800 dark:bg-blue-900">
@@ -96,7 +85,11 @@ export const HistoryItem = ({
               <div className="min-w-full text-sm font-normal text-gray-500 dark:text-gray-300">
                 <span className="mr-2 w-72">{user.fullName}</span>
                 <span className="bg-gray-100 text-gray-800 text-xs font-normal mr-2 px-2.5 py-0.5 rounded dark:bg-gray-600 dark:text-gray-300">
-                  {data.text}
+                  {data.text?.match(/(\/resource\/[\S]*)/) ? (
+                    <a className="underline" href={data.text}>{data.text}</a>
+                  ) : (
+                    data.text
+                  )}
                 </span>
               </div>
             </div>

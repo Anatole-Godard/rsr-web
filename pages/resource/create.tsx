@@ -1,5 +1,5 @@
 import { AppLayout } from "@components/layouts/AppLayout";
-import { Resource } from "@definitions/Resource/Resource";
+import { Resource } from "@definitions/Resource";
 import { Tab } from "@headlessui/react";
 import {
   CheckIcon,
@@ -172,17 +172,7 @@ const ResourceCreate: NextPage<any> = () => {
         setValidForm(false);
         break;
     }
-  }, [
-    pictureUrl,
-    name,
-    description,
-    tags,
-    type,
-    position,
-    price,
-    externalLink,
-    category,
-  ]);
+  }, [pictureUrl, name, description, tags, type, position, price, externalLink, category, pictureFile, location]);
 
   return (
     <AppLayout>
@@ -194,7 +184,7 @@ const ResourceCreate: NextPage<any> = () => {
           <div className="inline-flex items-end justify-between w-full">
             <div className="flex flex-col space-y-2">
               <div className="w-auto h-auto">
-                <Image src="/img/partypopper.png" width={64} height={64} />
+                <Image src="/img/partypopper.png" width={64} height={64} alt="Partypopper" />
               </div>
               <h3 className="mb-2 text-2xl font-extrabold text-gray-800 font-marianne dark:text-gray-200">
                 Créer une

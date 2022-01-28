@@ -1,5 +1,5 @@
 import { AppLayout } from "@components/layouts/AppLayout";
-import { Channel } from "@definitions/Channel/Channel";
+import { Channel } from "@definitions/Channel";
 import {
   CheckIcon,
   CloudUploadIcon,
@@ -98,7 +98,7 @@ const ChannelCreate: NextPage<any> = (props) => {
           }))
         )
       );
-  }, []);
+  }, [user?.session]);
 
   return (
     <AppLayout>
