@@ -9,6 +9,7 @@ import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { types } from "constants/resourcesTypes";
+import { useRouter } from "next/router";
 
 const ResourceIndex: NextPage<any> = ({
   resources,
@@ -19,10 +20,15 @@ const ResourceIndex: NextPage<any> = ({
   q: string;
   type: string;
 }) => {
+  const router = useRouter();
   const [displayables, setDisplayables] = useState(resources);
 
   const [query, setQuery] = useState(q || "");
   const [selectedType, setType] = useState(type || null);
+
+  useEffect(() => {
+    setQuery(router.query.q as string);
+  }, [router.query.q]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -42,7 +48,7 @@ const ResourceIndex: NextPage<any> = ({
 
   return (
     <AppLayout>
-      <div className="flex flex-col w-full h-full bg-white dark:bg-gray-900 grow">
+      <div className="flex flex-col w-full h-full bg-white dark:bg-black grow">
         <div className="flex flex-col w-full px-6 py-6 bg-white shrink-0 lg:px-12 dark:bg-black dark:border-gray-800">
           <div className="inline-flex items-end justify-between w-full mb-2">
             <div className="flex flex-col space-y-2">
@@ -123,7 +129,7 @@ const ResourceIndex: NextPage<any> = ({
             </Link>
           </div>
         </div>
-        <div className="grid min-h-full grid-cols-1 gap-3 p-6 bg-gray-100 grow xl:rounded-tl-xl lg:grid-cols-4 2xl:grid-cols-4 md:grid-cols-2 lg:gap-6 lg:p-12 md:overflow-y-auto">
+        <div className="grid min-h-full grid-cols-1 gap-3 p-6 bg-gray-100 dark:bg-gray-900 grow xl:rounded-tl-xl lg:grid-cols-4 2xl:grid-cols-4 md:grid-cols-2 lg:gap-6 lg:p-12 md:overflow-y-auto">
           {displayables.map((el, index) => (
             <ResourceCard key={index} {...el} />
           ))}

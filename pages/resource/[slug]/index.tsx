@@ -39,8 +39,8 @@ const ResourceSlug: NextPage<any> = ({
 
   return (
     <AppLayout>
-      <div className="flex flex-col w-full h-full max-h-full px-4 pb-4 space-y-2 lg:flex-row lg:space-y-0 lg:space-x-4">
-        <div className="flex flex-col items-center justify-between w-full p-6 bg-gray-100 shadow-inner lg:h-full lg:max-h-full lg:w-1/4 lg:rounded-xl">
+      <div className="flex flex-col w-full h-full px-4 pb-4 space-y-2 grow lg:flex-row lg:space-y-0 lg:space-x-4">
+        <div className="flex flex-col items-center justify-between w-full h-full p-6 bg-gray-100 shadow-inner dark:bg-gray-900 lg:h-full lg:max-h-full lg:w-1/4 lg:rounded-xl">
           <div className="flex-col items-center flex-shrink-0 w-full max-h-full space-y-2 lg:py-16">
             <span
               className={
@@ -118,8 +118,8 @@ const ResourceSlug: NextPage<any> = ({
         </div>
 
         <div className="flex flex-col items-center w-full h-full space-y-2 overflow-y-auto lg:space-y-4 lg:w-3/4">
-          <div className="flex flex-col w-full bg-gray-100 shadow-inner lg:rounded-xl lg:h-2/5 ">
-            <h2 className="w-full px-3 pb-2 my-2 text-xs font-bold tracking-wider text-gray-500 uppercase border-b font-marianne">
+          <div className="flex flex-col w-full bg-gray-100 shadow-inner dark:bg-gray-900 lg:rounded-xl lg:h-2/5 ">
+            <h2 className="w-full px-3 pb-2 my-2 text-xs font-bold tracking-wider text-gray-500 uppercase border-b dark:border-gray-800 dark:text-gray-300 font-marianne">
               Aperçu de la ressource
             </h2>
             <div className="relative w-full p-2 grow">
@@ -127,17 +127,17 @@ const ResourceSlug: NextPage<any> = ({
             </div>
           </div>
 
-          <div className="w-full bg-gray-100 shadow-inner h-1/5 lg:rounded-xl">
-            <h2 className="w-full px-3 pb-2 my-2 text-xs font-bold tracking-wider text-gray-500 uppercase border-b font-marianne">
+          <div className="w-full bg-gray-100 shadow-inner dark:bg-gray-900 h-1/5 lg:rounded-xl">
+            <h2 className="w-full px-3 pb-2 my-2 text-xs font-bold tracking-wider text-gray-500 uppercase border-b dark:border-gray-800 dark:text-gray-300 font-marianne">
               Description
             </h2>
             <p className="px-3 pb-2 text-sm prose shrink-0">{description}</p>
           </div>
 
-          <div className="flex flex-col flex-grow flex-shrink w-full bg-gray-100 shadow-inner max-h-[2/5] lg:rounded-xl">
-            <h2 className="inline-flex items-center w-full px-3 pb-2 my-2 text-xs font-bold tracking-wider text-gray-500 uppercase border-b font-marianne">
+          <div className="flex flex-col flex-grow flex-shrink w-full bg-gray-100 dark:bg-gray-900 shadow-inner max-h-[2/5] lg:rounded-xl">
+            <h2 className="inline-flex items-center w-full px-3 pb-2 my-2 text-xs font-bold tracking-wider text-gray-500 uppercase border-b font-marianne dark:border-gray-800 dark:text-gray-300">
               Commentaires et avis
-              <span className="h-3 px-1.5 ml-2 py-1 flex items-center justify-center bg-gray-200 rounded-full text-[0.6rem]">
+              <span className="h-3 px-1.5 ml-2 py-1 flex items-center justify-center dark:bg-gray-700 dark-text-gray-300 bg-gray-200 rounded-full text-[0.6rem]">
                 {comments?.length}
               </span>
             </h2>

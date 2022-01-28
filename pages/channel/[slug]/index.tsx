@@ -118,9 +118,9 @@ const ChannelSlug: NextPage<any> = ({
           selectedChannelSlug={slug as string}
         />
         <div className="flex justify-center w-full max-h-[calc(100%-6rem)] md:max-h-full h-full">
-          <div className="flex flex-col w-full md:bg-gray-100 ">
+          <div className="flex flex-col w-full md:bg-gray-100 dark:md:bg-gray-900 ">
             {/* HEADER */}
-            <div className="inline-flex justify-between w-full p-3 pr-6 border-b border-gray-100 md:border-0">
+            <div className="inline-flex justify-between w-full p-3 pr-6 border-b border-gray-100 dark:border-gray-900 md:border-0">
               <div className="inline-flex items-center">
                 {channel.image ? (
                   <div className="flex items-center justify-center w-6 h-6 bg-blue-200 rounded-full select-none md:w-8 md:h-8 shrink-0">
@@ -139,7 +139,7 @@ const ChannelSlug: NextPage<any> = ({
 
                 <div className="flex flex-col ml-2">
                   <div className="inline-flex items-center">
-                    <p className="text-xl font-medium text-gray-700 font-marianne">
+                    <p className="text-xl font-medium text-gray-700 dark:text-gray-200 font-marianne">
                       {"#" + slug}
                     </p>
                     {/* <span className=" text-[0.6rem] ml-3 h-3 min-w-max w-full bg-gray-200 text-black font-bold rounded-full">
@@ -190,7 +190,7 @@ const ChannelSlug: NextPage<any> = ({
             </div>
 
             {/* BODY */}
-            <div className="flex flex-col p-6 pr-6 space-y-4 overflow-y-auto bg-white grow lg:max-h-full md:rounded-l-xl ">
+            <div className="flex flex-col p-6 pr-6 space-y-4 overflow-y-auto bg-white dark:bg-gray-800 grow lg:max-h-full md:rounded-l-xl ">
               <ol className="relative border-l border-gray-200 h-fit dark:border-gray-700">
                 {history.map((item, index) => (
                   <HistoryItem
@@ -211,7 +211,7 @@ const ChannelSlug: NextPage<any> = ({
               <input
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
-                className="z-40 h-10 mr-2 bg-white hover:bg-gray-200 input"
+                className="z-40 h-10 mr-2 bg-white hover:bg-gray-200 dark:hover:bg-gray-700 dark:focus:bg-gray-700 input"
                 ref={inputRef}
                 placeholder="Écrivez votre message..."
               />

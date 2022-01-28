@@ -24,7 +24,7 @@ export const HistoryItem = ({
 }) => {
   return (
     <li className="mb-6 ml-6 last:pb-6">
-      <span className="absolute flex items-center justify-center w-6 h-6 bg-blue-200 rounded-full -left-3 ring-8 ring-white dark:ring-gray-900 dark:bg-blue-900">
+      <span className="absolute flex items-center justify-center w-6 h-6 bg-blue-200 rounded-full -left-3 ring-8 ring-white dark:ring-gray-800 dark:bg-blue-900">
         <Image
           className="rounded-full shadow-lg"
           src={user.photoURL || "/uploads/user/default.png"}

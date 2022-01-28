@@ -6,13 +6,15 @@ import { useState } from "react";
 
 import { motion } from "framer-motion";
 import { NotificationsDropdown } from "@components/dropdowns/NotificationsDropdown";
+import { useRouter } from "next/router";
 
 export const Navbar: React.FC<any> = ({
   config = { shadow: true, backgroundColor: "bg-white dark:bg-gray-900" },
 }: {
   config: { shadow: boolean; backgroundColor: string };
 }) => {
-  const [query, setQuery] = useState("");
+  const router = useRouter();
+  const [query, setQuery] = useState(router.query.q || "");
 
   return (
     <div
@@ -36,9 +38,20 @@ export const Navbar: React.FC<any> = ({
 
 const Search = ({ query, setQuery }) => {
   const [iconIdx, setIconIdx] = useState(0);
+  const router = useRouter();
+
+  const post = (e) => {
+    e.preventDefault();
+    router.push({
+      pathname: "/resource",
+      query: { q: query },
+    });
+  };
+
   return (
-    <label className="relative w-full text-gray-400 focus-within:text-gray-600 md:w-3/5">
-      {/* {iconIdx === 0 && (
+    <form className="w-full" onSubmit={(e) => post(e)}>
+      <label className="relative w-full text-gray-400 focus-within:text-gray-600 md:w-3/5">
+        {/* {iconIdx === 0 && (
         <SearchIcon
           setIconIdx={setIconIdx}
           className="absolute w-4 h-4 duration-300 transform -translate-y-1/2 pointer-events-none top-1/2 left-3"
@@ -50,19 +63,20 @@ const Search = ({ query, setQuery }) => {
           className="absolute w-4 h-4 duration-300 transform -translate-y-1/2 pointer-events-none top-1/2 left-3"
         />
       )} */}
-      <HISearchIcon className="absolute w-4 h-4 duration-300 transform -translate-y-1/2 pointer-events-none top-1/2 left-3" />
-      <input
-        id="search"
-        name="search"
-        type="text"
-        autoComplete="off"
-        value={query}
-        onChange={(e) => setQuery(e.target.value)}
-        required
-        className="input px-5 py-2 h-9 pl-[2.25rem] placeholder-gray-500 w-full text-ellipsis"
-        placeholder="Rechercher une ressource, un canal, un utilisateur..."
-      />
-    </label>
+        <HISearchIcon className="absolute w-4 h-4 duration-300 transform -translate-y-1/2 pointer-events-none top-1/2 left-3" />
+        <input
+          id="search"
+          name="search"
+          type="text"
+          autoComplete="off"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          required
+          className="input px-5 py-2 h-9 pl-[2.25rem] placeholder-gray-500 w-full text-ellipsis"
+          placeholder="Rechercher une ressource, un canal, un utilisateur..."
+        />
+      </label>
+    </form>
   );
 };
 

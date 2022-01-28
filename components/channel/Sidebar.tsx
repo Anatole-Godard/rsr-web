@@ -1,14 +1,11 @@
 import {
-  ArrowsExpandIcon,
   ArrowSmLeftIcon,
-  ChevronLeftIcon,
   PlusIcon,
-  QrcodeIcon,
+  // QrcodeIcon,
   UserGroupIcon,
 } from "@heroicons/react/outline";
-import { useState } from "react";
 
-var QRCode = require("qrcode.react");
+// var QRCode = require("qrcode.react");
 
 import Link from "next/link";
 import { Channel } from "@definitions/Channel/Channel";
@@ -33,7 +30,7 @@ export const Sidebar = ({
     <>
       <div
         className={classes(
-          "w-full h-full items-center shrink-0 flex-col p-3 space-y-2 bg-gray-100 md:w-48 lg:w-56",
+          "w-full h-full items-center shrink-0 flex-col p-3 space-y-2 bg-gray-100 dark:bg-gray-900 md:w-48 lg:w-56",
           selectedChannelSlug ? "lg:rounded-tl-xl" : "lg:rounded-t-xl",
           "hidden md:flex" //responsive
         )}
@@ -55,11 +52,11 @@ export const Sidebar = ({
           <Link href="/channel/create">
             <a
               className={classes(
-                "btn-blue px-2",
-                selectedChannelSlug ? "w-[calc(50%-0.25rem)]" : "w-full"
+                "btn-blue ",
+                selectedChannelSlug ? "w-[calc(50%-0.25rem)] px-2" : "w-full px-3"
               )}
             >
-              <PlusIcon className="w-4 h-4 mr-1 shrink-0" />
+              <PlusIcon className="w-4 h-4 mr-2 shrink-0" />
               Créer
             </a>
           </Link>
@@ -167,9 +164,9 @@ const ChatOverview = ({
       <a
         className={classes(
           "py-1 px-2 md:px-3 md:py-3 inline-flex items-center rounded-md w-max min-w-[5rem] md:w-full h-full md:h-16",
-          active ? "bg-blue-50 border-blue-300 md:border" : "bg-white",
-          position === "first" ? "rounded-l-xl md:rounded-t-xl" : "",
-          position === "last" ? "rounded-r-xl md:rounded-b-xl" : ""
+          active ? "bg-blue-50 dark:bg-blue-900 border-blue-300 md:border" : "bg-white dark:bg-gray-800",
+          position === "first" ? "rounded-l-xl md:rounded-bl-md md:rounded-t-xl" : "",
+          position === "last" ? "rounded-r-xl md:rounded-tr-md md:rounded-b-xl" : ""
         )}
       >
         {image ? (
