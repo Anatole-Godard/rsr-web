@@ -253,12 +253,14 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     await fetch("http://localhost:3000/api/channel/")
   ).json();
 
+  const channel = await (
+    await fetch("http://localhost:3000/api/channel/" + context.params.slug)
+  ).json();
+
   return {
     props: {
       sideBarChannels: channels?.data?.attributes,
-      channel: channels?.data?.attributes?.find(
-        (e: { slug: string }) => e.slug === context.params.slug
-      ),
+      channel: channel?.data?.attributes,
     },
   };
 };
