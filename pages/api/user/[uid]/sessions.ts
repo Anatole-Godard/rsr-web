@@ -6,7 +6,7 @@ import { handleError } from "@utils/handleError";
 import { NextApiRequest, NextApiResponse } from "next";
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
-  const { uid } = req.query;
+  const uid = req.query.uid as string;
   try {
     const user = await getUser(req);
     if (!user) {
@@ -18,7 +18,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         },
       });
     }
-    if (user._id != uid as string) {
+    if (user._id.toString() != uid) {
       return res.status(403).json({
         data: null,
         error: {

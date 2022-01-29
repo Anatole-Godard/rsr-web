@@ -1,9 +1,12 @@
-import { ChatAlt2Icon, ChatIcon } from "@heroicons/react/solid";
+import { ChatAlt2Icon, ChatIcon, ThumbUpIcon } from "@heroicons/react/solid";
 import { ExternalLinkIcon, XIcon } from "@heroicons/react/outline";
-import { fakeUserMin, fakeResource, fakeChannel } from "@utils/faker.dev.js";
 import { formatDistance } from "date-fns";
 import fr from "date-fns/locale/fr";
 import { classes } from "@utils/classes";
+import { useNotifications } from "@hooks/useNotifications";
+import { Notification } from "@definitions/Notification";
+import Link from "next/link";
+import { useRouter } from "next/router";
 
 const notifications = [
   {
@@ -16,49 +19,56 @@ const notifications = [
   },
   {
     type: "message",
-    message: "vous a envoyé un message",
+    message: "a envoyé un message",
     icon: {
       className: "bg-blue-100 text-blue-700",
       component: ChatAlt2Icon,
     },
   },
+  {
+    type: "like",
+    message: "a aimé votre publication",
+    icon: {
+      className: "bg-green-100 text-green-700",
+      component: ThumbUpIcon,
+    },
+  },
 ];
 
 export const Toasts = () => {
+  const { notifications, removeNotification } = useNotifications();
+
   return (
-    <div className="fixed right-0 z-50 flex flex-col w-full max-w-sm px-2 pt-2 space-y-4 top-20 md:pt-0 md:px-0 md:right-12">
-      {[
-        {
-          user: fakeUserMin(),
-          document: {
-            ...fakeResource(),
-          },
-          type: "comment",
-          //random date between now and 1 month ago
-          createdAt: new Date(
-            new Date().getTime() -
-              Math.floor(Math.random() * 30 * 24 * 60 * 60 * 1000)
-          ).toISOString(),
-        },
-        {
-          user: fakeUserMin(),
-          document: {
-            ...fakeChannel()
-          },
-          type: "message",
-          createdAt: new Date(
-            new Date().getTime() -
-              Math.floor(Math.random() * 30 * 24 * 60 * 60 * 1000)
-          ).toISOString(),
-        },
-      ].map((e, i) => (
-        <MessageToast key={i} {...e} />
+    <div className="fixed z-50 flex flex-col w-full max-w-sm px-4 pt-2 space-y-4 right-2 top-20 md:pt-0 md:px-0 md:right-12">
+      {notifications.map((e, i) => (
+        <MessageToast key={i} {...e} remove={removeNotification} />
       ))}
     </div>
   );
 };
 
-const MessageToast = ({ user, document, type, createdAt }) => {
+interface MessageToastProps extends Notification {
+  remove: (id: string) => void;
+}
+
+const MessageToast = ({
+  _id,
+  user,
+  document,
+  type,
+  createdAt,
+  emitter,
+  remove,
+}: MessageToastProps) => {
+  const router = useRouter();
+  const goTo = (id: string) => {
+    remove(id);
+
+    if (document?.name) router.push(`/channel/${document.slug}`);
+    if (document?.data.attributes.properties.name)
+      router.push(`/resource/${document.slug}`);
+  };
+
   return (
     <div
       className="w-full p-2 text-gray-900 duration-300 rounded-lg select-none bg-gray-50 lg:p-4 shrink md:max-w-sm hover:bg-gray-50 dark:bg-gray-800 dark:text-gray-300 hover:shadow-md"
@@ -67,10 +77,11 @@ const MessageToast = ({ user, document, type, createdAt }) => {
       <div className="flex items-start justify-between w-full">
         <div className="inline-flex items-center">
           <div className="relative inline-block shrink-0">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               className="w-12 h-12 rounded-full"
-              src={user.photoURL || "/uploads/user/default.png"}
-              alt={user.fullName}
+              src={emitter.photoURL || "/uploads/user/default.png"}
+              alt={emitter.fullName}
             />
             <span
               className={classes(
@@ -85,10 +96,31 @@ const MessageToast = ({ user, document, type, createdAt }) => {
           </div>
           <div className="ml-3 text-sm font-normal">
             <h4 className="text-sm font-semibold text-gray-900 font-marianne dark:text-white">
-              {user.fullName}
+              {emitter.fullName}
             </h4>
             <div className="text-sm font-normal font-spectral">
               {notifications.find((e) => e.type === type).message}
+              {document?.name && (
+                <span className="inline-flex items-center ml-1">
+                  dans{" "}
+                  <a
+                    onClick={() => goTo(_id)}
+                    className="ml-1 text-blue-500 underline cursor-pointer"
+                  >
+                    {document.name}
+                  </a>
+                </span>
+              )}
+              {document?.data.attributes.properties.name && (
+                <span className="inline-flex items-center ml-1">
+                  <a
+                    onClick={() => goTo(_id)}
+                    className="ml-1 text-blue-500 underline cursor-pointer"
+                  >
+                    {document.data.attributes.properties.name}
+                  </a>
+                </span>
+              )}
             </div>
             <span className="text-xs font-medium text-blue-600 font-spectral dark:text-blue-500">
               {formatDistance(new Date(createdAt), new Date(), { locale: fr })}
@@ -97,6 +129,7 @@ const MessageToast = ({ user, document, type, createdAt }) => {
         </div>
         <div className="flex flex-col space-y-3">
           <button
+            onClick={() => remove(_id)}
             type="button"
             className="flex items-center justify-center w-6 h-6 text-gray-400 duration-300 bg-gray-200 rounded-lg hover:text-gray-900 focus:ring-2 focus:ring-gray-300 hover:bg-gray-300 dark:text-gray-500 dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700"
             data-collapse-toggle="toast-notification"
@@ -107,6 +140,7 @@ const MessageToast = ({ user, document, type, createdAt }) => {
           </button>
           <button
             type="button"
+            onClick={() => goTo(_id)}
             className="flex items-center justify-center w-6 h-6 text-gray-400 duration-300 bg-gray-200 rounded-lg hover:text-gray-900 focus:ring-2 focus:ring-gray-300 hover:bg-gray-300 dark:text-gray-500 dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700"
             data-collapse-toggle="toast-notification"
             aria-label="Fermer"

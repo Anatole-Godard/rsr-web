@@ -29,12 +29,18 @@ const handler = async (req: NextApiRequest, res: NextApiResponseServerIO) => {
 
     const notifications: Notification[] = channel.members
       .filter((u: UserMinimum) => u.uid.toString() !== user.uid.toString())
-      .map((user: UserMinimum) => ({
-        user,
+      .map((u: UserMinimum) => ({
+        user: u,
+        emitter: {
+          uid: user.uid.toString(),
+          fullName: user.fullName,
+          photoURL: user.photoURL,
+        },
         document: channelMin,
         type: "message",
         createdAt: msg.createdAt,
       }));
+
 
     await NotificationModel.insertMany(notifications);
 
