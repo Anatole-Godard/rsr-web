@@ -26,7 +26,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     const comment: Comment = {
       content: commentContent,
       owner: {
-        uid: user.uid.toString(),
+        uid: user._id.toString(),
         fullName: user.fullName,
         photoURL: user.photoURL,
       },
@@ -62,16 +62,21 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       },
     };
 
-    if (resource.owner.uid.toString() !== user.uid.toString()) {
+    if (resource.owner.uid.toString() !== user._id.toString()) {
       const notification: Notification = {
         type: "comment",
         document: resourceMinimum,
         user: {
-          uid: user.uid.toString(),
+          uid: resource.owner.uid.toString(),
+          fullName: resource.owner.fullName,
+          photoURL: resource.owner.photoURL,
+        },
+        createdAt: comment.createdAt,
+        emitter: {
+          uid: user._id.toString(),
           fullName: user.fullName,
           photoURL: user.photoURL,
         },
-        createdAt: comment.createdAt,
       };
       await NotificationModel.create(notification);
     }

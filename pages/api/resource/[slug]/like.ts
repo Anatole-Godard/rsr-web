@@ -1,6 +1,8 @@
+import { Notification } from "@definitions/Notification";
+import { ResourceMinimum } from "@definitions/Resource";
 import { withAuth } from "@middleware/auth";
 import withDatabase from "@middleware/mongoose";
-import Notification from "@models/Notification";
+import NotificationModel from "@models/Notification";
 import Resource from "@models/Resource";
 import { getUser } from "@utils/getCurrentUser";
 import { handleError } from "@utils/handleError";
@@ -21,19 +23,6 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       });
     }
 
-    // const resource = await Resource.findOneAndUpdate(
-    //   { slug },
-    //   {
-    //     $push: {
-    //       likes: {
-    //         uid: user._id,
-    //         fullName: user.fullName,
-    //         photoURL: user.photoURL,
-    //       },
-    //     },
-    //   }
-    // );
-
     const resource = await Resource.findOne({ slug });
 
     if (!resource) {
@@ -47,23 +36,50 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     }
 
     console.log(resource.likes);
-    if (resource.likes.find((like) => like.uid === user._id)) {
-      resource.likes = resource.likes.filter((like) => like.uid !== user._id);
+    if (resource.likes.find((like) => like.uid === user._id.toString())) {
+      resource.likes = resource.likes.filter(
+        (like) => like.uid !== user._id.toString()
+      );
     } else {
       resource.likes.push({
-        uid: user._id,
+        uid: user._id.toString(),
         fullName: user.fullName,
         photoURL: user.photoURL,
       });
-      const ownerNotification = await Notification.create({
-        type: "like",
-        document: resource,
-        user: {
-          uid: user._id,
-          fullName: user.fullName,
-          photoURL: user.photoURL,
+
+      const resourceMinimum: ResourceMinimum = {
+        slug: resource.slug,
+        owner: resource.owner,
+        createdAt: resource.createdAt,
+        description: resource.description,
+        tags: resource.tags,
+        data: {
+          type: resource.data.type,
+          attributes: {
+            properties: { name: resource.data.attributes.properties.name },
+          },
         },
-      });
+      };
+
+      if (resource.owner.uid.toString() !== user._id.toString()) {
+        const notification: Notification = {
+          type: "like",
+          document: resourceMinimum,
+          emitter: {
+            uid: user._id.toString(),
+            fullName: user.fullName,
+            photoURL: user.photoURL,
+          },
+          user: {
+            uid: resource.owner.uid.toString(),
+            fullName: resource.owner.fullName,
+            photoURL: resource.owner.photoURL,
+          },
+          createdAt: new Date(),
+        };
+
+        await NotificationModel.create(notification);
+      }
     }
     await resource.save();
 

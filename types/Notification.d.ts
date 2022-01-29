@@ -3,7 +3,9 @@ import { ResourceMinimum } from "./Resource";
 import { UserMinimum } from "./User";
 
 export type Notification = {
+  _id?: string;
   user: UserMinimum;
+  emitter?: UserMinimum;
   document: ResourceMinimum | ChannelMinimum;
   type:
     | "comment"
