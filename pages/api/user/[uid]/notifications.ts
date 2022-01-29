@@ -34,8 +34,6 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 
       const notifications = await Notification.find({ "user.uid": uid });
 
-      console.log(notifications.length);
-
       return res.status(200).json({
         data: { attributes: notifications },
         error: null,
