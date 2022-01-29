@@ -24,7 +24,7 @@ const ChannelCreate: NextPage<any> = (props) => {
   const router = useRouter();
   const { user } = useAuth();
 
-  const [pictureUrl, setPictureUrl] = useState(props.image.url || null);
+  const [pictureUrl, setPictureUrl] = useState(props?.image?.url || null);
   const [pictureFile, setPictureFile] = useState(null);
   const [name, setName] = useState<string>(props.name || "");
   const [description, setDescription] = useState<string | null>(
@@ -215,6 +215,7 @@ const ChannelCreate: NextPage<any> = (props) => {
                   photoURL: string;
                 }) => (
                   <div className="inline-flex items-center">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
                       src={member.photoURL}
                       alt={member.label}
