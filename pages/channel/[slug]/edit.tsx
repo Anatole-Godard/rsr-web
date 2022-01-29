@@ -208,7 +208,9 @@ const ChannelCreate: NextPage<any> = (props) => {
                     Qui souhaitez-vous inviter ?
                   </div>
                 }
-                options={membersOptions}
+                options={membersOptions.filter(
+                  (m) => m.value !== user?.data.uid
+                )}
                 formatOptionLabel={(member: {
                   value: string;
                   label: string;
