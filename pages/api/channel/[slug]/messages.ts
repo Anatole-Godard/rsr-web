@@ -30,7 +30,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponseServerIO) => {
     const notifications: Notification[] = channel.members
       .filter((u: UserMinimum) => u.uid.toString() !== user.uid.toString())
       .map((u: UserMinimum) => ({
-        user: u,
+        user: {
+          uid: u.uid.toString(),
+          fullName: u.fullName,
+          photoURL: u.photoURL,
+        },
         emitter: {
           uid: user.uid.toString(),
           fullName: user.fullName,

@@ -65,7 +65,7 @@ const MessageToast = ({
     remove(id);
 
     if (document?.name) router.push(`/channel/${document.slug}`);
-    if (document?.data.attributes.properties.name)
+    if (document?.data?.attributes.properties.name)
       router.push(`/resource/${document.slug}`);
   };
 
@@ -111,13 +111,13 @@ const MessageToast = ({
                   </a>
                 </span>
               )}
-              {document?.data.attributes.properties.name && (
+              {document?.data?.attributes.properties.name && (
                 <span className="inline-flex items-center ml-1">
                   <a
                     onClick={() => goTo(_id)}
                     className="ml-1 text-blue-500 underline cursor-pointer"
                   >
-                    {document.data.attributes.properties.name}
+                    {document.data?.attributes.properties.name}
                   </a>
                 </span>
               )}
