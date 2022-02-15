@@ -11,7 +11,6 @@ import {
   TrashIcon,
 } from "@heroicons/react/outline";
 import ReactPaginate from "react-paginate";
-import Style from "/components/customTable/pagination.module.css";
 import Link from "next/link";
 import { Transition } from "@headlessui/react";
 import React, { Fragment, useEffect, useRef, useState } from "react";
@@ -89,18 +88,22 @@ export const CustomTable = ({
         const object = value[theadValue.name];
         displayedValue = object[theadValue.subName];
         break;
+      case "isArray":
+        const length = value[theadValue.name].length;
+        displayedValue = length;
+        break;
       case "isStatus":
         displayedValue = value[theadValue.name] ? "Actif" : "Inactif";
         break;
       case "isLength":
         displayedValue = value[theadValue.name].length || "-";
         break;
-      case "isLikeNumber":
+      case "isLike":
         isJsx = true;
         displayedValue = (
           <div className="flex items-center">
             <ThumbUpIcon className="w-4 h-4 mr-1 shrink-0 " />
-            {value[theadValue.name]}
+            {value[theadValue.name].length}
           </div>
         );
         break;

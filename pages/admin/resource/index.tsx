@@ -44,7 +44,7 @@ const Resources: NextPage<any> = (props) => {
       type: "isObject",
       width: 20,
     },
-    { name: "likes", label: "Likes", type: "isLikeNumber", width: 20 },
+    { name: "likes", label: "Likes", type: "isLike", width: 20 },
     {
       name: "validated",
       label: "Validation",
