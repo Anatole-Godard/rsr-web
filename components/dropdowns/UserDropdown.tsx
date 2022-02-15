@@ -36,7 +36,9 @@ export const UserDropdown = () => {
                 <div
                   className={classes(
                     "inline-flex items-center justify-center w-8 h-8 text-sm duration-300  rounded-full hover:bg-gray-300 active:bg-gray-100  dark:bg-gray-900 dark:active:bg-gray-900  dark:hover:bg-gray-700",
-                    open ? "bg-gray-300 dark:bg-gray-700" : "bg-gray-200  dark:bg-gray-800"
+                    open
+                      ? "bg-gray-300 dark:bg-gray-700"
+                      : "bg-gray-200  dark:bg-gray-800"
                   )}
                 >
                   <div className="w-5/6 align-middle border-none rounded-full select-none h-5/6 ">
@@ -45,6 +47,7 @@ export const UserDropdown = () => {
                       alt={user.data.fullName}
                       width={16}
                       height={16}
+                      className="rounded-full"
                       src={
                         user.data.photoURL
                           ? user.data.photoURL
@@ -94,6 +97,7 @@ export const UserDropdown = () => {
                           <Image
                             alt={user.data.fullName}
                             layout="fill"
+                            className="rounded-full"
                             src={
                               user.data.photoURL || "/uploads/user/default.png"
                             }

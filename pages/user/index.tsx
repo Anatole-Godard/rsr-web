@@ -35,6 +35,7 @@ const UserIndexPage: NextPage = () => {
           <div className="inline-flex items-end w-full">
             <div className="w-auto h-auto">
               <Image
+                className="rounded-full"
                 src={user?.data.photoURL || "/uploads/user/default.png"}
                 width={64}
                 height={64}

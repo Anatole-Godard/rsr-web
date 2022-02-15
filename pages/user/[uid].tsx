@@ -1,7 +1,4 @@
 import { AppLayout } from "@components/layouts/AppLayout";
-import { ChangePassword } from "@components/user/ChangePassword";
-import { ChangeProfilePicture } from "@components/user/ChangeProfilePicture";
-import { SessionsViewer } from "@components/user/SessionsViewer";
 import { UserResources } from "@components/user/UserResources";
 import { useAuth } from "@hooks/useAuth";
 import { NextPage } from "next";
@@ -17,6 +14,7 @@ const UserUIDPage: NextPage<any> = ({ uid, photoURL, fullName, resources }) => {
           <div className="inline-flex items-end w-full">
             <div className="w-auto h-auto">
               <Image
+                className="rounded-full"
                 src={photoURL || "/uploads/user/default.png"}
                 width={64}
                 height={64}
