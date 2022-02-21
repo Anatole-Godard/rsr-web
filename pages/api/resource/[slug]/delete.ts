@@ -1,5 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import Resource from "@models/Resource";
+import User from "@models/User";
 import withDatabase from "@middleware/mongoose";
 import { handleError } from "@utils/handleError";
 import { withAuth } from "@middleware/auth";
@@ -9,6 +10,17 @@ async function handler(
   res: NextApiResponse
 ) {
   try {
+    if (req.method !== "DELETE") {
+      res.status(405).json({
+        data: null,
+        error: {
+          code: 405,
+          message: "method not allowed",
+        },
+      });
+      return;
+    }
+
     let resource = await Resource.findOne({
       slug: req.query.slug,
     }).lean();
@@ -23,16 +35,21 @@ async function handler(
       });
       return;
     }
+    let user = await User.findOne({
+      slug: req.headers.uid,
+    }).lean();
 
-    if (resource.owner.uid !== req.headers.uid) {
-      res.status(403).json({
-        data: null,
-        error: {
-          code: 403,
-          message: "forbidden",
-        },
-      });
-      return;
+    if (user.role === "user" || user.role === "moderator"){
+      if (resource.owner.uid !== req.headers.uid ) {
+        res.status(403).json({
+          data: null,
+          error: {
+            code: 403,
+            message: "forbidden",
+          },
+        });
+        return;
+      }
     }
 
     resource = await Resource.findOneAndDelete({

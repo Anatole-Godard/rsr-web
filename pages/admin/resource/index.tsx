@@ -1,7 +1,7 @@
 import { AppLayoutAdmin } from "components/layouts/AppLayoutAdmin";
 import { GetServerSideProps, NextPage } from "next";
 import { CustomTable } from "@components/customTable/CustomTable";
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { fetchRSR } from "@utils/fetchRSR";
 import { useAuth } from "@hooks/useAuth";
 import { Resource } from "@definitions/Resource";
@@ -12,7 +12,7 @@ const Resources: NextPage<any> = (props) => {
     props?.data?.attributes
   );
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const [limitPerPage, setLimitPerPage] = useState<number>(2);
+  const [limitPerPage, setLimitPerPage] = useState<number>(parseInt(process.env.NEXT_PUBLIC_BACK_OFFICE_MAX_ENTITIES));
   const [totalPages, setTotalPages] = useState<number>(props?.data?.totalPages);
   const { user } = useAuth();
 
@@ -54,7 +54,9 @@ const Resources: NextPage<any> = (props) => {
     },
   ];
 
-  const getRessources = (search?) => {
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const getRessources = useCallback(
+      (search?) => {
     let filter = "";
     if (search) {
       filter = search;
@@ -77,7 +79,19 @@ const Resources: NextPage<any> = (props) => {
         }
       })
       .catch();
-  };
+  },
+      [currentPage, limitPerPage, user.session]
+  );
+
+  useEffect(() => {
+    getRessources();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    getRessources();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentPage]);
 
   const updatePage = (data) => {
     const currentPage = data.selected + 1;
@@ -85,7 +99,11 @@ const Resources: NextPage<any> = (props) => {
   };
 
   const deleteResource = (id: number) => {
-    //TODO: do DELETE call to back
+    fetchRSR(`/api/resource/${id}/delete`, user.session, {
+      method : "DELETE",
+    }).then(() =>{
+      getRessources();
+    })
   };
 
   const [search, setSearch] = useState<string>("");

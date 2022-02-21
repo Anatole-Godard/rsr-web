@@ -6,12 +6,11 @@ import { User } from "@definitions/User";
 import { useAuth } from "@hooks/useAuth";
 import { fetchRSR } from "@utils/fetchRSR";
 import { SearchIcon, UserIcon } from "@heroicons/react/outline";
-import Image from "next/image";
 
 const UserAdmin: NextPage<any> = (props) => {
   const [users, setUsers] = useState<User[]>(props?.data?.attributes);
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const [limitPerPage, setLimitPerPage] = useState<number>(2);
+  const [limitPerPage, setLimitPerPage] = useState<number>(parseInt(process.env.NEXT_PUBLIC_BACK_OFFICE_MAX_ENTITIES));
   const [totalPages, setTotalPages] = useState<number>(props?.data?.totalPages);
   const { user } = useAuth();
 
@@ -71,7 +70,6 @@ const UserAdmin: NextPage<any> = (props) => {
         .then((res) => res.json())
         .then((body) => {
           if (body.data?.attributes) {
-            console.log(body.data?.attributes);
             setTotalPages(body.data?.totalPages);
             setUsers(body.data?.attributes);
           }
