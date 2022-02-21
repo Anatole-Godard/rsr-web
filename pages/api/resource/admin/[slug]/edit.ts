@@ -1,12 +1,24 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import type { ResourceResponse } from "@definitions/Resource/ResourceResponse";
 import resource from '@models/Resource';
+import { isAdmin } from '@utils/getCurrentUser';
 
 export default async function handler(
     req: NextApiRequest,
     res: NextApiResponse<ResourceResponse>
 ) {
     try {
+        if (!(await isAdmin(req))) {
+            res.status(401).json({
+                data: null,
+                error: {
+                    code: 401,
+                    message: "unauthorized",
+                },
+            });
+            return;
+        }
+
         const slug: string | string[] = req.query.slug
 
         if (req.method === 'PUT') {

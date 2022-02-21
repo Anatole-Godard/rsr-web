@@ -3,9 +3,21 @@ import Resource from "@models/Resource";
 import withDatabase from "@middleware/mongoose";
 import { handleError } from "@utils/handleError";
 import { getPagination, getTotalPages } from "@utils/pagination";
+import { isAdmin } from '@utils/getCurrentUser';
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
+    if (!(await isAdmin(req))) {
+      res.status(401).json({
+        data: null,
+        error: {
+          code: 401,
+          message: "unauthorized",
+        },
+      });
+      return;
+    }
+
     const param = req.query;
     const search = param.search;
     const { limit, offset } = getPagination(

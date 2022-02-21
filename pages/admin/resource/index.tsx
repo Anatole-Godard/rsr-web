@@ -178,11 +178,21 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const {
     cookies: { user },
   } = context.req;
+
+  let parseUser= JSON.parse(user)
+
   if (!user) {
     return {
       redirect: {
         permanent: false,
         destination: "/auth/login",
+      },
+    };
+  }else if (parseUser?.session?.role === 'user'|| parseUser?.session?.role  === 'moderator'){
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/",
       },
     };
   }

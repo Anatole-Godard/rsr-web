@@ -23,3 +23,9 @@ export const getUser = async (req: NextApiRequest) => {
     .lean();
   return { ...data, uid: data._id.toString() };
 };
+
+export const isAdmin = async (req: NextApiRequest) => {
+  const user = await getUser(req)
+  return !(user || user?.role === "user" || user?.role === "moderator");
+
+};
