@@ -8,20 +8,21 @@ export default async function handler(
     res: NextApiResponse<ResourceResponse>
 ) {
     try {
-        if (!(await isAdmin(req))) {
-            res.status(401).json({
-                data: null,
-                error: {
-                    code: 401,
-                    message: "unauthorized",
-                },
-            });
-            return;
-        }
 
         const slug: string | string[] = req.query.slug
 
         if (req.method === 'PUT') {
+            if (!(await isAdmin(req))) {
+                res.status(401).json({
+                    data: null,
+                    error: {
+                        code: 401,
+                        message: "unauthorized",
+                    },
+                });
+                return;
+            }
+
             const { action, }: { action: "validate" | "change-role" } = req.body;
             let filter                                                = {}
             let update                                                = {}
