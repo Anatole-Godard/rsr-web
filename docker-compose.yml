@@ -45,3 +45,5 @@ services:
         - /app/.next
     ports:
         - "3000:3000"
+    environment:
+      NEXT_PUBLIC_BACK_OFFICE_MAX_ENTITIES: 20

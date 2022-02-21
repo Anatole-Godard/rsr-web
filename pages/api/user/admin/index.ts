@@ -24,7 +24,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         }
 
         User.find(query)
-            .skip(offset) //Notice here
+            .skip(offset)
             .limit(limit)
             .exec((err, user) => {
                 if (err) {
