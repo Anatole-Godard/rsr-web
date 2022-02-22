@@ -3,8 +3,9 @@ import { ArrowLeftIcon } from "@heroicons/react/solid";
 import { useRouter } from "next/router";
 
 import { SidebarIcon } from "./SidebarIcon";
+import { GetServerSideProps } from 'next';
 
-export const SidebarAdmin = () => {
+export const SidebarAdmin = ({role}) => {
   const router = useRouter();
   const { pathname } = router;
 
@@ -16,7 +17,8 @@ export const SidebarAdmin = () => {
           active={false}
           href="/"
           text="Retour à l'accueil"
-        /><SidebarIcon
+        />
+        <SidebarIcon
           icon={HomeIcon}
           active={pathname === "/admin"}
           href="/admin"
@@ -29,12 +31,15 @@ export const SidebarAdmin = () => {
           text="Ressources"
           href="/admin/resource"
         />
-        <SidebarIcon
-          active={pathname === "/admin/user"}
-          icon={UserIcon}
-          text="Utilisateurs"
-          href="/admin/user"
-        />
+        { role === 'admin'||
+          role === 'superadmin' && (
+          <SidebarIcon
+            active={pathname === "/admin/user"}
+            icon={UserIcon}
+            text="Utilisateurs"
+            href="/admin/user"
+          />
+            )}
       </div>
     </div>
   );
@@ -43,3 +48,24 @@ export const SidebarAdmin = () => {
 
 
 const Divider = () => <hr className="sidebar-hr" />;
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const {
+          cookies: { user },
+        } = context.req;
+
+  let parseUser= JSON.parse(user)
+
+  if (!user) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/auth/login",
+      },
+    };
+  }
+
+  return {
+    props: { role: parseUser?.session?.role },
+  };
+};

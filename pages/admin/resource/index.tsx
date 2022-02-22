@@ -188,7 +188,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         destination: "/auth/login",
       },
     };
-  }else if (parseUser?.session?.role === 'user'|| parseUser?.session?.role  === 'moderator'){
+  }else if (parseUser?.session?.role === 'user'){
     return {
       redirect: {
         permanent: false,

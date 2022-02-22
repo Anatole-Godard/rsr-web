@@ -11,7 +11,7 @@ export default async function handler(
         const slug: string | string[] = req.query.slug
 
         if (req.method === 'PUT') {
-            if (!(await isAdmin(req))) {
+            if (!(await isAdmin(req, true))) {
                 res.status(401).json({
                     data: null,
                     error: {

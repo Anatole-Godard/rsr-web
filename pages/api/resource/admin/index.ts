@@ -7,7 +7,7 @@ import { isAdmin } from '@utils/getCurrentUser';
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
-    if (!(await isAdmin(req))) {
+    if (!(await isAdmin(req, true))) {
       res.status(401).json({
         data: null,
         error: {
