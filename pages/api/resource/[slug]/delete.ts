@@ -39,7 +39,7 @@ async function handler(
       slug: req.headers.uid,
     }).lean();
 
-    if (user.role === "user"){
+    if (user.role === "user" || user.role === "moderator"){
       if (resource.owner.uid !== req.headers.uid ) {
         res.status(403).json({
           data: null,
