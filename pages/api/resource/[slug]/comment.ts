@@ -1,7 +1,9 @@
+import { Notification } from "@definitions/Notification";
+import { ResourceMinimum } from "@definitions/Resource";
 import { Comment } from "@definitions/Resource/Comment";
 import { withAuth } from "@middleware/auth";
 import withDatabase from "@middleware/mongoose";
-import Notification from "@models/Notification";
+import NotificationModel from "@models/Notification";
 import Resource from "@models/Resource";
 import { getUser } from "@utils/getCurrentUser";
 import { handleError } from "@utils/handleError";
@@ -24,7 +26,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     const comment: Comment = {
       content: commentContent,
       owner: {
-        uid: user.uid,
+        uid: user._id.toString(),
         fullName: user.fullName,
         photoURL: user.photoURL,
       },
@@ -46,15 +48,38 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     resource.comments.push(comment);
     await resource.save();
 
-    const ownerNotification = await Notification.create({
-      type: "comment",
-      document: resource,
-      user: {
-        uid: user.uid,
-        fullName: user.fullName,
-        photoURL: user.photoURL,
+    const resourceMinimum: ResourceMinimum = {
+      slug: resource.slug,
+      owner: resource.owner,
+      createdAt: resource.createdAt,
+      description: resource.description,
+      tags: resource.tags,
+      data: {
+        type: resource.data.type,
+        attributes: {
+          properties: { name: resource.data.attributes.properties.name },
+        },
       },
-    });
+    };
+
+    if (resource.owner.uid.toString() !== user._id.toString()) {
+      const notification: Notification = {
+        type: "comment",
+        document: resourceMinimum,
+        user: {
+          uid: resource.owner.uid.toString(),
+          fullName: resource.owner.fullName,
+          photoURL: resource.owner.photoURL,
+        },
+        createdAt: comment.createdAt,
+        emitter: {
+          uid: user._id.toString(),
+          fullName: user.fullName,
+          photoURL: user.photoURL,
+        },
+      };
+      await NotificationModel.create(notification);
+    }
 
     res.status(200).json({
       data: {

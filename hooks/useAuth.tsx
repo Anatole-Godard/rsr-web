@@ -5,7 +5,7 @@ import { useCookies } from "react-cookie";
 const AuthContext = createContext({});
 
 /**
- * Provider that handles authentication with Gardian
+ * Provider that handles authentication
  *
  * Returns children if logged in, otherwise returns NotLogged
  *

@@ -6,6 +6,9 @@ const notificationSchema = new Schema({
     type: Object,
     required: true,
   },
+  emitter: {
+    type: Object,
+  },
   document: {
     type: Object,
     required: true,
@@ -13,7 +16,14 @@ const notificationSchema = new Schema({
   type: {
     type: String,
     required: true,
-    enum: ["comment", "mention", "like", "message", "resource_create", "invite"],
+    enum: [
+      "comment",
+      "mention",
+      "like",
+      "message",
+      "resource_create",
+      "invite",
+    ],
   },
   createdAt: {
     type: Date,

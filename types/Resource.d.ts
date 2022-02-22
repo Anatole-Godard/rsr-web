@@ -19,3 +19,19 @@ export type Resource = {
   comments?: Comment[];
   validated: boolean;
 };
+
+export type ResourceMinimum = {
+  slug: string;
+  owner: UserMinimum;
+  createdAt: Date | string;
+  description?: string;
+  tags?: string[];
+  data: {
+    type: "location" | "physical_item" | "external_link" | string;
+    attributes: {
+      properties: {
+        name: string;
+      };
+    };
+  };
+};
