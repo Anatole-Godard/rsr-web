@@ -1,11 +1,10 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import type { ResourceResponse } from "@definitions/Resource/ResourceResponse";
 import resource from '@models/Resource';
 import { isAdmin } from '@utils/getCurrentUser';
 
 export default async function handler(
     req: NextApiRequest,
-    res: NextApiResponse<ResourceResponse>
+    res: NextApiResponse
 ) {
     try {
 

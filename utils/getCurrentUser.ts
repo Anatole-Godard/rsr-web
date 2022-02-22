@@ -26,6 +26,5 @@ export const getUser = async (req: NextApiRequest) => {
 
 export const isAdmin = async (req: NextApiRequest) => {
   const user = await getUser(req)
-  return !(user || user?.role === "user" || user?.role === "moderator");
-
+  return (user && (user?.role === "user" || user?.role === "superadmin"));
 };
