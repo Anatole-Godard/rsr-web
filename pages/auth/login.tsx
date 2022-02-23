@@ -147,12 +147,12 @@ export default function Login() {
                     Se créer un compte
                   </a>
                 </Link>
-                <button
+                {/* <button
                   onClick={() => signIn(process.env.NEXT_PUBLIC_DEV_USER, process.env.NEXT_PUBLIC_DEV_PASS)}
                   className="font-medium text-blue-600 duration-150 hover:text-blue-500"
                 >
                   Dev
-                </button>
+                </button> */}
               </div>
             </div>
           </div>
