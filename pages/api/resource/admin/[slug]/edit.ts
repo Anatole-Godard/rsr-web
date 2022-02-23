@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import resource from '@models/Resource';
 import { isAdmin } from '@utils/getCurrentUser';
+import Report from '@models/Report';
 
 export default async function handler(
     req: NextApiRequest,
@@ -29,6 +30,7 @@ export default async function handler(
                 const { validated }: { validated: Boolean } = req.body;
                 filter                                      = { _id : slug };
                 update                                      = { validated };
+                await Report.updateMany({ "document._id" : slug.toString, type:'resource' }, update);
             }
 
             await resource.findOneAndUpdate(filter, update);

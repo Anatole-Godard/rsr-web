@@ -94,7 +94,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
             photoURL : user.photoURL,
             uid      : user._id.toString(),
         }
-        console.log(context)
+
         const report = await Report.create({
             document,
             emitter,

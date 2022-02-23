@@ -1,5 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import user from '@models/User';
+import User from '@models/User';
+import Report from '@models/Report';
 import { isAdmin } from '@utils/getCurrentUser';
 
 export default async function handler(
@@ -13,31 +14,30 @@ export default async function handler(
         if (req.method === 'PUT') {
             if (!(await isAdmin(req))) {
                 res.status(401).json({
-                    data: null,
-                    error: {
-                        code: 401,
-                        message: "unauthorized",
+                    data  : null,
+                    error : {
+                        code    : 401,
+                        message : "unauthorized",
                     },
                 });
                 return;
             }
 
             const { action, }: { action: "validate" | "change-role" } = req.body;
-            let filter                                                = {}
+            const filter                                              = { _id : slug }
             let update                                                = {}
             if (action === 'change-role') {
                 const { role }: { role: "user" | "moderator" | "admin" | "superadmin" } = req.body;
-                filter = { _id : slug };
-                update = { role };
+                update                                                                  = { role };
 
             } else if (action === 'validate') {
                 const { validated }: { validated: Boolean } = req.body;
-                filter = { _id : slug };
-                update = { validated };
+                update                                      = { validated };
+               await Report.updateMany({ 'document._id' : slug.toString, type:'user' }, update);
             }
 
-            await user.findOneAndUpdate(filter, update);
-            const newUser = await user.findOne(filter);
+            await User.findOneAndUpdate(filter, update);
+            const newUser = await User.findOne(filter);
             res.status(200).json({
                 data : {
                     id         : newUser._id,

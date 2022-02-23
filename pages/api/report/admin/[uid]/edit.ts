@@ -11,7 +11,6 @@ export default async function handler(
     try {
 
         const uid: string | string[] = req.query.uid
-        console.log(req.method === 'PUT', !(await isAdmin(req, true)))
         if (req.method === 'PUT') {
             if (!(await isAdmin(req, true))) {
                 res.status(401).json({
@@ -27,20 +26,20 @@ export default async function handler(
             const { validated }: { validated: Boolean } = req.body;
             const update                                = { validated };
             const currentReport                         = await Report.findOne({ _id : uid });
-            let document                                = {}
+            let docId                                   = ''
 
             if (currentReport.type === "user") {
-                await User.findOneAndUpdate({ _id : currentReport.document.uid }, update);
-                document = await User.findOne({ _id : currentReport.document.uid });
+                docId = currentReport.document.uid.toString()
+                await User.findOneAndUpdate({ _id : docId }, update);
+                await Report.updateMany({ 'document._id' : docId, type : currentReport.type }, update);
+
             } else if (currentReport.type === "resource") {
-                await Resource.findOneAndUpdate({ slug : currentReport.document.slug.toString() }, update);
-                document = await Resource.findOne({ slug : currentReport.document.slug.toString() });
+                docId = currentReport.document.slug.toString();
+                await Resource.findOneAndUpdate({ slug : docId }, update);
+                await Report.updateMany({ 'document.slug' : docId, type : currentReport.type }, update);
             }
 
-            const newReport    = await Report.findOne({ _id : uid });
-            newReport.document = document;
-            newReport.validated = validated;
-            await newReport.save();
+            const newReport     = await Report.findOne({ _id : uid, type : currentReport.type });
             res.status(200).json({
                 data : {
                     id         : newReport._id,
