@@ -71,6 +71,8 @@ export const withAuth =
           code: 403,
           name: validation.code,
           message: "Forbidden",
+          origin: req.url,
+          user: req.headers.uid || "unknown",
         },
       });
   };
