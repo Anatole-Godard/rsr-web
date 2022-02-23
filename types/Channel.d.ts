@@ -9,7 +9,7 @@ export type Channel = {
   slug: string;
   messages: Message[];
   activities: Activity[];
-  members: User[];
+  members: UserMinimum[];
   createdAt: Date | string;
   image?: any;
   description?: string;
