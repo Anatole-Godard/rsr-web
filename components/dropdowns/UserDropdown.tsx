@@ -131,20 +131,19 @@ export const UserDropdown = () => {
                     Déconnexion
                   </a>
 
-                  {user.data.role === "admin" ||
-                    (true && (
-                      <>
-                        <div className="block px-4 py-2 text-xs text-gray-400">
-                          Administration de la plateforme
-                        </div>
-                        <Link href="/admin">
-                          <a className="inline-flex items-center w-full px-4 py-2 text-sm leading-5 text-gray-700 transition duration-150 ease-in-out dark:text-gray-300 hover:text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-800">
-                            <CogIcon className="w-6 h-6 pr-2 mr-2 text-center border-r border-gray-200 dark:border-gray-800 " />
-                            Administration
-                          </a>
-                        </Link>
-                      </>
-                    ))}
+                  {(user.session.role === "admin" || user.session.role === "superadmin") && (
+                    <>
+                      <div className="block px-4 py-2 text-xs text-gray-400">
+                        Administration de la plateforme
+                      </div>
+                      <Link href="/admin">
+                        <a className="inline-flex items-center w-full px-4 py-2 text-sm leading-5 text-gray-700 transition duration-150 ease-in-out dark:text-gray-300 hover:text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-800">
+                          <CogIcon className="w-6 h-6 pr-2 mr-2 text-center border-r border-gray-200 dark:border-gray-800 " />
+                          Administration
+                        </a>
+                      </Link>
+                    </>
+                  )}
                 </>
               ) : (
                 <>
