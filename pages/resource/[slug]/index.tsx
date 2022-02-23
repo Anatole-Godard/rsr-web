@@ -20,6 +20,7 @@ import {
   HandIcon,
   HeartIcon,
   LocationMarkerIcon,
+  ExclamationIcon
 } from "@heroicons/react/solid";
 import { GetServerSideProps, NextPage } from "next";
 import { useState } from "react";
@@ -62,7 +63,20 @@ const ResourceSlug: NextPage<any> = ({
   const [newComments, setNewComments] = useState<Comment[]>(comments || []);
 
   const { user } = useAuth();
-
+  const report = async () => {
+    const res = await fetchRSR(`/api/report/create`, user?.session, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        appsource: "web",
+      },
+      body: JSON.stringify({ type: 'resource', 'documentUid': slug, context: slug }),
+    })
+    if (res.ok) {
+      const body = await res.json();
+      console.log(body)
+    }
+  };
   const like = async () => {
     const res = await fetchRSR(`/api/resource/${slug}/like`, user?.session);
     if (res.ok) {
@@ -137,6 +151,14 @@ const ResourceSlug: NextPage<any> = ({
                   {"Je n'aime plus"}
                 </button>
               )}
+              {user?.data && (
+                <button
+                    onClick={()=>report()}
+                    className="px-2 text-gray-700 bg-gray-100 btn-yellow"
+                >
+                  <ExclamationIcon className="w-4 h-4" />
+                </button>
+            )}
               {owner.uid === user?.data.uid && (
                 <Link href={"/resource/" + slug}>
                   <a className="btn-gray">
