@@ -9,7 +9,6 @@ export default async function handler(
     res: NextApiResponse
 ) {
     try {
-
         const uid: string | string[] = req.query.uid
         if (req.method === 'PUT') {
             if (!(await isAdmin(req, true))) {
@@ -31,7 +30,7 @@ export default async function handler(
             if (currentReport.type === "user") {
                 docId = currentReport.document.uid.toString()
                 await User.findOneAndUpdate({ _id : docId }, update);
-                await Report.updateMany({ 'document._id' : docId, type : currentReport.type }, update);
+                await Report.updateMany({ 'document.uid' : docId, type : currentReport.type }, update);
 
             } else if (currentReport.type === "resource") {
                 docId = currentReport.document.slug.toString();
@@ -39,7 +38,8 @@ export default async function handler(
                 await Report.updateMany({ 'document.slug' : docId, type : currentReport.type }, update);
             }
 
-            const newReport     = await Report.findOne({ _id : uid, type : currentReport.type });
+            let newReport     = await Report.findOne({ _id : uid, type : currentReport.type });
+
             res.status(200).json({
                 data : {
                     id         : newReport._id,

@@ -6,8 +6,7 @@ const reportSchema = new Schema({
         type: Object,
     },
     document: {
-        type: Object,
-        default : null
+        type: Object
     },
     context: {
         type: String,

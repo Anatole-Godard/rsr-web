@@ -23,7 +23,6 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 
     try {
         const { documentUid, type, context } = req.body;
-        console.log(context)
         if (!documentUid || !type) {
             res.status(400).json({
                 data  : null,

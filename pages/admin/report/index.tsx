@@ -87,6 +87,14 @@ const ReportAdmin: NextPage<any> = (props) => {
 
     const [search, setSearch] = useState<string>("");
 
+    const deleteReport = ((id:string)=>{
+        fetchRSR(`/api/report/admin/${id}/delete`, user.session, {
+            method : "DELETE",
+        }).then(() => {
+            getReports();
+        })
+    })
+
     return (
         <>
             <AppLayoutAdmin>
@@ -144,6 +152,7 @@ const ReportAdmin: NextPage<any> = (props) => {
                             valuesList={reports}
                             totalPages={totalPages}
                             updateCurrentPage={updatePage}
+                            deleteEntity={deleteReport}
                         />
                     </div>
                 </div>
