@@ -52,7 +52,13 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     try {
       const resources = await Resource.find({
         ...(uid
-          ? { $or: [{ "members.uid": uid }, { "owner.uid": uid }] }
+          ? {
+              $or: [
+                { "members.uid": uid },
+                { "owner.uid": uid },
+                { validated: true, visibility: "public" },
+              ],
+            }
           : { validated: true, visibility: "public" }),
       });
       res.status(200).json({
