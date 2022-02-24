@@ -32,7 +32,9 @@ const ResourceIndex: NextPage<any> = ({
 
   useEffect(() => {
     const fetchData = async () => {
-      const res = await fetch(`/api/resource?q=${query || ""}&type=${selectedType || ""}`);
+      const res = await fetch(
+        `/api/resource?q=${query || ""}&type=${selectedType || ""}`
+      );
       const body = await res.json();
       res.ok
         ? setDisplayables(body?.data.attributes)
@@ -142,7 +144,18 @@ const ResourceIndex: NextPage<any> = ({
 export default ResourceIndex;
 
 export async function getServerSideProps(context) {
-  const res = await fetch("http://localhost:3000/api/resource");
+  const {
+    cookies: { user },
+  } = context.req;
+  const uid = JSON.parse(user || "null")?.data.uid || undefined;
+  const res = await fetch(
+    "http://localhost:3000/api/resource",
+    uid
+      ? {
+          headers: { uid },
+        }
+      : undefined
+  );
   const body = await res.json();
 
   const resources: Resource[] = body?.data?.attributes;
