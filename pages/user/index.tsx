@@ -9,6 +9,8 @@ import { NextPage } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { ChartSquareBarIcon } from "@heroicons/react/outline";
+import {UserStatistics} from "@components/user/UserStatistics";
+
 import {useState} from "react";
 
 const UserIndexPage: NextPage<any> = ({
@@ -42,7 +44,7 @@ const UserIndexPage: NextPage<any> = ({
               </span>
             </h3>
             <div className="inline-flex justify-end w-full">
-              <button className="btn-blue" onClick={() => setDisplayStats(true)}>
+              <button className="btn-blue" onClick={() => statistics()}>
                 Statistiques
                 <ChartSquareBarIcon className="w-4 h-4 ml-2"/>
               </button>
