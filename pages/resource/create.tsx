@@ -1,5 +1,6 @@
 import { AppLayout } from "@components/layouts/AppLayout";
 import { Resource } from "@definitions/Resource";
+import { UserMinimum } from "@definitions/User";
 import { Tab } from "@headlessui/react";
 import {
   CheckIcon,
@@ -11,7 +12,7 @@ import { useAuth } from "@hooks/useAuth";
 import { makeRequest } from "@utils/asyncXHR";
 import { classes } from "@utils/classes";
 import { fetchRSR } from "@utils/fetchRSR";
-import { types } from "constants/resourcesTypes";
+import { types, visibilities } from "constants/resourcesTypes";
 import type { NextPage } from "next";
 import dynamic from "next/dynamic";
 import Image from "next/image";
@@ -26,7 +27,11 @@ const Select: any = dynamic(() => import("react-select/creatable") as any, {
   ssr: false,
 });
 
-const ResourceCreate: NextPage<any> = () => {
+const ResourceCreate: NextPage<any> = ({
+  membersOptions,
+}: {
+  membersOptions: UserMinimum[];
+}) => {
   const router = useRouter();
   const { user } = useAuth();
 
@@ -38,6 +43,9 @@ const ResourceCreate: NextPage<any> = () => {
   const [tagInputValue, setTagInputValue] = useState<string>("");
 
   const [type, setType] = useState(types[0]);
+
+  const [visibility, setVisibility] = useState(visibilities[0]);
+  const [members, setMembers] = useState<UserMinimum[]>([]);
 
   const [position, setPosition] = useState(null);
   const [location, setLocation] = useState("");
@@ -92,6 +100,8 @@ const ResourceCreate: NextPage<any> = () => {
     return {
       description,
       tags: tags.map((tag) => tag.value),
+      visibility: visibility.value,
+      members,
       data,
     } as Resource;
   };
@@ -172,7 +182,19 @@ const ResourceCreate: NextPage<any> = () => {
         setValidForm(false);
         break;
     }
-  }, [pictureUrl, name, description, tags, type, position, price, externalLink, category, pictureFile, location]);
+  }, [
+    pictureUrl,
+    name,
+    description,
+    tags,
+    type,
+    position,
+    price,
+    externalLink,
+    category,
+    pictureFile,
+    location,
+  ]);
 
   return (
     <AppLayout>
@@ -184,7 +206,12 @@ const ResourceCreate: NextPage<any> = () => {
           <div className="inline-flex items-end justify-between w-full">
             <div className="flex flex-col space-y-2">
               <div className="w-auto h-auto">
-                <Image src="/img/partypopper.png" width={64} height={64} alt="Partypopper" />
+                <Image
+                  src="/img/partypopper.png"
+                  width={64}
+                  height={64}
+                  alt="Partypopper"
+                />
               </div>
               <h3 className="mb-2 text-2xl font-extrabold text-gray-800 font-marianne dark:text-gray-200">
                 Créer une
@@ -266,6 +293,98 @@ const ResourceCreate: NextPage<any> = () => {
                 placeholder="Description"
               ></textarea>
             </label>
+            <label>
+              <h4 className="-mb-2 text-sm after:content-['*'] after:ml-0.5 after:text-red-500 font-semibold text-gray-700 font-marianne">
+                Visibilité de la ressource
+              </h4>
+            </label>
+
+            <Tab.Group
+              onChange={(selected) => {
+                setRequestOk(null);
+                setVisibility(visibilities[selected]);
+                if (visibilities[selected].value !== "unlisted") setMembers([]);
+              }}
+            >
+              <div className="inline-flex items-center w-full">
+                <Tab.List className="flex space-x-2 bg-gray-100 grow rounded-xl">
+                  {visibilities.map((v, i) => (
+                    <Tab
+                      key={v.value}
+                      className={({ selected }) =>
+                        classes(
+                          "w-full py-2.5 text-xs leading-5 font-medium rounded-md",
+                          "focus:outline-none transition-all duration-300 focus:ring-2 ring-offset-2 ring-blue-500",
+                          selected
+                            ? "bg-blue-700  text-blue-100 font-semibold shadow"
+                            : "text-blue-700 bg-blue-100 hover:bg-blue-300 hover:text-blue-800",
+                          i === 0 ? "rounded-l-lg" : "",
+                          i === visibilities.length - 1 ? "rounded-r-lg" : ""
+                        )
+                      }
+                    >
+                      {v.label}
+                    </Tab>
+                  ))}
+                </Tab.List>
+              </div>
+            </Tab.Group>
+            {visibility.value === "unlisted" && (
+              <label>
+                <h4 className="mb-1 after:content-['*'] after:ml-0.5 after:text-red-500 text-sm font-semibold text-gray-700 font-marianne">
+                  Membres
+                </h4>
+                <Select
+                  name="members"
+                  className="w-full"
+                  isMulti
+                  placeholder={
+                    <div className="text-sm font-semibold font-spectral">
+                      Qui souhaitez-vous inviter ?
+                    </div>
+                  }
+                  options={membersOptions
+                    .filter((member) => member.uid !== user?.data.uid)
+                    .map((member) => ({
+                      value: member.uid,
+                      label: member.fullName,
+                      photoURL: member.photoURL,
+                    }))}
+                  formatOptionLabel={(member: {
+                    value: string;
+                    label: string;
+                    photoURL: string;
+                  }) => (
+                    <div className="inline-flex items-center">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={member.photoURL}
+                        alt={member.label}
+                        className="w-5 h-5 mr-2 rounded-full"
+                      />
+                      <span className="text-xs font-marianne">
+                        {member.label}
+                      </span>
+                    </div>
+                  )}
+                  onChange={(value) =>
+                    setMembers(
+                      value.map((v) => ({
+                        uid: v.value,
+                        fullName: v.label,
+                        photoURL: v.photoURL,
+                      }))
+                    )
+                  }
+                  value={members.map((m) => ({
+                    value: m.uid,
+                    label: m.fullName,
+                    photoURL: m.photoURL,
+                  }))}
+                />
+              </label>
+            )}
+
             <label>
               <h4 className="mb-1 text-sm font-semibold text-gray-700 font-marianne">
                 Étiquettes
@@ -474,29 +593,30 @@ const ResourceCreate: NextPage<any> = () => {
               )}
 
               {type.value === "location" && (
-                <label className="flex flex-col grow">
-                  <h4 className="mb-1 text-sm after:content-['*'] after:ml-0.5 after:text-red-500 font-semibold text-gray-700 font-marianne">
-                    Emplacement de la ressource
-                  </h4>
-                  <div className="w-full mb-3">
-                    <input
-                      type="text"
-                      value={location}
-                      className="bg-gray-200 input"
-                      placeholder="Emplacement"
-                      onChange={(e) => setLocation(e.target.value)}
-                    ></input>
-                  </div>
+                <div className="flex flex-col grow">
+                  <label>
+                    <h4 className="mb-1 text-sm after:content-['*'] after:ml-0.5 after:text-red-500 font-semibold text-gray-700 font-marianne">
+                      Emplacement de la ressource
+                    </h4>
+                    <div className="w-full mb-3">
+                      <input
+                        type="text"
+                        value={location}
+                        className="bg-gray-200 input"
+                        placeholder="Emplacement"
+                        onChange={(e) => setLocation(e.target.value)}
+                      ></input>
+                    </div>
+                  </label>
                   <div className="flex-grow rounded-lg">
                     <Map
+                      zoom={4.5}
                       className="relative inset-0 w-full h-64 rounded-lg md:h-full"
-                      center={[46.227638, 2.213749]}
-                      zoom="4.5"
                       onClick={(e) => setPosition(e.latlng)}
-                      point={position as number[]}
+                      point={(position as number[]) || [46.227638, 2.213749]}
                     ></Map>
                   </div>
-                </label>
+                </div>
               )}
             </div>
           </div>
@@ -519,5 +639,10 @@ export const getServerSideProps = async (ctx) => {
         destination: "/auth/login",
       },
     };
-  return { props: {} };
+  const body = await (await fetch("http://localhost:3000/api/user")).json();
+  return {
+    props: {
+      membersOptions: body?.data?.attributes,
+    },
+  };
 };

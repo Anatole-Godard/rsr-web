@@ -38,3 +38,23 @@ export type ResourceType = {
   value: string;
   hasImage: boolean;
 };
+
+export const visibilities = [
+  {
+    label: "Publique",
+    value: "public",
+  },
+  {
+    label: "Privée",
+    value: "private",
+  },
+  {
+    label: "Non répertoriée",
+    value: "unlisted",
+  },
+];
+
+export type ResourceVisibility = {
+  label: string;
+  value: string;
+};
