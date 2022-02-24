@@ -1,19 +1,31 @@
 import { HeroSection } from "@components/landing/HeroSection";
 import { ResourceSection } from "@components/landing/ResourceSection";
 import { SearchSection } from "@components/landing/SearchSection";
+import { Resource } from "@definitions/Resource";
 import { AppLayout } from "components/layouts/AppLayout";
-import type { NextPage } from "next";
+import type { GetServerSideProps, NextPage } from "next";
 
-const Home: NextPage = () => {
+const Home: NextPage<any> = ({ resources }: { resources: Resource[] }) => {
   return (
     <AppLayout>
       <HeroSection />
       <SearchSection />
-      <section className="flex flex-col h-full px-6 pt-6 pb-6 space-y-6 bg-gray-100 dark:bg-black lg:px-24 2xl:px-32">
-        <ResourceSection resources={[]} />
+      <section className="flex flex-col h-full px-6 pt-6 pb-6 space-y-6 bg-gray-100 dark:bg-gray-900 lg:px-24 2xl:px-32">
+        <ResourceSection resources={resources} />
       </section>
     </AppLayout>
   );
 };
 
 export default Home;
+
+export const getServerSideProps: GetServerSideProps = async () => {
+  const body = await (await fetch(`http://localhost:3000/api/resource`)).json();
+  const resources = body.data?.attributes || [];
+
+  return {
+    props: {
+      resources,
+    },
+  };
+};

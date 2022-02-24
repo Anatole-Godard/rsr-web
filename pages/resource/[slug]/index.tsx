@@ -2,12 +2,18 @@
 import { AppLayout } from "@components/layouts/AppLayout";
 import { Resource } from "@definitions/Resource";
 import {
+  CalendarIcon,
   ChatIcon,
+  CheckIcon,
+  ExclamationIcon,
   HeartIcon as HeartIconOutline,
+  LinkIcon,
   PaperAirplaneIcon,
   PencilIcon,
   ShareIcon,
   ThumbUpIcon,
+  TrashIcon,
+  UsersIcon,
 } from "@heroicons/react/outline";
 import {
   ExternalLinkIcon,
@@ -26,6 +32,16 @@ import { fetchRSR } from "@utils/fetchRSR";
 import { useAuth } from "@hooks/useAuth";
 import { UserMinimum } from "@definitions/User";
 import { Comment } from "@definitions/Resource/Comment";
+import { Tab } from "@headlessui/react";
+import { classes } from "@utils/classes";
+import { format, formatDistance } from "date-fns";
+import { fr } from "date-fns/locale";
+import { types } from "constants/resourcesTypes";
+import { AvatarGroup } from "@components/ui/AvatarGroup";
+import { GeoJSON_Point } from "@definitions/Resource/GeoJSON";
+import { ExternalLink } from "@definitions/Resource/ExternalLink";
+import { PhysicalItem } from "@definitions/Resource/PhysicalItem";
+import Image from "next/image";
 
 const Map: any = dynamic(() => import("@components/map/Map") as any, {
   ssr: false,
@@ -39,6 +55,7 @@ const ResourceSlug: NextPage<any> = ({
   comments,
   likes,
   tags,
+  createdAt,
 }: Resource) => {
   const [message, setMessage] = useState<string>("");
   const [newLikes, setNewLikes] = useState<UserMinimum[]>(likes || []);
@@ -64,175 +81,151 @@ const ResourceSlug: NextPage<any> = ({
     if (res.ok) {
       const body = await res.json();
       setNewComments(body?.data.attributes.comments);
+      setMessage("");
     }
   };
 
   return (
     <AppLayout>
-      <div className="flex flex-col w-full h-full px-4 pb-4 space-y-2 grow lg:flex-row lg:space-y-0 lg:space-x-4">
-        <div className="flex flex-col items-center justify-between w-full h-full p-6 bg-gray-100 shadow-inner dark:bg-gray-900 lg:h-full lg:max-h-full lg:w-1/4 lg:rounded-xl">
-          <div className="flex-col items-center flex-shrink-0 w-full max-h-full space-y-2 lg:py-16">
-            <span
-              className={
-                (data.type === "location"
-                  ? "bg-indigo-300 text-indigo-800 dark:bg-indigo-900 dark:text-indigo-500"
-                  : "") +
-                (data.type === "physical_item"
-                  ? "bg-emerald-300 text-emerald-800 dark:bg-emerald-900 dark:text-emerald-500"
-                  : "") +
-                (data.type === "external_link"
-                  ? "bg-amber-300 text-amber-800 dark:bg-amber-900 dark:text-amber-500"
-                  : "") +
-                " rounded-3xl w-32 h-32 flex items-center justify-center mx-auto"
-              }
-            >
-              {data.type === "location" && (
-                <LocationMarkerIcon className="w-10 h-10" />
-              )}
-              {data.type === "physical_item" && (
-                <HandIcon className="w-10 h-10" />
-              )}
-              {data.type === "external_link" && (
-                <ExternalLinkIcon className="w-10 h-10" />
-              )}
-            </span>
-            <h2 className="text-xl font-extrabold text-center font-marianne">
-              {data.type === "location"
-                ? data.attributes.properties.name
-                : data.attributes.name}
-            </h2>
-            <p className="font-semibold text-center font-spectral">
-              {owner.fullName}
-            </p>
-            {/* Chip component (merge ref/global-layout) */}
-            <div className="flex justify-center w-full pb-2">
-              <Chip
-                element={{ label: data.type, value: data.type }}
-                size="small"
-                color="gray"
-              />
+      <section className="flex flex-col w-full h-full bg-gray-100 dark:bg-gray-900">
+        {/* 2xl:sticky 2xl:top-0 z-[47] */}
+        <div className="flex flex-col w-full px-6 py-6 bg-white border-b border-gray-200 lg:px-32 xl:px-48 dark:bg-black dark:border-gray-800">
+          <div className="flex flex-col font-spectral lg:h-10 lg:items-center lg:flex-row lg:space-x-3">
+            <div className="flex items-center text-sm text-gray-500 transition duration-200 hover:text-gray-700 dark:text-gray-400">
+              {types
+                .find((t) => t.value === data?.type)
+                ?.icon.outline({ className: "w-5 h-5 mr-1 shrink-0" })}
+              {types.find((t) => t.value === data?.type)?.label}
             </div>
 
-            <div className="inline-flex justify-center w-full divide-x">
-              <div className="flex flex-col items-center w-24 space-y-2">
-                <ChatIcon className="w-6 h-6" />
-                <p className="font-semibold font-spectral">
-                  {comments?.length}
-                </p>
-              </div>
-              <div className="flex flex-col items-center w-24 space-y-2">
-                <ThumbUpIcon className="w-6 h-6" />
-                <p className="font-semibold font-spectral">
-                  {newLikes?.length}
-                </p>
-              </div>
+            <div className="items-center hidden text-sm text-gray-500 transition duration-200 lg:inline-flex hover:text-gray-700 dark:text-gray-400">
+              <CalendarIcon className="w-5 h-5 mr-1 shrink-0" />
+              {formatDistance(new Date(createdAt), new Date(), {
+                addSuffix: true,
+                locale: fr,
+              })}
             </div>
+            {newLikes.length >= 1 ? (
+              <div className="items-center hidden text-sm text-gray-500 transition duration-200 lg:inline-flex hover:text-gray-700 dark:text-gray-400">
+                <AvatarGroup users={newLikes} limit={5} />
+                <UsersIcon className="hidden lg:flex items-center fas fa-users flex-shrink-0 mx-1.5 h-5 w-5 " />
+                {newLikes?.length || 0}{" "}
+                {newLikes?.length > 1 ? "personnes aiment" : "personne aime"}
+              </div>
+            ) : (
+              <div className="items-center hidden text-sm text-gray-500 transition duration-200 lg:inline-flex hover:text-gray-700 dark:text-gray-400">
+                <UsersIcon className="hidden lg:flex items-center fas fa-users flex-shrink-0 mx-1.5 h-5 w-5 " />
+
+                {"Personne n'aime pour l'instant"}
+              </div>
+            )}
           </div>
 
-          <div className="inline-flex justify-between w-full -mb-4">
-            <div className="inline-flex flex-grow w-1/2 space-x-2 overflow-x-auto">
-              <ChipList
-                color="blue"
-                list={tags?.map((el, i) => ({ label: el, value: i })) || []}
-                size="small"
-              />
-            </div>
-            <div className="inline-flex items-center justify-end flex-shrink-0 w-full space-x-2 max-w-max">
-              {user?.data && (
-                <button
-                  onClick={like}
-                  className="px-2 text-gray-700 bg-gray-100 btn-red"
-                >
-                  {newLikes.find((u) => u.uid === user.data.uid) === null ? (
-                    <HeartIconOutline className="w-4 h-4" />
-                  ) : (
-                    <HeartIcon className="w-4 h-4" />
-                  )}
+          <div className="lg:flex lg:items-center lg:justify-between">
+            <h2 className="mb-2 text-3xl font-extrabold text-gray-800 font-marianne dark:text-gray-200">
+              {data.attributes.properties.name}
+            </h2>
+            <div className="flex mt-2 space-x-3 lg:mt-0 lg:ml-4">
+              {!newLikes.find((l) => l.uid === user?.data.uid) ? (
+                <button className="btn-text-red" onClick={like}>
+                  <HeartIconOutline className="w-4 h-4 mr-1 select-none shrink-0" />
+                  {"J'aime"}
+                </button>
+              ) : (
+                <button className="btn-red" onClick={like}>
+                  <HeartIcon className="w-4 h-4 mr-1 select-none shrink-0" />
+                  {"Je n'aime plus"}
                 </button>
               )}
-              <button className="px-2 btn-gray">
-                <ShareIcon className="w-4 h-4" />
-              </button>
               {owner.uid === user?.data.uid && (
-                <Link href={"/resource/" + slug + "/edit"}>
-                  <a className="px-2 btn-gray">
-                    <PencilIcon className="w-4 h-4" />
+                <Link href={"/resource/" + slug}>
+                  <a className="btn-gray">
+                    <PencilIcon className="w-4 h-4 mr-1 select-none shrink-0" />
+                    Éditer
                   </a>
                 </Link>
               )}
             </div>
           </div>
+          <div className="w-full pt-2 pb-2 text-sm prose text-justify text-gray-500 font-spectral dark:text-gray-400">
+            {description}
+          </div>
+          <div className="inline-flex pt-3 -ml-2 overflow-x-hidden md:pt-0">
+            <ChipList
+              color="blue"
+              size="normal"
+              list={tags.map((tag: string) => ({ label: tag, value: tag }))}
+            />
+          </div>
         </div>
-
-        <div className="flex flex-col items-center w-full h-full space-y-2 overflow-y-auto lg:space-y-4 lg:w-3/4">
-          <div className="flex flex-col w-full bg-gray-100 shadow-inner dark:bg-gray-900 lg:rounded-xl lg:h-2/5 ">
-            <h2 className="w-full px-3 pb-2 my-2 text-xs font-bold tracking-wider text-gray-500 uppercase border-b dark:border-gray-800 dark:text-gray-300 font-marianne">
-              Aperçu de la ressource
-            </h2>
-            <div className="relative w-full p-2 grow">
-              <ResourceView {...data} slug={slug} />
-            </div>
-          </div>
-
-          <div className="w-full bg-gray-100 shadow-inner dark:bg-gray-900 h-1/5 lg:rounded-xl">
-            <h2 className="w-full px-3 pb-2 my-2 text-xs font-bold tracking-wider text-gray-500 uppercase border-b dark:border-gray-800 dark:text-gray-300 font-marianne">
-              Description
-            </h2>
-            <p className="px-3 pb-2 text-sm prose shrink-0">{description}</p>
-          </div>
-
-          <div className="flex flex-col flex-grow flex-shrink w-full bg-gray-100 dark:bg-gray-900 shadow-inner max-h-[2/5] lg:rounded-xl">
-            <h2 className="inline-flex items-center w-full px-3 pb-2 my-2 text-xs font-bold tracking-wider text-gray-500 uppercase border-b font-marianne dark:border-gray-800 dark:text-gray-300">
-              Commentaires et avis
-              <span className="h-3 px-1.5 ml-2 py-1 flex items-center justify-center dark:bg-gray-700 dark-text-gray-300 bg-gray-200 rounded-full text-[0.6rem]">
-                {comments?.length}
-              </span>
-            </h2>
-            <div className="flex flex-col grow-0 shrink px-4 my-2 space-y-2 overflow-y-auto rounded-md h-full max-h-[12rem] xl:rounded-xl">
-              {newComments && newComments?.length > 0 ? (
-                newComments.map((comment: Comment, i) => (
-                  <div
-                    className="inline-flex p-2 space-x-6 rounded-md bg-gray-50"
-                    key={comment.createdAt.toString() + i}
-                  >
-                    <img
-                      src={comment.owner.photoURL}
-                      alt={comment.owner.fullName}
-                      className="w-10 h-10 rounded-full"
-                    ></img>
-                    <div className="flex flex-col">
-                      <p className="text-sm font-semibold text-gray-700 font-spectral">
-                        {comment.owner.fullName}
-                      </p>
-                      <p className="text-xs text-gray-600">{comment.content}</p>
-                    </div>
-                  </div>
-                ))
-              ) : (
-                <p className="text-sm text-gray-600">
-                  Aucun commentaire pour le moment.
-                </p>
-              )}
-              <form
-                onSubmit={comment}
-                className="inline-flex items-center pb-2"
+        <div className="flex flex-col w-full px-6 pt-3 pb-8 space-y-6 lg:px-32 xl:px-48">
+          <Tab.Group>
+            <Tab.List className="flex lg:flex-row p-2 space-y-1.5 flex-col lg:space-y-0 lg:space-x-3 bg-white dark:bg-black rounded-xl">
+              <Tab
+                className={({ selected }) =>
+                  classes(
+                    "w-full py-2.5 text-sm leading-5 font-medium select-none font-spectral focus:outline-none duration-300 rounded-md hover:bg-blue-500 hover:text-white",
+                    selected
+                      ? "bg-blue-300 text-blue-700 dark:bg-blue-700 dark:text-blue-300"
+                      : "text-gray-500"
+                  )
+                }
               >
-                <input
-                  value={message}
-                  placeholder="Écrivez un commentaire"
-                  onChange={(e) => setMessage(e.target.value)}
-                  className="mr-2 bg-gray-200 input"
-                  required
-                  autoComplete="off"
-                ></input>
-                <button type="submit" className="btn-green">
-                  <PaperAirplaneIcon className="w-[1.25rem] h-[1.25rem] " />
-                </button>
-              </form>
-            </div>
-          </div>
+                Aperçu
+              </Tab>
+              <Tab
+                className={({ selected }) =>
+                  classes(
+                    "w-full py-2.5 text-sm leading-5 font-medium select-none font-spectral focus:outline-none duration-300 rounded-md hover:bg-blue-500 hover:text-white",
+                    selected
+                      ? "bg-blue-300 text-blue-700 dark:bg-blue-700 dark:text-blue-300"
+                      : "text-gray-500"
+                  )
+                }
+              >
+                Commentaires
+              </Tab>
+            </Tab.List>
+            <Tab.Panels className="p-2 bg-white dark:bg-black rounded-xl focus:outline-none">
+              <Tab.Panel className="min-h-[24rem] h-full">
+                <ResourceView {...data} slug={slug} />
+              </Tab.Panel>
+              <Tab.Panel className="min-h-[24rem] h-full flex flex-col justify-between ">
+                {newComments.length > 0 ? (
+                  <ul className="relative h-full mx-4 my-2 overflow-x-visible overflow-y-scroll border-l border-gray-200 max-h-96 grow dark:border-gray-700">
+                    {newComments.map((comment: Comment) => (
+                      <CommentView
+                        key={comment.createdAt.toString()}
+                        comment={comment}
+                        slug={slug}
+                      />
+                    ))}
+                  </ul>
+                ) : (
+                  <div className="flex items-center justify-center w-full h-full">
+                    <p className="font-spectral">
+                      Aucun commentaire pour le moment
+                    </p>
+                  </div>
+                )}
+                <form onSubmit={comment} className="inline-flex">
+                  <input
+                    value={message}
+                    placeholder="Écrire un commentaire"
+                    className="input grow"
+                    required
+                    onChange={(e) => setMessage(e.target.value)}
+                  />
+                  <button type="submit" className="ml-2 btn-blue shrink-0">
+                    <CheckIcon className="w-4 h-4 mr-1" />
+                    Envoyer
+                  </button>
+                </form>
+              </Tab.Panel>
+            </Tab.Panels>
+          </Tab.Group>
         </div>
-      </div>
+      </section>
     </AppLayout>
   );
 };
@@ -252,63 +245,173 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   };
 };
 
-const ResourceView: React.FC<any> = ({
-  type,
-  attributes,
-  slug,
-}: {
+interface ResourceViewProps {
   type: Resource["data"]["type"];
   attributes: Resource["data"]["attributes"];
+  slug: Resource["slug"];
+}
+
+interface LocationViewProps {
+  attributes: GeoJSON_Point;
   slug: string;
-}) => {
-  const like = async () => {
-    console.log("liked", slug); //TODO
-  };
+}
+interface ExternalLinkViewProps {
+  attributes: ExternalLink;
+  slug: string;
+}
+interface PhysicalItemViewProps {
+  attributes: PhysicalItem;
+  slug: string;
+}
 
-  const report = async () => {
-    console.log("report", slug); //TODO
-  };
+interface CommentViewProps {
+  comment: Comment;
+  slug: string;
+}
 
-  switch (type) {
-    case "location":
-      return (
-        <Map
-          point={attributes.geometry.coordinates as number[]}
-          className="lg:rounded-xl"
+const ResourceView = ({ type, attributes, slug }: ResourceViewProps) => {
+  return (
+    <div className="grid h-full gap-6 min-h-max xl:grid-cols-3 md:grid-cols-2">
+      {type === "location" && (
+        <LocationView attributes={attributes} slug={slug} />
+      )}
+      {type === "physical_item" && (
+        <PhysicalItemView attributes={attributes} slug={slug} />
+      )}
+      {type === "external_link" && (
+        <ExternalLinkView attributes={attributes} slug={slug} />
+      )}
+    </div>
+  );
+};
+
+const LocationView = ({ attributes, slug }: LocationViewProps) => {
+  return (
+    <>
+      <div className="relative h-full overflow-hidden rounded-lg xl:col-span-2">
+        <Map point={attributes.geometry.coordinates} className="h-full" />
+      </div>
+      <div className="pt-6 flex-flex-col">
+        <h4 className="mb-3 text-3xl font-bold font-marianne">Adresse</h4>
+        <div className="text-sm leading-5 prose text-gray-500 font-spectral dark:text-gray-400">
+          {attributes.properties.location}
+        </div>
+      </div>
+    </>
+  );
+};
+
+const ExternalLinkView = ({ attributes, slug }: ExternalLinkViewProps) => {
+  return (
+    <>
+      <div className="relative h-full overflow-hidden rounded-lg xl:col-span-2">
+        {attributes.properties.image ? (
+          <img
+            src={attributes.properties.image.url}
+            alt={attributes.properties.name}
+            className="h-full"
+          />
+        ) : (
+          <div className="flex flex-col items-center justify-center h-full text-emerald-800 bg-emerald-200 dark:text-emerald-200 dark:bg-emerald-800">
+            <LinkIcon className="w-12 h-12 mb-1" />
+            <p className="text-lg font-spectral">Lien externe</p>
+          </div>
+        )}
+      </div>
+      <div className="">
+        <div className="pt-6 flex-flex-col">
+          <h4 className="mb-3 text-3xl font-bold font-marianne">
+            Lien hypertexte
+          </h4>
+          <div className="text-sm leading-5 prose text-gray-500 font-spectral dark:text-gray-400">
+            {attributes.properties.url}
+          </div>
+        </div>
+      </div>
+    </>
+  );
+};
+
+const PhysicalItemView = ({ attributes, slug }: PhysicalItemViewProps) => {
+  return (
+    <>
+      <div className="relative h-full overflow-hidden rounded-lg xl:col-span-2">
+        {attributes.properties.image ? (
+          <img
+            src={attributes.properties.image.url}
+            alt={attributes.properties.name}
+            className="h-full"
+          />
+        ) : (
+          <div className="flex flex-col items-center justify-center h-full text-emerald-800 bg-emerald-200 dark:text-emerald-200 dark:bg-emerald-800">
+            <HandIcon className="w-12 h-12 mb-1" />
+            <p className="text-lg font-spectral">Objet physique</p>
+          </div>
+        )}
+      </div>
+      <div className="">
+        <div className="pt-6 flex-flex-col">
+          <h4 className="mb-3 text-3xl font-bold font-marianne">Catégorie</h4>
+          <div className="text-sm leading-5 prose text-gray-500 font-spectral dark:text-gray-400">
+            {attributes.properties.category}
+          </div>
+        </div>
+        <div className="pt-6 flex-flex-col">
+          <h4 className="mb-3 text-3xl font-bold font-marianne">Prix</h4>
+          <div className="text-sm leading-5 prose text-gray-500 font-spectral dark:text-gray-400">
+            {attributes.properties.price}
+          </div>
+        </div>
+      </div>
+    </>
+  );
+};
+
+const CommentView = ({ comment, slug }: CommentViewProps) => {
+  const { owner, content, createdAt } = comment;
+  const { user } = useAuth();
+  return (
+    <li className="mb-6 ml-[2.25rem] last:pb-6">
+      <span className="absolute flex items-center justify-center w-[2.25rem] h-[2.25rem] bg-blue-200 rounded-full -left-3 ring-8 ring-white dark:ring-gray-800 dark:bg-blue-900">
+        <Image
+          className="rounded-full"
+          src={owner.photoURL || "/uploads/user/default.png"}
+          alt={owner.fullName}
+          layout="fill"
         />
-      );
-      break;
-    case "physical_item":
-      return (
-        <img
-          className="object-cover w-auto h-full lg:rounded-xl"
-          src={attributes.photoURL}
-          alt={attributes.name}
-        />
-      );
-      break;
+      </span>
+      <div className="flex flex-col">
+        <div className="flex items-center justify-between p-2 pr-4 text-sm bg-white border border-gray-200 rounded-lg shadow-sm font-spectral dark:bg-gray-700 dark:border-gray-600">
+          {content}
+        </div>
+        <div className="inline-flex items-center mt-1 ml-1 space-x-1">
+          <span className="text-xs font-spectral">{owner.fullName} &bull;</span>
 
-    case "external_link":
-      return (
-        <a
-          className="flex items-center justify-center w-auto h-full text-green-500 bg-green-100 lg:rounded-xl"
-          href={attributes.url}
-        >
-          {attributes.image ? (
-            <img
-              className="object-cover h-full rounded-xl"
-              src={attributes.image}
-              alt={attributes.name}
-            />
-          ) : (
-            <ExternalLinkIcon className="w-16 h-16" />
+          <time className="text-xs font-spectral">
+            {format(new Date(createdAt), "HH:mm, dd MMM yyyy", { locale: fr })}{" "}
+            &bull;
+          </time>
+          <button
+            // todo
+            className="inline-flex items-center text-xs text-yellow-600 duration-300 hover:text-yellow-800 font-spectral"
+          >
+            <ExclamationIcon className="w-3 h-3 mr-1 shrink-0" />
+            Signaler
+          </button>
+          {owner.uid === user?.data.uid && (
+            <>
+              <span>&bull;</span>
+              <button
+                // todo
+                className="inline-flex items-center text-xs text-red-600 duration-300 hover:text-red-800 font-spectral"
+              >
+                <TrashIcon className="w-3 h-3 mr-1 shrink-0" />
+                Supprimer
+              </button>
+            </>
           )}
-        </a>
-      );
-      break;
-
-    default:
-      return <>Unsupported</>;
-      break;
-  }
+        </div>
+      </div>
+    </li>
+  );
 };

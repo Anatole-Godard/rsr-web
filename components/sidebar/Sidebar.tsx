@@ -1,18 +1,18 @@
 import {
   ChatIcon,
+  CogIcon,
   HomeIcon,
   LibraryIcon,
-  ShoppingBagIcon,
+  // ShoppingBagIcon,
 } from "@heroicons/react/outline";
+import { useAuth } from "@hooks/useAuth";
 import { useRouter } from "next/router";
-import Link from "next/link";
-
-import { motion } from "framer-motion";
 import { SidebarIcon } from "./SidebarIcon";
 
 export const Sidebar = () => {
   const router = useRouter();
   const { pathname } = router;
+  const { user } = useAuth();
 
   return (
     <div className="h-full z-[41] fixed flex-col hidden px-2 bg-white shadow-lg top-0 md:flex min-w-max dark:bg-black dark:border-r dark:border-gray-900 justify-between pt-12">
@@ -25,10 +25,10 @@ export const Sidebar = () => {
         />
         <Divider />
         <SidebarIcon
-          active={pathname === "/store"}
-          icon={ShoppingBagIcon}
-          text="Catalogue"
-          href="/store"
+          icon={LibraryIcon}
+          active={pathname.includes("/resource")}
+          text="Bibliothèque"
+          href="/resource"
         />
         <SidebarIcon
           icon={ChatIcon}
@@ -37,14 +37,17 @@ export const Sidebar = () => {
           href="/channel"
         />
       </div>
-      <div className="mb-4">
-        <SidebarIcon
-          icon={LibraryIcon}
-          active={pathname.includes("/resource")}
-          text="Bibliothèque"
-          href="/resource"
-        />
-      </div>
+      {user &&
+        (user.session.role === "admin" || user.session.role === "superadmin") && (
+          <div className="mb-4">
+            <SidebarIcon
+              icon={CogIcon}
+              active={pathname.includes("/admin")}
+              text="Administration"
+              href="/admin"
+            />
+          </div>
+        )}
     </div>
   );
 };

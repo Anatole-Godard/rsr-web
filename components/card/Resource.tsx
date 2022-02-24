@@ -110,7 +110,7 @@ export const ResourceCardSmall = (props: Resource) => {
     <Link href={`/resource/${slug}`}>
       <a
         className={classes(
-          "p-3 rounded-md h-24 w-72 inline-flex group duration-300",
+          "p-3 rounded-md h-24  min-w-[18rem] inline-flex group duration-300",
           type === "location" &&
             "bg-indigo-100 hover:bg-indigo-200 dark:bg-indigo-800",
           type === "physical_item" &&
@@ -143,7 +143,7 @@ export const ResourceCardSmall = (props: Resource) => {
         <div className="flex-col ml-3">
           <h3
             className={classes(
-              "font-semibold font-marianne capitalize text-lg text-ellipsis",
+              "font-semibold font-marianne capitalize text-lg text-ellipsis break-words",
               type === "location" && "text-indigo-800",
               type === "physical_item" && "text-emerald-800",
               type === "external_link" && "text-amber-800"

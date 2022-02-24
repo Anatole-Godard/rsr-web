@@ -1,10 +1,10 @@
 import {
-  ExternalLinkIcon as ExternalLinkIconOutline,
+  LinkIcon as ExternalLinkIconOutline,
   HandIcon as HandIconOutline,
   LocationMarkerIcon as LocationMarkerIconOutline,
 } from "@heroicons/react/outline";
 import {
-  ExternalLinkIcon as ExternalLinkIconSolid,
+  LinkIcon as ExternalLinkIconSolid,
   HandIcon as HandIconSolid,
   LocationMarkerIcon as LocationMarkerIconSolid,
 } from "@heroicons/react/solid";

@@ -10,7 +10,7 @@ const Map: React.FC<any> = ({
   point,
   className
 }: {
-  point: LatLngExpression | number[];
+  point: LatLngExpression | [number, number];
   className?: string
 }) => {
   return (
