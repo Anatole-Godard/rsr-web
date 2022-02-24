@@ -45,9 +45,7 @@ async function handler(
             } else if (report.type === "resource") {
                 filter = { 'document.slug' : report.document.slug.toString(), type :report.type };
             }
-            console.log(filter)
             const reports = await Report.find(filter);
-            console.log(reports)
             reports.map(async (report) => {
                 const notification: Notification = {
                     type      : "report",
