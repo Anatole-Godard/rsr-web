@@ -3,31 +3,23 @@ import { AppLayout } from "@components/layouts/AppLayout";
 import { Resource } from "@definitions/Resource";
 import {
   CalendarIcon,
-  ChatIcon,
   CheckIcon,
   ExclamationIcon,
   HeartIcon as HeartIconOutline,
   LinkIcon,
-  PaperAirplaneIcon,
   PencilIcon,
-  ShareIcon,
-  ThumbUpIcon,
   TrashIcon,
   UsersIcon,
 } from "@heroicons/react/outline";
 import {
-  ExternalLinkIcon,
   HandIcon,
   HeartIcon,
-  LocationMarkerIcon,
-  ExclamationIcon
 } from "@heroicons/react/solid";
 import { GetServerSideProps, NextPage } from "next";
 import { useState } from "react";
 
 import dynamic from "next/dynamic";
 import Link from "next/link";
-import { Chip } from "@components/ui/Chip";
 import { ChipList } from "@components/ui/ChipList";
 import { fetchRSR } from "@utils/fetchRSR";
 import { useAuth } from "@hooks/useAuth";
