@@ -8,6 +8,8 @@ import { fetchRSR } from "@utils/fetchRSR";
 import { NextPage } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import { ChartSquareBarIcon } from "@heroicons/react/outline";
+import {useState} from "react";
 
 const UserIndexPage: NextPage<any> = ({
   resources,
@@ -17,6 +19,7 @@ const UserIndexPage: NextPage<any> = ({
   likes: Resource[];
 }) => {
   const { user } = useAuth();
+  const [displayStats, setDisplayStats] = useState(false);
 
   return (
     <AppLayout>
@@ -38,6 +41,12 @@ const UserIndexPage: NextPage<any> = ({
                 profil
               </span>
             </h3>
+            <div className="inline-flex justify-end w-full">
+              <button className="btn-blue" onClick={() => setDisplayStats(true)}>
+                Statistiques
+                <ChartSquareBarIcon className="w-4 h-4 ml-2"/>
+              </button>
+            </div>
           </div>
 
           <Link href="/user/settings">
