@@ -6,6 +6,7 @@ export type GeoJSON_Point = {
   };
   properties: {
     name: string; //"Dinagat Islands";
+    location: string; //"off the coast of the Philippines";
   };
 };
 

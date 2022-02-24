@@ -1,5 +1,6 @@
 import { Notification } from "@definitions/Notification";
 import { ResourceMinimum } from "@definitions/Resource";
+import { UserMinimum } from "@definitions/User";
 import { withAuth } from "@middleware/auth";
 import withDatabase from "@middleware/mongoose";
 import NotificationModel from "@models/Notification";
@@ -35,10 +36,13 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       });
     }
 
-    console.log(resource.likes);
-    if (resource.likes.find((like) => like.uid === user._id.toString())) {
+    if (
+      resource.likes.find(
+        (like: UserMinimum) => like.uid === user._id.toString()
+      )
+    ) {
       resource.likes = resource.likes.filter(
-        (like) => like.uid !== user._id.toString()
+        (like: UserMinimum) => like.uid !== user._id.toString()
       );
     } else {
       resource.likes.push({

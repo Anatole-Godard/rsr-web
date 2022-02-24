@@ -237,7 +237,7 @@
   }
 
   .btn-text {
-    @apply inline-flex items-center w-full p-2 mt-2 text-sm duration-300 ease-linear rounded-md max-w-max;
+    @apply inline-flex items-center w-full p-2 text-sm duration-300 ease-linear rounded-md sm:px-4 max-w-max;
   }
 
   .btn-text-green {
