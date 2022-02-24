@@ -9,9 +9,11 @@ import { NextPage } from "next";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
+import { ChartSquareBarIcon } from "@heroicons/react/outline";
 const UserIndexPage: NextPage = () => {
   const { user } = useAuth();
   const [resources, setResources] = useState<Resource[]>([]);
+  const [displayStats, setDisplayStats] = useState(false);
 
   useEffect(() => {
     fetch(
@@ -46,6 +48,12 @@ const UserIndexPage: NextPage = () => {
               Votre
               <span className="ml-1 text-yellow-500">profil</span>
             </h3>
+            <div className="inline-flex justify-end w-full">
+              <button className="btn-blue" onClick={() => setDisplayStats(true)}>
+                Statistiques
+                <ChartSquareBarIcon className="w-4 h-4 ml-2"/>
+              </button>
+            </div>
           </div>
         </div>
         <div className="flex flex-col p-6 overflow-y-auto bg-gray-100 grow xl:rounded-tl-xl">
