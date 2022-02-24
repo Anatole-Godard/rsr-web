@@ -33,15 +33,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       });
 
     const resources: Resource[] = await ResourceModel.find({
-      "owner.uid": queryUid,
-      validated: false,
+      "likes.uid": queryUid,
     });
 
     return res.status(200).json({
       data: {
         attributes: resources.map(toResourceMinimum),
         type: "resource",
-        id: "awaitingValidation",
+        id: "likes",
       },
       error: null,
     });

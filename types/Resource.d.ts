@@ -34,4 +34,5 @@ export type ResourceMinimum = {
       };
     };
   };
+  validated: boolean;
 };
