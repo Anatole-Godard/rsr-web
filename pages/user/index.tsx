@@ -10,10 +10,11 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 
 import { ChartSquareBarIcon } from "@heroicons/react/outline";
+import {UserStatistics} from "@components/user/UserStatistics";
 const UserIndexPage: NextPage = () => {
   const { user } = useAuth();
   const [resources, setResources] = useState<Resource[]>([]);
-  const [displayStats, setDisplayStats] = useState(false);
+  const [displayStats, setDisplayStats] = useState<boolean>(false);
 
   useEffect(() => {
     fetch(
@@ -29,6 +30,11 @@ const UserIndexPage: NextPage = () => {
         console.log(err);
       });
   }, [user]);
+
+  const statistics = () => {
+    setDisplayStats(!displayStats)
+    console.log(displayStats)
+  }
 
   return (
     <AppLayout>
@@ -49,7 +55,7 @@ const UserIndexPage: NextPage = () => {
               <span className="ml-1 text-yellow-500">profil</span>
             </h3>
             <div className="inline-flex justify-end w-full">
-              <button className="btn-blue" onClick={() => setDisplayStats(true)}>
+              <button className="btn-blue" onClick={() => statistics()}>
                 Statistiques
                 <ChartSquareBarIcon className="w-4 h-4 ml-2"/>
               </button>
@@ -59,6 +65,7 @@ const UserIndexPage: NextPage = () => {
         <div className="flex flex-col p-6 overflow-y-auto bg-gray-100 grow xl:rounded-tl-xl">
           {user && (
             <div className="grid gap-3 lg:grid-cols-2 xl:grid-cols-3 h-fit">
+              {displayStats && (<UserStatistics/>)}
               <UserResources isAuthentifiedUser resources={resources} />
               <ChangeProfilePicture />
               <ChangePassword />
