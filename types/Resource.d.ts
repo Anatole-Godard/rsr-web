@@ -5,7 +5,6 @@ import type { PhysicalItem } from "./Resource/PhysicalItem";
 import type { UserMinimum } from "./User";
 
 export type Resource = {
-  // id: number;
   slug: string;
   owner: UserMinimum;
   createdAt: Date | string;
@@ -14,10 +13,13 @@ export type Resource = {
   data: {
     type: "location" | "physical_item" | "external_link" | string;
     attributes: GeoJSON_Point | PhysicalItem | ExternalLink | any;
-  }; // à définir,
+  };
   likes: UserMinimum[];
   comments?: Comment[];
   validated: boolean;
+
+  visibility: "public" | "private" | "unlisted";
+  members?: UserMinimum[];
 };
 
 export type ResourceMinimum = {
@@ -35,4 +37,6 @@ export type ResourceMinimum = {
     };
   };
   validated: boolean;
+  visibility: "public" | "private" | "unlisted";
+  members?: UserMinimum[];
 };

@@ -8,4 +8,6 @@ export const toResourceMinimum = (resource: Resource): ResourceMinimum => ({
   owner: resource.owner,
   validated: resource.validated,
   createdAt: resource.createdAt,
+  visibility: resource.visibility,
+  members: resource.members,
 });
