@@ -1,6 +1,5 @@
-/* eslint-disable @next/next/no-img-element */
-/* eslint-disable jsx-a11y/alt-text */
-import { ResourceCardSmall } from "@components/card/Resource";
+
+import { ResourceCard } from "@components/card/Resource";
 import { Resource } from "@definitions/Resource";
 import { classes } from "@utils/classes";
 import Image from "next/image";
@@ -39,12 +38,12 @@ export const UserResources = ({
           <div
             key={idx}
             className={classes(
-              "snap-center shrink-0 ",
+              "snap-center shrink-0 w-full max-w-[18rem]",
               idx !== 0 ? "first:pl-8" : "first:pl-4",
               idx !== resources.length - 1 ? "last:pr-8" : "last:pr-4"
             )}
           >
-            <ResourceCardSmall {...resource} />
+            <ResourceCard {...resource} />
           </div>
         ))}
       </div>

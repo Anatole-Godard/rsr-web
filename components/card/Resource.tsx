@@ -97,14 +97,14 @@ export const ResourceCard = (props: Resource) => {
                 ) : (
                   <XCircleIcon className="w-4 h-4 text-red-800" />
                 )} */}
-                {!validated && <XCircleIcon className="w-4 h-4 text-red-800" />}
+                {!validated && <XCircleIcon className="w-4 h-4 text-red-600" />}
               </div>
             )}
           </div>
           <hr className="mx-6 my-1 border-gray-200 dark:border-gray-700" />
         </a>
       </Link>
-      <div className="inline-flex p-3">
+      <div className="inline-flex p-2">
         <div className="inline-flex overflow-x-hidden grow">
           <ChipList
             list={
@@ -173,7 +173,7 @@ export const ResourceCardSmall = (props: Resource) => {
     <Link href={`/resource/${slug}`}>
       <a
         className={classes(
-          "p-3 rounded-md h-24  min-w-[18rem] inline-flex group duration-300",
+          "p-2 rounded-md h-24 w-[18rem] inline-flex group duration-300",
           type === "location" &&
             "bg-indigo-100 hover:bg-indigo-200 dark:bg-indigo-800",
           type === "physical_item" &&
@@ -184,7 +184,7 @@ export const ResourceCardSmall = (props: Resource) => {
       >
         <div
           className={classes(
-            "h-full aspect-square rounded-md flex items-center justify-center duration-300",
+            "h-2/3 aspect-square rounded-md flex items-center justify-center duration-300",
             type === "location" &&
               "bg-indigo-200 group-hover:bg-indigo-300 dark:bg-indigo-800",
             type === "physical_item" &&
@@ -194,19 +194,19 @@ export const ResourceCardSmall = (props: Resource) => {
           )}
         >
           {type === "location" && (
-            <LocationMarkerIcon className="w-6 h-6 text-indigo-700" />
+            <LocationMarkerIcon className="w-4 h-4 text-indigo-700" />
           )}
           {type === "physical_item" && (
-            <HandIcon className="w-6 h-6 text-emerald-700" />
+            <HandIcon className="w-4 h-4 text-emerald-700" />
           )}
           {type === "external_link" && (
-            <ExternalLinkIcon className="w-6 h-6 text-amber-700" />
+            <ExternalLinkIcon className="w-4 h-4 text-amber-700" />
           )}
         </div>
-        <div className="flex-col ml-3">
+        <div className="flex flex-col ml-3">
           <h3
             className={classes(
-              "font-semibold font-marianne capitalize text-lg text-ellipsis break-words",
+              "font-semibold font-marianne truncate text-lg w-full",
               type === "location" && "text-indigo-800",
               type === "physical_item" && "text-emerald-800",
               type === "external_link" && "text-amber-800"

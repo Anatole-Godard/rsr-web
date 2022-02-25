@@ -7,6 +7,10 @@ import { NextApiRequest, NextApiResponse } from "next";
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { uid } = req.query;
+  const { uid: headersUid = undefined } = req.headers as {
+    uid: string | undefined;
+  };
+
   try {
     const query = await User.findOne({ _id: uid }).select([
       "-password",
@@ -14,12 +18,17 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       "-__v",
     ]);
     const resources = await Resource.find({
-      "owner.uid": toObjectId(uid as string),
+      $or: [
+        { "owner.uid": toObjectId(uid as string) },
+        { "owner.uid": uid as string },
+      ],
+      ...(headersUid
+        ? { $or: [{ "members.uid": headersUid }, { "owner.uid": headersUid }] }
+        : null),
     });
-
     const user = {
       ...query.toObject(),
-      uid: query._id,
+      uid: query._id.toString(),
       resources: resources.map((resource) => resource.toObject()) || [],
     };
 
