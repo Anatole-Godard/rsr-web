@@ -55,7 +55,12 @@ Chart.register(
     SubTitle
 );
 
-export const ChartDisplay = ({label}:{label: String}) => {
+export const ChartDisplay = ({label, resources}:{label: String, resources: Resource[]}) => {
+
+    console.log(resources)
+    // resources.map((e, i) => {
+    //     console.log("hzefk ", e);
+    // });
 
     const MONTHS = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
 
