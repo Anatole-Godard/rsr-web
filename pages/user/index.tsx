@@ -65,7 +65,7 @@ const UserIndexPage: NextPage = () => {
         <div className="flex flex-col p-6 overflow-y-auto bg-gray-100 grow xl:rounded-tl-xl">
           {user && (
             <div className="grid gap-3 lg:grid-cols-2 xl:grid-cols-3 h-fit">
-              {displayStats && (<UserStatistics/>)}
+              {displayStats && (<UserStatistics isAuthentifiedUser resources={resources}/>)}
               <UserResources isAuthentifiedUser resources={resources} />
               <ChangeProfilePicture />
               <ChangePassword />
