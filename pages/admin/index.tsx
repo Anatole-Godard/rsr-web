@@ -1,13 +1,36 @@
 import { AppLayoutAdmin } from "components/layouts/AppLayoutAdmin";
 import type { NextPage } from "next";
 import { GetServerSideProps } from 'next';
+import {useEffect, useState} from "react";
+import {ChartSquareBarIcon} from "@heroicons/react/outline";
+import {ChartDisplay} from "@components/statistics/ChartDisplay";
+import {GlobalDisplay} from "@components/statistics/GlobalDisplay";
+import {useAuth} from "@hooks/useAuth";
+import {fetchRSR} from "@utils/fetchRSR";
+import { Resource } from "@definitions/Resource";
+import ResourceModel from '@models/Resource';
 
 const Home: NextPage = () => {
     const [displayChart, setDisplayChart] = useState<boolean>(false);
+    const [resources, setResources] = useState<Resource[]>([]);
+    const {user} = useAuth();
 
     const setDisplayType = () => {
         setDisplayChart(!displayChart);
     };
+
+    useEffect(() => {
+        fetchRSR(`/api/resource/admin`, user?.session)
+            .then(res => res.json())
+            .then(data => {
+                setResources(data);
+            })
+            .catch(err => {
+                console.log(err);
+            });
+    }, []);
+
+    console.log(resources)
 
     return (
         <AppLayoutAdmin>
@@ -36,12 +59,12 @@ const Home: NextPage = () => {
                 <div className="p-6 overflow-y-auto bg-gray-100 grow xl:rounded-tl-xl">
                     <div className="grid gap-3 lg:grid-cols-2 xl:grid-cols-3">
                         <div className="bg-white rounded-lg px-5 py-5">
-                            {displayChart ? <ChartDisplay label="Nombre de visites"/> :
-                                <GlobalDisplay label="Nombre de visites"/>}
+                            {displayChart ? <ChartDisplay label="Nombre de visites" resources={resources}/> :
+                                <GlobalDisplay label="Nombre de visites" data={resources.length}/>}
                         </div>
                         <div className="bg-white rounded-lg px-5 py-5">
-                            {displayChart ? <ChartDisplay label="Nombre de ressources postées"/> :
-                                <GlobalDisplay label="Nombre de ressources postées"/>}
+                            {displayChart ? <ChartDisplay label="Nombre de ressources postées" resources={resources}/> :
+                                <GlobalDisplay label="Nombre de ressources postées" data={resources?.length}/>}
                         </div>
                     </div>
                 </div>
