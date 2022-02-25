@@ -28,6 +28,7 @@ import {
     SubTitle
 } from 'chart.js';
 import {Resource} from "@definitions/Resource";
+import {useEffect, useState} from "react";
 
 Chart.register(
     ArcElement,
@@ -62,6 +63,15 @@ export const UserStatistics = ({
                                }: { resources: Resource[]; isAuthentifiedUser?: boolean; }) => {
 
     const MONTHS = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
+    const [totalResourceViews, setTotalResourceViews] = useState(0);
+    let count = 0;
+
+    useEffect(() => {
+        resources.forEach(resource => {
+            count += resource.seenBy.length;
+        });
+        setTotalResourceViews(count);
+    }, [resources]);
 
     const months = (config) => {
         const cfg = config || {};
@@ -77,8 +87,6 @@ export const UserStatistics = ({
 
         return values;
     }
-
-    console.log(resources);
 
     const Config = {
         plugins: {
@@ -135,7 +143,7 @@ export const UserStatistics = ({
                     <h6 className="font-bold text-gray-900 font-marianne">
                         Ressources créées
                     </h6>
-                    <p className="text-5xl text-gray-900 font-marianne">102</p>
+                    <p className="text-5xl text-gray-900 font-marianne">{resources.length}</p>
                 </div>
                 <div className="">
                     <h6 className="font-bold text-gray-900 font-marianne">
@@ -147,7 +155,7 @@ export const UserStatistics = ({
                     <h6 className="font-bold text-gray-900 font-marianne">
                         Total de vues des ressources
                     </h6>
-                    <p className="text-5xl text-gray-900 font-marianne">102</p>
+                    <p className="text-5xl text-gray-900 font-marianne">{totalResourceViews}</p>
                 </div>
             </div>
             <div className="inline-flex flex flex-row items-center justify-around w-full pt-5 mb-3">
