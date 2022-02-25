@@ -13,6 +13,8 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       "-role",
       "-__v",
     ]);
+
+    // TODO: Add "or" query to get all resources of user OR all resources seen by user (if authenticated AND user is the same as the one being queried)
     const resources = await Resource.find({
       "owner.uid": toObjectId(uid as string),
     });
