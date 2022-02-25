@@ -6,13 +6,14 @@ export type Notification = {
   _id?: string;
   user: UserMinimum;
   emitter?: UserMinimum;
-  document: ResourceMinimum | ChannelMinimum;
+  document?: ResourceMinimum | ChannelMinimum ;
   type:
     | "comment"
     | "mention"
     | "like"
     | "message"
     | "resource_create"
-    | "invite";
+    | "invite"
+    | "report";
   createdAt: Date | string;
 };

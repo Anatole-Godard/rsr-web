@@ -3,6 +3,7 @@ import Resource from "@models/Resource";
 import withDatabase from "@middleware/mongoose";
 import { handleError } from "@utils/handleError";
 import { withAuth } from "@middleware/auth";
+import { isAdmin } from '@utils/getCurrentUser';
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== "PUT") {
@@ -33,14 +34,16 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     }
 
     if (resource.owner.uid !== req.headers.uid) {
-      res.status(403).json({
-        data: null,
-        error: {
-          code: 403,
-          message: "forbidden",
-        },
-      });
-      return;
+      if (!(await isAdmin(req, true))) {
+        res.status(403).json({
+          data: null,
+          error: {
+            code: 403,
+            message: "forbidden",
+          },
+        });
+        return;
+      }
     }
 
     resource = await Resource.findOneAndUpdate(

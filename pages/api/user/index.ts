@@ -6,7 +6,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
-    const users = await User.find({});
+    const users = await User.find({validated: true});
     res.status(200).json({
       data: {
         type: "user",

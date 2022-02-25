@@ -23,3 +23,9 @@ export const getUser = async (req: NextApiRequest) => {
     .lean();
   return { ...data, uid: data._id.toString() };
 };
+
+export const isAdmin = async (req: NextApiRequest, moderator:boolean = false) => {
+  const user = await getUser(req)
+  const isValid = (user && (user?.role === "admin" || user?.role === "superadmin" ));
+  return moderator ? (isValid || user?.role === "moderator" ): isValid;
+};

@@ -1,9 +1,9 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import Resource from "@models/Resource";
 import withDatabase from "@middleware/mongoose";
 import { handleError } from "@utils/handleError";
 import { getPagination, getTotalPages } from "@utils/pagination";
 import { isAdmin } from '@utils/getCurrentUser';
+import Report from '@models/Report';
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
@@ -26,39 +26,34 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     );
     let query = {};
     if (search && search.length > 0) {
-      query = {
-        $or: [
-          { "owner.fullName": { $regex: `.*${search}.*` } },
-          { "data.type": { $regex: `.*${search}.*` } },
-          { slug: { $regex: `.*${search}.*` } },
-        ],
-      };
+      query = { "emitter.fullName": { $regex: `.*${search}.*` } };
     }
-    Resource.find(query)
+
+    Report.find(query)
       .skip(offset) //Notice here
       .limit(limit)
-      .exec((err, resource) => {
+      .exec((err, report) => {
         if (err) {
           return res.json(err);
         }
-        Resource.countDocuments(query).exec((count_error, count) => {
+        Report.countDocuments(query).exec((count_error, count) => {
           if (err) {
-            handleError(res, err, "resource/all");
+            handleError(res, err, "report/all");
           }
           return res.status(200).json({
             data: {
-              type: "resource",
+              type: "report",
               id: "all",
               totalItems: count,
               totalPages: getTotalPages(count, limit),
-              attributes: resource.map((element) => ({
+              attributes: report.map((element) => ({
                 uid: element._id,
-                owner: element.owner,
-                slug: element.slug,
-                data: element.data,
-                likes: element.likes,
+                emitter: element.emitter,
+                document: element.document,
+                type: element.type,
                 validated: element.validated,
-              })),
+                context: element.context,
+              }))
             },
           });
         });
@@ -70,7 +65,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         message:
           err instanceof Error
             ? err.message
-            : "an error occured on resource:all",
+            : "an error occured on report:all",
       },
     });
   }

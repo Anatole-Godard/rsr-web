@@ -11,7 +11,7 @@ const notificationSchema = new Schema({
   },
   document: {
     type: Object,
-    required: true,
+    default : null
   },
   type: {
     type: String,
@@ -23,6 +23,7 @@ const notificationSchema = new Schema({
       "message",
       "resource_create",
       "invite",
+      "report",
     ],
   },
   createdAt: {

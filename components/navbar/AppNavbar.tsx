@@ -3,7 +3,7 @@ import { UserDropdown } from "@components/dropdowns/UserDropdown";
 import { Logo } from "@components/ui/Logo";
 import { SearchIcon as HISearchIcon } from "@heroicons/react/outline";
 import { useState } from "react";
-
+import { v4 as uuidv4 } from "uuid";
 import { motion } from "framer-motion";
 import { NotificationsDropdown } from "@components/dropdowns/NotificationsDropdown";
 import { useRouter } from "next/router";
@@ -28,9 +28,9 @@ export const Navbar: React.FC<any> = ({
       <Search query={query} setQuery={setQuery} />
       <div className="inline-flex items-center justify-end pl-6 space-x-4 lg:w-56 shrink-0 lg:pl-0 ">
         {/* <ThemeIcon /> */}
-        <NotificationsDropdown />
-        <SidebarDropdown />
-        <UserDropdown />
+        <NotificationsDropdown key={uuidv4()} />
+        <SidebarDropdown key={uuidv4()} />
+        <UserDropdown  key={uuidv4()}/>
       </div>
     </div>
   );

@@ -1,16 +1,35 @@
 import { Iframe } from "@components/helpers/Iframe";
 import { Activity } from "@definitions/Activity";
 import { Message } from "@definitions/Message";
-import { ChatAlt2Icon, ChatIcon, UserAddIcon } from "@heroicons/react/outline";
+import { ChatAlt2Icon, ChatIcon, UserAddIcon, ExclamationIcon} from "@heroicons/react/outline";
 import { formatDistance } from "date-fns";
 import { fr } from "date-fns/locale";
 import Image from "next/image";
+import { fetchRSR } from '@utils/fetchRSR';
+import { useAuth } from '@hooks/useAuth';
 
 type History = (Message | Activity) & {
   context: { name: string };
 };
 
 export const HistoryItem = ({ user, data, createdAt, context }: History) => {
+    const  auth = useAuth();
+
+    const report = async (type, context) => {
+        const res = await fetchRSR(`/api/report/create`, auth.user?.session, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                appsource: "web",
+            },
+            body: JSON.stringify({ type, 'documentUid': user.uid, context }),
+        })
+        if (res.ok) {
+            const body = await res.json();
+            console.log(body)
+        }
+    };
+
   return (
     <li className="mb-6 ml-6 last:pb-6">
       <span className="absolute flex items-center justify-center w-6 h-6 bg-blue-200 rounded-full -left-3 ring-8 ring-white dark:ring-gray-800 dark:bg-blue-900">
@@ -52,6 +71,12 @@ export const HistoryItem = ({ user, data, createdAt, context }: History) => {
             <time className="order-last mb-0 text-xs font-normal text-gray-400">
               {formatDistance(new Date(createdAt), new Date(), { locale: fr })}
             </time>
+              <button
+                  onClick={()=>{report('user', user.fullName + (': ' + data?.text) || '' )}}
+                  className="m-0 ml-1 px-2 text-gray-700 bg-gray-100 btn-text-yellow order-last"
+              >
+                  <ExclamationIcon className="w-4 h-4" />
+              </button>
             <div className="inline-flex items-center">
               <span className="flex items-center justify-center w-8 h-8 mr-2 text-green-700 bg-green-100 rounded-md">
                 <ChatIcon className="w-4 h-4" />
@@ -78,6 +103,12 @@ export const HistoryItem = ({ user, data, createdAt, context }: History) => {
             <time className="order-last mb-0 text-xs font-normal text-gray-400">
               {formatDistance(new Date(createdAt), new Date(), { locale: fr })}
             </time>
+              <button
+                  onClick={()=>{report('user', user.fullName + (': ' + data?.text) || '' )}}
+                  className="m-0 ml-1 px-2 text-gray-700 bg-gray-100 btn-text-yellow order-last"
+              >
+                  <ExclamationIcon className="w-4 h-4" />
+              </button>
             <div className="inline-flex items-center grow">
               <span className="flex items-center justify-center w-8 h-8 mr-2 rounded-md shrink-0 text-amber-700 bg-amber-100">
                 <ChatAlt2Icon className="w-4 h-4" />
