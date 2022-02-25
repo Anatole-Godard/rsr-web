@@ -33,7 +33,7 @@ export const UserResources = ({
         </div>
       </div>
 
-      <div className="relative flex w-full gap-6 pb-4 overflow-x-auto snap-x">
+      <div className="relative flex w-full gap-4 pb-4 overflow-x-auto snap-x">
         {resources.map((resource, idx) => (
           <div
             key={idx}
