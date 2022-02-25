@@ -11,10 +11,7 @@ import {
   TrashIcon,
   UsersIcon,
 } from "@heroicons/react/outline";
-import {
-  HandIcon,
-  HeartIcon,
-} from "@heroicons/react/solid";
+import { HandIcon, HeartIcon } from "@heroicons/react/solid";
 import { GetServerSideProps, NextPage } from "next";
 import { useState } from "react";
 
@@ -62,11 +59,15 @@ const ResourceSlug: NextPage<any> = ({
         "Content-Type": "application/json",
         appsource: "web",
       },
-      body: JSON.stringify({ type: 'resource', 'documentUid': slug, context: slug }),
-    })
+      body: JSON.stringify({
+        type: "resource",
+        documentUid: slug,
+        context: slug,
+      }),
+    });
     if (res.ok) {
       const body = await res.json();
-      console.log(body)
+      console.log(body);
     }
   };
   const like = async () => {
@@ -133,29 +134,27 @@ const ResourceSlug: NextPage<any> = ({
             </h2>
             <div className="flex mt-2 space-x-3 lg:mt-0 lg:ml-4">
               {!newLikes.find((l) => l.uid === user?.data.uid) ? (
-                <button className="btn-text-red" onClick={like}>
+                <button className="btn-red" key="likeBtn" onClick={like}>
                   <HeartIconOutline className="w-4 h-4 mr-1 select-none shrink-0" />
                   {"J'aime"}
                 </button>
               ) : (
-                <button className="btn-red" onClick={like}>
+                <button className="btn-red" key="dislikeBtn" onClick={like}>
                   <HeartIcon className="w-4 h-4 mr-1 select-none shrink-0" />
                   {"Je n'aime plus"}
                 </button>
               )}
               {user?.data && (
-                <button
-                    onClick={()=>report()}
-                    className="px-2 text-gray-700 bg-gray-100 btn-yellow"
-                >
-                  <ExclamationIcon className="w-4 h-4" />
+                <button onClick={report} className="btn-yellow">
+                  <ExclamationIcon className="w-4 h-4 mr-1 select-none shrink-0" />
+                  Signaler
                 </button>
-            )}
+              )}
               {owner.uid === user?.data.uid && (
-                <Link href={"/resource/" + slug}>
+                <Link href={"/resource/" + slug + "/edit"}>
                   <a className="btn-gray">
                     <PencilIcon className="w-4 h-4 mr-1 select-none shrink-0" />
-                    Éditer
+                    <span>Éditer</span>
                   </a>
                 </Link>
               )}
@@ -206,7 +205,7 @@ const ResourceSlug: NextPage<any> = ({
               </Tab.Panel>
               <Tab.Panel className="min-h-[24rem] h-full flex flex-col justify-between ">
                 {newComments.length > 0 ? (
-                  <ul className="relative h-full mx-4 my-2 overflow-x-visible overflow-y-scroll border-l border-gray-200 max-h-96 grow dark:border-gray-700">
+                  <ul className="relative h-full mx-2 my-2 overflow-x-visible overflow-y-scroll border-l border-gray-200 max-h-96 grow dark:border-gray-700">
                     {newComments.map((comment: Comment) => (
                       <CommentView
                         key={comment.createdAt.toString()}
@@ -386,9 +385,9 @@ const CommentView = ({ comment, slug }: CommentViewProps) => {
   const { user } = useAuth();
   return (
     <li className="mb-6 ml-[2.25rem] last:pb-6">
-      <span className="absolute flex items-center justify-center w-[2.25rem] h-[2.25rem] bg-blue-200 rounded-full -left-3 ring-8 ring-white dark:ring-gray-800 dark:bg-blue-900">
+      <span className="absolute  flex items-center justify-center w-[2.25rem] h-[2.25rem] bg-blue-200 rounded-full -left-3 ring-8 ring-white dark:ring-gray-800 dark:bg-blue-900">
         <Image
-          className="rounded-full"
+          className="z-10 rounded-full"
           src={owner.photoURL || "/uploads/user/default.png"}
           alt={owner.fullName}
           layout="fill"
@@ -398,7 +397,7 @@ const CommentView = ({ comment, slug }: CommentViewProps) => {
         <div className="flex items-center justify-between p-2 pr-4 text-sm bg-white border border-gray-200 rounded-lg shadow-sm font-spectral dark:bg-gray-700 dark:border-gray-600">
           {content}
         </div>
-        <div className="inline-flex items-center mt-1 ml-1 space-x-1">
+        <div className="inline-flex items-center mt-px ml-1 space-x-1 text-gray-500">
           <span className="text-xs font-spectral">{owner.fullName} &bull;</span>
 
           <time className="text-xs font-spectral">
