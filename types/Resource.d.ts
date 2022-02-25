@@ -18,6 +18,7 @@ export type Resource = {
   likes: UserMinimum[];
   comments?: Comment[];
   validated: boolean;
+  seenBy: UserMinimum[];
 };
 
 export type ResourceMinimum = {

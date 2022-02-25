@@ -29,7 +29,6 @@ const ResourceSchema = new Schema({
   },
   likes: {
     type: Array,
-    required: true,
     default: [],
   },
   comments: {
@@ -39,6 +38,10 @@ const ResourceSchema = new Schema({
   validated: {
     type: Boolean,
     default: false,
+  },
+  seenBy: {
+    type: Array,
+    default: [],
   },
 });
 

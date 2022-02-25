@@ -1,36 +1,22 @@
-import { AppLayoutAdmin } from "components/layouts/AppLayoutAdmin";
-import type { NextPage } from "next";
-import { GetServerSideProps } from 'next';
+import {AppLayoutAdmin} from "components/layouts/AppLayoutAdmin";
+import type {NextPage} from "next";
+import {GetServerSideProps} from 'next';
 import {useEffect, useState} from "react";
 import {ChartSquareBarIcon} from "@heroicons/react/outline";
 import {ChartDisplay} from "@components/statistics/ChartDisplay";
 import {GlobalDisplay} from "@components/statistics/GlobalDisplay";
 import {useAuth} from "@hooks/useAuth";
 import {fetchRSR} from "@utils/fetchRSR";
-import { Resource } from "@definitions/Resource";
+import {Resource} from "@definitions/Resource";
 import ResourceModel from '@models/Resource';
 
-const Home: NextPage = () => {
+const Home: NextPage<any> = ({resources = []}: { resources: Resource[] }) => {
     const [displayChart, setDisplayChart] = useState<boolean>(false);
-    const [resources, setResources] = useState<Resource[]>([]);
     const {user} = useAuth();
 
     const setDisplayType = () => {
         setDisplayChart(!displayChart);
     };
-
-    useEffect(() => {
-        fetchRSR(`/api/resource/admin`, user?.session)
-            .then(res => res.json())
-            .then(data => {
-                setResources(data);
-            })
-            .catch(err => {
-                console.log(err);
-            });
-    }, []);
-
-    console.log(resources)
 
     return (
         <AppLayoutAdmin>
@@ -64,7 +50,7 @@ const Home: NextPage = () => {
                         </div>
                         <div className="bg-white rounded-lg px-5 py-5">
                             {displayChart ? <ChartDisplay label="Nombre de ressources postées" resources={resources}/> :
-                                <GlobalDisplay label="Nombre de ressources postées" data={resources?.length}/>}
+                                <GlobalDisplay label="Nombre de ressources postées" data={resources.length}/>}
                         </div>
                     </div>
                 </div>
@@ -76,29 +62,33 @@ const Home: NextPage = () => {
 export default Home;
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const {
-          cookies: { user },
-        } = context.req;
+    const {
+        cookies: {user},
+    } = context.req;
 
-  let parseUser= JSON.parse(user)
+    let parseUser = JSON.parse(user)
 
-  if (!user ){
+    if (!user) {
+        return {
+            redirect: {
+                permanent: false,
+                destination: "/auth/login",
+            },
+        };
+    } else if (parseUser?.session?.role === 'user') {
+        return {
+            redirect: {
+                permanent: false,
+                destination: "/",
+            },
+        };
+    }
+
+    const response = await fetchRSR(`http://localhost:3000/api/resource/admin`, parseUser?.session)
+    const body = await response.json();
+
+
     return {
-      redirect: {
-        permanent: false,
-        destination: "/auth/login",
-      },
-    };
-  }else if (parseUser?.session?.role === 'user'){
-    return {
-      redirect: {
-        permanent: false,
-        destination: "/",
-      },
-    };
-  }
-
-  return {
-    props: { parseUser },
-  }
+        props: {parseUser, resources: body.data.attributes},
+    }
 };

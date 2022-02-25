@@ -247,6 +247,14 @@ const ResourceSlug: NextPage<any> = ({
 export default ResourceSlug;
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
+  const {
+    cookies: {user},
+  } = context.req;
+
+  let parseUser = JSON.parse(user)
+
+  if(parseUser?.session) await fetchRSR(`http://localhost:3000/api/resource/${context.params.slug}/seen`, parseUser.session);
+
   const res = await fetch(
     "http://localhost:3000/api/resource/" + context.params.slug
   );
