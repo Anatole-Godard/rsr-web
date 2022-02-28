@@ -32,6 +32,10 @@ import { GeoJSON_Point } from "@definitions/Resource/GeoJSON";
 import { ExternalLink } from "@definitions/Resource/ExternalLink";
 import { PhysicalItem } from "@definitions/Resource/PhysicalItem";
 import Image from "next/image";
+import { Event } from "@definitions/Resource/Event";
+
+import "react-nice-dates/build/style.css";
+import { DateRangePickerCalendar } from "react-nice-dates";
 
 const Map: any = dynamic(() => import("@components/map/Map") as any, {
   ssr: false,
@@ -94,7 +98,7 @@ const ResourceSlug: NextPage<any> = ({
 
   return (
     <AppLayout>
-      <section className="flex flex-col w-full h-full bg-gray-100 dark:bg-gray-900">
+      <section className="flex flex-col w-full bg-gray-100 h-fit dark:bg-gray-900">
         {/* 2xl:sticky 2xl:top-0 z-[47] */}
         <div className="flex flex-col w-full px-6 py-6 bg-white border-b border-gray-200 lg:px-32 xl:px-48 dark:bg-black dark:border-gray-800">
           <div className="flex flex-col font-spectral lg:h-10 lg:items-center lg:flex-row lg:space-x-3">
@@ -171,7 +175,7 @@ const ResourceSlug: NextPage<any> = ({
             />
           </div>
         </div>
-        <div className="flex flex-col w-full px-6 pt-3 pb-8 space-y-6 lg:px-32 xl:px-48">
+        <div className="flex flex-col w-full px-6 pt-3 pb-8 space-y-6 grow lg:px-32 xl:px-48">
           <Tab.Group>
             <Tab.List className="flex lg:flex-row p-2 space-y-1.5 flex-col lg:space-y-0 lg:space-x-3 bg-white dark:bg-black rounded-xl">
               <Tab
@@ -277,6 +281,11 @@ interface PhysicalItemViewProps {
   slug: string;
 }
 
+interface EventViewProps {
+  attributes: Event;
+  slug: string;
+}
+
 interface CommentViewProps {
   comment: Comment;
   slug: string;
@@ -294,6 +303,7 @@ const ResourceView = ({ type, attributes, slug }: ResourceViewProps) => {
       {type === "external_link" && (
         <ExternalLinkView attributes={attributes} slug={slug} />
       )}
+      {type === "event" && <EventView attributes={attributes} slug={slug} />}
     </div>
   );
 };
@@ -304,7 +314,7 @@ const LocationView = ({ attributes, slug }: LocationViewProps) => {
       <div className="relative h-full overflow-hidden rounded-lg xl:col-span-2">
         <Map point={attributes.geometry.coordinates} className="h-full" />
       </div>
-      <div className="pt-6 flex-flex-col">
+      <div className="flex flex-col pt-6">
         <h4 className="mb-3 text-3xl font-bold font-marianne">Adresse</h4>
         <div className="text-sm leading-5 prose text-gray-500 font-spectral dark:text-gray-400">
           {attributes.properties.location}
@@ -332,7 +342,7 @@ const ExternalLinkView = ({ attributes, slug }: ExternalLinkViewProps) => {
         )}
       </div>
       <div className="">
-        <div className="pt-6 flex-flex-col">
+        <div className="flex flex-col pt-6">
           <h4 className="mb-3 text-3xl font-bold font-marianne">
             Lien hypertexte
           </h4>
@@ -363,18 +373,62 @@ const PhysicalItemView = ({ attributes, slug }: PhysicalItemViewProps) => {
         )}
       </div>
       <div className="">
-        <div className="pt-6 flex-flex-col">
+        <div className="flex flex-col pt-6">
           <h4 className="mb-3 text-3xl font-bold font-marianne">Catégorie</h4>
           <div className="text-sm leading-5 prose text-gray-500 font-spectral dark:text-gray-400">
             {attributes.properties.category}
           </div>
         </div>
-        <div className="pt-6 flex-flex-col">
+        <div className="flex flex-col pt-6">
           <h4 className="mb-3 text-3xl font-bold font-marianne">Prix</h4>
           <div className="text-sm leading-5 prose text-gray-500 font-spectral dark:text-gray-400">
             {attributes.properties.price}
           </div>
         </div>
+      </div>
+    </>
+  );
+};
+
+const EventView = ({ attributes, slug }: EventViewProps) => {
+  return (
+    <>
+      <div className="relative h-full overflow-hidden rounded-lg xl:col-span-2">
+        {/* <DateRange
+          onChange={() => {}}
+          editableDateInputs={false}
+          ranges={{
+            startDate: new Date(attributes.properties.startDate.toString()),
+            ...(attributes.properties.endDate
+              ? { endDate: new Date(attributes.properties.endDate.toString()) }
+              : null),
+          }}
+          direction="horizontal"
+        /> */}
+        <DateRangePickerCalendar
+          startDate={new Date(attributes.properties.startDate.toString())}
+          endDate={
+            attributes.properties.endDate
+              ? new Date(attributes.properties.endDate.toString())
+              : null
+          }
+          locale={fr}
+        />
+      </div>
+      <div className="flex flex-col pt-3 pr-3">
+        {attributes.properties.image ? (
+          <img
+            src={attributes.properties.image.url}
+            alt={attributes.properties.name}
+            className="h-48"
+          />
+        ) : (
+          <div className="flex flex-col items-center justify-center h-48 text-red-800 bg-red-200 rounded-lg dark:text-red-200 dark:bg-red-800">
+            <CalendarIcon className="w-12 h-12 mb-1" />
+            <p className="text-lg font-spectral">Évenement</p>
+          </div>
+        )}
+        {attributes.properties.endDate ? <></> : <></>}
       </div>
     </>
   );

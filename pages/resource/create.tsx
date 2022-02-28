@@ -1,5 +1,6 @@
 import { AppLayout } from "@components/layouts/AppLayout";
 import { Resource } from "@definitions/Resource";
+import { Event } from "@definitions/Resource/Event";
 import { UserMinimum } from "@definitions/User";
 import { Tab } from "@headlessui/react";
 import {
@@ -55,6 +56,16 @@ const ResourceCreate: NextPage<any> = ({
 
   const [externalLink, setExternalLink] = useState<string | null>(null);
 
+  const [startDate, setStartDate] = useState<string | null>(null);
+  const [endDate, setEndDate] = useState<string | null>(null);
+  // const [locationType, setLocationType] = useState<
+  //   Event["location"]["type"] | null
+  // >(null);
+
+  // const [locationData, setlocationData] = useState<
+  //   Event["location"]["data"] | null
+  // >(null);
+
   const [validForm, setValidForm] = useState<boolean>(false);
   const [requestOk, setRequestOk] = useState<boolean | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
@@ -93,6 +104,15 @@ const ResourceCreate: NextPage<any> = ({
           description,
           externalLink,
           image: null,
+        },
+      };
+    } else if (type.value === "event") {
+      data.attributes = {
+        properties: {
+          name,
+          description,
+          startDate,
+          endDate,
         },
       };
     }
@@ -177,6 +197,9 @@ const ResourceCreate: NextPage<any> = ({
       case "external_link":
         if (name && description && externalLink) setValidForm(true);
         break;
+      case "event":
+        if (name && description && startDate) setValidForm(true);
+        break;
 
       default:
         setValidForm(false);
@@ -194,6 +217,7 @@ const ResourceCreate: NextPage<any> = ({
     category,
     pictureFile,
     location,
+    startDate,
   ]);
 
   return (
@@ -466,8 +490,7 @@ const ResourceCreate: NextPage<any> = ({
                 </div>
               </Tab.Group>
 
-              {(type.value === "external_link" ||
-                type.value === "physical_item") && (
+              {types.find((t) => t.value === type.value).hasImage && (
                 <label className="flex flex-col grow">
                   <h4
                     className={classes(
@@ -617,6 +640,47 @@ const ResourceCreate: NextPage<any> = ({
                     ></Map>
                   </div>
                 </div>
+              )}
+
+              {type.value === "event" && (
+                <>
+                  <div className="flex flex-col">
+                    <h4
+                      className={classes(
+                        "mb-1 text-sm font-semibold text-gray-700 font-marianne"
+                      )}
+                    >
+                      Dates et heures
+                    </h4>
+
+                    <div className="grid gap-2 xl:grid-cols-2">
+                      <label className="flex flex-col">
+                        <p className="after:content-['*'] text-gray-500 after:ml-0.5 after:text-red-500 text-xs font-spectral">
+                          Date et heure de début
+                        </p>
+                        <input
+                          placeholder="Date et heure de début"
+                          className="bg-gray-200 input "
+                          type="datetime-local"
+                          onChange={(e) => setStartDate(e.target.value)}
+                          value={startDate}
+                        />
+                      </label>
+                      <label className="flex flex-col">
+                        <p className="text-xs text-gray-500 font-spectral">
+                          Date et heure de fin
+                        </p>
+                        <input
+                          placeholder="Date et heure de fin"
+                          className="bg-gray-200 input "
+                          type="datetime-local"
+                          onChange={(e) => setEndDate(e.target.value)}
+                          value={endDate}
+                        />
+                      </label>
+                    </div>
+                  </div>
+                </>
               )}
             </div>
           </div>

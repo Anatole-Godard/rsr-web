@@ -5,6 +5,7 @@ import {
   LockClosedIcon as LockClosedIconOutline,
   GlobeIcon as GlobeIconOutline,
   BanIcon as BanIconOutline,
+  CalendarIcon as CalendarIconOutline,
 } from "@heroicons/react/outline";
 import {
   LinkIcon as ExternalLinkIconSolid,
@@ -13,6 +14,7 @@ import {
   LockClosedIcon as LockClosedIconSolid,
   GlobeIcon as GlobeIconSolid,
   BanIcon as BanIconSolid,
+  CalendarIcon as CalendarIconSolid,
 } from "@heroicons/react/solid";
 
 export const types = [
@@ -36,6 +38,12 @@ export const types = [
     value: "external_link",
     hasImage: true,
     icon: { outline: ExternalLinkIconOutline, solid: ExternalLinkIconSolid },
+  },
+  {
+    label: "Événement",
+    value: "event",
+    hasImage: true,
+    icon: { outline: CalendarIconOutline, solid: CalendarIconSolid },
   },
 ];
 
