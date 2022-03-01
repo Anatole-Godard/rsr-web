@@ -45,7 +45,9 @@ export const ResourceCard = (props: Resource) => {
               type === "physical_item" &&
                 "bg-emerald-100 group-hover:bg-emerald-200 dark:bg-emerald-800",
               type === "external_link" &&
-                "bg-amber-100 group-hover:bg-amber-200 dark:bg-amber-800"
+                "bg-amber-100 group-hover:bg-amber-200 dark:bg-amber-800",
+              type === "event" &&
+                "bg-red-100 group-hover:bg-red-200 dark:bg-red-800"
             )}
           >
             <div
@@ -53,7 +55,8 @@ export const ResourceCard = (props: Resource) => {
                 "flex flex-col space-y-2 text-xs font-spectral items-center",
                 type === "location" && "text-indigo-700",
                 type === "physical_item" && "text-emerald-700",
-                type === "external_link" && "text-amber-700"
+                type === "external_link" && "text-amber-700",
+                type === "event" && "text-red-700"
               )}
             >
               {types
@@ -118,7 +121,9 @@ export const ResourceCard = (props: Resource) => {
                 ? "indigo"
                 : type === "physical_item"
                 ? "emerald"
-                : "amber"
+                : type === "external_link"
+                ? "amber"
+                : "red"
             }
           />
         </div>

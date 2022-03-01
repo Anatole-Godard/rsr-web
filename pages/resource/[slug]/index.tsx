@@ -4,6 +4,8 @@ import { Resource } from "@definitions/Resource";
 import {
   CalendarIcon,
   CheckIcon,
+  ChevronLeftIcon,
+  ClockIcon,
   ExclamationIcon,
   HeartIcon as HeartIconOutline,
   LinkIcon,
@@ -100,8 +102,16 @@ const ResourceSlug: NextPage<any> = ({
     <AppLayout>
       <section className="flex flex-col w-full bg-gray-100 h-fit dark:bg-gray-900">
         {/* 2xl:sticky 2xl:top-0 z-[47] */}
-        <div className="flex flex-col w-full px-6 py-6 bg-white border-b border-gray-200 lg:px-32 xl:px-48 dark:bg-black dark:border-gray-800">
-          <div className="flex flex-col font-spectral lg:h-10 lg:items-center lg:flex-row lg:space-x-3">
+        <div className="flex flex-col w-full px-6 py-6 bg-white border-b border-gray-200 lg:px-24 dark:bg-black dark:border-gray-800">
+          <div className="flex flex-col space-y-3 font-spectral lg:h-10 lg:items-center lg:flex-row lg:space-x-3 lg:space-y-0">
+            <div className="flex items-center text-sm text-gray-500 transition duration-200 hover:text-gray-700 dark:text-gray-400">
+              <Link href="/resource">
+                <a className="inline-flex pr-3 border-gray-400 lg:border-r btn-text-gray">
+                  <ChevronLeftIcon className="w-5 h-5 mr-1" />
+                  Retour
+                </a>
+              </Link>
+            </div>
             <div className="flex items-center text-sm text-gray-500 transition duration-200 hover:text-gray-700 dark:text-gray-400">
               {types
                 .find((t) => t.value === data?.type)
@@ -175,7 +185,7 @@ const ResourceSlug: NextPage<any> = ({
             />
           </div>
         </div>
-        <div className="flex flex-col w-full px-6 pt-3 pb-8 space-y-6 grow lg:px-32 xl:px-48">
+        <div className="flex flex-col w-full px-6 pt-3 pb-8 space-y-6 grow lg:px-24">
           <Tab.Group>
             <Tab.List className="flex lg:flex-row p-2 space-y-1.5 flex-col lg:space-y-0 lg:space-x-3 bg-white dark:bg-black rounded-xl">
               <Tab
@@ -428,7 +438,88 @@ const EventView = ({ attributes, slug }: EventViewProps) => {
             <p className="text-lg font-spectral">Évenement</p>
           </div>
         )}
-        {attributes.properties.endDate ? <></> : <></>}
+        <div className="flex flex-col p-3 bg-white dark:bg-gray-900 rounded-xl">
+          <div className="flex flex-col">
+            <div className="inline-flex items-center justify-between w-full pt-2 pb-4 space-x-4 ">
+              <span className="inline-flex items-center flex-grow space-x-4">
+                {attributes.properties.endDate ? (
+                  <div className="flex flex-col items-center w-6 ml-4 ">
+                    <ClockIcon className="w-4 h-4 text-center " />
+                    <span className="text-[0.6rem] font-bold uppercase">
+                      from
+                    </span>
+                  </div>
+                ) : (
+                  <ClockIcon className="w-6 h-6 ml-4 text-center" />
+                )}
+
+                <div className="flex flex-col">
+                  <p className="text-xs first-letter:uppercase">
+                    {format(new Date(attributes.properties.startDate), "PPPP", {
+                      locale: fr,
+                    })}
+                  </p>
+                  <p className="text-sm font-bold">
+                    {format(new Date(attributes.properties.startDate), "p", {
+                      locale: fr,
+                    })}
+                  </p>
+                </div>
+              </span>
+              <a
+                rel="noreferrer"
+                href={
+                  "https://calendar.google.com/calendar/render?action=TEMPLATE&" +
+                  `dates=${format(
+                    new Date(attributes.properties.startDate),
+                    "yyyyMMdd'T'HHmmss'Z'"
+                  )}${
+                    attributes.properties.endDate
+                      ? "%2F" +
+                        format(
+                          new Date(attributes.properties.endDate),
+                          "yyyyMMdd'T'HHmmss'Z'"
+                        )
+                      : ""
+                  }&text=${attributes.properties.name}`
+                }
+                target="_blank"
+              >
+                <img
+                  src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Google_Calendar_icon_%282020%29.svg/768px-Google_Calendar_icon_%282020%29.svg.png"
+                  className="h-6 px-3 text-center shrink-0"
+                  alt="GCalendar"
+                ></img>
+              </a>
+            </div>
+
+            {attributes.properties.endDate && (
+              <div className="inline-flex items-center justify-between w-full pt-2 pb-4 space-x-4 ">
+                <span className="inline-flex items-center flex-grow space-x-4">
+                  <div className="flex flex-col items-center w-6 ml-4 ">
+                    <ClockIcon className="w-4 h-4 text-center" />
+                    <span className="text-[0.6rem] text-center font-bold uppercase">
+                      to
+                    </span>
+                  </div>
+
+                  <div className="flex flex-col">
+                    <p className="text-xs first-letter:uppercase">
+                      {format(new Date(attributes.properties.endDate), "PPPP", {
+                      locale: fr,
+                    })}
+                    </p>
+                    <p className="text-sm font-bold">
+                      {format(new Date(attributes.properties.endDate), "p", {
+                      locale: fr,
+                    })}
+                    </p>
+                  </div>
+                </span>
+              </div>
+            )}
+          </div>
+        </div>
       </div>
     </>
   );

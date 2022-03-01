@@ -79,6 +79,20 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
     props.data.attributes.properties.externalLink || null
   );
 
+  const [startDate, setStartDate] = useState<string | null>(
+    props.data.attributes.properties.startDate || null
+  );
+  const [endDate, setEndDate] = useState<string | null>(
+    props.data.attributes.properties.endDate || null
+  );
+  // const [locationType, setLocationType] = useState<
+  //   Event["location"]["type"] | null
+  // >(null);
+
+  // const [locationData, setlocationData] = useState<
+  //   Event["location"]["data"] | null
+  // >(null);
+
   const [validForm, setValidForm] = useState<boolean>(false);
   const [requestOk, setRequestOk] = useState<boolean | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
@@ -97,9 +111,8 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
         setLocation("");
       }
     };
-    if (position != null) {
+    if (position && position.lat != null && position.lng != null)
       fetchLocation();
-    }
   }, [position]);
 
   const formatResource = (): Resource => {
@@ -136,6 +149,15 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
           description,
           externalLink,
           image: null,
+        },
+      };
+    } else if (type.value === "event") {
+      data.attributes = {
+        properties: {
+          name,
+          description,
+          startDate,
+          endDate,
         },
       };
     }
@@ -215,6 +237,10 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
         }
         break;
 
+      case "event":
+        if (name && description && startDate) setValidForm(true);
+        break;
+
       default:
         setValidForm(false);
         break;
@@ -230,6 +256,7 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
     externalLink,
     category,
     location,
+    startDate,
   ]);
 
   return (
@@ -520,8 +547,7 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
                 </div>
               </Tab.Group>
 
-              {(type.value === "external_link" ||
-                type.value === "physical_item") && (
+              {types.find((t) => t.value === type.value).hasImage && (
                 <label className="flex flex-col grow">
                   <h4 className="mb-1 text-sm font-semibold text-gray-700 font-marianne">
                     Image de la ressource
@@ -663,6 +689,47 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
                     ></Map>
                   </div>
                 </label>
+              )}
+
+              {type.value === "event" && (
+                <>
+                  <div className="flex flex-col">
+                    <h4
+                      className={classes(
+                        "mb-1 text-sm font-semibold text-gray-700 font-marianne"
+                      )}
+                    >
+                      Dates et heures
+                    </h4>
+
+                    <div className="grid gap-2 xl:grid-cols-2">
+                      <label className="flex flex-col">
+                        <p className="after:content-['*'] text-gray-500 after:ml-0.5 after:text-red-500 text-xs font-spectral">
+                          Date et heure de début
+                        </p>
+                        <input
+                          placeholder="Date et heure de début"
+                          className="bg-gray-200 input "
+                          type="datetime-local"
+                          onChange={(e) => setStartDate(e.target.value)}
+                          value={startDate}
+                        />
+                      </label>
+                      <label className="flex flex-col">
+                        <p className="text-xs text-gray-500 font-spectral">
+                          Date et heure de fin
+                        </p>
+                        <input
+                          placeholder="Date et heure de fin"
+                          className="bg-gray-200 input "
+                          type="datetime-local"
+                          onChange={(e) => setEndDate(e.target.value)}
+                          value={endDate}
+                        />
+                      </label>
+                    </div>
+                  </div>
+                </>
               )}
             </div>
           </div>
