@@ -240,6 +240,10 @@
     @apply inline-flex items-center w-full p-2 text-sm duration-300 ease-linear rounded-md sm:px-4 max-w-max;
   }
 
+  .btn-text-gray {
+    @apply text-gray-500 btn-text hover:bg-gray-100 active:bg-gray-300 active:text-gray-700;
+  }
+
   .btn-text-green {
     @apply text-green-500 btn-text hover:bg-green-100 active:bg-green-300 active:text-green-700;
   }

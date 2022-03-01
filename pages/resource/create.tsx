@@ -113,6 +113,7 @@ const ResourceCreate: NextPage<any> = ({
           description,
           startDate,
           endDate,
+          participants: [],
         },
       };
     }

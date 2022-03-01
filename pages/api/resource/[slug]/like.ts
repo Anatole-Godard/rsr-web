@@ -63,6 +63,8 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
             properties: { name: resource.data.attributes.properties.name },
           },
         },
+        validated: resource.validated,
+        visibility: resource.visibility,
       };
 
       if (resource.owner.uid.toString() !== user._id.toString()) {

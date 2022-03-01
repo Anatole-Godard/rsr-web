@@ -12,8 +12,14 @@ import {
   PencilIcon,
   TrashIcon,
   UsersIcon,
+  XIcon,
 } from "@heroicons/react/outline";
-import { HandIcon, HeartIcon } from "@heroicons/react/solid";
+import {
+  HandIcon,
+  HeartIcon,
+  PlusCircleIcon,
+  UserIcon,
+} from "@heroicons/react/solid";
 import { GetServerSideProps, NextPage } from "next";
 import { useState } from "react";
 
@@ -401,6 +407,23 @@ const PhysicalItemView = ({ attributes, slug }: PhysicalItemViewProps) => {
 };
 
 const EventView = ({ attributes, slug }: EventViewProps) => {
+  const { user } = useAuth();
+  const participate = async () => {
+    const res = await fetchRSR(
+      `/api/resource/${slug}/participate`,
+      user?.session
+    );
+    const body = await res.json();
+    res.ok
+      ? setParticipants(
+          body.data.attributes.data.attributes.properties.participants
+        )
+      : console.error(body);
+  };
+  const [participants, setParticipants] = useState<UserMinimum[]>(
+    attributes.properties.participants || []
+  );
+
   return (
     <>
       <div className="relative h-full overflow-hidden rounded-lg xl:col-span-2">
@@ -425,7 +448,7 @@ const EventView = ({ attributes, slug }: EventViewProps) => {
           locale={fr}
         />
       </div>
-      <div className="flex flex-col pt-3 pr-3">
+      <div className="flex flex-col pt-3 pr-3 space-y-3">
         {attributes.properties.image ? (
           <img
             src={attributes.properties.image.url}
@@ -438,7 +461,8 @@ const EventView = ({ attributes, slug }: EventViewProps) => {
             <p className="text-lg font-spectral">Évenement</p>
           </div>
         )}
-        <div className="flex flex-col p-3 bg-white dark:bg-gray-900 rounded-xl">
+        <hr className="mt-3 border-gray-100 dark:border-gray-800" />
+        <div className="flex flex-col p-3 bg-gray-50 dark:bg-gray-900 rounded-xl">
           <div className="flex flex-col">
             <div className="inline-flex items-center justify-between w-full pt-2 pb-4 space-x-4 ">
               <span className="inline-flex items-center flex-grow space-x-4">
@@ -506,19 +530,57 @@ const EventView = ({ attributes, slug }: EventViewProps) => {
                   <div className="flex flex-col">
                     <p className="text-xs first-letter:uppercase">
                       {format(new Date(attributes.properties.endDate), "PPPP", {
-                      locale: fr,
-                    })}
+                        locale: fr,
+                      })}
                     </p>
                     <p className="text-sm font-bold">
                       {format(new Date(attributes.properties.endDate), "p", {
-                      locale: fr,
-                    })}
+                        locale: fr,
+                      })}
                     </p>
                   </div>
                 </span>
               </div>
             )}
           </div>
+        </div>
+        <hr className="mt-3 border-gray-100 dark:border-gray-800" />
+        <div className="flex flex-col p-3 space-y-3 bg-gray-50 dark:bg-gray-900 rounded-xl">
+          <div className="inline-flex items-center justify-between">
+            <h4 className="text-lg font-bold font-spectral">
+              {participants.length.toString() +
+                " " +
+                (participants.length > 1 ? "participants" : "participant")}
+            </h4>
+
+            {user ? (
+              participants.find((p) => p.uid === user.data.uid) ? (
+                <button
+                  onClick={participate}
+                  className="px-2 py-1 text-xs btn-text-gray"
+                >
+                  <XIcon className="w-4 h-4 mr-1" />
+                  Retirer ma participation
+                </button>
+              ) : (
+                <button
+                  onClick={participate}
+                  className="px-2 py-1 text-xs btn-text-gray"
+                >
+                  <PlusCircleIcon className="w-4 h-4 mr-1" />
+                  Participer
+                </button>
+              )
+            ) : (
+              <Link href="/auth/login">
+                <a className="px-2 py-1 text-xs btn-text-gray">
+                  <UserIcon className="w-4 h-4 mr-1" />
+                  Se connecter
+                </a>
+              </Link>
+            )}
+          </div>
+          <AvatarGroup users={participants} xl />
         </div>
       </div>
     </>
