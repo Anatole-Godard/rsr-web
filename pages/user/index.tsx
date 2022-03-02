@@ -2,31 +2,23 @@ import { AppLayout } from "@components/layouts/AppLayout";
 import { ChangePassword } from "@components/user/ChangePassword";
 import { ChangeProfilePicture } from "@components/user/ChangeProfilePicture";
 import { SessionsViewer } from "@components/user/SessionsViewer";
+import { UserLikedResources } from "@components/user/UserLikedResources";
 import { UserResources } from "@components/user/UserResources";
 import { Resource } from "@definitions/Resource";
 import { useAuth } from "@hooks/useAuth";
+import { fetchRSR } from "@utils/fetchRSR";
 import { NextPage } from "next";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
-const UserIndexPage: NextPage = () => {
+const UserIndexPage: NextPage<any> = ({
+  resources,
+  likes,
+}: {
+  resources: Resource[];
+  likes: Resource[];
+}) => {
   const { user } = useAuth();
-  const [resources, setResources] = useState<Resource[]>([]);
-
-  useEffect(() => {
-    fetch(
-      `${process.env.API_URL || "http://localhost:3000/api"}/user/${
-        user?.data.uid
-      }`
-    )
-      .then((res) => res.json())
-      .then((body) => {
-        setResources(body?.data.attributes.resources);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, [user]);
 
   return (
     <AppLayout>
@@ -51,7 +43,8 @@ const UserIndexPage: NextPage = () => {
         <div className="flex flex-col p-6 overflow-y-auto bg-gray-100 grow xl:rounded-tl-xl">
           {user && (
             <div className="grid gap-3 lg:grid-cols-2 xl:grid-cols-3 h-fit">
-              <UserResources isAuthentifiedUser resources={resources} />
+              <UserResources resources={resources} />
+              <UserLikedResources resources={likes} />
               <ChangeProfilePicture />
               <ChangePassword />
               <SessionsViewer />
@@ -76,5 +69,27 @@ export const getServerSideProps = async (ctx) => {
         destination: "/auth/login",
       },
     };
-  return { props: {} };
+
+  const parsedUser = JSON.parse(user);
+
+  const resources = await (
+    await fetchRSR(
+      `http://localhost:3000/api/user/${parsedUser.data.uid}`,
+      parsedUser?.session
+    )
+  ).json();
+
+  const likes = await (
+    await fetchRSR(
+      `http://localhost:3000/api/user/${parsedUser.data.uid}/resources/likes`,
+      parsedUser?.session
+    )
+  ).json();
+
+  return {
+    props: {
+      ...resources.data.attributes,
+      likes: likes?.data?.attributes || [],
+    },
+  };
 };

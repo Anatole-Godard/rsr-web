@@ -11,7 +11,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const { uid: queryUid } = req.query as { uid: string };
     const { uid: headersUid } = req.headers as { uid: string };
 
-    if (!queryUid || !headersUid)
+    if (
+      !queryUid
+      //  || !headersUid // TODO: confirm if this is needed
+    )
       return res.status(400).json({
         data: null,
         error: {
@@ -21,24 +24,26 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         },
       });
 
-    if (queryUid !== headersUid)
-      return res.status(401).json({
-        data: null,
-        error: {
-          code: 401,
-          message: "Unauthorized",
-          name: "UnauthorizedError",
-          user: headersUid,
-        },
-      });
+    // TODO: confirm if this is needed
+    // if (queryUid !== headersUid)
+    //   return res.status(401).json({
+    //     data: null,
+    //     error: {
+    //       code: 401,
+    //       message: "Unauthorized",
+    //       name: "UnauthorizedError",
+    //       user: headersUid,
+    //     },
+    //   });
 
     const resources: Resource[] = await ResourceModel.find({
       "likes.uid": queryUid,
+      $or: [{ validated: true }, { "owner.uid": headersUid }],
     });
 
     return res.status(200).json({
       data: {
-        attributes: resources.map(toResourceMinimum),
+        attributes: resources, //.map(toResourceMinimum),
         type: "resource",
         id: "likes",
       },
