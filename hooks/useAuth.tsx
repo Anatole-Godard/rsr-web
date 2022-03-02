@@ -41,7 +41,7 @@ function AuthProvider({
     if (response.ok && body.session && body.data) {
       setCookie("user", JSON.stringify(body), {
         path: "/",
-        maxAge: 3600 * 24, // Expires after 1day
+        maxAge: 3600 * 3, // Expires after 3 hour
         sameSite: true,
       });
       setUser(body);

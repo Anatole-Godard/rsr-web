@@ -1,5 +1,6 @@
 import { Notification } from "@definitions/Notification";
 import { fetchRSR } from "@utils/fetchRSR";
+import { useRouter } from "next/router";
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { useAuth } from "./useAuth";
 const NotificationContext = createContext({});
@@ -14,8 +15,10 @@ function NotificationProvider({
 }: {
   children: React.ReactNode;
 }): JSX.Element {
-  const { user } = useAuth();
+  const { user, signOut } = useAuth();
   const [notifications, setNotifications] = useState<Notification[]>([]);
+
+  const router = useRouter();
 
   const removeNotification = (id: string) => {
     fetchRSR(
@@ -46,20 +49,31 @@ function NotificationProvider({
           .then((res) => res.json())
           .then((res) => {
             if (res.error) {
-              console.log(res.error);
+              if (res.error.name === "TokenExpiredError") {
+                console.log("Token expired, logging out");
+                signOut();
+              }
             } else {
               setNotifications(res.data.attributes);
             }
           })
-          .catch((err) => console.log(err));
+          .catch((err) => {
+            if (err.name === "TokenExpiredError") {
+              console.log("Token expired, logging out");
+              signOut();
+              router.push("/auth/login");
+            }
+          });
       }, 5000);
 
       return () => clearInterval(poll);
     }
-  }, [user]);
+  }, [user, signOut]);
 
   return (
-    <NotificationContext.Provider value={{ notifications, setNotifications, removeNotification }}>
+    <NotificationContext.Provider
+      value={{ notifications, setNotifications, removeNotification }}
+    >
       {children}
     </NotificationContext.Provider>
   );
