@@ -42,25 +42,39 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       birthDate,
       fullName,
     });
-    const token = genToken({ uid: user._id, role: user.role });
+    const token = genToken({ uid: user._id.toString(), role: user.role });
 
     const session = await SessionToken.findOneAndUpdate(
-      { uid: user._id, appSource: appsource },
+      { uid: user._id.toString(), appSource: appsource },
       {
         ...token,
-        uid: user._id,
+        uid: user._id.toString(),
         role: user.role,
         appSource: appsource,
       },
       { upsert: true, new: true }
     );
 
-    res.status(201).json({ data: user, session });
+    res.status(201).json({
+      data: {
+        _id: user._id,
+        uid: user._id.toString(),
+        fullName: user.fullName,
+        birthDate: user.birthDate,
+        email: user.email,
+        photoURL: user.photoURL,
+        createdAt: user.createdAt,
+      },
+      session,
+    });
   } catch (err) {
     return res.status(500).json({
-      error: err instanceof Error ? err.name : "InternalServerError",
-      message:
-        err instanceof Error ? err.message : "an error occured on: login",
+      data: null,
+      error: {
+        name: err instanceof Error ? err.name : "InternalServerError",
+        message:
+          err instanceof Error ? err.message : "an error occured on: register",
+      },
     });
   }
 }

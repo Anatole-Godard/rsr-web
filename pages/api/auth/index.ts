@@ -47,7 +47,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
           uid: user._id,
           role: user.role,
           appSource: appsource,
-          uidAppSource: `${user._id}:${appsource}`,
+          uidAppSource: `${user._id.toString()}:${appsource}`,
         },
         { upsert: true, new: true }
       );
@@ -56,7 +56,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         session,
         data: {
           _id: user._id,
-          uid: user._id,
+          uid: user._id.toString(),
           fullName: user.fullName,
           birthDate: user.birthDate,
           email: user.email,

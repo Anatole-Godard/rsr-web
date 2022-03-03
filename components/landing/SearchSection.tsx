@@ -57,7 +57,7 @@ export const SearchSection = () => {
                 })
             )}
             <select
-              value={type}
+              value={type || ""}
               onChange={(e) => {
                 if (e.target.value === "null") setType(null);
                 else setType(e.target.value);

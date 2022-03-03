@@ -6,6 +6,7 @@ import { DarkModeToggler } from "@components/helpers/DarkMode";
 import { AnimatePresence } from "framer-motion";
 import { AuthProvider } from "@hooks/useAuth";
 import { NotificationProvider } from "@hooks/useNotifications";
+import { Fragment } from "react";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
@@ -13,8 +14,10 @@ function MyApp({ Component, pageProps }: AppProps) {
       <AuthProvider>
         <NotificationProvider>
           <AnimatePresence onExitComplete={() => window.scrollTo(0, 0)}>
-            <Component {...pageProps} />
-            <DarkModeToggler />
+            <Fragment>
+              <Component {...pageProps} />
+              <DarkModeToggler />
+            </Fragment>
           </AnimatePresence>
         </NotificationProvider>
       </AuthProvider>
