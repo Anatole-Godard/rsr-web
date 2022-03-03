@@ -10,28 +10,34 @@ import { useNotifications } from "@hooks/useNotifications";
 
 export const NotificationsDropdown = () => {
   const { user } = useAuth();
-  const { notifications, setNotifications } = useNotifications();
+  const { notifications } = useNotifications();
   return user?.data ? (
-    <Menu as="div" className="relative flex items-center h-full">
+    <Menu
+      as="div"
+      className="relative flex items-center h-full"
+      key="notifications_dropdown-menu"
+    >
       {({ open }) => (
         <>
-          <Menu.Button>
+          <Menu.Button key="notifications_dropdown-btn">
             <div className="flex items-center">
               <span
                 className={classes(
                   "inline-flex items-center justify-center w-8 h-8 text-sm duration-300  rounded-full hover:bg-gray-300 active:bg-gray-100  dark:bg-gray-900 dark:active:bg-gray-900  dark:hover:bg-gray-700",
                   open
-                    ? "bg-gray-300 dark:bg-gray-700"
-                    : "bg-gray-200  dark:bg-gray-800"
+                    ? "bg-gray-200 dark:bg-gray-700"
+                    : "bg-gray-100  dark:bg-gray-800"
                 )}
               >
                 <div className="flex items-center justify-center w-full h-full text-gray-700 align-middle border-none rounded-full select-none dark:text-gray-300">
                   {notifications.length < 1 ? (
                     <BellOutlineIcon
+                      key="notifications_dropdown-icon_empty"
                       className={classes("w-4 h-4 ", open ? "" : "")}
                     />
                   ) : (
                     <BellSolidIcon
+                      key="notifications_dropdown-icon_full"
                       className={classes("w-4 h-4 ", open ? "" : "")}
                     />
                   )}

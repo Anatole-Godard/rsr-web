@@ -7,22 +7,17 @@ import { v4 as uuidv4 } from "uuid";
 import { motion } from "framer-motion";
 import { NotificationsDropdown } from "@components/dropdowns/NotificationsDropdown";
 import { useRouter } from "next/router";
+import { classes } from "@utils/classes";
 
-export const Navbar: React.FC<any> = ({
-  config = { shadow: true, backgroundColor: "bg-white dark:bg-gray-900" },
-}: {
-  config: { shadow: boolean; backgroundColor: string };
-}) => {
+export const Navbar: React.FC<any> = () => {
   const router = useRouter();
   const [query, setQuery] = useState(router.query.q || "");
 
   return (
     <div
-      className={
-        (config.shadow ? "shadow-md " : " ") +
-        config.backgroundColor +
-        " inline-flex items-center fixed top-0 justify-between w-full md:w-[calc(100vw-4rem)] z-40 h-16 px-12 m-0 bg-white dark:bg-black"
-      }
+      className={classes(
+        "inline-flex items-center fixed top-0 justify-between w-full md:w-[calc(100vw-4rem)] z-40 h-16 px-12 m-0 bg-white dark:bg-black"
+      )}
     >
       <Logo />
       <Search query={query} setQuery={setQuery} />
@@ -30,7 +25,7 @@ export const Navbar: React.FC<any> = ({
         {/* <ThemeIcon /> */}
         <NotificationsDropdown key={uuidv4()} />
         <SidebarDropdown key={uuidv4()} />
-        <UserDropdown  key={uuidv4()}/>
+        <UserDropdown key={uuidv4()} />
       </div>
     </div>
   );
@@ -73,7 +68,8 @@ const Search = ({ query, setQuery }) => {
           onChange={(e) => setQuery(e.target.value)}
           required
           className="input px-5 py-2 h-9 pl-[2.25rem] placeholder-gray-500 w-full text-ellipsis"
-          placeholder="Rechercher une ressource, un canal, un utilisateur..."
+          // placeholder="Rechercher une ressource, un canal, un utilisateur..."
+          placeholder="Rechercher une ressource..."
         />
       </label>
     </form>

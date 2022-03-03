@@ -105,7 +105,7 @@ const ResourceIndex: NextPage<any> = ({
                 )}
 
                 <select
-                  value={selectedType}
+                  value={selectedType || ""}
                   onChange={(e) => {
                     if (e.target.value === "null") setType(null);
                     else setType(e.target.value);

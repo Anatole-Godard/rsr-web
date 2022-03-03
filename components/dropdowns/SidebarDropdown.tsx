@@ -14,19 +14,26 @@ import { ChevronDownIcon } from "@heroicons/react/solid";
 
 export const SidebarDropdown = () => {
   return (
-    <Menu as="div" className="relative flex items-center h-full">
+    <Menu
+      as="div"
+      className="relative flex items-center h-full"
+      key="sidebar_dropdown-menu"
+    >
       {({ open }) => (
         <>
-          <Menu.Button>
+          <Menu.Button key="sidebar_dropdown-btn">
             <div className="flex items-center">
               <span
                 className={classes(
                   "inline-flex items-center justify-center w-8 h-8 text-sm duration-300  rounded-full hover:bg-gray-300 active:bg-gray-100  dark:bg-gray-900 dark:active:bg-gray-900  dark:hover:bg-gray-700",
-                    open ? "bg-gray-300 dark:bg-gray-700" : "bg-gray-200  dark:bg-gray-800"
+                  open
+                    ? "bg-gray-200 dark:bg-gray-700"
+                    : "bg-gray-100  dark:bg-gray-800"
                 )}
               >
                 <div className="flex items-center justify-center w-full h-full align-middle border-none rounded-full select-none ">
                   <ChevronDownIcon
+                    key="sidebar_dropdown-icon"
                     className={classes(
                       "w-5 h-5 duration-300 transition",
                       open && "rotate-180"
@@ -55,13 +62,9 @@ export const SidebarDropdown = () => {
                 <div className="block px-4 pt-4 text-xs text-gray-400">
                   Raccourcis
                 </div>
-                <div className="grid grid-cols-4 gap-4 p-4">
+                <div className="grid grid-cols-3 gap-4 p-4">
                   <Shortcut href="/" icon={HomeIcon} name="Accueil" />
-                  <Shortcut
-                    href="/store"
-                    icon={ShoppingBagIcon}
-                    name="Catalogue"
-                  />
+
                   <Shortcut href="/channel" icon={ChatIcon} name="Salons" />
 
                   <Shortcut
@@ -69,8 +72,6 @@ export const SidebarDropdown = () => {
                     icon={LibraryIcon}
                     name="Bibliothèque"
                   />
-
-                 
                 </div>
               </>
             </Menu.Items>

@@ -27,22 +27,27 @@ export const UserDropdown = () => {
   const { theme, setTheme } = useTheme();
 
   return (
-    <Menu as="div" className="relative flex items-center h-full">
+    <Menu
+      as="div"
+      className="relative flex items-center h-full"
+      key="user_dropdown-menu"
+    >
       {({ open }) => (
         <>
-          <Menu.Button>
+          <Menu.Button key="user_dropdown-btn">
             <div className="flex items-center">
               {user ? (
                 <div
                   className={classes(
                     "inline-flex items-center justify-center w-8 h-8 text-sm duration-300  rounded-full hover:bg-gray-300 active:bg-gray-100  dark:bg-gray-900 dark:active:bg-gray-900  dark:hover:bg-gray-700",
                     open
-                      ? "bg-gray-300 dark:bg-gray-700"
-                      : "bg-gray-200  dark:bg-gray-800"
+                      ? "bg-gray-200 dark:bg-gray-700"
+                      : "bg-gray-100  dark:bg-gray-800"
                   )}
                 >
                   <div className="w-5/6 align-middle border-none rounded-full select-none h-5/6 ">
                     <Image
+                      key="user_dropdown-image"
                       layout="responsive"
                       alt={user.data.fullName}
                       width={16}
@@ -65,7 +70,10 @@ export const UserDropdown = () => {
                     open ? "bg-blue-100" : "bg-blue-200 "
                   )}
                 >
-                  <UserIcon className="w-4 h-4 text-blue-500 lg:mr-1" />
+                  <UserIcon
+                    key="user_dropdown-icon"
+                    className="w-4 h-4 text-blue-500 lg:mr-1"
+                  />
                   <span className="hidden text-xs font-semibold text-blue-500 lg:block">
                     Se connecter
                   </span>
@@ -131,7 +139,8 @@ export const UserDropdown = () => {
                     Déconnexion
                   </a>
 
-                  {(user.session.role === "admin" || user.session.role === "superadmin") && (
+                  {(user.session.role === "admin" ||
+                    user.session.role === "superadmin") && (
                     <>
                       <div className="block px-4 py-2 text-xs text-gray-400">
                         Administration de la plateforme
