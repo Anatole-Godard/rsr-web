@@ -40,9 +40,19 @@ const ResourceSchema = new Schema({
     type: Boolean,
     default: false,
   },
+  visibility: {
+    type: String,
+    required: true,
+    default: "public",
+    enum: ["public", "private", "unlisted"],
+  },
+  members: {
+    type: Array,
+    required: false,
+  },
 });
 
-
-const Resource = mongoose.models.Resource || mongoose.model("Resource", ResourceSchema);
+const Resource =
+  mongoose.models.Resource || mongoose.model("Resource", ResourceSchema);
 
 export default Resource;

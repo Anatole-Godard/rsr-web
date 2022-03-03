@@ -10,6 +10,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { types } from "constants/resourcesTypes";
 import { useRouter } from "next/router";
+import { useAuth } from "@hooks/useAuth";
 
 const ResourceIndex: NextPage<any> = ({
   resources,
@@ -26,13 +27,18 @@ const ResourceIndex: NextPage<any> = ({
   const [query, setQuery] = useState(q || "");
   const [selectedType, setType] = useState(type || null);
 
+  const { user } = useAuth();
+
   useEffect(() => {
     setQuery(router.query.q as string);
   }, [router.query.q]);
 
   useEffect(() => {
     const fetchData = async () => {
-      const res = await fetch(`/api/resource?q=${query || ""}&type=${selectedType || ""}`);
+      const res = await fetch(
+        `/api/resource?q=${query || ""}&type=${selectedType || ""}`,
+        { headers: { uid: user?.data.uid } }
+      );
       const body = await res.json();
       res.ok
         ? setDisplayables(body?.data.attributes)
@@ -44,7 +50,7 @@ const ResourceIndex: NextPage<any> = ({
     }, 1000);
 
     return () => clearTimeout(delayDebounce);
-  }, [query, selectedType, resources]);
+  }, [query, selectedType, resources, user]);
 
   return (
     <AppLayout>
@@ -142,7 +148,18 @@ const ResourceIndex: NextPage<any> = ({
 export default ResourceIndex;
 
 export async function getServerSideProps(context) {
-  const res = await fetch("http://localhost:3000/api/resource");
+  const {
+    cookies: { user },
+  } = context.req;
+  const uid = JSON.parse(user || "null")?.data.uid || undefined;
+  const res = await fetch(
+    "http://localhost:3000/api/resource",
+    uid
+      ? {
+          headers: { uid },
+        }
+      : undefined
+  );
   const body = await res.json();
 
   const resources: Resource[] = body?.data?.attributes;

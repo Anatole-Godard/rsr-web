@@ -8,16 +8,18 @@ const ICON = icon({
 
 const Map: React.FC<any> = ({
   point,
-  className
+  className,
+  zoom = 8
 }: {
-  point: LatLngExpression | [number, number];
-  className?: string
+  point?: LatLngExpression | [number, number];
+  className?: string;
+  zoom?: number;
 }) => {
   return (
     <MapContainer
       className={"absolute inset-0 h-full p-10 " + className}
-      center={point as LatLngExpression}
-      zoom={8}
+      center={(point as LatLngExpression) || [46.227638, 2.213749]}
+      zoom={zoom}
       //   scrollWheelZoom={false}
     >
       <TileLayer

@@ -21,7 +21,7 @@ export const ResourceSection = ({ resources }: { resources: Resource[] }) => {
         </Link>
       </div>
 
-      <div className="grid grid-cols-2 gap-6 pt-6 mt-6 border-t md:grid-cols-3 xl:grid-cols-4 dark:border-gray-700">
+      <div className="grid grid-cols-2 gap-6 pt-6 pb-12 mt-6 border-t md:grid-cols-3 xl:grid-cols-4 dark:border-gray-700">
         {resources.map((resource, key) => (
           <ResourceCard {...resource} key={key} />
         ))}

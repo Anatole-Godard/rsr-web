@@ -4,6 +4,8 @@ import withDatabase from "@middleware/mongoose";
 import { handleError } from "@utils/handleError";
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
+  const { uid = undefined } = req.headers as { uid: string | undefined };
+
   const { q = "", type = "" } = req.query;
   if (q !== "" || (type !== "" && type !== "null")) {
     try {
@@ -29,7 +31,12 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
             }
           : { "data.type": { $regex: type, $options: "i" } };
 
-      const resources = await Resource.find(query);
+      const resources = await Resource.find({
+        ...query,
+        ...(uid
+          ? { $or: [{ "members.uid": uid }, { "owner.uid": uid }] }
+          : { validated: true, visibility: "public" }),
+      });
 
       res.status(200).json({
         data: {
@@ -44,7 +51,15 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   } else {
     try {
       const resources = await Resource.find({
-        validated: true,
+        ...(uid
+          ? {
+              $or: [
+                { "members.uid": uid },
+                { "owner.uid": uid },
+                { validated: true, visibility: "public" },
+              ],
+            }
+          : { validated: true, visibility: "public" }),
       });
       res.status(200).json({
         data: {

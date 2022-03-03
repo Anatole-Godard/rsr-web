@@ -6,3 +6,7 @@ export type ExternalLink = {
     image: any;
   };
 };
+
+export type ExternalLinkWithoutRedundancy = {
+  url: string;
+};

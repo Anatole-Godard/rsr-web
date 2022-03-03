@@ -19,8 +19,21 @@ const Home: NextPage<any> = ({ resources }: { resources: Resource[] }) => {
 
 export default Home;
 
-export const getServerSideProps: GetServerSideProps = async () => {
-  const body = await (await fetch(`http://localhost:3000/api/resource`)).json();
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const {
+    cookies: { user },
+  } = context.req;
+  const uid = JSON.parse(user || "null")?.data.uid || undefined;
+  const body = await (
+    await fetch(
+      `http://localhost:3000/api/resource`,
+      uid
+        ? {
+            headers: { uid },
+          }
+        : undefined
+    )
+  ).json();
   const resources = body.data?.attributes || [];
 
   return {

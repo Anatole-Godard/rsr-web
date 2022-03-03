@@ -40,17 +40,28 @@ export default UserUIDPage;
 
 export async function getServerSideProps(context) {
   const { uid } = context.query;
+
+  const {
+    cookies: { user },
+  } = context.req;
+  const headersUid = JSON.parse(user || "null")?.data.uid || undefined;
+
   const body = await (
     await fetch(
-      `${process.env.API_URL || "http://localhost:3000/api"}/user/${uid}`
+      `${process.env.API_URL || "http://localhost:3000/api"}/user/${uid}`,
+      {
+        headers: {
+          uid: headersUid === uid ? headersUid || undefined : undefined,
+        },
+      }
     )
   ).json();
 
-  const user = body?.data?.attributes;
+  const u = body?.data?.attributes;
 
   return {
     props: {
-      ...user,
+      ...u,
     },
   };
 }
