@@ -14,7 +14,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       <AuthProvider>
         <NotificationProvider>
           <AnimatePresence onExitComplete={() => window.scrollTo(0, 0)}>
-            <Fragment>
+            <Fragment key={"app"}>
               <Component {...pageProps} />
               <DarkModeToggler />
             </Fragment>
