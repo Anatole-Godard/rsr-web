@@ -4,7 +4,7 @@ import { Resource } from "@definitions/Resource";
 import { ChevronDownIcon, SearchIcon } from "@heroicons/react/outline";
 import { PlusIcon } from "@heroicons/react/solid";
 import { NextPage } from "next";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import Link from "next/link";
 import Image from "next/image";
@@ -35,9 +35,16 @@ const ResourceIndex: NextPage<any> = ({
 
   useEffect(() => {
     const fetchData = async () => {
+      const urlParams = new URLSearchParams();
+      if (query) urlParams.append("q", query);
+      if (selectedType) urlParams.append("type", selectedType);
       const res = await fetch(
-        `/api/resource?q=${query || ""}&type=${selectedType || ""}`,
-        { headers: { uid: user?.data.uid } }
+        `/api/resource${
+          urlParams.toString() !== "" ? "?" + urlParams.toString() : ""
+        }`,
+        {
+          headers: { uid: user?.data.uid },
+        }
       );
       const body = await res.json();
       res.ok

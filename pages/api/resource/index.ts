@@ -6,37 +6,87 @@ import { handleError } from "@utils/handleError";
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { uid = undefined } = req.headers as { uid: string | undefined };
 
-  const { q = "", type = "" } = req.query;
-  if (q !== "" || (type !== "" && type !== "null")) {
-    try {
-      const query =
-        q !== "" && type !== "" && type !== "null"
-          ? {
-              $and: [
-                {
-                  "data.attributes.properties.name": {
-                    $regex: q,
-                    $options: "i",
-                  },
-                },
-                { "data.type": { $regex: type, $options: "i" } },
-              ],
-            }
-          : q !== ""
-          ? {
-              "data.attributes.properties.name": {
-                $regex: q,
-                $options: "i",
-              },
-            }
-          : { "data.type": { $regex: type, $options: "i" } };
+  const { q: search = "", type = "" } = req.query;
 
-      const resources = await Resource.find({
-        ...query,
-        ...(uid
-          ? { $or: [{ "members.uid": uid }, { "owner.uid": uid }] }
-          : { validated: true, visibility: "public" }),
-      });
+  if (search || type) {
+    let query = uid
+      ? {
+          $and: [
+            {
+              $or: [
+                { $and: [{ validated: false }, { "owner.uid": uid }] },
+                {
+                  $and: [
+                    { visibility: "private" },
+                    { "owner.uid": uid },
+                    { validated: true },
+                  ],
+                },
+                {
+                  $and: [
+                    { visibility: "unlisted" },
+                    { "members.uid": uid },
+                    { validated: true },
+                  ],
+                },
+                { $and: [{ visibility: "public" }, { validated: true }] },
+              ],
+            },
+            ...(search
+              ? [
+                  {
+                    $or: [
+                      {
+                        "data.attributes.properties.name": {
+                          $regex: search,
+                          $options: "i",
+                        },
+                      },
+                      { tags: { $in: [search] } },
+                    ],
+                  },
+                ]
+              : []),
+            ...(type
+              ? [
+                  {
+                    "data.type": type,
+                  },
+                ]
+              : []),
+          ],
+        }
+      : {
+          $and: [
+            { visibility: "public" },
+            { validated: true },
+            ...(search
+              ? [
+                  {
+                    $or: [
+                      {
+                        "data.attributes.properties.name": {
+                          $regex: search,
+                          $options: "i",
+                        },
+                      },
+                      { tags: { $in: [search] } },
+                    ],
+                  },
+                ]
+              : []),
+            ...(type
+              ? [
+                  {
+                    "data.type": type,
+                  },
+                ]
+              : []),
+          ],
+        };
+
+    try {
+      const resources = await Resource.find(query);
 
       res.status(200).json({
         data: {
@@ -70,15 +120,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         },
       });
     } catch (err) {
-      res.status(500).json({
-        error: {
-          code: 500,
-          message:
-            err instanceof Error
-              ? err.message
-              : "an error occured on resource:all",
-        },
-      });
+      handleError(res, err, "resource/all");
     }
   }
 }
