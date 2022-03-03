@@ -1,6 +1,7 @@
 import { HeroSection } from "@components/landing/HeroSection";
 import { ResourceSection } from "@components/landing/ResourceSection";
 import { SearchSection } from "@components/landing/SearchSection";
+import { CookieAlert } from "@components/ui/CookieAlert";
 import { Resource } from "@definitions/Resource";
 import { AppLayout } from "components/layouts/AppLayout";
 import type { GetServerSideProps, NextPage } from "next";
@@ -13,6 +14,7 @@ const Home: NextPage<any> = ({ resources }: { resources: Resource[] }) => {
       <section className="flex flex-col h-full px-6 pt-6 pb-6 space-y-6 bg-gray-100 dark:bg-gray-900 lg:px-24 2xl:px-32">
         <ResourceSection resources={resources} />
       </section>
+      <CookieAlert />
     </AppLayout>
   );
 };
