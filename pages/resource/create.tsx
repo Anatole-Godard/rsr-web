@@ -102,7 +102,7 @@ const ResourceCreate: NextPage<any> = ({
         properties: {
           name,
           description,
-          externalLink,
+          url: externalLink,
           image: null,
         },
       };
