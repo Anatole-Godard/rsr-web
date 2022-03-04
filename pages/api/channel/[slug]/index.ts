@@ -2,6 +2,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import withDatabase from "@middleware/mongoose";
 import { handleError } from "@utils/handleError";
 import Channel from "@models/Channel";
+import { withAuth } from "@middleware/auth";
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
@@ -32,4 +33,4 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   }
 }
 
-export default withDatabase(handler);
+export default withAuth(withDatabase(handler));

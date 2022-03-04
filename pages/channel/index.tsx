@@ -1,6 +1,7 @@
 import { Sidebar } from "@components/channel/Sidebar";
 import { AppLayout } from "@components/layouts/AppLayout";
 import { Channel } from "@definitions/Channel";
+import { fetchRSR } from "@utils/fetchRSR";
 import { GetServerSideProps, NextPage } from "next";
 
 const Channel: NextPage<any> = ({
@@ -11,10 +12,7 @@ const Channel: NextPage<any> = ({
   return (
     <AppLayout>
       <div className="flex flex-col w-full h-full max-h-[calc(100vh-4rem)] xl:flex-row">
-        <Sidebar
-          channels={sideBarChannels}
-          
-        />
+        <Sidebar channels={sideBarChannels} />
       </div>
     </AppLayout>
   );
@@ -33,8 +31,10 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         destination: "/auth/login",
       },
     };
+
+  let parsedUser = JSON.parse(user);
   const channels = await (
-    await fetch("http://localhost:3000/api/channel/")
+    await fetchRSR("http://localhost:3000/api/channel/", parsedUser?.session)
   ).json();
 
   return {

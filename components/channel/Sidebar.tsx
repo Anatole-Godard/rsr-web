@@ -14,9 +14,6 @@ import { UserMinimum } from "@definitions/User";
 import Image from "next/image";
 import { useSearch } from "@hooks/useSearch";
 
-
-
-
 export const Sidebar = ({
   channels,
   selectedChannelSlug,
@@ -53,7 +50,9 @@ export const Sidebar = ({
             <a
               className={classes(
                 "btn-bleuFrance ",
-                selectedChannelSlug ? "w-[calc(50%-0.25rem)] px-2" : "w-full px-3"
+                selectedChannelSlug
+                  ? "w-[calc(50%-0.25rem)] px-2"
+                  : "w-full px-3"
               )}
             >
               <PlusIcon className="w-4 h-4 mr-2 shrink-0" />
@@ -94,7 +93,6 @@ export const Sidebar = ({
           ))}
         </div>
       </div>
-
 
       <div className="inline-flex md:hidden items-center w-screen h-[4.5rem] p-2 space-x-3">
         <div className="flex flex-col space-y-1">
@@ -159,35 +157,40 @@ const ChatOverview = ({
   members: UserMinimum[];
   position?: "first" | "last";
 }) => {
+  //TODO: replace a by Link but still doing getServerSideProps even if already on channel/[slug]
   return (
-    <Link href={`/channel/${slug}`}>
-      <a
-        className={classes(
-          "py-1 px-2 md:px-3 md:py-3 inline-flex items-center rounded-md w-max min-w-[5rem] md:w-full h-full md:h-16",
-          active ? "bg-blue-50 dark:bg-blue-900 border-blue-300 md:border" : "bg-white dark:bg-gray-800",
-          position === "first" ? "rounded-l-xl md:rounded-bl-md md:rounded-t-xl" : "",
-          position === "last" ? "rounded-r-xl md:rounded-tr-md md:rounded-b-xl" : ""
-        )}
-      >
-        {image ? (
-          <div className="flex items-center justify-center w-6 h-6 bg-blue-200 rounded-full select-none md:w-8 md:h-8 shrink-0">
-            <Image src={image.url} alt={slug} width={24} height={24} />
-          </div>
-        ) : (
-          <span className="flex items-center justify-center w-6 h-6 text-blue-500 bg-blue-200 rounded-full md:w-8 md:h-8 dark:bg-blue-700 shrink-0">
-            <UserGroupIcon className="w-3 h-3 md:w-4 md:h-4 shrink-0" />
-          </span>
-        )}
-        <div className="flex flex-col ml-2 w-max">
-          <h3 className="w-full text-sm text-gray-700 select-none text-ellipsis font-marianne dark:text-gray-300">
-            {name}
-          </h3>
-          <h4 className="hidden mt-1 text-xs text-gray-500 select-none md:block text-ellipsis font-spectral">
-            {members.length} {members.length < 1 ? "member" : "members"}
-          </h4>
+    <a
+      href={`/channel/${slug}`}
+      className={classes(
+        "py-1 px-2 md:px-3 md:py-3 inline-flex items-center rounded-md w-max min-w-[5rem] md:w-full h-full md:h-16",
+        active
+          ? "bg-blue-50 dark:bg-blue-900 border-bleuFrance-300 md:border"
+          : "bg-white dark:bg-gray-800",
+        position === "first"
+          ? "rounded-l-xl md:rounded-bl-md md:rounded-t-xl"
+          : "",
+        position === "last"
+          ? "rounded-r-xl md:rounded-tr-md md:rounded-b-xl"
+          : ""
+      )}
+    >
+      {image ? (
+        <div className="flex items-center justify-center w-6 h-6 rounded-full select-none md:w-8 md:h-8 bg-bleuFrance-50 ring-2 shrink-0 ring-offset-2 ring-bleuFrance-200">
+          <Image src={image.url} alt={slug} width={24} height={24} />
         </div>
-      </a>
-    </Link>
+      ) : (
+        <span className="flex items-center justify-center w-6 h-6 rounded-full shrink-0 md:w-8 md:h-8 text-bleuFrance-500 bg-bleuFrance-50 ring-2 ring-offset-2 ring-bleuFrance-200 dark:bg-bleuFrance-700">
+          <UserGroupIcon className="w-3 h-3 md:w-4 md:h-4 shrink-0" />
+        </span>
+      )}
+      <div className="flex flex-col ml-3 grow">
+        <h3 className="text-sm text-gray-700 truncate select-none font-marianne dark:text-gray-300">
+          {name}
+        </h3>
+        <h4 className="hidden mt-1 text-xs text-gray-500 truncate select-none md:block font-spectral">
+          {members.length} {members.length < 1 ? "membre" : "membres"}
+        </h4>
+      </div>
+    </a>
   );
 };
-
