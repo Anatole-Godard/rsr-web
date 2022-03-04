@@ -42,7 +42,7 @@ export const HeroSection = () => {
                     <span className="rounded bg-bleuFrance  px-2.5 py-1 text-xs font-semibold text-white tracking-wide uppercase">
                       {"Quoi de neuf ?"}
                     </span>
-                    <span className="inline-flex items-center space-x-1 text-sm font-medium text-bleuFrance ">
+                    <span className="inline-flex items-center space-x-1 text-sm font-medium text-bleuFrance-500 dark:text-bleuFrance-300">
                       <span>Notre première release est disponible 🎉</span>
                       {/* <ChevronRightIcon
                         className="w-5 h-5"
@@ -55,7 +55,7 @@ export const HeroSection = () => {
               <div className="mt-6 sm:max-w-xl">
                 <h1 className="text-4xl font-extrabold tracking-tight text-gray-900 font-marianne dark:text-gray-100 sm:text-5xl">
                   {"Tissons des liens "}
-                  <span className="text-bleuFrance-500">ense</span>
+                  <span className="text-bleuFrance-500 dark:text-bleuFrance-400">ense</span>
                   <span className="text-rougeMarianne-500">mble</span>
                 </h1>
                 <p className="mt-6 text-lg text-justify text-gray-500 font-spectral dark:text-gray-400">

@@ -183,7 +183,7 @@ const ChannelSlug: NextPage<any> = ({
                   </Link>
                 )}
                 <Link href={"/resource/create" + `?channel=${slug}`}>
-                  <a className="btn-blue">
+                  <a className="btn-bleuFrance">
                     <PlusIcon className="w-4 h-4 sm:mr-2" />
                     <span className="items-center hidden sm:inline-flex">
                       Poster
@@ -224,7 +224,7 @@ const ChannelSlug: NextPage<any> = ({
               />
               <button
                 type="submit"
-                className="flex items-center justify-center w-10 h-10 p-0 btn-blue"
+                className="flex items-center justify-center w-10 h-10 p-0 btn-bleuFrance"
               >
                 <PaperAirplaneIcon className="w-5 h-5 " />
               </button>

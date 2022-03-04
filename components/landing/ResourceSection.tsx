@@ -9,12 +9,12 @@ export const ResourceSection = ({ resources }: { resources: Resource[] }) => {
       <div className="inline-flex items-end justify-between px-3">
         <h3 className="text-xl font-extrabold text-gray-800 md:text-2xl font-marianne lg:text-3xl xl:text-4xl dark:text-gray-200">
           Les dernières
-          <span className="ml-1.5 text-blue-500 dark:text-blue-400">
+          <span className="ml-1.5 text-bleuFrance-500 dark:text-bleuFrance-400">
             ressources
           </span>
         </h3>
         <Link href="/resource">
-          <a className="flex flex-row items-center mb-1 text-sm font-medium transition duration-300 cursor-pointer font-spectral dark:text-gray-300 dark:hover:text-blue-500 hover:text-blue-500">
+          <a className="flex flex-row items-center mb-1 text-sm font-medium transition duration-300 cursor-pointer font-spectral dark:text-gray-300 dark:hover:text-bleuFrance-200 hover:text-bleuFrance-500">
             Voir tout
             <ChevronRightIcon className="w-4 h-4 ml-2" />
           </a>

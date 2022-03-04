@@ -1,5 +1,5 @@
 import { LatLngExpression, icon } from "leaflet";
-import { MapContainer, Marker, TileLayer } from "react-leaflet";
+import { MapContainer, Marker, TileLayer, useMapEvents } from "react-leaflet";
 
 const ICON = icon({
   iconUrl: "/img/marker.png",
@@ -9,12 +9,32 @@ const ICON = icon({
 const Map: React.FC<any> = ({
   point,
   className,
-  zoom = 8
+  zoom = 8,
+  mapEventHandler,
 }: {
   point?: LatLngExpression | [number, number];
   className?: string;
   zoom?: number;
+  mapEventHandler?: any;
 }) => {
+  /**
+   * Implements events handler in Leaflet map
+   *
+   * @returns {JSX.Element}
+   */
+  const MapEventHandler = () => {
+    const map = useMapEvents({
+      click: (e) => {
+        mapEventHandler.click(e);
+        // if (previousSelected !== null) {
+        //   previousSelected.setIcon(markerIcon);
+        //   setPreviousSelected(null);
+        // }
+      },
+    });
+    return <></>;
+  };
+
   return (
     <MapContainer
       className={"absolute inset-0 h-full p-10 " + className}
@@ -27,6 +47,7 @@ const Map: React.FC<any> = ({
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
       <Marker position={point as LatLngExpression} icon={ICON} />
+      <MapEventHandler />
     </MapContainer>
   );
 };

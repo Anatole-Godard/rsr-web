@@ -140,7 +140,7 @@ const ReportAdmin: NextPage<any> = (props) => {
                                 />
                             </label>
 
-                            <button className="btn-blue" type="submit">
+                            <button className="btn-bleuFrance" type="submit">
                                 <SearchIcon className="w-4 h-4 mr-1"/>
                                 Rechercher
                             </button>
@@ -175,7 +175,7 @@ const ReportAdmin: NextPage<any> = (props) => {
             </div>
 
             <button
-              className="pl-1 btn-blue"
+              className="pl-1 btn-bleuFrance"
               onClick={() => {
                 getReports(search);
               }}

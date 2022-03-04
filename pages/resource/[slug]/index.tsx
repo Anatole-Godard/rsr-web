@@ -249,7 +249,7 @@ const ResourceSlug: NextPage<any> = ({
                     required
                     onChange={(e) => setMessage(e.target.value)}
                   />
-                  <button type="submit" className="ml-2 btn-blue shrink-0">
+                  <button type="submit" className="ml-2 btn-bleuFrance shrink-0">
                     <CheckIcon className="w-4 h-4 mr-1" />
                     Envoyer
                   </button>
@@ -328,7 +328,7 @@ const LocationView = ({ attributes, slug }: LocationViewProps) => {
   return (
     <>
       <div className="relative h-full overflow-hidden rounded-lg xl:col-span-2">
-        <Map point={attributes.geometry.coordinates} className="h-full" />
+        <Map point={attributes.geometry.coordinates} className="h-full" zoom={13} />
       </div>
       <div className="flex flex-col pt-6">
         <h4 className="mb-3 text-3xl font-bold font-marianne">Adresse</h4>

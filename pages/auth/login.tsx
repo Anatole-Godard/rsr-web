@@ -78,7 +78,7 @@ export default function Login() {
                     required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="block w-full px-3 py-2 placeholder-gray-400 duration-300 border border-gray-300 rounded-md shadow-sm appearance-none dark:border-gray-700 focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:focus:outline-none dark:focus:ring-blue-500 dark:focus:border-blue-500 sm:text-sm disabled:opacity-75"
+                    className="input-auth"
                   />
                 </div>
               </div>
@@ -99,7 +99,7 @@ export default function Login() {
                     required
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="block w-full px-3 py-2 placeholder-gray-400 duration-300 border border-gray-300 rounded-md shadow-sm appearance-none dark:border-gray-700 focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:focus:outline-none dark:focus:ring-blue-500 dark:focus:border-blue-500 sm:text-sm disabled:opacity-75"
+                    className="input-auth"
                   />
                 </div>
               </div>
@@ -111,7 +111,7 @@ export default function Login() {
                     name="remember-me"
                     type="checkbox"
                     disabled
-                    className="w-4 h-4 text-blue-600 border-gray-300 rounded form-checkbox focus:ring-blue-500 disabled:opacity-75"
+                    className="w-4 h-4 border-gray-300 rounded text-bleuFrance-600 form-checkbox focus:ring-bleuFrance-500 disabled:opacity-75"
                   />
                   <label
                     htmlFor="remember-me"
@@ -124,7 +124,7 @@ export default function Login() {
                 <div className="text-sm">
                   <a
                     href="#"
-                    className="font-medium text-blue-600 duration-150 hover:text-blue-500"
+                    className="font-medium duration-150 text-bleuFrance-600 hover:text-bleuFrance-500"
                   >
                     Mot de passe oublié ?
                   </a>
@@ -136,20 +136,20 @@ export default function Login() {
                   onClick={() => {
                     if (email && password) signIn(email, password);
                   }}
-                  className="flex justify-center w-full px-4 py-2 text-sm font-medium text-white duration-300 bg-blue-600 rounded-md shadow-sm disabled:cursor-not-allowed hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-70"
+                  className="justify-center w-full btn-bleuFrance"
                 >
                   Se connecter
                 </button>
               </div>
               <div className="inline-flex justify-between w-full my-1 text-sm">
                 <Link href="/auth/register">
-                  <a className="font-medium text-blue-600 duration-150 hover:text-blue-500">
+                  <a className="font-medium duration-150 text-bleuFrance-600 hover:text-bleuFrance-500">
                     Se créer un compte
                   </a>
                 </Link>
                 {/* <button
                   onClick={() => signIn(process.env.NEXT_PUBLIC_DEV_USER, process.env.NEXT_PUBLIC_DEV_PASS)}
-                  className="font-medium text-blue-600 duration-150 hover:text-blue-500"
+                  className="font-medium duration-150 text-bleuFrance-600 hover:text-bleuFrance-500"
                 >
                   Dev
                 </button> */}

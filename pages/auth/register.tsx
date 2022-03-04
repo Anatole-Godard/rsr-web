@@ -92,14 +92,7 @@ export default function Register() {
 
           <div className="mt-6">
             <div className="space-y-4">
-              {/* <div className="w-full h-2 bg-gray-300 rounded-full">
-                <div
-                  className={[
-                    step === 1 ? "w-[10px]" : "w-1/2",
-                    "bg-blue-500 h-2 rounded-l-full transition-all duration-500 ease-in-out",
-                  ].join(" ")}
-                ></div>
-              </div> */}
+              
               {step === 1 && (
                 <>
                   <div className="space-y-1">
@@ -177,7 +170,7 @@ export default function Register() {
                               : passwordScore === 3
                               ? "w-3/4 bg-green-500"
                               : passwordScore === 4
-                              ? "w-full bg-blue-500 animate-pulse rounded-r-full"
+                              ? "w-full bg-bleuFrance-500 animate-pulse rounded-r-full"
                               : "w-0",
                           ].join(" ")}
                         ></div>
@@ -208,7 +201,7 @@ export default function Register() {
                         </small>
                       )}
                       {passwordScore === 4 && (
-                        <small className="text-xs font-bold text-blue-500">
+                        <small className="text-xs font-bold text-bleuFrance-500">
                           {"Le mot de passe est très fort"}
                         </small>
                       )}
@@ -308,7 +301,7 @@ export default function Register() {
                           password: password !== "" && password.length >= 8,
                         });
                     }}
-                    className="inline-flex items-center justify-center w-1/2 px-4 py-2 text-sm font-medium text-white duration-300 bg-blue-600 rounded-md shadow-sm disabled:cursor-not-allowed hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-70"
+                    className="justify-center w-1/2 btn-bleuFrance"
                   >
                     Continuer
                     <ArrowRightIcon className="w-5 h-5 ml-2" />
@@ -320,7 +313,7 @@ export default function Register() {
                 <div className="inline-flex w-full space-x-2">
                   <button
                     onClick={() => setStep(1)}
-                    className="inline-flex items-center justify-center flex-shrink-0 w-1/2 px-4 py-2 text-sm font-medium text-white duration-300 bg-blue-600 rounded-md shadow-sm disabled:cursor-not-allowed hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-70"
+                    className="justify-center w-1/2 btn-bleuFrance"
                   >
                     <ArrowLeftIcon className="w-5 h-5 mr-2" />
                     Retour
@@ -337,7 +330,7 @@ export default function Register() {
                         });
                       }
                     }}
-                    className="inline-flex items-center justify-center flex-shrink-0 w-1/2 px-4 py-2 text-sm font-medium text-white duration-300 bg-blue-600 rounded-md shadow-sm disabled:cursor-not-allowed hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-70"
+                    className="justify-center w-1/2 btn-bleuFrance"
                   >
                     {"S'enregistrer"}
                     <UserAddIcon className="w-5 h-5 ml-2" />
@@ -347,7 +340,7 @@ export default function Register() {
 
               <div className="my-1 text-sm">
                 <Link href="/auth/login">
-                  <a className="font-medium text-blue-600 duration-150 hover:text-blue-500">
+                  <a className="font-medium duration-150 text-bleuFrance-600 hover:text-bleuFrance-500">
                     Se connecter
                   </a>
                 </Link>

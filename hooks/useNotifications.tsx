@@ -66,9 +66,15 @@ function NotificationProvider({
           });
       }, 5000);
 
-      return () => clearInterval(poll);
+      return () => {
+        clearInterval(poll);
+      };
+    } else {
+      return () => {
+        setNotifications([]);
+      };
     }
-  }, [user, signOut]);
+  }, [user, signOut, router]);
 
   return (
     <NotificationContext.Provider

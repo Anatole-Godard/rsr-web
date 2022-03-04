@@ -76,7 +76,7 @@ export const SearchSection = () => {
             </select>
             <ChevronDownIcon className="absolute w-4 h-4 transform -translate-y-1/2 pointer-events-none top-1/2 right-3" />
           </label>
-          <button className="btn-blue">
+          <button className="btn-bleuFrance">
             <SearchIcon className="w-4 h-4 mr-2" />
             Rechercher
           </button>
@@ -86,7 +86,7 @@ export const SearchSection = () => {
         <Chip size="normal" color="green" name="Tomorrow" />
         <Chip size="normal" color="amber" name="This week" />
         <Chip size="normal" color="purple" name="Near you" />
-        <Chip size="normal" color="blue" name="Online" />
+        <Chip size="normal" color="bleuFrance" name="Online" />
         <Chip size="normal" color="red" name="In person" />
       </div> */}
     </div>

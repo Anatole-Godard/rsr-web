@@ -6,6 +6,7 @@ import {
   ChevronDownIcon,
   ChevronLeftIcon,
   ChevronRightIcon,
+  EyeIcon,
   PencilAltIcon,
   ThumbUpIcon,
   TrashIcon,
@@ -30,6 +31,7 @@ export const CustomTable = ({
   theadList,
   valuesList,
   deleteEntity,
+  readUrl,
   editUrl,
   totalPages,
   updateCurrentPage,
@@ -37,6 +39,7 @@ export const CustomTable = ({
   theadList: object[];
   valuesList: any[];
   deleteEntity?: any;
+  readUrl?: string;
   editUrl?: string;
   totalPages: number;
   updateCurrentPage: any;
@@ -123,21 +126,25 @@ export const CustomTable = ({
         isJsx = true;
         displayedValue = (
           <div
-            className="flex items-center"
+            className="inline-flex items-center"
             onClick={() => {
               theadValue.validEntity(value.uid, !value[theadValue.name]);
             }}
           >
             {value[theadValue.name] ? (
-              <button className="btn-gray dark:btn-red">
-                <BanIcon className="w-4 h-4 mr-1 shrink-0" />
-                Suspendre
-              </button>
+              <>
+                <button className="ml-1 btn-gray dark:btn-red">
+                  <BanIcon className="w-4 h-4 mr-1 shrink-0" />
+                  Suspendre
+                </button>
+              </>
             ) : (
-              <button className="btn-green">
-                <CheckIcon className="w-4 h-4 mr-1 shrink-0" />
-                Réactiver
-              </button>
+              <>
+                <button className="ml-1 btn-green">
+                  <CheckIcon className="w-4 h-4 mr-1 shrink-0" />
+                  Activer
+                </button>
+              </>
             )}
           </div>
         );
@@ -163,6 +170,7 @@ export const CustomTable = ({
         <thead>
           <tr className="bg-gray-50 dark:bg-gray-700">
             {displayTableHeader(theadList)}
+            {readUrl && <th />}
             {editUrl && <th />}
             {deleteEntity && <th />}
           </tr>
@@ -190,11 +198,20 @@ export const CustomTable = ({
                         </span>
                       </td>
                     ))}
+                  {readUrl && (
+                    <td className="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white font-spectral">
+                      <Link href={readUrl + "/" + value.slug + ""}>
+                        <a className="px-2 py-2 btn-gray">
+                          <EyeIcon className="w-4 h-4 shrink-0" />
+                        </a>
+                      </Link>
+                    </td>
+                  )}
                   {editUrl && (
                     <td className="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white font-spectral">
                       <Link href={editUrl + "/" + value.slug + "/edit"}>
-                        <a className="px-2 py-2 btn-blue">
-                          <PencilAltIcon className="w-4 h-4" />
+                        <a className="px-2 py-2 btn-gray">
+                          <PencilAltIcon className="w-4 h-4 shrink-0" />
                         </a>
                       </Link>
                     </td>
@@ -202,10 +219,10 @@ export const CustomTable = ({
                   {deleteEntity && (
                     <td
                       className="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white font-spectral"
-                      onClick={() => deleteEntity(value.slug||value.uid)}
+                      onClick={() => deleteEntity(value.slug || value.uid)}
                     >
                       <a className="px-2 py-2 cursor-pointer btn-red">
-                        <TrashIcon className="w-4 h-4" />
+                        <TrashIcon className="w-4 h-4 shrink-0" />
                       </a>
                     </td>
                   )}

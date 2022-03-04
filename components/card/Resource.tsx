@@ -30,7 +30,7 @@ export const ResourceCard = (props: Resource) => {
   return (
     <div
       className={classes(
-        "flex flex-col w-full p-2 duration-300 bg-white h-fit max-h-max grow-0 border rounded-xl dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-900 group",
+        "flex flex-col w-full p-2 duration-300 bg-white h-fit max-h-max grow-0 border dark:border-gray-600 rounded-xl dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-900 group",
         visibility === "unlisted" && "border-amber-500 dark:border-amber-600",
         visibility === "private" && "border-red-500 dark:border-red-600"
       )}
@@ -41,22 +41,24 @@ export const ResourceCard = (props: Resource) => {
             className={classes(
               "flex items-center relative justify-center w-full h-32 rounded-lg duration-300",
               type === "location" &&
-                "bg-indigo-100 group-hover:bg-indigo-200 dark:bg-indigo-800",
+                "bg-indigo-100 group-hover:bg-indigo-200 dark:bg-indigo-800 dark:group-hover:bg-indigo-900",
               type === "physical_item" &&
-                "bg-emerald-100 group-hover:bg-emerald-200 dark:bg-emerald-800",
+                "bg-emerald-100 group-hover:bg-emerald-200 dark:bg-emerald-800 dark:group-hover:bg-emerald-900",
               type === "external_link" &&
-                "bg-amber-100 group-hover:bg-amber-200 dark:bg-amber-800",
+                "bg-amber-100 group-hover:bg-amber-200 dark:bg-amber-800 dark:group-hover:bg-amber-900",
               type === "event" &&
-                "bg-red-100 group-hover:bg-red-200 dark:bg-red-800"
+                "bg-red-100 group-hover:bg-red-200 dark:bg-red-800 dark:group-hover:bg-red-900"
             )}
           >
             <div
               className={classes(
                 "flex flex-col space-y-2 text-xs font-spectral items-center",
-                type === "location" && "text-indigo-700",
-                type === "physical_item" && "text-emerald-700",
-                type === "external_link" && "text-amber-700",
-                type === "event" && "text-red-700"
+                type === "location" && "text-indigo-700 dark:text-indigo-200",
+                type === "physical_item" &&
+                  "text-emerald-700 dark:text-emerald-200",
+                type === "external_link" &&
+                  "text-amber-700 dark:text-amber-200",
+                type === "event" && "text-red-700 dark:text-red-200"
               )}
             >
               {types
@@ -137,7 +139,7 @@ export const ResourceCard = (props: Resource) => {
             {likes.length || 0}
           </div>
           <div className="inline-flex items-center space-x-1">
-            <ChatAlt2Icon className="w-3 h-3 mr-0.5 text-gray-700" />{" "}
+            <ChatAlt2Icon className="w-3 h-3 mr-0.5 text-gray-700 dark:text-gray-200" />{" "}
             {comments.length || 0}
           </div>
         </div>

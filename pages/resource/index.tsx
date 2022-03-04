@@ -75,7 +75,7 @@ const ResourceIndex: NextPage<any> = ({
               </div>
               <h3 className="text-2xl font-extrabold text-gray-800 font-marianne dark:text-gray-200">
                 Toutes les
-                <span className="ml-1 text-blue-600 dark:text-blue-400">
+                <span className="ml-1 text-bleuFrance-500 dark:text-bleuFrance-400">
                   ressources
                 </span>
               </h3>
@@ -135,7 +135,7 @@ const ResourceIndex: NextPage<any> = ({
             </div>
 
             <Link href={"/resource/create"}>
-              <a className="btn-blue">
+              <a className="btn-bleuFrance">
                 <PlusIcon className="w-4 h-4 sm:mr-2" />
                 <span className="hidden sm:block">Poster une ressource</span>
               </a>

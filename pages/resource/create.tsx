@@ -90,7 +90,7 @@ const ResourceCreate: NextPage<any> = ({
         type: "Feature",
         geometry: {
           type: "Point",
-          coordinates: position,
+          coordinates: [position.lat, position.lng],
         },
         properties: {
           name,
@@ -129,6 +129,7 @@ const ResourceCreate: NextPage<any> = ({
 
   useEffect(() => {
     const fetchLocation = async () => {
+      console.log(position);
       const response = await makeRequest(
         "GET",
         `https://api-adresse.data.gouv.fr/reverse/?lat=${position.lat}&lon=${position.lng}`
@@ -240,7 +241,7 @@ const ResourceCreate: NextPage<any> = ({
               </div>
               <h3 className="mb-2 text-2xl font-extrabold text-gray-800 font-marianne dark:text-gray-200">
                 Créer une
-                <span className="ml-1 text-blue-600 dark:text-blue-400">
+                <span className="ml-1 text-bleuFrance-600 dark:text-bleuFrance-400">
                   ressource
                 </span>
               </h3>
@@ -248,7 +249,11 @@ const ResourceCreate: NextPage<any> = ({
             <button
               type="submit"
               className={classes(
-                requestOk ? "btn-green" : validForm ? "btn-blue" : "btn-red",
+                requestOk
+                  ? "btn-green"
+                  : validForm
+                  ? "btn-bleuFrance"
+                  : "btn-red",
                 "group h-fit"
               )}
             >
@@ -280,7 +285,7 @@ const ResourceCreate: NextPage<any> = ({
                 </>
               ) : validForm ? (
                 <>
-                  <CloudUploadIcon className="w-4 h-4 mr-1 text-blue-700 duration-300 group-active:text-white" />
+                  <CloudUploadIcon className="w-4 h-4 mr-1 duration-300 text-bleuFrance-700 group-active:text-white" />
                   Envoyer
                 </>
               ) : (
@@ -339,10 +344,10 @@ const ResourceCreate: NextPage<any> = ({
                       className={({ selected }) =>
                         classes(
                           "w-full py-2.5 text-xs leading-5 font-medium rounded-md",
-                          "focus:outline-none transition-all duration-300 focus:ring-2 ring-offset-2 ring-blue-500",
+                          "focus:outline-none transition-all duration-300 focus:ring-2 ring-offset-2 ring-bleuFrance-500",
                           selected
-                            ? "bg-blue-700  text-blue-100 font-semibold shadow"
-                            : "text-blue-700 bg-blue-100 hover:bg-blue-300 hover:text-blue-800",
+                            ? "bg-bleuFrance-700  text-bleuFrance-100 font-semibold shadow"
+                            : "text-bleuFrance-700 bg-bleuFrance-100 hover:bg-bleuFrance-200 hover:text-bleuFrance-800",
                           i === 0 ? "rounded-l-lg" : "",
                           i === visibilities.length - 1 ? "rounded-r-lg" : ""
                         )
@@ -475,10 +480,10 @@ const ResourceCreate: NextPage<any> = ({
                         className={({ selected }) =>
                           classes(
                             "w-full py-2.5 text-xs leading-5 font-medium rounded-md",
-                            "focus:outline-none transition-all duration-300 focus:ring-2 ring-offset-2 ring-blue-500",
+                            "focus:outline-none transition-all duration-300 focus:ring-2 ring-offset-2 ring-bleuFrance-500",
                             selected
-                              ? "bg-blue-700  text-blue-100 font-semibold shadow"
-                              : "text-blue-700 bg-blue-100 hover:bg-blue-300 hover:text-blue-800",
+                              ? "bg-bleuFrance-700  text-bleuFrance-100 font-semibold shadow"
+                              : "text-bleuFrance-700 bg-bleuFrance-100 hover:bg-bleuFrance-200 hover:text-bleuFrance-800",
                             i === 0 ? "rounded-l-lg" : "",
                             i === types.length - 1 ? "rounded-r-lg" : ""
                           )
@@ -636,7 +641,7 @@ const ResourceCreate: NextPage<any> = ({
                     <Map
                       zoom={4.5}
                       className="relative inset-0 w-full h-64 rounded-lg md:h-full"
-                      onClick={(e) => setPosition(e.latlng)}
+                      mapEventHandler={{ click: (e) => setPosition(e.latlng) }}
                       point={(position as number[]) || [46.227638, 2.213749]}
                     ></Map>
                   </div>

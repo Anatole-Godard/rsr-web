@@ -52,7 +52,7 @@ export const Sidebar = ({
           <Link href="/channel/create">
             <a
               className={classes(
-                "btn-blue ",
+                "btn-bleuFrance ",
                 selectedChannelSlug ? "w-[calc(50%-0.25rem)] px-2" : "w-full px-3"
               )}
             >
@@ -114,7 +114,7 @@ export const Sidebar = ({
           <Link href="/channel/create">
             <a
               className={classes(
-                "btn-blue  py-2 text-xs px-2",
+                "btn-bleuFrance  py-2 text-xs px-2",
                 selectedChannelSlug ? "h-1/2" : " w-16"
               )}
             >

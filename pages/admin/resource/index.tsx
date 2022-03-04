@@ -151,7 +151,7 @@ const Resources: NextPage<any> = (props) => {
                             />
                         </label>
 
-                        <button className="btn-blue" type="submit">
+                        <button className="btn-bleuFrance" type="submit">
                             <SearchIcon className="w-4 h-4 mr-1"/>
                             Rechercher
                         </button>
@@ -162,6 +162,7 @@ const Resources: NextPage<any> = (props) => {
                         theadList={theadList}
                         valuesList={resources}
                         deleteEntity={deleteResource}
+                        readUrl="/resource"
                         editUrl="/resource"
                         totalPages={totalPages}
                         updateCurrentPage={updatePage}
