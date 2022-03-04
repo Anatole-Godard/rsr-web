@@ -66,15 +66,15 @@ export const UserDropdown = () => {
               ) : (
                 <span
                   className={classes(
-                    "flex items-center justify-center h-8 px-2 text-sm transition duration-150 ease-in-out rounded-full min-w-min dark:bg-blue-800 focus:outline-none focus:border-gray-300 dark:border-gray-800 active:bg-blue-300 hover:bg-blue-100",
-                    open ? "bg-blue-100" : "bg-blue-200 "
+                    "btn-bleuFrance rounded-full px-2",
+                    open ? "bg-bleuFrance-50" : "bg-bleuFrance-100 "
                   )}
                 >
                   <UserIcon
                     key="user_dropdown-icon"
-                    className="w-4 h-4 text-blue-500 lg:mr-1"
+                    className="w-4 h-4 lg:mr-1"
                   />
-                  <span className="hidden text-xs font-semibold text-blue-500 lg:block">
+                  <span className="hidden text-xs font-semibold lg:block">
                     Se connecter
                   </span>
                 </span>
@@ -99,7 +99,7 @@ export const UserDropdown = () => {
               {user ? (
                 <>
                   <Link href="/user">
-                    <a className="inline-flex justify-between items-center  w-full min-h-[6rem] px-2 py-4 duration-300 rounded-t-xl hover:bg-blue-50 dark:hover:bg-blue-900 border-b dark:border-gray-800 border-gray-100 ">
+                    <a className="inline-flex justify-between items-center  w-full min-h-[6rem] px-2 py-4 duration-300 rounded-t-xl hover:bg-bleuFrance-50 dark:hover:bg-bleuFrance-900 border-b dark:border-gray-800 border-gray-100 ">
                       <div className="inline-flex items-center">
                         <div className="relative flex items-center justify-center w-12 h-12 m-1 mr-2 text-xl text-white bg-white rounded-full shrink-0">
                           <Image
@@ -115,7 +115,7 @@ export const UserDropdown = () => {
                           <span className="text-sm font-marianne font-medium overflow-ellipsis tracking-tight leading-[1.12rem] text-gray-800 dark:text-gray-200">
                             {user.data.fullName || "Name not provided"}
                           </span>
-                          <span className="text-xs font-normal text-gray-600 font-marianne overflow-ellipsis dark:text-gray-200">
+                          <span className="text-xs text-gray-600 font-spectral overflow-ellipsis dark:text-gray-200">
                             inscrit il y a{" "}
                             {formatDistance(
                               new Date(user.data.createdAt),
@@ -132,21 +132,21 @@ export const UserDropdown = () => {
                   </Link>
 
                   <a
-                    className="inline-flex items-center w-full px-4 py-2 text-sm leading-5 text-gray-700 transition duration-150 ease-in-out cursor-pointer dark:text-gray-300 hover:text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-800"
+                    className="inline-flex items-center w-full px-4 py-2 text-sm leading-5 text-gray-700 transition duration-150 ease-in-out cursor-pointer dark:text-gray-300 hover:text-bleuFrance-500 hover:bg-bleuFrance-50 font-marianne dark:hover:bg-bleuFrance-800"
                     onClick={signOut}
                   >
-                    <LogoutIcon className="w-6 h-6 pr-2 mr-2 text-center border-r border-gray-200 dark:border-gray-800" />
+                    <LogoutIcon className="w-6 h-6 pr-2 mr-2 text-center border-r border-gray-200 font-marianne dark:border-gray-800" />
                     Déconnexion
                   </a>
 
                   {(user.session.role === "admin" ||
                     user.session.role === "superadmin") && (
                     <>
-                      <div className="block px-4 py-2 text-xs text-gray-400">
+                      <div className="block px-4 py-2 text-xs text-gray-400 font-spectral">
                         Administration de la plateforme
                       </div>
                       <Link href="/admin">
-                        <a className="inline-flex items-center w-full px-4 py-2 text-sm leading-5 text-gray-700 transition duration-150 ease-in-out dark:text-gray-300 hover:text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-800">
+                        <a className="inline-flex items-center w-full px-4 py-2 text-sm leading-5 text-gray-700 transition duration-150 ease-in-out dark:text-gray-300 hover:text-bleuFrance-500 hover:bg-bleuFrance-50 dark:hover:bg-bleuFrance-800 font-marianne">
                           <CogIcon className="w-6 h-6 pr-2 mr-2 text-center border-r border-gray-200 dark:border-gray-800 " />
                           Administration
                         </a>
@@ -156,36 +156,36 @@ export const UserDropdown = () => {
                 </>
               ) : (
                 <>
-                  <div className="block px-4 py-2 pt-4 text-xs text-gray-400">
+                  <div className="block px-4 py-2 pt-4 text-xs text-gray-400 font-spectral">
                     Connexion
                   </div>
                   <Link href="/auth/login">
-                    <a className="inline-flex items-center w-full px-4 py-2 text-sm leading-5 text-gray-700 transition duration-150 ease-in-out dark:text-gray-300 hover:text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-800">
+                    <a className="inline-flex items-center w-full px-4 py-2 text-sm leading-5 text-gray-700 transition duration-150 ease-in-out font-marianne dark:text-gray-300 hover:text-bleuFrance-500 hover:bg-bleuFrance-50 dark:hover:bg-bleuFrance-800">
                       <LoginIcon className="w-6 h-6 pr-2 mr-2 text-center border-r border-gray-200 dark:border-gray-800 " />
                       Connexion
                     </a>
                   </Link>
                   <Link href="/auth/register">
-                    <a className="inline-flex items-center w-full px-4 py-2 text-sm leading-5 text-gray-700 transition duration-150 ease-in-out dark:text-gray-300 hover:text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-800">
+                    <a className="inline-flex items-center w-full px-4 py-2 text-sm leading-5 text-gray-700 transition duration-150 ease-in-out font-marianne dark:text-gray-300 hover:text-bleuFrance-500 hover:bg-bleuFrance-50 dark:hover:bg-bleuFrance-800">
                       <UserAddIcon className="w-6 h-6 pr-2 mr-2 text-center border-r border-gray-200 dark:border-gray-800" />
                       Inscription
                     </a>
                   </Link>
                   {/* <Link href="/auth">
-              <a className="block px-4 py-2 text-sm leading-5 text-gray-700 transition duration-150 ease-in-out dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-blue-800">
+              <a className="block px-4 py-2 text-sm leading-5 text-gray-700 transition duration-150 ease-in-out dark:text-gray-300 hover:bg-bleuFrance-50 dark:hover:bg-bleuFrance-800">
                 Register
               </a>
             </Link> */}
                 </>
               )}
-              <div className="block px-4 py-2 text-xs text-gray-400">
+              <div className="block px-4 py-2 text-xs text-gray-400 font-spectral">
                 Thème de la plateforme
               </div>
               <button
                 onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-                className="flex items-center justify-between w-full px-4 py-2 text-sm leading-5 text-gray-700 transition duration-150 ease-in-out cursor-pointer dark:text-gray-300 focus:outline-none hover:text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-800"
+                className="flex items-center justify-between w-full px-4 py-2 text-sm leading-5 text-gray-700 transition duration-150 ease-in-out cursor-pointer dark:text-gray-300 focus:outline-none hover:text-bleuFrance-500 hover:bg-bleuFrance-50 dark:hover:bg-bleuFrance-800"
               >
-                <span className="inline-flex items-center">
+                <span className="inline-flex items-center font-marianne">
                   {theme === "light" ? (
                     <>
                       <MoonIcon className="w-6 h-6 pr-2 mr-2 text-center border-r border-gray-200 dark:border-gray-800" />

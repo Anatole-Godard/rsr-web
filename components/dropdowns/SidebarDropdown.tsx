@@ -6,7 +6,6 @@ import {
   ChatIcon,
   HomeIcon,
   LibraryIcon,
-  ShoppingBagIcon,
 } from "@heroicons/react/outline";
 
 import { classes } from "@utils/classes";
@@ -55,14 +54,14 @@ export const SidebarDropdown = () => {
             <Menu.Items
               static
               className={
-                "bg-white md:origin-top-right fixed md:absolute left-0 md:left-auto md:right-0 mt-6 dark:bg-gray-900 text-base z-50 float-left pb-2 list-none text-left rounded-xl shadow-lg w-full md:w-96"
+                "bg-white md:origin-top-right fixed md:absolute left-0 md:left-auto md:right-0 mt-6 dark:bg-gray-900 text-base z-50 float-left pb-2 list-none text-left rounded-xl shadow-lg w-fit"
               }
             >
               <>
-                <div className="block px-4 pt-4 text-xs text-gray-400">
+                <div className="block px-4 pt-3 text-xs text-gray-400 font-marianne">
                   Raccourcis
                 </div>
-                <div className="grid grid-cols-3 gap-4 p-4">
+                <div className="inline-flex items-center w-full py-3 ">
                   <Shortcut href="/" icon={HomeIcon} name="Accueil" />
 
                   <Shortcut href="/channel" icon={ChatIcon} name="Salons" />
@@ -84,7 +83,7 @@ export const SidebarDropdown = () => {
 
 const Shortcut = ({ href, icon, name }) => (
   <Link href={href}>
-    <a className="flex flex-col items-center w-full h-full text-sm text-gray-700 group ">
+    <a className="flex flex-col items-center w-16 h-full mx-4 text-sm text-gray-700 group">
       <div className="flex items-center justify-center w-12 h-12 p-4 duration-300 bg-gray-200 rounded-full group-hover:bg-gray-300 active:bg-gray-100">
         {icon({ className: "w-6 h-6" })}
       </div>
