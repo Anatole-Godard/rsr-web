@@ -197,7 +197,7 @@
   }
 
   .input {
-    @apply w-full px-3 py-2 text-sm font-light text-gray-600 transition-all duration-300 bg-gray-100 rounded-lg hover:bg-gray-200 active:bg-gray-100 font-spectral focus:outline-none dark:focus:ring-blue-800 focus:ring focus:ring-offset-2 focus:ring-blue-400 focus:bg-gray-50 placeholder-shown:text-gray-400 dark:text-gray-200 dark:bg-gray-800 dark:placeholder-shown:text-gray-200 dark:focus:ring-offset-0;
+    @apply w-full px-3 py-2 text-sm font-light text-gray-600 transition-all duration-300 bg-gray-100 rounded-lg hover:bg-gray-200 active:bg-gray-100 font-spectral focus:outline-none dark:focus:ring-bleuFrance-800 focus:ring focus:ring-offset-2 focus:ring-bleuFrance-400 focus:bg-gray-50 placeholder-shown:text-gray-400 dark:text-gray-200 dark:bg-gray-800 dark:placeholder-shown:text-gray-200 dark:focus:ring-offset-0;
   }
 
   .input-auth {
@@ -214,6 +214,10 @@
 
   .btn-blue {
     @apply text-blue-600 bg-blue-200 btn dark:bg-blue-800 dark:text-blue-200 hover:bg-blue-300 active:bg-blue-700 active:text-blue-100 ring-blue-500;
+  }
+  
+  .btn-bleuFrance {
+    @apply text-bleuFrance-600 bg-bleuFrance-100 btn dark:bg-bleuFrance-800 dark:text-bleuFrance-200 hover:bg-bleuFrance-200 active:bg-bleuFrance-700 active:text-bleuFrance-100 ring-bleuFrance-500;
   }
 
   .btn-green {
