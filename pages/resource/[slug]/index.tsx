@@ -185,7 +185,15 @@ const ResourceSlug: NextPage<any> = ({
           </div>
           <div className="inline-flex pt-3 -ml-2 overflow-x-hidden md:pt-0">
             <ChipList
-              color="blue"
+              color={
+                data.type === "location"
+                  ? "blue"
+                  : data.type === "physical_item"
+                  ? "emerald"
+                  : data.type === "event"
+                  ? "red"
+                  : "amber"
+              }
               size="normal"
               list={tags.map((tag: string) => ({ label: tag, value: tag }))}
             />
@@ -197,10 +205,24 @@ const ResourceSlug: NextPage<any> = ({
               <Tab
                 className={({ selected }) =>
                   classes(
-                    "w-full py-2.5 text-sm leading-5 font-medium select-none font-spectral focus:outline-none duration-300 rounded-md hover:bg-blue-500 hover:text-white",
+                    "w-full py-2.5 text-sm leading-5 font-medium select-none font-spectral focus:outline-none duration-300 rounded-md ",
                     selected
-                      ? "bg-blue-300 text-blue-700 dark:bg-blue-700 dark:text-blue-300"
-                      : "text-gray-500"
+                      ? data.type === "location"
+                        ? "bg-blue-300 text-blue-700 dark:bg-blue-700 dark:text-blue-300"
+                        : data.type === "physical_item"
+                        ? "bg-emerald-300 text-emerald-700 dark:bg-emerald-700 dark:text-emerald-300"
+                        : data.type === "event"
+                        ? "bg-red-300 text-red-700 dark:bg-red-700 dark:text-red-300"
+                        : "bg-amber-300 text-amber-700 dark:bg-amber-700 dark:text-amber-300"
+                      : "text-gray-500",
+
+                    data.type === "location"
+                      ? "hover:bg-blue-500 hover:text-blue-50"
+                      : data.type === "physical_item"
+                      ? "hover:bg-emerald-500 hover:text-emerald-50"
+                      : data.type === "event"
+                      ? "hover:bg-red-500 hover:text-red-50"
+                      : "hover:bg-amber-500 hover:text-amber-50"
                   )
                 }
               >
@@ -209,10 +231,24 @@ const ResourceSlug: NextPage<any> = ({
               <Tab
                 className={({ selected }) =>
                   classes(
-                    "w-full py-2.5 text-sm leading-5 font-medium select-none font-spectral focus:outline-none duration-300 rounded-md hover:bg-blue-500 hover:text-white",
+                    "w-full py-2.5 text-sm leading-5 font-medium select-none font-spectral focus:outline-none duration-300 rounded-md",
                     selected
-                      ? "bg-blue-300 text-blue-700 dark:bg-blue-700 dark:text-blue-300"
-                      : "text-gray-500"
+                      ? data.type === "location"
+                        ? "bg-blue-300 text-blue-700 dark:bg-blue-700 dark:text-blue-300"
+                        : data.type === "physical_item"
+                        ? "bg-emerald-300 text-emerald-700 dark:bg-emerald-700 dark:text-emerald-300"
+                        : data.type === "event"
+                        ? "bg-red-300 text-red-700 dark:bg-red-700 dark:text-red-300"
+                        : "bg-amber-300 text-amber-700 dark:bg-amber-700 dark:text-amber-300"
+                      : "text-gray-500",
+
+                    data.type === "location"
+                      ? "hover:bg-blue-500 hover:text-blue-50"
+                      : data.type === "physical_item"
+                      ? "hover:bg-emerald-500 hover:text-emerald-50"
+                      : data.type === "event"
+                      ? "hover:bg-red-500 hover:text-red-50"
+                      : "hover:bg-amber-500 hover:text-amber-50"
                   )
                 }
               >
@@ -249,7 +285,10 @@ const ResourceSlug: NextPage<any> = ({
                     required
                     onChange={(e) => setMessage(e.target.value)}
                   />
-                  <button type="submit" className="ml-2 btn-bleuFrance shrink-0">
+                  <button
+                    type="submit"
+                    className="ml-2 btn-bleuFrance shrink-0"
+                  >
                     <CheckIcon className="w-4 h-4 mr-1" />
                     Envoyer
                   </button>
@@ -328,7 +367,12 @@ const LocationView = ({ attributes, slug }: LocationViewProps) => {
   return (
     <>
       <div className="relative h-full overflow-hidden rounded-lg xl:col-span-2">
-        <Map point={attributes.geometry.coordinates} className="h-full" zoom={13} />
+        <Map
+          point={attributes.geometry.coordinates}
+          className="h-full"
+          zoom={13}
+          mapEventHandler={{ click: () => {} }}
+        />
       </div>
       <div className="flex flex-col pt-6">
         <h4 className="mb-3 text-3xl font-bold font-marianne">Adresse</h4>
@@ -351,7 +395,7 @@ const ExternalLinkView = ({ attributes, slug }: ExternalLinkViewProps) => {
             className="h-full"
           />
         ) : (
-          <div className="flex flex-col items-center justify-center h-full text-emerald-800 bg-emerald-200 dark:text-emerald-200 dark:bg-emerald-800">
+          <div className="flex flex-col items-center justify-center h-full text-amber-800 bg-amber-200 dark:text-amber-200 dark:bg-amber-800">
             <LinkIcon className="w-12 h-12 mb-1" />
             <p className="text-lg font-spectral">Lien externe</p>
           </div>
@@ -363,7 +407,12 @@ const ExternalLinkView = ({ attributes, slug }: ExternalLinkViewProps) => {
             Lien hypertexte
           </h4>
           <div className="text-sm leading-5 prose text-gray-500 font-spectral dark:text-gray-400">
-            {attributes.properties.url}
+            <a
+              className="underline text-amber-800 dark:text-amber-200"
+              href={attributes.properties.url}
+            >
+              {attributes.properties.url}
+            </a>
           </div>
         </div>
       </div>

@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import React, { useEffect } from "react";
+import React from "react";
 import { Menu, Transition } from "@headlessui/react";
 import { classes } from "@utils/classes";
 import {
@@ -10,10 +10,10 @@ import {
   ExclamationIcon,
   ExternalLinkIcon,
   ThumbUpIcon,
+  UserGroupIcon,
   XIcon,
 } from "@heroicons/react/outline";
 import { BellIcon as BellSolidIcon } from "@heroicons/react/solid";
-// import { Toasts } from "@components/helpers/Toasts";
 import { useAuth } from "@hooks/useAuth";
 import { useNotifications } from "@hooks/useNotifications";
 import { Notification } from "@definitions/Notification";
@@ -22,7 +22,6 @@ import { formatDistance } from "date-fns";
 import { fr } from "date-fns/locale";
 import { Channel } from "@definitions/Channel";
 import Link from "next/link";
-import useFetch from "@hooks/useFetch";
 import useFetchRSR from "@hooks/useFetchRSR";
 
 export const NotificationsDropdown = () => {
@@ -323,7 +322,7 @@ const ChannelComponent = (props: ChannelComponentProps) => {
             />
           ) : (
             <span className="flex items-center justify-center w-16 h-16 p-5 rounded-full text-bleuFrance-500 bg-bleuFrance-50 ring-2 ring-offset-2 ring-bleuFrance-200 dark:bg-bleuFrance-700">
-              <ChatAlt2Icon className="w-8 h-8" />
+              <UserGroupIcon className="w-8 h-8" />
             </span>
           )}
           {/* {isUnread && (

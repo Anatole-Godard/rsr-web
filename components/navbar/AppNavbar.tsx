@@ -46,18 +46,7 @@ const Search = ({ query, setQuery }) => {
   return (
     <form className="w-full" onSubmit={(e) => post(e)}>
       <label className="relative w-full text-gray-400 focus-within:text-gray-600 md:w-3/5">
-        {/* {iconIdx === 0 && (
-        <SearchIcon
-          setIconIdx={setIconIdx}
-          className="absolute w-4 h-4 duration-300 transform -translate-y-1/2 pointer-events-none top-1/2 left-3"
-        />
-      )}
-      {iconIdx === 0 && (
-        <UserIcon
-          setIconIdx={setIconIdx}
-          className="absolute w-4 h-4 duration-300 transform -translate-y-1/2 pointer-events-none top-1/2 left-3"
-        />
-      )} */}
+        
         <HISearchIcon className="absolute w-4 h-4 duration-300 transform -translate-y-1/2 pointer-events-none top-1/2 left-3" />
         <input
           id="search"
