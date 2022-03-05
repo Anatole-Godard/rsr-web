@@ -398,6 +398,11 @@ const ExternalLinkView = ({ attributes, slug }: ExternalLinkViewProps) => {
           <div className="flex flex-col items-center justify-center h-full text-amber-800 bg-amber-200 dark:text-amber-200 dark:bg-amber-800">
             <LinkIcon className="w-12 h-12 mb-1" />
             <p className="text-lg font-spectral">Lien externe</p>
+            {!attributes.properties.image && (
+              <p className="pt-2 mx-12 mt-2 text-sm text-center border-t border-amber-500 text-amber-600 dark:text-amber-400 font-spectral">
+              {"Aucune image n'est disponible pour cette ressource"}
+            </p>
+            )}
           </div>
         )}
       </div>
@@ -434,6 +439,11 @@ const PhysicalItemView = ({ attributes, slug }: PhysicalItemViewProps) => {
           <div className="flex flex-col items-center justify-center h-full text-emerald-800 bg-emerald-200 dark:text-emerald-200 dark:bg-emerald-800">
             <HandIcon className="w-12 h-12 mb-1" />
             <p className="text-lg font-spectral">Objet physique</p>
+            {!attributes.properties.image && (
+              <p className="pt-2 mx-12 mt-2 text-sm text-center border-t border-emerald-500 text-emerald-600 dark:text-emerald-400 font-spectral">
+                {"Aucune image n'est disponible pour cette ressource"}
+              </p>
+            )}
           </div>
         )}
       </div>

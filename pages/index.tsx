@@ -34,7 +34,14 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         : undefined
     )
   ).json();
-  const resources = body.data?.attributes || [];
+  const resources =
+    (body.data?.attributes as Resource[])
+      .sort(
+        (a, b) =>
+          new Date(b.createdAt.toString()).getTime() -
+          new Date(a.createdAt.toString()).getTime()
+      )
+      .filter((_, i) => i < 3) || [];
 
   return {
     props: {

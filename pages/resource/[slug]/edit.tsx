@@ -1,6 +1,6 @@
 import { AppLayout } from "@components/layouts/AppLayout";
 import { Resource } from "@definitions/Resource";
-import { Tab } from "@headlessui/react";
+import { Dialog, Tab, Transition } from "@headlessui/react";
 import {
   CheckIcon,
   ChevronLeftIcon,
@@ -16,10 +16,11 @@ import dynamic from "next/dynamic";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { fetchRSR } from "@utils/fetchRSR";
 import { useAuth } from "@hooks/useAuth";
 import { UserMinimum } from "@definitions/User";
+import { TrashIcon } from "@heroicons/react/outline";
 
 const Map: any = dynamic(() => import("@components/map/Map") as any, {
   ssr: false,
@@ -38,7 +39,7 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
   const { user } = useAuth();
 
   const [pictureUrl, setPictureUrl] = useState(
-    props.data.attributes.pictureUrl || null
+    props.data?.attributes.image.url || null
   );
   const [pictureFile, setPictureFile] = useState(null);
   const [name, setName] = useState<string>(
@@ -62,28 +63,28 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
   const [members, setMembers] = useState<UserMinimum[]>(props.members || []);
 
   const [position, setPosition] = useState(
-    props.data.attributes.geometry?.coordinates || [0, 0]
+    props.data?.attributes.geometry?.coordinates || [0, 0]
   );
   const [location, setLocation] = useState(
-    props.data.attributes.properties.location || ""
+    props.data?.attributes.properties?.location || ""
   );
 
   const [price, setPrice] = useState<string | null>(
-    props.data.attributes.properties.price || null
+    props.data?.attributes.properties.price || null
   );
   const [category, setCategory] = useState<string | null>(
-    props.data.attributes.properties.category || null
+    props.data?.attributes.properties.category || null
   );
 
   const [externalLink, setExternalLink] = useState<string | null>(
-    props.data.attributes.properties.externalLink || null
+    props.data?.attributes.properties.url || null
   );
 
   const [startDate, setStartDate] = useState<string | null>(
-    props.data.attributes.properties.startDate || null
+    props.data?.attributes.properties.startDate || null
   );
   const [endDate, setEndDate] = useState<string | null>(
-    props.data.attributes.properties.endDate || null
+    props.data?.attributes.properties.endDate || null
   );
   // const [locationType, setLocationType] = useState<
   //   Event["location"]["type"] | null
@@ -96,6 +97,19 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
   const [validForm, setValidForm] = useState<boolean>(false);
   const [requestOk, setRequestOk] = useState<boolean | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
+
+  const [deleteModalOpen, setDeleteModalOpen] = useState<boolean>(false);
+
+  const deleteResource = async () => {
+    const res = await fetchRSR(
+      `/api/resource/${props.slug}/delete`,
+      user?.session,
+      {
+        method: "DELETE",
+      }
+    );
+    if (res.ok) router.push("/resource");
+  };
 
   useEffect(() => {
     const fetchLocation = async () => {
@@ -289,6 +303,14 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
                   <ChevronLeftIcon className="w-4 h-4 mr-2" /> Retour
                 </a>
               </Link>
+              <button
+                type="button"
+                onClick={() => setDeleteModalOpen(true)}
+                className="btn-red"
+              >
+                <TrashIcon className="w-4 h-4 mr-1" />
+                Supprimer
+              </button>
               <button
                 type="submit"
                 className={classes(
@@ -735,6 +757,80 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
           </div>
         </div>
       </form>
+      <Transition appear show={deleteModalOpen} as={Fragment}>
+        <Dialog
+          as="div"
+          className="fixed inset-0 z-50 overflow-y-auto"
+          onClose={() => setDeleteModalOpen(false)}
+        >
+          <div className="min-h-screen px-4 text-center">
+            <Transition.Child
+              as={Fragment}
+              enter="ease-out duration-300"
+              enterFrom="opacity-0"
+              enterTo="opacity-100"
+              leave="ease-in duration-200"
+              leaveFrom="opacity-100"
+              leaveTo="opacity-0"
+            >
+              <Dialog.Overlay className="fixed inset-0 bg-black bg-opacity-70" />
+            </Transition.Child>
+
+            {/* This element is to trick the browser into centering the modal contents. */}
+            <span
+              className="inline-block h-screen align-middle"
+              aria-hidden="true"
+            >
+              &#8203;
+            </span>
+            <Transition.Child
+              as={Fragment}
+              enter="ease-out duration-300"
+              enterFrom="opacity-0 scale-95"
+              enterTo="opacity-100 scale-100"
+              leave="ease-in duration-200"
+              leaveFrom="opacity-100 scale-100"
+              leaveTo="opacity-0 scale-95"
+            >
+              <div className="inline-block w-full max-w-md p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl">
+                <Dialog.Title
+                  as="h3"
+                  className="text-lg font-medium leading-6 text-gray-900 font-marianne"
+                >
+                  Supprimer #{props.slug}
+                </Dialog.Title>
+                <div className="mt-6">
+                  <p className="text-sm text-gray-500 font-spectral">
+                    Voulez-vous vraiment supprimer cette ressource ? Cette
+                    action est <strong>irréversible</strong>.
+                    <br />
+                    {`Les commentaires et les "J'aime" associés seront également supprimés.`}
+                  </p>
+                </div>
+
+                <div className="inline-flex items-center justify-end w-full mt-4 space-x-3">
+                  <button
+                    type="button"
+                    className="btn-red"
+                    onClick={deleteResource}
+                  >
+                    <TrashIcon className="w-4 h-4 mr-2" />
+                    Supprimer
+                  </button>
+                  <button
+                    type="button"
+                    className="btn-gray"
+                    onClick={() => setDeleteModalOpen(false)}
+                  >
+                    <XIcon className="w-4 h-4 mr-2" />
+                    Fermer
+                  </button>
+                </div>
+              </div>
+            </Transition.Child>
+          </div>
+        </Dialog>
+      </Transition>
     </AppLayout>
   );
 };
@@ -753,11 +849,29 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     };
   }
   try {
+    let parsedUser = JSON.parse(user);
     const res = await fetch(
       "http://localhost:3000/api/resource/" + context.params.slug
     );
     const body = await res.json();
-    const resource: Resource[] = body?.data?.attributes;
+    const resource: Resource = body?.data?.attributes;
+
+    if (!resource) {
+      return {
+        redirect: {
+          permanent: false,
+          destination: "/resource",
+        },
+      };
+    }
+
+    if (resource.owner.uid !== parsedUser?.data.uid)
+      return {
+        redirect: {
+          permanent: false,
+          destination: "/channel",
+        },
+      };
 
     const users = await (await fetch("http://localhost:3000/api/user")).json();
 

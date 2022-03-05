@@ -19,7 +19,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   }
 
   try {
-    const { description, members, name, photoURL, visibility } = req.body;
+    const { description, members, name, visibility } = req.body;
 
     if (!description || !name || !members || members.length < 1) {
       res.status(400).json({
@@ -59,7 +59,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         {
           fullName: user.fullName,
           photoURL: user.photoURL,
-          uid: user._id,
+          uid: user._id.toString(),
         },
       ],
       visibility,
@@ -67,7 +67,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       owner: {
         fullName: user.fullName,
         photoURL: user.photoURL,
-        uid: user._id,
+        uid: user._id.toString(),
       },
     });
 

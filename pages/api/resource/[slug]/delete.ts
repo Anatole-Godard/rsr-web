@@ -4,11 +4,9 @@ import User from "@models/User";
 import withDatabase from "@middleware/mongoose";
 import { handleError } from "@utils/handleError";
 import { withAuth } from "@middleware/auth";
+import Notification from "@models/Notification";
 
-async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
+async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
     if (req.method !== "DELETE") {
       res.status(405).json({
@@ -39,8 +37,8 @@ async function handler(
       slug: req.headers.uid,
     }).lean();
 
-    if (user.role === "user" || user.role === "moderator"){
-      if (resource.owner.uid !== req.headers.uid ) {
+    if (user.role === "user" || user.role === "moderator") {
+      if (resource.owner.uid !== req.headers.uid) {
         res.status(403).json({
           data: null,
           error: {
@@ -56,11 +54,21 @@ async function handler(
       slug: req.query.slug,
     }).lean();
 
+    // remove notifications
+
+    const notificationsDeleted = await Notification.deleteMany({
+      "document.slug": req.query.slug,
+      $or: [{ type: "like" }, { type: "comment" }],
+    });
+
     res.status(200).json({
       data: {
         type: "resource",
         id: resource._id,
         attributes: resource,
+        extra: {
+          notifications: notificationsDeleted,
+        },
       },
     });
   } catch (err) {

@@ -3,7 +3,6 @@ import { Sidebar } from "components/sidebar/Sidebar";
 import React from "react";
 
 import { motion } from "framer-motion";
-import { Toasts } from "@components/helpers/Toasts";
 
 const variants = {
   hidden: { opacity: 0, x: -200, y: 0 },

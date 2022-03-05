@@ -116,7 +116,7 @@ export const NotificationsDropdown = () => {
                   </div>
                 ) : (
                   <div className="flex items-center justify-center w-full h-24">
-                    <p className="text-spectral">
+                    <p className="font-spectral">
                       Une erreur est survenue lors de la récupération des
                       données
                     </p>
@@ -124,12 +124,17 @@ export const NotificationsDropdown = () => {
                 )
               ) : (
                 <div className="flex items-center justify-center w-full h-24">
-                  <p className="text-spectral">Chargement...</p>
+                  <p className="font-spectral">Chargement...</p>
                 </div>
               )}
 
               <div className="inline-flex items-center justify-between w-full px-4 py-2 text-xs text-gray-400 font-marianne">
-                Notifications
+                <span className="inline-flex items-center">
+                  Notifications
+                  <span className="bg-gray-100 h-4 w-4 flex justify-center items-center text-gray-800 text-[0.55rem] font-semibold ml-2 rounded-full dark:bg-gray-700 dark:text-gray-300">
+                    {notifications.length}
+                  </span>
+                </span>
                 {notifications.length > 0 && (
                   <button
                     // onClick={readAllNotifications}
@@ -142,13 +147,22 @@ export const NotificationsDropdown = () => {
               </div>
 
               <div className="flex flex-col px-3 lg:px-6">
-                {notifications.map((e, i) => (
-                  <NotificationComponent
-                    key={i}
-                    {...e}
-                    remove={removeNotification}
-                  />
-                ))}
+                {notifications
+                  .sort(
+                    (a, b) =>
+                      new Date(b.createdAt.toString()).getTime() -
+                      new Date(a.createdAt.toString()).getTime()
+                  )
+                  .map(
+                    (e, i) =>
+                      i < 3 && (
+                        <NotificationComponent
+                          key={i}
+                          {...e}
+                          remove={removeNotification}
+                        />
+                      )
+                  )}
               </div>
             </Menu.Items>
           </Transition>
@@ -222,7 +236,7 @@ const NotificationComponent = ({
       role="alert"
     >
       <div className="flex items-start justify-between w-full">
-        <div className="inline-flex items-start">
+        <div className="inline-flex items-start pl-2">
           <div className="relative inline-block shrink-0">
             {emitter && (
               <>
@@ -316,12 +330,12 @@ const ChannelComponent = (props: ChannelComponentProps) => {
         <div className="relative flex items-center justify-center w-16 h-16 m-1 mr-2 text-xl text-white rounded-full">
           {props.image ? (
             <img
-              className="rounded-full bg-bleuFrance-50 ring-2 ring-offset-2 ring-bleuFrance-200"
+              className="w-16 h-16 rounded-full bg-bleuFrance-50 ring-2 ring-offset-2 ring-bleuFrance-200"
               alt={props.slug || "?"}
               src={props.image.url}
             />
           ) : (
-            <span className="flex items-center justify-center w-16 h-16 p-5 rounded-full text-bleuFrance-500 bg-bleuFrance-50 ring-2 ring-offset-2 ring-bleuFrance-200 dark:bg-bleuFrance-700">
+            <span className="flex items-center justify-center w-16 h-16 p-5 rounded-full text-bleuFrance-500 dark:text-bleuFrance-200 bg-bleuFrance-50 ring-2 ring-offset-2 ring-bleuFrance-200 dark:bg-bleuFrance-700">
               <UserGroupIcon className="w-8 h-8" />
             </span>
           )}

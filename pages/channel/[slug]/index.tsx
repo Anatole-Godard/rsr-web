@@ -44,7 +44,6 @@ const ChannelSlug: NextPage<any> = ({
     }
   }, [inputRef]);
 
-
   useEffect((): any => {
     const socket = io("http://localhost:3000", {
       path: `/api/channel/[slug]/socket`,
@@ -276,21 +275,27 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     await fetchRSR("http://localhost:3000/api/channel/", parsedUser?.session)
   ).json();
 
-  const channel = await (
-    await fetchRSR(
-      "http://localhost:3000/api/channel/" + context.params.slug,
-      parsedUser?.session
-    )
-  ).json();
+  const channel: Channel = (
+    await (
+      await fetchRSR(
+        "http://localhost:3000/api/channel/" + context.params.slug,
+        parsedUser?.session
+      )
+    ).json()
+  )?.data?.attributes;
+
+  if (!channel)
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/channel",
+      },
+    };
 
   return {
     props: {
       sideBarChannels: channels?.data?.attributes,
-      channel: channel?.data?.attributes,
+      channel,
     },
   };
 };
-
-/*
-
-*/
