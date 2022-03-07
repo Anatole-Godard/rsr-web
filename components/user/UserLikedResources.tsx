@@ -19,7 +19,7 @@ export const UserLikedResources = ({
   return (
     <div
       className={classes(
-        "flex flex-col  space-y-3 bg-white rounded-lg lg:col-span-1 xl:col-span-1 w-full overflow-hidden"
+        "flex flex-col  space-y-3 bg-white rounded-lg shadow lg:col-span-1 xl:col-span-1 w-full overflow-hidden"
       )}
     >
       <div className="inline-flex items-center justify-between w-full px-3 pt-4 mb-3">
