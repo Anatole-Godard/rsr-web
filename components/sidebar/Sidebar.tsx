@@ -29,7 +29,7 @@ export const Sidebar = () => {
         <SidebarTitle text="Profil" />
         <SidebarIcon
           icon={UserIcon}
-          active={pathname === "/user"}
+          active={pathname.includes("/user")}
           text="Profil"
           href="/user"
         />

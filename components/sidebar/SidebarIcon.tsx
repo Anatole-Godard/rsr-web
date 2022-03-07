@@ -68,15 +68,12 @@ export const SidebarIconXL = ({
           (active
             ? " dark:bg-red-800  text-bleuFrance-500 dark:text-red-100 dark:group-hover:bg-red-600 group-hover:bg-bleuFrance-600"
             : "dark:text-gray-100 text-gray-500 group-hover:bg-gray-600 ") +
-          " relative flex-row items-center w-12 h-8 transition-all duration-300 ease-linear bg-gray-50 cursor-pointer flex-shrink-0 dark:bg-gray-800 group-hover:text-white group-hover:rounded-lg rounded-lg flex xl:w-32"
+          " relative flex-row items-center w-12 h-8 transition-all duration-300 ease-linear cursor-pointer flex-shrink-0  group-hover:text-white group-hover:rounded-lg rounded-lg flex xl:w-32"
         }
       >
         <div className="inline-flex items-center justify-between w-full xl:w-10">
           {active ? (
-            <motion.span
-              layoutId={"activeIndicator"}
-              className="w-1 h-6 duration-300 rounded-r bg-bleuFrance-400 dark:bg-red-500 group-hover:bg-bleuFrance-100 dark:group-hover:bg-red-100"
-            ></motion.span>
+            <span className="w-px h-6 bg-transparent"></span>
           ) : (
             <span className="w-px h-px"></span>
           )}
