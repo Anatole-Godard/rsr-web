@@ -1,5 +1,6 @@
 import { AppLayout } from "@components/layouts/AppLayout";
 import { Channel } from "@definitions/Channel";
+import { UserMinimum } from "@definitions/User";
 import { Dialog, Transition } from "@headlessui/react";
 import { TrashIcon } from "@heroicons/react/outline";
 import {
@@ -37,7 +38,7 @@ const ChannelCreate: NextPage<any> = (props) => {
   );
 
   const [members, setMembers] = useState<
-    { value: string; label: string; photoURL: string }[]
+    { value: string; label: string; photoURL: string }[] | UserMinimum[]
   >(props.members?.filter((member: { uid: any }) => member.uid !== user?.uid));
   const [membersOptions, setMembersOptions] = useState<
     { value: string; label: string; photoURL: string }[]
@@ -96,10 +97,10 @@ const ChannelCreate: NextPage<any> = (props) => {
 
   // Form validations
   useEffect(() => {
-    if (name && description && members.length > 0) {
+    if (name && description && (members.length > 0 || !privateGroup)) {
       setValidForm(true);
     } else setValidForm(false);
-  }, [pictureUrl, name, description, members]);
+  }, [pictureUrl, name, description, members, privateGroup]);
 
   useEffect(() => {
     fetchRSR("/api/user/", user?.session)
@@ -220,42 +221,7 @@ const ChannelCreate: NextPage<any> = (props) => {
                 disabled
               ></input>
             </label>
-            <label>
-              <h4 className="mb-1 after:content-['*'] after:ml-0.5 after:text-red-500 text-sm font-semibold text-gray-700 font-marianne">
-                Membres
-              </h4>
-              <Select
-                name="members"
-                className="w-full"
-                isMulti
-                placeholder={
-                  <div className="text-sm font-semibold font-spectral">
-                    Qui souhaitez-vous inviter ?
-                  </div>
-                }
-                options={membersOptions.filter(
-                  (m) => m.value !== user?.data.uid
-                )}
-                formatOptionLabel={(member: {
-                  value: string;
-                  label: string;
-                  photoURL: string;
-                }) => (
-                  <div className="inline-flex items-center">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={member.photoURL}
-                      alt={member.label}
-                      className="w-5 h-5 mr-2 rounded-full"
-                    />
-                    <span className="text-xs font-marianne">
-                      {member.label}
-                    </span>
-                  </div>
-                )}
-                onChange={(value) => setMembers(value)}
-              />
-            </label>
+
             <label className="flex flex-col grow">
               <h4 className="mb-1 text-sm font-semibold text-gray-700 font-marianne">
                 Image du salon
@@ -338,6 +304,7 @@ const ChannelCreate: NextPage<any> = (props) => {
               <div className="inline-flex items-center my-2 space-x-3">
                 <input
                   type="checkbox"
+                  defaultChecked={privateGroup as unknown as boolean}
                   value={privateGroup as unknown as string}
                   onChange={(e) => setPrivateGroup(e.target.checked)}
                   className="w-4 h-4 duration-200 border-0 rounded-md appearance-none bg-amber-200 form-checkbox hover:bg-amber-400 dark:bg-amber-800 dark:hover:bg-amber-700 checked:bg-amber-600 checked:border-transparent focus:outline-none focus:bg-amber-400 dark:focus:bg-amber-900 ring-amber-500"
@@ -347,6 +314,49 @@ const ChannelCreate: NextPage<any> = (props) => {
                 </span>
               </div>
             </label>
+            {privateGroup && (
+              <label>
+                <h4 className="mb-1 after:content-['*'] after:ml-0.5 after:text-red-500 text-sm font-semibold text-gray-700 font-marianne">
+                  Membres
+                </h4>
+                <Select
+                  name="members"
+                  className="w-full"
+                  value={members.map((member) => ({
+                    value: member.uid,
+                    label: member.fullName,
+                    photoURL: member.photoURL,
+                  }))}
+                  isMulti
+                  placeholder={
+                    <div className="text-sm font-semibold font-spectral">
+                      Qui souhaitez-vous inviter ?
+                    </div>
+                  }
+                  options={membersOptions.filter(
+                    (m) => m.value !== user?.data.uid
+                  )}
+                  formatOptionLabel={(member: {
+                    value: string;
+                    label: string;
+                    photoURL: string;
+                  }) => (
+                    <div className="inline-flex items-center">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={member.photoURL}
+                        alt={member.label}
+                        className="w-5 h-5 mr-2 rounded-full"
+                      />
+                      <span className="text-xs font-marianne">
+                        {member.label}
+                      </span>
+                    </div>
+                  )}
+                  onChange={(value) => setMembers(value)}
+                />
+              </label>
+            )}
             <label className="flex flex-col grow">
               <h4 className="mb-1 text-sm font-semibold after:content-['*'] after:ml-0.5 after:text-red-500 text-gray-700 font-marianne">
                 Description du salon

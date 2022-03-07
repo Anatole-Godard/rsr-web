@@ -149,6 +149,7 @@ const ChatOverview = ({
   active = false,
   members = [],
   position = null,
+  visibility
 }: {
   slug: string;
   name: string;
@@ -156,6 +157,7 @@ const ChatOverview = ({
   active?: boolean;
   members: UserMinimum[];
   position?: "first" | "last";
+  visibility: "public" | "private";
 }) => {
   //TODO: replace a by Link but still doing getServerSideProps even if already on channel/[slug]
   return (
@@ -187,9 +189,15 @@ const ChatOverview = ({
         <h3 className="text-sm text-gray-700 truncate select-none font-marianne dark:text-gray-300">
           {name}
         </h3>
-        <h4 className="hidden mt-1 text-xs text-gray-500 truncate select-none md:block font-spectral">
-          {members.length} {members.length < 1 ? "membre" : "membres"}
-        </h4>
+        {visibility === "public" ? (
+          <h4 className="hidden mt-1 text-xs text-gray-500 truncate select-none md:block font-spectral">
+            Groupe public
+          </h4>
+        ) : (
+          <h4 className="hidden mt-1 text-xs text-gray-500 truncate select-none md:block font-spectral">
+            Privé - {members.length} {members.length < 1 ? "membre" : "membres"}
+          </h4>
+        )}
       </div>
     </a>
   );
