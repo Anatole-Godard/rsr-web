@@ -16,7 +16,7 @@ export const Navbar: React.FC<any> = () => {
   return (
     <div
       className={classes(
-        "inline-flex items-center fixed top-0 justify-between w-full md:w-[calc(100vw-4rem)] z-40 h-16 px-12 m-0 bg-white dark:bg-black"
+        "inline-flex items-center fixed top-0 justify-between w-full md:w-[calc(100vw-4rem)] z-40 h-16 px-12 m-0 bg-white dark:bg-black xl:w-[calc(100vw-10rem)]"
       )}
     >
       <Logo />

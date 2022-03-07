@@ -3,11 +3,13 @@ import {
   CogIcon,
   HomeIcon,
   LibraryIcon,
+  PlusIcon,
+  UserIcon,
   // ShoppingBagIcon,
 } from "@heroicons/react/outline";
 import { useAuth } from "@hooks/useAuth";
 import { useRouter } from "next/router";
-import { SidebarIcon } from "./SidebarIcon";
+import { SidebarIcon, SidebarIconXL } from "./SidebarIcon";
 
 export const Sidebar = () => {
   const router = useRouter();
@@ -24,21 +26,51 @@ export const Sidebar = () => {
           text="Accueil"
         />
         <Divider />
+        <SidebarTitle text="Profil" />
+        <SidebarIcon
+          icon={UserIcon}
+          active={pathname === "/user"}
+          text="Profil"
+          href="/user"
+        />
+        <SidebarIconXL
+          icon={CogIcon}
+          active={pathname.includes("/user/settings")}
+          text="Paramètres"
+          href="/user/settings"
+        />
+        <DividerXL />
+        <SidebarTitle text="Ressources" />
         <SidebarIcon
           icon={LibraryIcon}
           active={pathname.includes("/resource")}
           text="Bibliothèque"
           href="/resource"
         />
+        <SidebarIconXL
+          icon={PlusIcon}
+          active={pathname.includes("/resource/create")}
+          text="Créer une ressource"
+          href="/resource/create"
+        />
+        <DividerXL />
+        <SidebarTitle text="Salons" />
         <SidebarIcon
           icon={ChatIcon}
           active={pathname.includes("/channel")}
           text="Salons"
           href="/channel"
         />
+        <SidebarIconXL
+          icon={PlusIcon}
+          active={pathname.includes("/channel/create")}
+          text="Créer un salon"
+          href="/channel/create"
+        />
       </div>
       {user &&
-        (user.session.role === "admin" || user.session.role === "superadmin") && (
+        (user.session.role === "admin" ||
+          user.session.role === "superadmin") && (
           <div className="mb-4">
             <SidebarIcon
               icon={CogIcon}
@@ -53,3 +85,10 @@ export const Sidebar = () => {
 };
 
 const Divider = () => <hr className="sidebar-hr" />;
+const DividerXL = () => <hr className="hidden sidebar-hr xl:flex" />;
+
+const SidebarTitle = ({ text }) => (
+  <h4 className="pl-2.5 my-2 text-xs hidden xl:flex text-gray-400 dark:text-gray-600 font-marianne">
+    {text}
+  </h4>
+);

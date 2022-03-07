@@ -189,7 +189,7 @@
   }
 
   .sidebar-hr {
-    @apply mx-2 bg-gray-200 border border-gray-200 rounded-full dark:bg-gray-800 dark:border-gray-800;
+    @apply mx-3 bg-gray-200 border border-gray-100 rounded-full dark:bg-gray-800 dark:border-gray-800;
   }
 
   .top-navigation-icon {
