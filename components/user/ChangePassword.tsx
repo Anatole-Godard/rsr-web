@@ -1,3 +1,4 @@
+import { CheckIcon } from "@heroicons/react/outline";
 import { useAuth } from "@hooks/useAuth";
 import { fetchRSR } from "@utils/fetchRSR";
 import Image from "next/image";
@@ -55,7 +56,7 @@ export const ChangePassword = () => {
   };
 
   return (
-    <div className="flex flex-col p-4 space-y-3 bg-white rounded-lg">
+    <div className="flex flex-col row-span-2 p-4 space-y-3 bg-white rounded-lg shadow">
       <div className="inline-flex items-center justify-between w-full mb-3">
         <h5 className="font-bold text-gray-900 font-marianne">
           Changement de mot de passe
@@ -71,7 +72,7 @@ export const ChangePassword = () => {
         </div>
       </div>
       <label>
-        <h4 className="mb-1 after:content-['*'] after:ml-0.5 after:text-red-500 text-sm font-semibold text-gray-700 font-marianne">
+      <h4 className="mb-1 after:content-['*'] after:ml-0.5 after:text-red-500 text-xs font-medium text-gray-700 font-marianne">
           Ancien mot de passe
         </h4>
         <input
@@ -83,7 +84,7 @@ export const ChangePassword = () => {
         ></input>
       </label>
       <label>
-        <h4 className="mb-1 after:content-['*'] after:ml-0.5 after:text-red-500 text-sm font-semibold text-gray-700 font-marianne">
+        <h4 className="mb-1 after:content-['*'] after:ml-0.5 after:text-red-500 text-xs font-medium text-gray-700 font-marianne">
           Nouveau mot de passe
         </h4>
         <input
@@ -113,7 +114,7 @@ export const ChangePassword = () => {
         ></div>
       </div>
       <label>
-        <h4 className="mb-1 after:content-['*'] after:ml-0.5 after:text-red-500 text-sm font-semibold text-gray-700 font-marianne">
+      <h4 className="mb-1 after:content-['*'] after:ml-0.5 after:text-red-500 text-xs font-medium text-gray-700 font-marianne">
           Confirmer le nouveau mot de passe
         </h4>
         <input
@@ -164,7 +165,10 @@ export const ChangePassword = () => {
               />
             </svg>
           ) : (
-            <>Envoyer</>
+            <>
+              <CheckIcon className="w-4 h-4 mr-2" />
+              Envoyer
+            </>
           )}
         </button>
       </div>
