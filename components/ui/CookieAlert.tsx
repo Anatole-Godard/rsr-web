@@ -83,8 +83,8 @@ export const CookieAlert = () => {
               className={classes(
                 "inline-flex items-center w-full h-full pt-3 mt-3 select-none duration-500 transition-colors",
                 blur
-                  ? "border-blue-100 group-hover:border-blue-700"
-                  : "border-blue-700"
+                  ? "border-bleuFrance-100 group-hover:border-bleuFrance-700"
+                  : "border-bleuFrance-700"
               )}
             >
               <button
@@ -92,11 +92,11 @@ export const CookieAlert = () => {
                 className={classes(
                   "w-full mr-1.5 inline-flex justify-center items-center py-2 rounded-md text-sm font-spectral duration-500 transition-all",
                   blur
-                    ? "bg-bleuFrance bg-opacity-10 group-hover:bg-blue-300 hover:bg-opacity-40 active:bg-opacity-30 group-hover:bg-opacity-25 group-hover:text-white"
-                    : "bg-blue-300 bg-opacity-25 text-white hover:bg-opacity-40 active:bg-opacity-30"
+                    ? "bg-bleuFrance bg-opacity-10 group-hover:bg-bleuFrance-300 hover:bg-opacity-40 active:bg-opacity-30 group-hover:bg-opacity-25 group-hover:text-white"
+                    : "bg-bleuFrance-300 bg-opacity-25 text-white hover:bg-opacity-40 active:bg-opacity-30"
                 )}
               >
-                <ExternalLinkIcon className="w-4 h-4 mr-2 group-hover:text-white" />
+                <ExternalLinkIcon className="w-4 h-4 mr-2 transition-colors duration-300 group-hover:text-white" />
                 En savoir plus
               </button>
               <button
@@ -104,11 +104,11 @@ export const CookieAlert = () => {
                 className={classes(
                   "w-full ml-1.5 inline-flex justify-center items-center py-2 rounded-md text-sm font-spectral duration-500 transition-all",
                   blur
-                    ? "bg-bleuFrance bg-opacity-10 group-hover:bg-blue-300 hover:bg-opacity-40 active:bg-opacity-30 group-hover:bg-opacity-25 group-hover:text-white"
-                    : "bg-blue-300 bg-opacity-25 text-white hover:bg-opacity-40 active:bg-opacity-30"
+                    ? "bg-bleuFrance bg-opacity-10 group-hover:bg-bleuFrance-300 hover:bg-opacity-40 active:bg-opacity-30 group-hover:bg-opacity-25 group-hover:text-white"
+                    : "bg-bleuFrance-300 bg-opacity-25 text-white hover:bg-opacity-40 active:bg-opacity-30"
                 )}
               >
-                <XIcon className="w-4 h-4 mr-2 group-hover:text-white" />
+                <XIcon className="w-4 h-4 mr-2 transition-colors duration-300 group-hover:text-white" />
                 Ne plus afficher
               </button>
             </div>
