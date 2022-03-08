@@ -44,6 +44,7 @@ import { Event } from "@definitions/Resource/Event";
 
 import "react-nice-dates/build/style.css";
 import { DateRangePickerCalendar } from "react-nice-dates";
+import { ShowMoreText } from "@components/ui/ShowMore";
 
 const Map: any = dynamic(() => import("@components/map/Map") as any, {
   ssr: false,
@@ -110,9 +111,9 @@ const ResourceSlug: NextPage<any> = ({
         {/* 2xl:sticky 2xl:top-0 z-[47] */}
         <div className="flex flex-col w-full px-6 py-6 bg-white border-b border-gray-200 lg:px-24 dark:bg-black dark:border-gray-800">
           <div className="flex flex-col space-y-3 font-spectral lg:h-10 lg:items-center lg:flex-row lg:space-x-3 lg:space-y-0">
-            <div className="flex items-center text-sm text-gray-500 transition duration-200 hover:text-gray-700 dark:text-gray-400">
+            <div className="flex items-center pr-3 text-sm text-gray-500 transition duration-200 border-gray-400 lg:border-r hover:text-gray-700 dark:text-gray-400">
               <Link href="/resource">
-                <a className="inline-flex pr-3 border-gray-400 lg:border-r btn-text-gray">
+                <a className="inline-flex btn-text-gray">
                   <ChevronLeftIcon className="w-5 h-5 mr-1" />
                   Retour
                 </a>
@@ -181,7 +182,18 @@ const ResourceSlug: NextPage<any> = ({
             </div>
           </div>
           <div className="w-full pt-2 pb-2 text-sm prose text-justify text-gray-500 font-spectral dark:text-gray-400">
-            {description}
+            <ShowMoreText
+              /* Default options */
+              lines={3}
+              more="Voir plus"
+              less="Voir moins"
+              className="w-full"
+              anchorClass="text-bleuFrance-500 dark:text-bleuFrance-300 underline"
+              expanded={false}
+              truncatedEndingComponent={"... "}
+            >
+              {description}
+            </ShowMoreText>
           </div>
           <div className="inline-flex pt-3 -ml-2 overflow-x-hidden md:pt-0">
             <ChipList
@@ -400,8 +412,8 @@ const ExternalLinkView = ({ attributes, slug }: ExternalLinkViewProps) => {
             <p className="text-lg font-spectral">Lien externe</p>
             {!attributes.properties.image && (
               <p className="pt-2 mx-12 mt-2 text-sm text-center border-t border-amber-500 text-amber-600 dark:text-amber-400 font-spectral">
-              {"Aucune image n'est disponible pour cette ressource"}
-            </p>
+                {"Aucune image n'est disponible pour cette ressource"}
+              </p>
             )}
           </div>
         )}
