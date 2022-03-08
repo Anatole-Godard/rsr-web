@@ -136,7 +136,7 @@ export const ChangePassword = () => {
             onChange={(e) => setDisconnectAll(e.target.checked)}
             className="w-4 h-4 duration-200 bg-green-200 border-0 rounded-md appearance-none form-checkbox hover:bg-green-400 dark:bg-green-800 dark:hover:bg-green-700 checked:bg-green-600 checked:border-transparent focus:outline-none focus:bg-green-400 dark:focus:bg-green-900 ring-green-500"
           />
-          <span className="text-sm font-semibold text-gray-700 font-spectral dark:text-gray-300">
+          <span className="mb-0.5 text-xs font-normal text-gray-700 font-marianne dark:text-gray-300">
             Déconnecter de tout les appareils
           </span>
         </div>

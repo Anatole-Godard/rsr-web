@@ -8,6 +8,7 @@ import { useAuth } from "@hooks/useAuth";
 import { NextPage } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import { RetrieveAccount } from "@components/user/RetrieveAccount";
 
 const UserIndexPage: NextPage<any> = () => {
   const { user } = useAuth();
@@ -45,6 +46,7 @@ const UserIndexPage: NextPage<any> = () => {
               <ChangePassword />
               <SessionsViewer />
               <DisableAccount />
+              <RetrieveAccount />
             </div>
           )}
         </div>
