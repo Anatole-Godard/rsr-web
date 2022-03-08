@@ -16,10 +16,12 @@ export const Navbar: React.FC<any> = () => {
   return (
     <div
       className={classes(
-        "inline-flex items-center fixed top-0 justify-between w-full md:w-[calc(100vw-4rem)] z-40 h-16 px-12 m-0 bg-white dark:bg-black xl:w-[calc(100vw-10rem)]"
+        "inline-flex items-center fixed top-0 justify-between w-full md:w-[calc(100vw-4rem)] z-40 h-16 px-4 xl:px-12 m-0 bg-white dark:bg-black xl:w-[calc(100vw-12rem)]"
       )}
     >
-      <Logo />
+      <div className="flex pr-4 md:hidden">
+        <Logo />
+      </div>
       <Search query={query} setQuery={setQuery} />
       <div className="inline-flex items-center justify-end pl-6 space-x-4 lg:w-56 shrink-0 lg:pl-0 ">
         {/* <ThemeIcon /> */}
@@ -46,7 +48,6 @@ const Search = ({ query, setQuery }) => {
   return (
     <form className="w-full" onSubmit={(e) => post(e)}>
       <label className="relative w-full text-gray-400 focus-within:text-gray-600 md:w-3/5">
-        
         <HISearchIcon className="absolute w-4 h-4 duration-300 transform -translate-y-1/2 pointer-events-none top-1/2 left-3" />
         <input
           id="search"

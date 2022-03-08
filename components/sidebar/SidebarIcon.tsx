@@ -1,8 +1,13 @@
+import { QuestionMarkCircleIcon } from "@heroicons/react/outline";
 import { motion } from "framer-motion";
 import Link from "next/link";
 
+const handleIconIsNotAFunction = ({ className }) => (
+  <QuestionMarkCircleIcon className={className} />
+);
+
 export const SidebarIcon = ({
-  icon,
+  icon = handleIconIsNotAFunction,
   text = "tooltip 💡",
   active = false,
   href,
@@ -51,7 +56,7 @@ export const SidebarIcon = ({
 );
 
 export const SidebarIconXL = ({
-  icon,
+  icon = handleIconIsNotAFunction,
   text = "tooltip 💡",
   active = false,
   href,
@@ -80,7 +85,7 @@ export const SidebarIconXL = ({
           {icon({ className: "flex-shrink-0 w-5 h-5" })}
           <span className="w-px h-px"></span>
         </div>
-        <span className="hidden mt-px text-xs truncate xl:block font-spectral">
+        <span className="hidden mt-px text-xs truncate xl:block font-spectral xl:pr-3">
           {text}
         </span>
       </div>

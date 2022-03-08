@@ -1,9 +1,11 @@
+import { Logo } from "@components/ui/Logo";
 import {
   ChatIcon,
   CogIcon,
   HomeIcon,
   LibraryIcon,
   PlusIcon,
+  UserAddIcon,
   UserIcon,
   // ShoppingBagIcon,
 } from "@heroicons/react/outline";
@@ -17,8 +19,11 @@ export const Sidebar = () => {
   const { user } = useAuth();
 
   return (
-    <div className="h-full z-[41] fixed flex-col hidden px-2 bg-white shadow-lg top-0 md:flex min-w-max dark:bg-black dark:border-r dark:border-gray-900 justify-between pt-12">
+    <div className="h-full z-[41] fixed flex-col hidden px-2 bg-white shadow-lg top-0 md:flex min-w-max dark:bg-black dark:border-r dark:border-gray-900 justify-between pt-5">
       <div>
+        <div className="mb-6">
+          <Logo />
+        </div>
         <SidebarIcon
           icon={HomeIcon}
           active={pathname === "/"}
@@ -27,18 +32,37 @@ export const Sidebar = () => {
         />
         <Divider />
         <SidebarTitle text="Profil" />
-        <SidebarIcon
-          icon={UserIcon}
-          active={pathname.includes("/user")}
-          text="Profil"
-          href="/user"
-        />
-        <SidebarIconXL
-          icon={CogIcon}
-          active={pathname.includes("/user/settings")}
-          text="Paramètres"
-          href="/user/settings"
-        />
+        {user ? (
+          <>
+            <SidebarIcon
+              icon={UserIcon}
+              active={pathname.includes("/user")}
+              text="Profil"
+              href="/user"
+            />
+            <SidebarIconXL
+              icon={CogIcon}
+              active={pathname.includes("/user/settings")}
+              text="Paramètres"
+              href="/user/settings"
+            />
+          </>
+        ) : (
+          <>
+            <SidebarIcon
+              icon={UserIcon}
+              active={false}
+              text="Se connecter"
+              href="/auth/login"
+            />
+            <SidebarIcon
+              icon={UserAddIcon}
+              active={false}
+              text="Créer un compte"
+              href="/auth/register"
+            />
+          </>
+        )}
         <DividerXL />
         <SidebarTitle text="Ressources" />
         <SidebarIcon
