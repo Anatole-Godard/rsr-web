@@ -27,38 +27,33 @@ export const HeroSection = () => {
   return (
     <main>
       <div>
-        <div className="pt-8 overflow-hidden sm:pt-12 lg:relative lg:py-24">
+        <div className="pt-3 overflow-hidden sm:pt-6 lg:relative lg:py-16">
           <div className="max-w-md px-4 mx-auto sm:max-w-3xl sm:px-6 lg:px-8 lg:max-w-7xl lg:grid lg:grid-cols-2 lg:gap-24">
             <div className="">
               <Image
                 src="/img/ministere.png"
                 alt="Ministère de la santé et de la solidarité"
-                width={215}
-                height={184}
+                width={175 / 1.3}
+                height={150 /1.3}
               />
-              <div>
-                {/* <Link href="/blog/latest"> */}
+              {/* <div>
                   <a className="inline-flex space-x-4 font-spectral">
                     <span className="rounded bg-bleuFrance  px-2.5 py-1 text-xs font-semibold text-white tracking-wide uppercase">
                       {"Quoi de neuf ?"}
                     </span>
                     <span className="inline-flex items-center space-x-1 text-sm font-medium text-bleuFrance-500 dark:text-bleuFrance-300">
                       <span>Notre première release est disponible 🎉</span>
-                      {/* <ChevronRightIcon
-                        className="w-5 h-5"
-                        aria-hidden="true"
-                      /> */}
+                      
                     </span>
                   </a>
-                {/* </Link> */}
-              </div>
+              </div> */}
               <div className="mt-6 sm:max-w-xl">
                 <h1 className="text-4xl font-extrabold tracking-tight text-gray-900 font-marianne dark:text-gray-100 sm:text-5xl">
                   {"Tissons des liens "}
                   <span className="text-bleuFrance-500 dark:text-bleuFrance-400">ense</span>
                   <span className="text-rougeMarianne-500">mble</span>
                 </h1>
-                <p className="mt-6 text-lg text-justify text-gray-500 font-spectral dark:text-gray-400">
+                <p className="mt-6 text-justify text-gray-500 text-md font-spectral dark:text-gray-400">
                   Entrez dans un salon de discussion, discutez, échangez,
                   partagez vos idées, vos expériences, vos projets, vos
                   réflexions.
@@ -108,8 +103,8 @@ export const HeroSection = () => {
                 </svg>
               </div>
               <div className="relative pl-4 -mr-40 sm:mx-auto sm:max-w-3xl sm:px-0 lg:max-w-none lg:h-full lg:pl-12">
-                <div className="w-full rounded-md shadow-xl ring-1 ring-black ring-opacity-5 lg:h-full lg:w-auto ">
-                  <Image
+                <div className="w-full rounded-md shadow bg-gray-50 ring-1 ring-black ring-opacity-5 lg:h-full lg:w-auto ">
+                  {/* <Image
                     className="rounded-md lg:rounded-l-xl lg:rounded-r-none "
                     src="/img/bg/hero.jpg"
                     alt="Hero banner"
@@ -118,7 +113,7 @@ export const HeroSection = () => {
                     blurDataURL={`data:image/svg+xml;base64,${toBase64(
                       shimmer(700, 475)
                     )}`}
-                  />
+                  /> */}
                 </div>
               </div>
             </div>

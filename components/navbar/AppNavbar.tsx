@@ -23,7 +23,7 @@ export const Navbar: React.FC<any> = () => {
         <Logo />
       </div>
       <Search query={query} setQuery={setQuery} />
-      <div className="inline-flex items-center justify-end pl-6 space-x-4 lg:w-56 shrink-0 lg:pl-0 ">
+      <div className="inline-flex items-center justify-end pl-6 space-x-4 shrink-0 ">
         {/* <ThemeIcon /> */}
         <NotificationsDropdown key={uuidv4()} />
         <SidebarDropdown key={uuidv4()} />
