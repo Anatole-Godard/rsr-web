@@ -45,7 +45,7 @@ export default function Register() {
     <GuestLayout>
       <div className="w-full max-w-sm mx-auto lg:w-96">
         <div>
-          <Logo className="inline-flex items-center text-5xl font-extrabold tracking-wider uppercase text-opacity-80" />
+          <Logo className="flex flex-col text-5xl font-extrabold tracking-wider uppercase text-opacity-80" />
           <h2 className="mt-6 text-3xl font-extrabold text-gray-900 font-marianne dark:text-gray-100">
             Se créer un compte RSR
           </h2>
@@ -92,7 +92,6 @@ export default function Register() {
 
           <div className="mt-6">
             <div className="space-y-4">
-              
               {step === 1 && (
                 <>
                   <div className="space-y-1">

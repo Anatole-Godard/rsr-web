@@ -17,7 +17,7 @@ export const SidebarAdmin = () => {
   const { pathname } = router;
 
   return (
-    <div className="h-full z-[41] fixed flex-col hidden px-2 bg-white shadow-lg top-0 md:flex min-w-max dark:bg-black dark:border-r dark:border-gray-900 justify-between pt-12">
+    <div className="h-full z-[41] fixed flex-col hidden px-2 bg-white shadow-lg top-0 md:flex min-w-max dark:bg-black dark:border-r dark:border-gray-900 justify-between pt-5">
       <div>
         <div className="mb-6">
           <Logo />

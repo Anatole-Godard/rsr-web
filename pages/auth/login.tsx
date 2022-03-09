@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
 import { Logo } from "@components/ui/Logo";
+import { UserCircleIcon } from "@heroicons/react/outline";
 
 export default function Login() {
   const { signIn } = useAuth();
@@ -14,7 +15,7 @@ export default function Login() {
     <GuestLayout>
       <div className="w-full max-w-sm mx-auto lg:w-96">
         <div>
-          <Logo className="inline-flex items-center text-5xl font-extrabold tracking-wider uppercase text-opacity-80" />
+          <Logo className="flex flex-col text-5xl font-extrabold tracking-wider uppercase text-opacity-80" />
 
           <h2 className="mt-6 text-3xl font-extrabold text-gray-900 font-marianne dark:text-gray-100">
             Connexion à RSR
@@ -61,7 +62,13 @@ export default function Login() {
           </div>
 
           <div className="mt-6">
-            <div className="space-y-4">
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                if (email && password) signIn(email, password);
+              }}
+              className="space-y-4"
+            >
               <div className="space-y-1">
                 <label
                   htmlFor="email"
@@ -124,7 +131,7 @@ export default function Login() {
                 <div className="text-sm">
                   <a
                     href="#"
-                    className="font-medium duration-150 text-bleuFrance-600 hover:text-bleuFrance-500"
+                    className="font-medium duration-150 font-spectral text-bleuFrance-600 hover:text-bleuFrance-500"
                   >
                     Mot de passe oublié ?
                   </a>
@@ -133,17 +140,16 @@ export default function Login() {
 
               <div>
                 <button
-                  onClick={() => {
-                    if (email && password) signIn(email, password);
-                  }}
+                  type="submit"
                   className="justify-center w-full btn-bleuFrance"
                 >
+                  <UserCircleIcon className="w-4 h-4 mr-2" />
                   Se connecter
                 </button>
               </div>
               <div className="inline-flex justify-between w-full my-1 text-sm">
                 <Link href="/auth/register">
-                  <a className="font-medium duration-150 text-bleuFrance-600 hover:text-bleuFrance-500">
+                  <a className="font-medium duration-150 font-spectral text-bleuFrance-600 hover:text-bleuFrance-500">
                     Se créer un compte
                   </a>
                 </Link>
@@ -154,7 +160,7 @@ export default function Login() {
                   Dev
                 </button> */}
               </div>
-            </div>
+            </form>
           </div>
         </div>
       </div>

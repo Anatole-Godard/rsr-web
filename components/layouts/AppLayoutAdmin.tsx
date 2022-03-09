@@ -26,7 +26,7 @@ export const AppLayoutAdmin: React.FC<any> = ({
           animate="enter" // Animated state to variants.enter
           exit="exit" // Exit state (used later) to variants.exit
           transition={{ type: "linear" }} // Set the transition to linear
-          className="relative flex flex-col max-h-full min-h-full h-[calc(100vh-4rem)] overflow-y-auto overflow-hidden top-16 grow"
+          className="relative flex flex-col h-screen max-h-full min-h-full overflow-hidden overflow-y-auto grow"
         >
           {children}
         </motion.div>

@@ -15,7 +15,7 @@ export const GuestLayout = ({ children }: { children: React.ReactNode }) => {
   );
   return (
     <div className="flex min-h-screen bg-white dark:bg-gray-900">
-      <div className="flex flex-col justify-center flex-1 px-4 py-12 sm:px-6 lg:flex-none dark:flex-auto lg:px-20 xl:px-24">
+      <div className="flex flex-col justify-center flex-1 px-4 py-12 shadow-lg sm:px-6 lg:flex-none dark:flex-auto lg:px-20 xl:px-24">
         {children}
       </div>
       <div className="relative flex-1 hidden w-0 lg:block dark:hidden">
@@ -25,6 +25,7 @@ export const GuestLayout = ({ children }: { children: React.ReactNode }) => {
           src={background}
           alt="GuestBackground"
         />
+        <div className="absolute inset-0 w-full h-full bg-black bg-opacity-80"></div>
       </div>
     </div>
   );
