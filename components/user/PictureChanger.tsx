@@ -1,9 +1,10 @@
+import { CheckIcon } from "@heroicons/react/outline";
 import { XIcon } from "@heroicons/react/solid";
 import { useAuth } from "@hooks/useAuth";
 import Image from "next/image";
 import { useState } from "react";
 
-export const ChangeProfilePicture = () => {
+export const PictureChanger = () => {
   const { user, changePicture } = useAuth();
 
   const [pictureUrl, setPictureUrl] = useState(null);
@@ -39,7 +40,7 @@ export const ChangeProfilePicture = () => {
   };
 
   return (
-    <div className="flex flex-col p-4 space-y-3 bg-white rounded-lg">
+    <div className="flex flex-col p-4 space-y-3 bg-white rounded-lg shadow">
       <div className="inline-flex items-center justify-between w-full mb-3">
         <h5 className="font-bold text-gray-900 font-marianne">
           Changement de photo de profil
@@ -56,7 +57,7 @@ export const ChangeProfilePicture = () => {
       </div>
       <div className="inline-flex items-center justify-center w-full grow">
         <div className="flex flex-col grow">
-          <h4 className="mb-1 text-sm font-semibold text-gray-700 font-marianne">
+        <h4 className="mb-1 text-xs font-medium text-gray-700 font-marianne">
             Ancienne photo
           </h4>
           <div className="relative w-auto h-24 lg:h-36 grow">
@@ -70,7 +71,7 @@ export const ChangeProfilePicture = () => {
         </div>
 
         <label className="flex flex-col grow">
-          <h4 className="mb-1 text-sm font-semibold text-gray-700 font-marianne">
+          <h4 className="mb-1 text-xs font-medium text-gray-700 font-marianne">
             Nouvelle photo
           </h4>
           {pictureUrl && (
@@ -145,6 +146,7 @@ export const ChangeProfilePicture = () => {
       </div>
       <div className="inline-flex justify-end w-full pt-3 mt-3">
         <button className="btn-green" onClick={post}>
+          <CheckIcon className="w-4 h-4 mr-2" />
           Envoyer
         </button>
       </div>

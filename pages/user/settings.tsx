@@ -1,21 +1,16 @@
 import { AppLayout } from "@components/layouts/AppLayout";
-import { UserLikedResources } from "@components/user/UserLikedResources";
-import { UserResources } from "@components/user/UserResources";
-import { Resource } from "@definitions/Resource";
-import { CogIcon } from "@heroicons/react/outline";
+import { ChangePassword } from "@components/user/ChangePassword";
+import { PictureChanger } from "@components/user/PictureChanger";
+import { DisableAccount } from "@components/user/DisableAccount";
+import { SessionsViewer } from "@components/user/SessionsViewer";
+import { ArrowLeftIcon } from "@heroicons/react/outline";
 import { useAuth } from "@hooks/useAuth";
-import { fetchRSR } from "@utils/fetchRSR";
 import { NextPage } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import { RetrieveAccount } from "@components/user/RetrieveAccount";
 
-const UserIndexPage: NextPage<any> = ({
-  resources,
-  likes,
-}: {
-  resources: Resource[];
-  likes: Resource[];
-}) => {
+const UserIndexPage: NextPage<any> = () => {
   const { user } = useAuth();
 
   return (
@@ -33,25 +28,25 @@ const UserIndexPage: NextPage<any> = ({
               />
             </div>
             <h3 className="ml-5 text-2xl font-extrabold text-gray-800 font-marianne dark:text-gray-200">
-              Votre
-              <span className="ml-1 text-bleuFrance-600 dark:text-bleuFrance-300">
-                profil
-              </span>
+              Paramètres
             </h3>
           </div>
 
-          <Link href="/user/settings">
+          <Link href="/user">
             <a className="btn-gray h-fit w-fit">
-              <CogIcon className="w-4 h-4 mr-2" />
-              Paramètres
+              <ArrowLeftIcon className="w-4 h-4 mr-2" />
+              Retour
             </a>
           </Link>
         </div>
         <div className="flex flex-col p-6 overflow-y-auto bg-gray-100 dark:bg-gray-900 grow xl:rounded-tl-xl">
           {user && (
             <div className="grid gap-6 lg:grid-cols-2 xl:grid-cols-3 h-fit">
-              <UserResources resources={resources} />
-              <UserLikedResources resources={likes} />
+              <PictureChanger />
+              <ChangePassword />
+              <SessionsViewer />
+              <DisableAccount />
+              <RetrieveAccount />
             </div>
           )}
         </div>
@@ -74,26 +69,7 @@ export const getServerSideProps = async (ctx) => {
       },
     };
 
-  const parsedUser = JSON.parse(user);
-
-  const resources = await (
-    await fetchRSR(
-      `http://localhost:3000/api/user/${parsedUser.data.uid}`,
-      parsedUser?.session
-    )
-  ).json();
-
-  const likes = await (
-    await fetchRSR(
-      `http://localhost:3000/api/user/${parsedUser.data.uid}/resources/likes`,
-      parsedUser?.session
-    )
-  ).json();
-
   return {
-    props: {
-      ...resources.data.attributes,
-      likes: likes?.data?.attributes || [],
-    },
+    props: {},
   };
 };
