@@ -3,6 +3,8 @@ import { ChevronRightIcon, StarIcon } from "@heroicons/react/solid";
 
 import Link from "next/link";
 import Image from "next/image";
+import { EyeIcon, PlusIcon, UserCircleIcon } from "@heroicons/react/outline";
+import { useAuth } from "@hooks/useAuth";
 
 const shimmer = (w, h) => `
 <svg width="${w}" height="${h}" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
@@ -24,6 +26,7 @@ const toBase64 = (str) =>
     : window.btoa(str);
 
 export const HeroSection = () => {
+  const { user } = useAuth();
   return (
     <main>
       <div>
@@ -33,8 +36,8 @@ export const HeroSection = () => {
               <Image
                 src="/img/ministere.png"
                 alt="Ministère de la santé et de la solidarité"
-                width={175 / 1.3}
-                height={150 /1.3}
+                width={175 / 1.4}
+                height={150 / 1.4}
               />
               {/* <div>
                   <a className="inline-flex space-x-4 font-spectral">
@@ -50,7 +53,9 @@ export const HeroSection = () => {
               <div className="mt-6 sm:max-w-xl">
                 <h1 className="text-4xl font-extrabold tracking-tight text-gray-900 font-marianne dark:text-gray-100 sm:text-5xl">
                   {"Tissons des liens "}
-                  <span className="text-bleuFrance-500 dark:text-bleuFrance-400">ense</span>
+                  <span className="text-bleuFrance-500 dark:text-bleuFrance-400">
+                    ense
+                  </span>
                   <span className="text-rougeMarianne-500">mble</span>
                 </h1>
                 <p className="mt-6 text-justify text-gray-500 text-md font-spectral dark:text-gray-400">
@@ -61,6 +66,29 @@ export const HeroSection = () => {
                   Tissez des liens entre vous et chaque citoyen grâce aux
                   ressources que vous trouverez sur le site.
                 </p>
+                <div className="flex items-center mt-6 space-x-3 sm:flex-row">
+                  <Link href="/resource">
+                    <a className="btn-bleuFrance">
+                      <EyeIcon className="w-4 h-4 mr-2" />
+                      Consulter les ressources
+                    </a>
+                  </Link>
+                  {user ? (
+                    <Link href="/resource/create">
+                      <a className="btn-gray">
+                        <PlusIcon className="w-4 h-4 mr-2" />
+                        Créer une ressource
+                      </a>
+                    </Link>
+                  ) : (
+                    <Link href="/auth/login">
+                      <a className="btn-gray">
+                        <UserCircleIcon className="w-4 h-4 mr-2" />
+                        Se connecter
+                      </a>
+                    </Link>
+                  )}
+                </div>
               </div>
             </div>
           </div>

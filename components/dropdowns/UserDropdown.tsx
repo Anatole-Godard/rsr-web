@@ -14,7 +14,11 @@ import {
   UserAddIcon,
 } from "@heroicons/react/outline";
 
-import { ArrowRightIcon, UserIcon } from "@heroicons/react/solid";
+import {
+  ArrowRightIcon,
+  UserCircleIcon,
+  UserIcon,
+} from "@heroicons/react/solid";
 
 import { useAuth } from "@hooks/useAuth";
 import { classes } from "@utils/classes";
@@ -70,7 +74,7 @@ export const UserDropdown = () => {
                     open ? "bg-bleuFrance-50" : "bg-bleuFrance-100 "
                   )}
                 >
-                  <UserIcon
+                  <UserCircleIcon
                     key="user_dropdown-icon"
                     className="w-4 h-4 lg:mr-1"
                   />
