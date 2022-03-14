@@ -11,6 +11,8 @@ import { useAuth } from "@hooks/useAuth";
 import { v4 as uuidv4 } from "uuid";
 import { Logo } from "@components/ui/Logo";
 
+const className = { className: "shrink-0 w-5 h-5" };
+
 export const SidebarAdmin = () => {
   const { user } = useAuth();
   const router = useRouter();
@@ -24,14 +26,14 @@ export const SidebarAdmin = () => {
         </div>
         <SidebarIcon
           key={uuidv4()}
-          icon={ArrowLeftIcon}
+          icon={<ArrowLeftIcon {...className} />}
           active={false}
           href="/"
           text="Retour à l'accueil"
         />
         <SidebarIcon
           key={uuidv4()}
-          icon={HomeIcon}
+          icon={<HomeIcon {...className} />}
           active={pathname === "/admin"}
           href="/admin"
           text="Tableau de bord"
@@ -40,7 +42,7 @@ export const SidebarAdmin = () => {
         <SidebarIcon
           key={uuidv4()}
           active={pathname === "/admin/resource"}
-          icon={DocumentTextIcon}
+          icon={<DocumentTextIcon {...className} />}
           text="Ressources"
           href="/admin/resource"
         />
@@ -50,7 +52,7 @@ export const SidebarAdmin = () => {
             <SidebarIcon
               key={uuidv4()}
               active={pathname === "/admin/user"}
-              icon={UserIcon}
+              icon={<UserIcon {...className} />}
               text="Utilisateurs"
               href="/admin/user"
             />
@@ -58,7 +60,7 @@ export const SidebarAdmin = () => {
         <SidebarIcon
           key={uuidv4()}
           active={pathname === "/admin/report"}
-          icon={ExclamationIcon}
+          icon={<ExclamationIcon {...className} />}
           text="Signalements"
           href="/admin/report"
         />

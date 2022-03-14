@@ -13,6 +13,8 @@ import { useAuth } from "@hooks/useAuth";
 import { useRouter } from "next/router";
 import { SidebarIcon, SidebarIconXL } from "./SidebarIcon";
 
+const className = { className: "shrink-0 w-5 h-5" };
+
 export const Sidebar = () => {
   const router = useRouter();
   const { pathname } = router;
@@ -25,7 +27,7 @@ export const Sidebar = () => {
           <Logo />
         </div>
         <SidebarIcon
-          icon={HomeIcon}
+          icon={<HomeIcon {...className} />}
           active={pathname === "/"}
           href="/"
           text="Accueil"
@@ -35,13 +37,13 @@ export const Sidebar = () => {
         {user ? (
           <>
             <SidebarIcon
-              icon={UserIcon}
+              icon={<UserIcon {...className} />}
               active={pathname.includes("/user")}
               text="Profil"
               href="/user"
             />
             <SidebarIconXL
-              icon={CogIcon}
+              icon={<CogIcon {...className} />}
               active={pathname.includes("/user/settings")}
               text="Paramètres"
               href="/user/settings"
@@ -50,13 +52,13 @@ export const Sidebar = () => {
         ) : (
           <>
             <SidebarIcon
-              icon={UserIcon}
+              icon={<UserIcon {...className} />}
               active={false}
               text="Se connecter"
               href="/auth/login"
             />
             <SidebarIcon
-              icon={UserAddIcon}
+              icon={<UserAddIcon {...className} />}
               active={false}
               text="Créer un compte"
               href="/auth/register"
@@ -66,13 +68,13 @@ export const Sidebar = () => {
         <DividerXL />
         <SidebarTitle text="Ressources" />
         <SidebarIcon
-          icon={LibraryIcon}
+          icon={<LibraryIcon {...className} />}
           active={pathname.includes("/resource")}
           text="Bibliothèque"
           href="/resource"
         />
         <SidebarIconXL
-          icon={PlusIcon}
+          icon={<PlusIcon {...className} />}
           active={pathname.includes("/resource/create")}
           text="Créer une ressource"
           href="/resource/create"
@@ -80,13 +82,13 @@ export const Sidebar = () => {
         <DividerXL />
         <SidebarTitle text="Salons" />
         <SidebarIcon
-          icon={ChatIcon}
+          icon={<ChatIcon {...className} />}
           active={pathname.includes("/channel")}
           text="Salons"
           href="/channel"
         />
         <SidebarIconXL
-          icon={PlusIcon}
+          icon={<PlusIcon {...className} />}
           active={pathname.includes("/channel/create")}
           text="Créer un salon"
           href="/channel/create"
@@ -97,7 +99,7 @@ export const Sidebar = () => {
           user.session.role === "superadmin") && (
           <div className="mb-4">
             <SidebarIcon
-              icon={CogIcon}
+              icon={<CogIcon {...className} />}
               active={pathname.includes("/admin")}
               text="Administration"
               href="/admin"
