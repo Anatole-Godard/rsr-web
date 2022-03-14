@@ -250,7 +250,7 @@ const ResourceSlug: NextPage<any> = ({
                   )
                 }
               >
-                Aperçu
+                Aperçu de la ressource
               </Tab>
               <Tab
                 className={({ selected }) =>

@@ -21,16 +21,23 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
     const { description, members, name, visibility } = req.body;
 
-    if (!description || !name || !members || members.length < 1) {
+    if (
+      !description ||
+      !name ||
+      (visibility === "private" && (!members || members.length < 1))
+    ) {
       res.status(400).json({
         data: null,
         error: {
           code: 400,
           message: "bad request",
           fields: {
-            description: !description,
-            members: !members || members.length < 1,
-            name: !name,
+            description: !description ? "missing" : description,
+            members:
+              visibility === "private" && (!members || members.length < 1)
+                ? "missing"
+                : members,
+            name: !name ? "missing" : name,
           },
         },
       });
