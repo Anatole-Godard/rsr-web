@@ -34,7 +34,7 @@ import { Tab } from "@headlessui/react";
 import { classes } from "@utils/classes";
 import { format, formatDistance } from "date-fns";
 import { fr } from "date-fns/locale";
-import { types } from "constants/resourcesTypes";
+import { types, visibilities } from "constants/resourcesTypes";
 import { AvatarGroup } from "@components/ui/AvatarGroup";
 import { GeoJSON_Point } from "@definitions/Resource/GeoJSON";
 import { ExternalLink } from "@definitions/Resource/ExternalLink";
@@ -59,6 +59,8 @@ const ResourceSlug: NextPage<any> = ({
   likes,
   tags,
   createdAt,
+  validated,
+  visibility,
 }: Resource) => {
   const [message, setMessage] = useState<string>("");
   const [newLikes, setNewLikes] = useState<UserMinimum[]>(likes || []);
@@ -110,8 +112,8 @@ const ResourceSlug: NextPage<any> = ({
       <section className="flex flex-col w-full bg-gray-100 h-fit dark:bg-gray-900">
         {/* 2xl:sticky 2xl:top-0 z-[47] */}
         <div className="flex flex-col w-full px-6 py-6 bg-white border-b border-gray-200 lg:px-24 dark:bg-black dark:border-gray-800">
-          <div className="flex flex-col space-y-3 font-spectral lg:h-10 lg:items-center lg:flex-row lg:space-x-3 lg:space-y-0">
-            <div className="flex items-center pr-3 text-sm text-gray-500 transition duration-200 border-gray-400 lg:border-r hover:text-gray-700 dark:text-gray-400">
+          <div className="flex flex-col space-y-3 lg:divide-x font-spectral lg:h-10 lg:items-center lg:flex-row lg:space-x-2 lg:space-y-0">
+            <div className="flex items-center text-sm text-gray-500 transition duration-200 border-gray-400 hover:text-gray-700 dark:text-gray-400">
               <Link href="/resource">
                 <a className="inline-flex btn-text-gray">
                   <ChevronLeftIcon className="w-5 h-5 mr-1" />
@@ -119,34 +121,43 @@ const ResourceSlug: NextPage<any> = ({
                 </a>
               </Link>
             </div>
-            <div className="flex items-center text-sm text-gray-500 transition duration-200 hover:text-gray-700 dark:text-gray-400">
+            <div className="flex items-center text-xs text-gray-500 transition duration-200 hover:text-gray-700 dark:text-gray-400">
               {types
                 .find((t) => t.value === data?.type)
-                ?.icon.outline({ className: "w-5 h-5 mr-1 shrink-0" })}
+                ?.icon.outline({ className: "w-4 h-4 mx-1 shrink-0" })}
               {types.find((t) => t.value === data?.type)?.label}
             </div>
 
-            <div className="items-center hidden text-sm text-gray-500 transition duration-200 lg:inline-flex hover:text-gray-700 dark:text-gray-400">
-              <CalendarIcon className="w-5 h-5 mr-1 shrink-0" />
+            <div className="items-center hidden text-xs text-gray-500 transition duration-200 lg:inline-flex hover:text-gray-700 dark:text-gray-400">
+              <CalendarIcon className="w-4 h-4 mx-1 shrink-0" />
               {formatDistance(new Date(createdAt), new Date(), {
                 addSuffix: true,
                 locale: fr,
               })}
             </div>
             {newLikes.length >= 1 ? (
-              <div className="items-center hidden text-sm text-gray-500 transition duration-200 lg:inline-flex hover:text-gray-700 dark:text-gray-400">
+              <div className="items-center hidden text-xs text-gray-500 transition duration-200 lg:inline-flex hover:text-gray-700 dark:text-gray-400">
                 <AvatarGroup users={newLikes} limit={5} />
-                <UsersIcon className="hidden lg:flex items-center fas fa-users flex-shrink-0 mx-1.5 h-5 w-5 " />
+                <UsersIcon className="hidden lg:flex items-center fas fa-users flex-shrink-0 mx-1.5 h-4 w-4 " />
                 {newLikes?.length || 0}{" "}
                 {newLikes?.length > 1 ? "personnes aiment" : "personne aime"}
               </div>
             ) : (
-              <div className="items-center hidden text-sm text-gray-500 transition duration-200 lg:inline-flex hover:text-gray-700 dark:text-gray-400">
-                <UsersIcon className="hidden lg:flex items-center fas fa-users flex-shrink-0 mx-1.5 h-5 w-5 " />
+              <div className="items-center hidden text-xs text-gray-500 transition duration-200 lg:inline-flex hover:text-gray-700 dark:text-gray-400">
+                <UsersIcon className="hidden lg:flex items-center fas fa-users flex-shrink-0 mx-1.5 h-4 w-4 " />
 
                 {"Personne n'aime pour l'instant"}
               </div>
             )}
+            <div className="items-center hidden text-xs text-gray-500 transition duration-200 lg:inline-flex hover:text-gray-700 dark:text-gray-400">
+              {visibilities
+                .find((v) => v.value === visibility)
+                ?.icon.outline({ className: "w-4 h-4 mx-1 shrink-0" })}
+              {visibilities.find((v) => v.value === visibility)?.label}
+            </div>
+            <div className="items-center hidden pl-1 text-xs text-gray-500 transition duration-200 lg:inline-flex hover:text-gray-700 dark:text-gray-400">
+              {validated ? "Validé" : "En attente de validation"}
+            </div>
           </div>
 
           <div className="lg:flex lg:items-center lg:justify-between">
@@ -181,15 +192,16 @@ const ResourceSlug: NextPage<any> = ({
               )}
             </div>
           </div>
-          <div className="w-full pt-2 pb-2 text-sm prose text-justify text-gray-500 font-spectral dark:text-gray-400">
+          <div className="inline-flex w-full pt-2 pb-2 text-sm prose text-justify text-gray-500 font-spectral dark:text-gray-400">
             <ShowMoreText
               /* Default options */
               lines={3}
               more="Voir plus"
               less="Voir moins"
-              className="w-full"
+              className="w-full grow"
               anchorClass="text-bleuFrance-500 dark:text-bleuFrance-300 underline"
               expanded={false}
+              
               truncatedEndingComponent={"... "}
             >
               {description}
