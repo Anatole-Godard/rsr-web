@@ -2,14 +2,12 @@
 import React from "react";
 import { Menu, Transition } from "@headlessui/react";
 import Link from "next/link";
-import {
-  DocumentTextIcon,
-  HomeIcon,
-  UserIcon,
-} from "@heroicons/react/outline";
+import { DocumentTextIcon, HomeIcon, UserIcon } from "@heroicons/react/outline";
 
 import { classes } from "@utils/classes";
 import { ChevronDownIcon } from "@heroicons/react/solid";
+
+const className = { className: "shrink-0 w-6 h-6" };
 
 export const SidebarDropdownAdmin = () => {
   return (
@@ -55,13 +53,21 @@ export const SidebarDropdownAdmin = () => {
                   Raccourcis
                 </div>
                 <div className="grid grid-cols-4 gap-4 p-4">
-                  <Shortcut href="/admin" icon={HomeIcon} name="Tableau de bord" />
+                  <Shortcut
+                    href="/admin"
+                    icon={<HomeIcon {...className} />}
+                    name="Tableau de bord"
+                  />
                   <Shortcut
                     href="/admin/resource"
-                    icon={DocumentTextIcon}
+                    icon={<DocumentTextIcon {...className} />}
                     name="Ressources"
                   />
-                  <Shortcut href="/admin/user" icon={UserIcon} name="Utilisateurs" />
+                  <Shortcut
+                    href="/admin/user"
+                    icon={<UserIcon {...className} />}
+                    name="Utilisateurs"
+                  />
                 </div>
               </>
             </Menu.Items>
@@ -76,7 +82,7 @@ const Shortcut = ({ href, icon, name }) => (
   <Link href={href}>
     <a className="flex flex-col items-center w-full h-full text-sm text-gray-700 group ">
       <div className="flex items-center justify-center w-12 h-12 p-4 duration-300 bg-gray-200 rounded-full group-hover:bg-gray-300 active:bg-gray-100">
-        {icon({ className: "w-6 h-6" })}
+        {icon}
       </div>
       <span className="mt-2 text-xs font-spectral">{name}</span>
     </a>

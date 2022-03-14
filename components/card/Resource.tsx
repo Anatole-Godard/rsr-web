@@ -71,7 +71,7 @@ export const ResourceCard = (props: Resource) => {
               <div className="z-10 flex flex-row items-center px-2 py-1 text-xs font-medium text-gray-200 truncate bg-gray-800 shadow-xl rounded-xl">
                 {visibilities
                   .find((v) => v.value === visibility)
-                  .icon.outline({ className: "w-3 h-3 mr-1" })}
+                  ?.icon.outline({ className: "w-3 h-3 mr-1" })}
                 {visibilities.find((v) => v.value === visibility).label}
                 <span className="hidden md:block">
                   {visibility === "unlisted" &&

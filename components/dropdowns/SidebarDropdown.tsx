@@ -2,14 +2,12 @@
 import React from "react";
 import { Menu, Transition } from "@headlessui/react";
 import Link from "next/link";
-import {
-  ChatIcon,
-  HomeIcon,
-  LibraryIcon,
-} from "@heroicons/react/outline";
+import { ChatIcon, HomeIcon, LibraryIcon } from "@heroicons/react/outline";
 
 import { classes } from "@utils/classes";
 import { ChevronDownIcon } from "@heroicons/react/solid";
+
+const className = { className: "shrink-0 w-6 h-6" };
 
 export const SidebarDropdown = () => {
   return (
@@ -62,13 +60,21 @@ export const SidebarDropdown = () => {
                   Raccourcis
                 </div>
                 <div className="inline-flex items-center w-full py-3 ">
-                  <Shortcut href="/" icon={HomeIcon} name="Accueil" />
+                  <Shortcut
+                    href="/"
+                    icon={<HomeIcon {...className} />}
+                    name="Accueil"
+                  />
 
-                  <Shortcut href="/channel" icon={ChatIcon} name="Salons" />
+                  <Shortcut
+                    href="/channel"
+                    icon={<ChatIcon {...className} />}
+                    name="Salons"
+                  />
 
                   <Shortcut
                     href="/resource"
-                    icon={LibraryIcon}
+                    icon={<LibraryIcon {...className} />}
                     name="Bibliothèque"
                   />
                 </div>
@@ -85,7 +91,7 @@ const Shortcut = ({ href, icon, name }) => (
   <Link href={href}>
     <a className="flex flex-col items-center w-16 h-full mx-4 text-sm text-gray-700 group">
       <div className="flex items-center justify-center w-12 h-12 p-4 duration-300 bg-gray-200 rounded-full group-hover:bg-gray-300 active:bg-gray-100">
-        {icon({ className: "w-6 h-6" })}
+        {icon}
       </div>
       <span className="mt-2 text-xs font-spectral">{name}</span>
     </a>
