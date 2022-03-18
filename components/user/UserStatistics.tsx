@@ -1,4 +1,78 @@
 import Image from "next/image";
+import {Line} from 'react-chartjs-2';
+import {
+    Chart,
+    ArcElement,
+    LineElement,
+    BarElement,
+    PointElement,
+    BarController,
+    BubbleController,
+    DoughnutController,
+    LineController,
+    PieController,
+    PolarAreaController,
+    RadarController,
+    ScatterController,
+    CategoryScale,
+    LinearScale,
+    LogarithmicScale,
+    RadialLinearScale,
+    TimeScale,
+    TimeSeriesScale,
+    Decimation,
+    Filler,
+    Legend,
+    Title,
+    Tooltip,
+    SubTitle
+} from 'chart.js';
+import {Resource} from "@definitions/Resource";
+import {useEffect, useState} from "react";
+import moment from "moment";
+
+Chart.register(
+    ArcElement,
+    LineElement,
+    BarElement,
+    PointElement,
+    BarController,
+    BubbleController,
+    DoughnutController,
+    LineController,
+    PieController,
+    PolarAreaController,
+    RadarController,
+    ScatterController,
+    CategoryScale,
+    LinearScale,
+    LogarithmicScale,
+    RadialLinearScale,
+    TimeScale,
+    TimeSeriesScale,
+    Decimation,
+    Filler,
+    Legend,
+    Title,
+    Tooltip,
+    SubTitle
+);
+
+export const UserStatistics = ({
+                                   resources,
+                                   user,
+                               }: { resources: Resource[]; user: any; }) => {
+
+    const MONTHS = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
+    const [totalResourceViews, setTotalResourceViews] = useState(0);
+    let count = 0;
+
+    useEffect(() => {
+        resources.forEach(resource => {
+            count += resource.seenBy.length;
+        });
+        setTotalResourceViews(count);
+    }, [resources]);
 
     const months = (config) => {
         const cfg = config || {};
@@ -25,7 +99,11 @@ import Image from "next/image";
             always: true,
             lineWeight: 1.5,
         },
-
+        scale: {
+            ticks: {
+                precision: 0
+            },
+        },
         animation: {
             duration: 1,
         },
@@ -38,10 +116,19 @@ import Image from "next/image";
         },
     };
 
+    const getStatistics = () => {
+        let data = Array(12).fill(0)
+        resources.filter(resource => {
+            let index = moment(resource.createdAt).month()
+            data[index]++
+        })
+        return data
+    }
+
     const data = {
         labels: months({count: 6}),
         datasets: [{
-            data: [65, 59, 80, 81, 56, 55, 40],
+            data: getStatistics(),
             fill: false,
             borderColor: 'rgb(75, 192, 192)',
             tension: 0.1
@@ -76,11 +163,12 @@ import Image from "next/image";
                     <h6 className="font-bold text-gray-900 font-marianne">
                         Ressources consultées
                     </h6>
-                    <p className="text-5xl text-gray-900 font-marianne">102</p>
+                    {/* TODO: change resources props to not filter only user's resources */}
+                    <p className="text-5xl text-gray-900 font-marianne">2</p>
                 </div>
                 <div className="">
                     <h6 className="font-bold text-gray-900 font-marianne">
-                        Total de vues des ressources
+                        Total des vues de vos ressources
                     </h6>
                     <p className="text-5xl text-gray-900 font-marianne">{totalResourceViews}</p>
                 </div>
@@ -103,6 +191,7 @@ import Image from "next/image";
                         </h6>
                     </div>
                     <div>
+                        {/* TODO: change resources props to not filter only user's resources (change data value) */}
                         <Line data={data} options={Config} width={400} height={200}/>
                     </div>
                 </div>

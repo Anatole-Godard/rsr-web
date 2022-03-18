@@ -23,6 +23,10 @@ const UserIndexPage: NextPage<any> = ({
   const { user } = useAuth();
   const [displayStats, setDisplayStats] = useState(false);
 
+  const statistics = () => {
+    setDisplayStats(!displayStats)
+  }
+
   return (
     <AppLayout>
       <div className="flex flex-col w-full h-full bg-white dark:bg-black ">
@@ -61,6 +65,7 @@ const UserIndexPage: NextPage<any> = ({
         <div className="flex flex-col p-6 overflow-y-auto bg-gray-100 dark:bg-gray-900 grow xl:rounded-tl-xl">
           {user && (
             <div className="grid gap-6 lg:grid-cols-2 xl:grid-cols-3 h-fit">
+              {displayStats && (<UserStatistics user={user} resources={resources}/>)}
               <UserResources resources={resources} />
               <UserLikedResources resources={likes} />
             </div>

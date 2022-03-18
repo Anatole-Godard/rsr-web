@@ -40,4 +40,5 @@ export type ResourceMinimum = {
   validated: boolean;
   visibility: "public" | "private" | "unlisted";
   members?: UserMinimum[];
+  seenBy: UserMinimum[];
 };
