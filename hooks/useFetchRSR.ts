@@ -60,6 +60,7 @@ function useFetchRSR<T = unknown>(
   };
 
   const [state, dispatch] = useReducer(fetchReducer, initialState);
+  const [data, setData] = useState<T>(null);
 
   useEffect(() => {
     // Do nothing if the url is not given
@@ -80,10 +81,11 @@ function useFetchRSR<T = unknown>(
           throw new Error(response.statusText);
         }
 
-        const data = (await response.json()) as T;
-        cache.current[url] = data;
+        const body = (await response.json()) as T;
+        cache.current[url] = body;
 
-        dispatch({ type: "fetched", payload: data });
+        dispatch({ type: "fetched", payload: body });
+        setData(body);
         if (cancelRequest.current) return;
       } catch (error) {
         dispatch({ type: "error", payload: error as Error });
@@ -109,7 +111,7 @@ function useFetchRSR<T = unknown>(
     }
   }, [propsURL, revalidate, url]);
 
-  return state;
+  return { ...state, data };
 }
 
 export default useFetchRSR;

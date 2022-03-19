@@ -2,13 +2,16 @@ import { Playlist } from "@definitions/Playlist";
 import { ResourceMinimum } from "@definitions/Resource";
 import { Menu, Transition } from "@headlessui/react";
 import {
+  CheckCircleIcon,
   ChevronDownIcon,
   CollectionIcon,
   PlusCircleIcon,
+  XIcon,
 } from "@heroicons/react/outline";
 import { useAuth } from "@hooks/useAuth";
 import useFetchRSR from "@hooks/useFetchRSR";
 import { classes } from "@utils/classes";
+import { fetchRSR } from "@utils/fetchRSR";
 import { Fragment, useState } from "react";
 
 export const PlaylistDropdown = ({
@@ -21,16 +24,37 @@ export const PlaylistDropdown = ({
     data: playlists,
     error,
     loading,
+    revalidate,
   }: {
     data?: { data: { attributes: Playlist } };
     error?: any;
     loading: boolean;
+    revalidate: () => void;
   } = useFetchRSR(
     `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000/api"}/user/${
       user.data.uid
     }/resources/playlists`,
     user.session
   );
+
+  const manage = async (playlistKey: string, action: "add" | "remove") => {
+    const res = await fetchRSR(
+      `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000/api"}/user/${
+        user.data.uid
+      }/resources/playlists/manage`,
+      user.session,
+      {
+        method: action === "add" ? "POST" : "DELETE",
+        body: JSON.stringify({
+          playlistKey,
+          resource,
+        }),
+      }
+    );
+    const body = await res.json();
+    console.log({ action, body });
+    revalidate();
+  };
 
   return (
     <Menu as="div" className="relative inline-block text-left">
@@ -43,8 +67,8 @@ export const PlaylistDropdown = ({
                 open && "bg-green-300 text-green-800"
               )}
             >
-              <CollectionIcon className="w-4 h-4 mr-1 shrink-0 lg:mr-2" />
-              Ajouter à la playlist
+              <CollectionIcon className="w-4 h-4 md:mr-1 shrink-0 lg:mr-2" />
+              <span className="hidden md:block">Ajouter à la playlist</span>
               <ChevronDownIcon
                 className={classes(
                   "w-4 h-4 ml-1 lg:ml-2 duration-200 transition-all",
@@ -62,27 +86,32 @@ export const PlaylistDropdown = ({
             leaveFrom="transform opacity-100 scale-100"
             leaveTo="transform opacity-0 scale-95"
           >
-            <Menu.Items className="absolute left-0 w-56 p-3 mt-2 origin-top-right bg-white rounded-md shadow lg:left-auto lg:right-0 ring-1 ring-black ring-opacity-5 focus:outline-none">
+            <Menu.Items className="absolute left-0 min-w-[16rem] w-full p-3 mt-2 origin-top-right bg-white rounded-md shadow lg:left-auto lg:right-0 ring-1 ring-black ring-opacity-5 focus:outline-none">
               {!error && !loading ? (
                 <>
-                  {playlists.data.attributes.keys.map(
+                  {playlists?.data.attributes.keys.map(
                     (key: string, index: number) => (
                       <PlaylistCheckbox
                         name={key}
                         inPlaylist={
                           (
-                            playlists.data.attributes[key] as ResourceMinimum[]
+                            playlists?.data.attributes[key] as ResourceMinimum[]
                           ).find((r) => r.slug === resource.slug) !== null
                         }
-                        onCheck={() => console.log("change state")}
+                        onCheck={(e) =>
+                          manage(
+                            key,
+                            e.currentTarget.checked ? "add" : "remove"
+                          )
+                        }
                         key={index}
                       />
                     )
                   )}
-                  {playlists.data.attributes.keys.length > 0 && (
+                  {playlists?.data.attributes.keys.length > 0 && (
                     <hr className="my-2 border-gray-200 dark:border-gray-700" />
                   )}
-                  <PlaylistCreator resource={resource} onSubmit={() => {}} />
+                  <PlaylistCreator resource={resource} />
                 </>
               ) : (
                 <div className="flex items-center justify-center h-16 text-sm font-spectral">
@@ -104,11 +133,11 @@ const PlaylistCheckbox = ({
 }: {
   name: string;
   inPlaylist: boolean;
-  onCheck: () => void;
+  onCheck: (e: any) => void;
 }) => {
   const [checked, setChecked] = useState(inPlaylist);
   return (
-    <label className="flex items-center justify-center py-2 space-x-2 text-sm font-medium duration-300 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 text-slate-600">
+    <label className="flex items-center px-2 py-2 space-x-2 text-sm font-medium duration-300 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 text-slate-600">
       <input
         type="checkbox"
         className="duration-300 accent-green-600"
@@ -120,21 +149,70 @@ const PlaylistCheckbox = ({
   );
 };
 
-const PlaylistCreator = ({
-  resource,
-  onSubmit,
-}: {
-  resource: ResourceMinimum;
-  onSubmit: (e: any) => void;
-}) => {
+const PlaylistCreator = ({ resource }: { resource: ResourceMinimum }) => {
   const [open, setOpen] = useState<boolean>(false);
+  const [key, setKey] = useState<string>("");
 
-  return open ? (
-    <></>
-  ) : (
-    <button onClick={() => setOpen(true)} className="w-full btn-green">
-      <PlusCircleIcon className="w-4 h-4 mr-1 lg:mr-2" />
-      Créer une playlist
-    </button>
+  const { user } = useAuth();
+
+  const create = async (e: { preventDefault: () => void }) => {
+    e.preventDefault();
+    if (key) {
+      const res = await fetchRSR(
+        `${
+          process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000/api"
+        }/user/${user.data.uid}/resources/playlists/create`,
+        user.session,
+        {
+          method: "POST",
+          body: JSON.stringify({
+            playlistKey: key,
+          }),
+        }
+      );
+      const body = await res.json();
+      console.log(body);
+      if (res.ok) {
+        setOpen(false);
+        setKey("");
+      }
+    }
+  };
+
+  return (
+    <>
+      {open ? (
+        <form onSubmit={create} className="relative">
+          <button
+            onClick={() => setOpen(false)}
+            type="button"
+            className="absolute px-1 py-1 duration-300 transform -translate-y-1/2 cursor-pointer active:ring-0 ring-inset btn-gray top-1/2 left-2"
+          >
+            <XIcon className="w-4 h-4" />
+          </button>
+          <input
+            name="key"
+            type="text"
+            autoComplete="off"
+            value={key}
+            onChange={(e) => setKey(e.target.value)}
+            className="w-full px-10 py-2 placeholder-gray-400 input text-ellipsis"
+            // placeholder="Rechercher une ressource, un canal, un utilisateur..."
+            placeholder="À regarder plus tard..."
+          />
+          <button
+            type="submit"
+            className="absolute px-1 py-1 duration-300 transform -translate-y-1/2 btn-green top-1/2 right-2"
+          >
+            <CheckCircleIcon className="w-4 h-4" />
+          </button>
+        </form>
+      ) : (
+        <button onClick={() => setOpen(true)} className="w-full btn-green">
+          <PlusCircleIcon className="w-4 h-4 mr-2" />
+          Créer une playlist
+        </button>
+      )}
+    </>
   );
 };

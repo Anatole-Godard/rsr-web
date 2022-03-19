@@ -113,16 +113,14 @@ const ResourceSlug: NextPage<any> = ({
       <section className="flex flex-col w-full bg-gray-100 h-fit dark:bg-gray-900">
         {/* 2xl:sticky 2xl:top-0 z-[47] */}
         <div className="flex flex-col w-full px-6 py-6 bg-white border-b border-gray-200 lg:px-24 dark:bg-black dark:border-gray-800">
+          <Link href="/resource">
+            <a className="mb-1 text-xs btn-gray w-max">
+              <ChevronLeftIcon className="w-4 h-4 mr-1" />
+              Retour
+            </a>
+          </Link>
           <div className="flex flex-col space-y-3 lg:divide-x font-spectral lg:h-10 lg:items-center lg:flex-row lg:space-x-2 lg:space-y-0">
-            <div className="flex items-center text-sm text-gray-500 transition duration-200 border-gray-400 hover:text-gray-700 dark:text-gray-400">
-              <Link href="/resource">
-                <a className="inline-flex btn-text-gray">
-                  <ChevronLeftIcon className="w-5 h-5 mr-1" />
-                  Retour
-                </a>
-              </Link>
-            </div>
-            <div className="flex items-center text-xs text-gray-500 transition duration-200 hover:text-gray-700 dark:text-gray-400">
+            <div className="inline-flex text-xs text-gray-500 transition duration-200 hover:text-gray-700 dark:text-gray-400">
               {types
                 .find((t) => t.value === data?.type)
                 ?.icon.outline({ className: "w-4 h-4 mx-1 shrink-0" })}
@@ -156,9 +154,11 @@ const ResourceSlug: NextPage<any> = ({
                 ?.icon.outline({ className: "w-4 h-4 mx-1 shrink-0" })}
               {visibilities.find((v) => v.value === visibility)?.label}
             </div>
-            <div className="items-center hidden pl-1 text-xs text-gray-500 transition duration-200 lg:inline-flex hover:text-gray-700 dark:text-gray-400">
-              {validated ? "Validé" : "En attente de validation"}
-            </div>
+            {user?.data.uid === owner.uid && !validated && (
+              <div className="items-center hidden pl-1 text-xs text-gray-500 transition duration-200 lg:inline-flex hover:text-gray-700 dark:text-gray-400">
+                En attente de validation
+              </div>
+            )}
           </div>
 
           <div className="lg:flex lg:items-center lg:justify-between">
@@ -167,14 +167,14 @@ const ResourceSlug: NextPage<any> = ({
             </h2>
             <div className="flex mt-2 space-x-3 lg:mt-0 lg:ml-4">
               {!newLikes.find((l) => l.uid === user?.data.uid) ? (
-                <button className="btn-red" key="likeBtn" onClick={like}>
-                  <HeartIconOutline className="w-4 h-4 mr-1 select-none shrink-0" />
-                  {"J'aime"}
+                <button className="btn-red " key="likeBtn" onClick={like}>
+                  <HeartIconOutline className="w-4 h-4 select-none md:mr-1 shrink-0" />
+                  <span className="hidden md:flex">{"J'aime"}</span>
                 </button>
               ) : (
                 <button className="btn-red" key="dislikeBtn" onClick={like}>
-                  <HeartIcon className="w-4 h-4 mr-1 select-none shrink-0" />
-                  {"Je n'aime plus"}
+                  <HeartIcon className="w-4 h-4 select-none md:mr-1 shrink-0" />
+                  <span className="hidden md:flex">{"Je n'aime plus"}</span>
                 </button>
               )}
 
@@ -191,16 +191,16 @@ const ResourceSlug: NextPage<any> = ({
                     }}
                   />
                   <button onClick={report} className="btn-yellow">
-                    <ExclamationIcon className="w-4 h-4 mr-1 select-none shrink-0" />
-                    Signaler
+                    <ExclamationIcon className="w-4 h-4 select-none md:mr-1 shrink-0" />
+                    <span className="hidden md:flex">Signaler</span>
                   </button>
                 </>
               )}
               {owner.uid === user?.data.uid && (
                 <Link href={"/resource/" + slug + "/edit"}>
                   <a className="btn-gray">
-                    <PencilIcon className="w-4 h-4 mr-1 select-none shrink-0" />
-                    <span>Éditer</span>
+                    <PencilIcon className="w-4 h-4 select-none md:mr-1 shrink-0" />
+                    <span className="hidden md:flex">Éditer</span>
                   </a>
                 </Link>
               )}
