@@ -45,6 +45,7 @@ import { Event } from "@definitions/Resource/Event";
 import "react-nice-dates/build/style.css";
 import { DateRangePickerCalendar } from "react-nice-dates";
 import { ShowMoreText } from "@components/ui/ShowMore";
+import { PlaylistDropdown } from "@components/dropdowns/PlaylistDropdown";
 
 const Map: any = dynamic(() => import("@components/map/Map") as any, {
   ssr: false,
@@ -176,11 +177,24 @@ const ResourceSlug: NextPage<any> = ({
                   {"Je n'aime plus"}
                 </button>
               )}
+
               {user?.data && (
-                <button onClick={report} className="btn-yellow">
-                  <ExclamationIcon className="w-4 h-4 mr-1 select-none shrink-0" />
-                  Signaler
-                </button>
+                <>
+                  <PlaylistDropdown
+                    resource={{
+                      slug,
+                      owner,
+                      createdAt,
+                      data,
+                      validated,
+                      visibility,
+                    }}
+                  />
+                  <button onClick={report} className="btn-yellow">
+                    <ExclamationIcon className="w-4 h-4 mr-1 select-none shrink-0" />
+                    Signaler
+                  </button>
+                </>
               )}
               {owner.uid === user?.data.uid && (
                 <Link href={"/resource/" + slug + "/edit"}>
@@ -201,7 +215,6 @@ const ResourceSlug: NextPage<any> = ({
               className="w-full grow"
               anchorClass="text-bleuFrance-500 dark:text-bleuFrance-300 underline"
               expanded={false}
-              
               truncatedEndingComponent={"... "}
             >
               {description}
