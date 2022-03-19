@@ -17,7 +17,6 @@ type Action<T> =
 
 function useFetchRSR<T = unknown>(
   propsURL?: string,
-  session?: any,
   options?: RequestInit
 ): State<T> {
   const [url, setUrl] = useState(propsURL);
@@ -74,7 +73,7 @@ function useFetchRSR<T = unknown>(
       }
 
       try {
-        const response = await fetch(url, session, options);
+        const response = await fetch(url, options);
         if (!response.ok) {
           throw new Error(response.statusText);
         }
