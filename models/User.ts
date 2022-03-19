@@ -30,15 +30,19 @@ const UserSchema = new Schema({
   },
   photoURL: {
     type: String,
-    default:
-      "/uploads/user/default.png", // TODO: must depends on ourselves
+    default: "/uploads/user/default.png",
   },
   validated: {
     type: Boolean,
     default: true,
   },
+  playlists: {
+    type: Object,
+    default: {
+      keys: [],
+    },
+  },
 });
-
 
 const User = mongoose.models.User || mongoose.model("User", UserSchema);
 export default User;
