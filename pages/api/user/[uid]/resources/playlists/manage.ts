@@ -56,6 +56,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         (resource: ResourceMinimum) => resource.slug !== resource.slug
       );
     }
+
+    user.markModified("playlists");
     await user.save();
 
     res.status(200).json({

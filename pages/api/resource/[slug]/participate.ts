@@ -66,6 +66,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         photoURL: user.photoURL,
       });
     }
+
+    resource.markModified("data.attributes.properties.participants");
     await resource.save();
 
     return res.status(200).json({

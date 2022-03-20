@@ -49,6 +49,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     playlists[playlistKey] = [];
 
     user.playlists = playlists;
+    user.markModified("playlists");
     await user.save();
 
     console.log(user);
