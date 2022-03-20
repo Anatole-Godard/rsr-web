@@ -33,17 +33,13 @@ export const PlaylistDropdown = ({
     revalidate: () => void;
     payload?: any;
   } = useFetchRSR(
-    `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000/api"}/user/${
-      user.data.uid
-    }/resources/playlists`,
+    `/api/user/${user.data.uid}/resources/playlists`,
     user.session
   );
 
   const manage = async (playlistKey: string, action: "add" | "remove") => {
     const res = await fetchRSR(
-      `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000/api"}/user/${
-        user.data.uid
-      }/resources/playlists/manage`,
+      `/api/user/${user.data.uid}/resources/playlists/manage`,
       user.session,
       {
         method: action === "add" ? "POST" : "DELETE",
@@ -53,16 +49,12 @@ export const PlaylistDropdown = ({
         }),
       }
     );
-    const body = await res.json();
-    console.log({ action, body });
-    revalidate();
+    if (res.ok) revalidate();
   };
 
   const deletePlaylist = async (key: string) => {
     const res = await fetchRSR(
-      `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000/api"}/user/${
-        user.data.uid
-      }/resources/playlists/delete`,
+      `/api/user/${user.data.uid}/resources/playlists/delete`,
       user.session,
       {
         method: "DELETE",
@@ -71,8 +63,6 @@ export const PlaylistDropdown = ({
         }),
       }
     );
-    const body = await res.json();
-    console.log({ body });
     if (res.ok) revalidate();
   };
 
