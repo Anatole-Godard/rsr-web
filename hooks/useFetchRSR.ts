@@ -6,6 +6,7 @@ interface State<T> {
   error?: Error;
   loading: boolean;
   revalidate: () => void;
+  payload?: T | Error;
 }
 
 type Cache<T> = { [url: string]: T };
@@ -32,7 +33,9 @@ function useFetchRSR<T = unknown>(
     data: undefined,
     loading: true,
     revalidate: () => console.log("nothing to fetch"),
+    payload: undefined,
   };
+  const [data, setData] = useState<T>(undefined);
   const [revalidate, setRevalidate] = useState(false);
 
   // Keep state logic separated
@@ -41,18 +44,25 @@ function useFetchRSR<T = unknown>(
       case "loading":
         return { ...initialState, loading: true };
       case "fetched":
+        setData(
+          (action.payload as unknown as { data: { attributes: any } })?.data
+            .attributes
+        );
         return {
           ...initialState,
-          data: action.payload,
+          data: (action.payload as unknown as { data: { attributes: any } })
+            ?.data.attributes,
           loading: false,
           revalidate: () => setRevalidate(true),
+          payload: action.payload,
         };
       case "error":
         return {
           ...initialState,
-          error: action.payload,
+          error: (action.payload as unknown as { error: any })?.error,
           loading: false,
           revalidate: () => setRevalidate(true),
+          payload: action.payload,
         };
       default:
         return state;
@@ -60,7 +70,6 @@ function useFetchRSR<T = unknown>(
   };
 
   const [state, dispatch] = useReducer(fetchReducer, initialState);
-  const [data, setData] = useState<T>(null);
 
   useEffect(() => {
     // Do nothing if the url is not given
@@ -85,7 +94,6 @@ function useFetchRSR<T = unknown>(
         cache.current[url] = body;
 
         dispatch({ type: "fetched", payload: body });
-        setData(body);
         if (cancelRequest.current) return;
       } catch (error) {
         dispatch({ type: "error", payload: error as Error });

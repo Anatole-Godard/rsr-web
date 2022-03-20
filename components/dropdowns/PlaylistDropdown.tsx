@@ -25,11 +25,13 @@ export const PlaylistDropdown = ({
     error,
     loading,
     revalidate,
+    payload,
   }: {
-    data?: { data: { attributes: Playlist } };
+    data?: Playlist;
     error?: any;
     loading: boolean;
     revalidate: () => void;
+    payload?: any;
   } = useFetchRSR(
     `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000/api"}/user/${
       user.data.uid
@@ -89,26 +91,21 @@ export const PlaylistDropdown = ({
             <Menu.Items className="absolute left-0 min-w-[16rem] w-full p-3 mt-2 origin-top-right bg-white rounded-md shadow lg:left-auto lg:right-0 ring-1 ring-black ring-opacity-5 focus:outline-none">
               {!error && !loading ? (
                 <>
-                  {playlists?.data.attributes.keys.map(
-                    (key: string, index: number) => (
-                      <PlaylistCheckbox
-                        name={key}
-                        inPlaylist={
-                          (
-                            playlists?.data.attributes[key] as ResourceMinimum[]
-                          ).find((r) => r.slug === resource.slug) !== null
-                        }
-                        onCheck={(e) =>
-                          manage(
-                            key,
-                            e.currentTarget.checked ? "add" : "remove"
-                          )
-                        }
-                        key={index}
-                      />
-                    )
-                  )}
-                  {playlists?.data.attributes.keys.length > 0 && (
+                  {playlists?.keys.map((key: string, index: number) => (
+                    <PlaylistCheckbox
+                      name={key}
+                      inPlaylist={
+                        (playlists?.[key] as ResourceMinimum[]).find(
+                          (r) => r.slug === resource.slug
+                        ) != null
+                      }
+                      onCheck={(e) =>
+                        manage(key, e.currentTarget.checked ? "add" : "remove")
+                      }
+                      key={index}
+                    />
+                  ))}
+                  {playlists?.keys.length > 0 && (
                     <hr className="my-2 border-gray-200 dark:border-gray-700" />
                   )}
                   <PlaylistCreator resource={resource} />
@@ -135,6 +132,7 @@ const PlaylistCheckbox = ({
   inPlaylist: boolean;
   onCheck: (e: any) => void;
 }) => {
+  console.log(name, inPlaylist);
   const [checked, setChecked] = useState(inPlaylist);
   return (
     <label className="flex items-center px-2 py-2 space-x-2 text-sm font-medium duration-300 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 text-slate-600">
