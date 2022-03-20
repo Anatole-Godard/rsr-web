@@ -50,6 +50,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       (key) => key !== playlistKey
     );
 
+    delete user.playlists[playlistKey];
+
     user.markModified("playlists");
     await user.save();
 

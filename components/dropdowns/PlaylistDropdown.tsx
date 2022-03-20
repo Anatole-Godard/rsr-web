@@ -58,6 +58,24 @@ export const PlaylistDropdown = ({
     revalidate();
   };
 
+  const deletePlaylist = async (key: string) => {
+    const res = await fetchRSR(
+      `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000/api"}/user/${
+        user.data.uid
+      }/resources/playlists/delete`,
+      user.session,
+      {
+        method: "DELETE",
+        body: JSON.stringify({
+          playlistKey: key,
+        }),
+      }
+    );
+    const body = await res.json();
+    console.log({ body });
+    if (res.ok) revalidate();
+  };
+
   return (
     <Menu as="div" className="relative inline-block text-left">
       {({ open }) => (
@@ -102,13 +120,17 @@ export const PlaylistDropdown = ({
                       onCheck={(e) =>
                         manage(key, e.currentTarget.checked ? "add" : "remove")
                       }
+                      onDelete={deletePlaylist}
                       key={index}
                     />
                   ))}
                   {playlists?.keys.length > 0 && (
                     <hr className="my-2 border-gray-200 dark:border-gray-700" />
                   )}
-                  <PlaylistCreator resource={resource} />
+                  <PlaylistCreator
+                    resource={resource}
+                    revalidate={revalidate}
+                  />
                 </>
               ) : (
                 <div className="flex items-center justify-center h-16 text-sm font-spectral">
@@ -127,27 +149,40 @@ const PlaylistCheckbox = ({
   name,
   inPlaylist = false,
   onCheck,
+  onDelete,
 }: {
   name: string;
   inPlaylist: boolean;
   onCheck: (e: any) => void;
+  onDelete: (key: string) => void;
 }) => {
-  console.log(name, inPlaylist);
   const [checked, setChecked] = useState(inPlaylist);
+
   return (
-    <label className="flex items-center px-2 py-2 space-x-2 text-sm font-medium duration-300 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 text-slate-600">
-      <input
-        type="checkbox"
-        className="duration-300 accent-green-600"
-        checked={checked}
-        onChange={onCheck}
-      />
-      <span className="truncate">{name}</span>
-    </label>
+    <div className="inline-flex items-center w-full mb-2 space-x-2">
+      <label className="flex items-center px-1 py-1 space-x-2 text-sm font-medium duration-300 rounded-lg grow hover:bg-gray-100 dark:hover:bg-gray-800 text-slate-600">
+        <input
+          type="checkbox"
+          className="duration-300 accent-green-600"
+          checked={checked}
+          onChange={onCheck}
+        />
+        <span className="truncate">{name}</span>
+      </label>
+      <button className="px-1 py-1 btn-gray" onClick={() => onDelete(name)}>
+        <XIcon className="w-4 h-4" />
+      </button>
+    </div>
   );
 };
 
-const PlaylistCreator = ({ resource }: { resource: ResourceMinimum }) => {
+const PlaylistCreator = ({
+  resource,
+  revalidate,
+}: {
+  resource: ResourceMinimum;
+  revalidate: () => void;
+}) => {
   const [open, setOpen] = useState<boolean>(false);
   const [key, setKey] = useState<string>("");
 
@@ -173,6 +208,7 @@ const PlaylistCreator = ({ resource }: { resource: ResourceMinimum }) => {
       if (res.ok) {
         setOpen(false);
         setKey("");
+        revalidate();
       }
     }
   };
