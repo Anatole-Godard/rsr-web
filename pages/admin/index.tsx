@@ -10,13 +10,16 @@ import {fetchRSR} from "@utils/fetchRSR";
 import {Resource} from "@definitions/Resource";
 import ResourceModel from '@models/Resource';
 import moment from "moment";
-import {Popover} from "@headlessui/react";
+import {Popover, Combobox} from "@headlessui/react";
+import {types} from "../../constants/resourcesTypes";
 
 const Home: NextPage<any> = ({resources = []}: { resources: Resource[] }) => {
     const [displayChart, setDisplayChart] = useState<boolean>(false);
     const [minPeriod, setMinPeriod] = useState<string>(moment(resources[0]?.createdAt).format('YYYY-MM'));
     const [maxPeriod, setMaxPeriod] = useState<string>(moment(resources[-1]?.createdAt).format('YYYY-MM'));
     const [resourcesFiltered, setResourcesFiltered] = useState<Resource[]>(resources);
+    const [selectedType, setSelectedType] = useState<string>('Type');
+    const [query, setQuery] = useState<string>('');
 
     const setDisplayType = () => {
         setDisplayChart(!displayChart);
@@ -92,6 +95,23 @@ const Home: NextPage<any> = ({resources = []}: { resources: Resource[] }) => {
                                         )}
                                 </Popover.Panel>
                             </Popover>
+                            <Combobox value={selectedType} onChange={(v) => setSelectedType(v.label)}>
+                                <Combobox.Input
+                                    onChange={(e) => setQuery(e.target.value)}
+                                    displayValue={() => selectedType}
+                                />
+                                <Combobox.Options>
+                                    {/* TODO: Add type filter on resources*/}
+                                    {types.map((type) => (
+                                        <Combobox.Option
+                                            key={type.label}
+                                            value={type}
+                                        >
+                                            {type.label}
+                                        </Combobox.Option>
+                                    ))}
+                                </Combobox.Options>
+                            </Combobox>
                             <button className="btn-blue mr-2" onClick={() => setDisplayType()}>Catégorie</button>
                             <button className="btn-blue mr-2" onClick={() => setDisplayType()}>Type de resource</button>
                             <button className="btn-red mr-2" onClick={() => {
