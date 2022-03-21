@@ -7,6 +7,7 @@ import NotificationModel from "@models/Notification";
 import Resource from "@models/Resource";
 import { getUser } from "@utils/getCurrentUser";
 import { handleError } from "@utils/handleError";
+import { toResourceMinimum } from "@utils/toMinimum";
 import { NextApiRequest, NextApiResponse } from "next";
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -51,21 +52,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         photoURL: user.photoURL,
       });
 
-      const resourceMinimum: ResourceMinimum = {
-        slug: resource.slug,
-        owner: resource.owner,
-        createdAt: resource.createdAt,
-        description: resource.description,
-        tags: resource.tags,
-        data: {
-          type: resource.data.type,
-          attributes: {
-            properties: { name: resource.data.attributes.properties.name },
-          },
-        },
-        validated: resource.validated,
-        visibility: resource.visibility,
-      };
+      const resourceMinimum: ResourceMinimum = toResourceMinimum(resource);
 
       if (resource.owner.uid.toString() !== user._id.toString()) {
         const notification: Notification = {

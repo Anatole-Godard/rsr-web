@@ -98,3 +98,12 @@ export const SidebarIconXL = ({
     </a>
   </Link>
 );
+
+export const Divider = () => <hr className="sidebar-hr" />;
+export const DividerXL = () => <hr className="hidden sidebar-hr xl:flex" />;
+
+export const SidebarTitle = ({ text }) => (
+  <h4 className="pl-2.5 my-2 text-xs hidden xl:flex text-gray-400 dark:text-gray-600 font-marianne">
+    {text}
+  </h4>
+);

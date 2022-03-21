@@ -42,7 +42,12 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
                           $options: "i",
                         },
                       },
-                      { tags: { $in: [search] } },
+                      {
+                        "tags.name": {
+                          $regex: search,
+                          $options: "i",
+                        },
+                      },
                     ],
                   },
                 ]
@@ -70,7 +75,12 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
                           $options: "i",
                         },
                       },
-                      { tags: { $in: [search] } },
+                      {
+                        "tags.name": {
+                          $regex: search,
+                          $options: "i",
+                        },
+                      },
                     ],
                   },
                 ]

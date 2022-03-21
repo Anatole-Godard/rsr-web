@@ -4,6 +4,7 @@ import withDatabase from "@middleware/mongoose";
 import { handleError } from "@utils/handleError";
 import { getPagination, getTotalPages } from "@utils/pagination";
 import { isAdmin } from '@utils/getCurrentUser';
+import { withAuth } from "@middleware/auth";
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
@@ -76,4 +77,4 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   }
 }
 
-export default withDatabase(handler);
+export default withAuth(withDatabase(handler));

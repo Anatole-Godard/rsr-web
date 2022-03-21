@@ -3,10 +3,18 @@ import {
   HomeIcon,
   UserIcon,
   ExclamationIcon,
+  TagIcon,
+  LibraryIcon,
 } from "@heroicons/react/outline";
 import { ArrowLeftIcon } from "@heroicons/react/solid";
 import { useRouter } from "next/router";
-import { SidebarIcon } from "./SidebarIcon";
+import {
+  Divider,
+  DividerXL,
+  SidebarIcon,
+  SidebarIconXL,
+  SidebarTitle,
+} from "./SidebarIcon";
 import { useAuth } from "@hooks/useAuth";
 import { v4 as uuidv4 } from "uuid";
 import { Logo } from "@components/ui/Logo";
@@ -39,24 +47,38 @@ export const SidebarAdmin = () => {
           text="Tableau de bord"
         />
         <Divider />
+        <SidebarTitle text="Ressources" />
         <SidebarIcon
-          key={uuidv4()}
-          active={pathname === "/admin/resource"}
-          icon={<DocumentTextIcon {...className} />}
+          icon={<LibraryIcon {...className} />}
+          active={pathname.includes("/admin/resource")}
           text="Ressources"
           href="/admin/resource"
         />
+        <SidebarIconXL
+          icon={<TagIcon {...className} />}
+          active={pathname.includes("/admin/tags")}
+          text="Étiquettes"
+          href="/admin/tags"
+        />
+        <DividerXL />
+
         {user &&
           (user.session.role === "admin" ||
             user.session.role === "superadmin") && (
-            <SidebarIcon
-              key={uuidv4()}
-              active={pathname === "/admin/user"}
-              icon={<UserIcon {...className} />}
-              text="Utilisateurs"
-              href="/admin/user"
-            />
+            <>
+              <SidebarTitle text="Utilisateurs" />
+              <SidebarIcon
+                key={uuidv4()}
+                active={pathname === "/admin/user"}
+                icon={<UserIcon {...className} />}
+                text="Utilisateurs"
+                href="/admin/user"
+              />
+              <DividerXL />
+            </>
           )}
+        <SidebarTitle text="Signalements" />
+
         <SidebarIcon
           key={uuidv4()}
           active={pathname === "/admin/report"}
@@ -68,5 +90,3 @@ export const SidebarAdmin = () => {
     </div>
   );
 };
-
-const Divider = () => <hr className="sidebar-hr" />;

@@ -39,7 +39,7 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
   const { user } = useAuth();
 
   const [pictureUrl, setPictureUrl] = useState(
-    props.data?.attributes.image.url || null
+    props.data?.attributes.properties?.image?.url || null
   );
   const [pictureFile, setPictureFile] = useState(null);
   const [name, setName] = useState<string>(
@@ -49,7 +49,7 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
     props.data?.attributes.properties.description || props.description
   );
   const [tags, setTags] = useState<{ label: string; value: string }[]>(
-    props.tags?.map((tag) => ({ label: tag, value: tag }))
+    props.tags?.map((tag) => ({ label: tag.name, value: tag._id.toString() }))
   );
   const [tagInputValue, setTagInputValue] = useState<string>("");
 
@@ -180,7 +180,11 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
       description,
       tags: tags.map((tag) => tag.value),
       data,
-      visibility: visibility.value,
+      visibility: (
+        visibility as unknown as {
+          value: "public" | "private" | "unlisted";
+        }
+      ).value,
       members,
     } as Resource;
   };

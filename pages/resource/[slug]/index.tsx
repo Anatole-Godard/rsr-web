@@ -46,6 +46,7 @@ import "react-nice-dates/build/style.css";
 import { DateRangePickerCalendar } from "react-nice-dates";
 import { ShowMoreText } from "@components/ui/ShowMore";
 import { PlaylistDropdown } from "@components/dropdowns/PlaylistDropdown";
+import { TagDocument } from "@definitions/Resource/Tag";
 
 const Map: any = dynamic(() => import("@components/map/Map") as any, {
   ssr: false,
@@ -232,7 +233,10 @@ const ResourceSlug: NextPage<any> = ({
                   : "amber"
               }
               size="normal"
-              list={tags.map((tag: string) => ({ label: tag, value: tag }))}
+              list={tags.map((tag: TagDocument) => ({
+                label: tag.name,
+                value: tag._id.toString(),
+              }))}
             />
           </div>
         </div>

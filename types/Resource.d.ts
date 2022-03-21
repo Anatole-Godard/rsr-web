@@ -3,6 +3,7 @@ import { Event } from "./Resource/Event";
 import type { ExternalLink } from "./Resource/ExternalLink";
 import type { GeoJSON_Point } from "./Resource/GeoJSON";
 import type { PhysicalItem } from "./Resource/PhysicalItem";
+import { TagDocument } from "./Resource/Tag";
 import type { UserMinimum } from "./User";
 
 export type Resource = {
@@ -10,7 +11,7 @@ export type Resource = {
   owner: UserMinimum;
   createdAt: Date | string;
   description?: string;
-  tags?: string[];
+  tags?: TagDocument[] | string[];
   data: {
     type: "location" | "physical_item" | "external_link" | "event" | string;
     attributes: GeoJSON_Point | PhysicalItem | ExternalLink | Event | any;
@@ -28,7 +29,7 @@ export type ResourceMinimum = {
   owner: UserMinimum;
   createdAt: Date | string;
   description?: string;
-  tags?: string[];
+  tags?: TagDocument[]| string[];
   data: {
     type: "location" | "physical_item" | "external_link" | "event" | string;
     attributes: {
