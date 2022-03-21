@@ -51,7 +51,6 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       const tag = await Tag.findByIdAndUpdate(req.body._id, {
         validated: req.body.validated,
       });
-      // update all resources with this tag //TODO: fix
       const resources = await Resource.updateMany(
         { tags: { $elemMatch: { _id: tag._id } } },
         { $set: { "tags.$.validated": req.body.validated } }

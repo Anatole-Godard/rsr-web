@@ -5,6 +5,8 @@ import { handleError } from "@utils/handleError";
 import { TagDocument } from "@definitions/Resource/Tag";
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
+  const { uid = undefined } = req.headers as { uid: string | undefined };
+
   try {
     const resource = await Resource.findOne({
       slug: req.query.slug,
@@ -25,10 +27,13 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       data: {
         type: "resource",
         id: resource._id.toString(),
-        attributes: {
-          ...resource,
-          tags: resource.tags.filter((t: TagDocument) => t.validated),
-        },
+        attributes:
+          uid === resource.owner.uid
+            ? resource
+            : {
+                ...resource,
+                tags: resource.tags.filter((t: TagDocument) => t.validated),
+              },
       },
     });
   } catch (err) {

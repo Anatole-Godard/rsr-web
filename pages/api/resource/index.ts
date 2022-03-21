@@ -103,7 +103,14 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         data: {
           id: "search",
           type: "resource",
-          attributes: resources,
+          attributes: resources.map((r) =>
+            uid === r.owner.uid
+              ? r.toObject()
+              : {
+                  ...r.toObject(),
+                  tags: r.tags.filter((t: TagDocument) => t.validated),
+                }
+          ),
         },
       });
     } catch (error) {
@@ -126,10 +133,14 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         data: {
           id: "all",
           type: "resource",
-          attributes: resources.map((r) => ({
-            ...r,
-            tags: r.tags.filter((t: TagDocument) => t.validated),
-          })),
+          attributes: resources.map((r) =>
+            uid === r.owner.uid
+              ? r.toObject()
+              : {
+                  ...r.toObject(),
+                  tags: r.tags.filter((t: TagDocument) => t.validated),
+                }
+          ),
           search: false,
         },
       });

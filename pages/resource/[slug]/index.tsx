@@ -347,10 +347,22 @@ const ResourceSlug: NextPage<any> = ({
 export default ResourceSlug;
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const res = await fetch(
-    "http://localhost:3000/api/resource/" + context.params.slug
-  );
-  const body = await res.json();
+  const {
+    cookies: { user },
+  } = context.req;
+  const uid = JSON.parse(user || "null")?.data.uid || undefined;
+  const body = await (
+    await fetch(
+      `${
+        process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000/api"
+      }/resource/${context.params.slug}`,
+      uid
+        ? {
+            headers: { uid },
+          }
+        : undefined
+    )
+  ).json();
 
   const resource: Resource[] = body?.data?.attributes;
 

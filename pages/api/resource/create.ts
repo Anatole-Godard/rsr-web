@@ -53,9 +53,6 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       });
       return;
     }
-
-    tags.map((t: string) => Tag.findOneAndUpdate({}));
-
     await Tag.bulkWrite(
       tags.map((t: string) => ({
         updateOne: {
@@ -74,7 +71,6 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     );
     const tagsInDB = await Tag.find({ name: { $in: tags } }).select("-__v");
 
-    console.log(tagsInDB);
 
     const resource = await Resource.create({
       slug: slugResource,
