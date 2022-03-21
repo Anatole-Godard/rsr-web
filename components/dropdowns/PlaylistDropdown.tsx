@@ -25,13 +25,11 @@ export const PlaylistDropdown = ({
     error,
     loading,
     revalidate,
-    payload,
   }: {
     data?: Playlist;
     error?: any;
     loading: boolean;
     revalidate: () => void;
-    payload?: any;
   } = useFetchRSR(
     `/api/user/${user.data.uid}/resources/playlists`,
     user.session

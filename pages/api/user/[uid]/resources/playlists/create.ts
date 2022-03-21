@@ -52,7 +52,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     user.markModified("playlists");
     await user.save();
 
-    console.log(user);
 
     res.status(200).json({
       data: {
