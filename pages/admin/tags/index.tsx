@@ -4,11 +4,12 @@ import { CustomTable } from "@components/customTable/CustomTable";
 import { useCallback, useEffect, useState } from "react";
 import { fetchRSR } from "@utils/fetchRSR";
 import { useAuth } from "@hooks/useAuth";
-import { LibraryIcon, SearchIcon, TagIcon } from "@heroicons/react/outline";
-import { Tag } from "@definitions/Resource/Tag";
+import { SearchIcon, TagIcon } from "@heroicons/react/outline";
+import { TagDocument } from "@definitions/Resource/Tag";
 
 const TagManager: NextPage<any> = (props) => {
-  const [tags, setTags] = useState<Tag[]>(props?.data?.attributes);
+  console.log(props)
+  const [tags, setTags] = useState<TagDocument[]>(props?.data?.attributes);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [limitPerPage, setLimitPerPage] = useState<number>(
     parseInt(process.env.NEXT_PUBLIC_BACK_OFFICE_MAX_ENTITIES)
@@ -33,12 +34,13 @@ const TagManager: NextPage<any> = (props) => {
       type: "isUser",
       width: 20,
     },
-    { name: "name", label: "Nom de l'étiquette", },
+    { name: "name", label: "Nom de l'étiquette" },
 
     {
       name: "validated",
       label: "Validation",
       type: "validated",
+      isTag: true,
       validEntity: validate,
       width: 25,
     },
@@ -87,15 +89,6 @@ const TagManager: NextPage<any> = (props) => {
     const currentPage = data.selected + 1;
     setCurrentPage(currentPage);
   };
-
-  const deleteTag = async (_id: string) => {
-    await fetchRSR(`/api/resource/admin/tags`, user.session, {
-      method: "DELETE",
-      body: JSON.stringify({ _id }),
-    });
-    getTags();
-  };
-
   const [search, setSearch] = useState<string>("");
 
   return (
@@ -104,7 +97,6 @@ const TagManager: NextPage<any> = (props) => {
         <div className="flex flex-col w-full px-6 py-6 bg-white shrink-0 lg:px-12 dark:bg-black dark:border-gray-800">
           <div className="inline-flex items-end justify-between w-full mb-2">
             <div className="flex flex-col space-y-2">
-              
               <h3 className="text-2xl font-extrabold text-gray-800 font-marianne dark:text-gray-200">
                 Liste des
                 <span className="ml-1 text-blue-600 dark:text-blue-400">
@@ -145,9 +137,6 @@ const TagManager: NextPage<any> = (props) => {
           <CustomTable
             theadList={theadList}
             valuesList={tags}
-            deleteEntity={deleteTag}
-            readUrl="/resource"
-            editUrl="/resource"
             totalPages={totalPages}
             updateCurrentPage={updatePage}
           />
@@ -181,8 +170,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     };
   }
   const limit = parseInt(process.env.NEXT_PUBLIC_BACK_OFFICE_MAX_ENTITIES);
-  const res = await fetch(
-    "http://localhost:3000/api/resource/admin/tags?limit=" + limit + "&page=1"
+  const res = await fetchRSR(
+    "http://localhost:3000/api/resource/admin/tags?limit=" + limit + "&page=1",
+    parseUser.session
   );
   const body = await res.json();
   return {

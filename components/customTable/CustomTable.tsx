@@ -128,7 +128,10 @@ export const CustomTable = ({
           <div
             className="inline-flex items-center"
             onClick={() => {
-              theadValue.validEntity(value.uid, !value[theadValue.name]);
+              theadValue.validEntity(
+                theadValue.isTag ? value._id.toString() : value.uid,
+                !value[theadValue.name]
+              );
             }}
           >
             {value[theadValue.name] ? (

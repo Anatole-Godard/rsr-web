@@ -10,7 +10,7 @@ export const Chip = ({
   onClick?: any;
   color?: string;
   checked?: boolean;
-  element: {label, value};
+  element: { label: string; value: string; validated?: boolean };
   size: "normal" | "small";
 }) => {
   let chipClassName =
@@ -115,6 +115,12 @@ export const Chip = ({
           size === "normal" ? "text-sm" : "text-xs"
         )}
       >
+        {element.validated === true && (
+          <span className="w-1 h-1 mr-1 bg-green-600 rounded-full"></span>
+        )}
+        {element.validated === false && (
+          <span className="w-1 h-1 mr-1 bg-red-600 rounded-full"></span>
+        )}
         {element.label}
         {checked && (
           <div className="ml-3">

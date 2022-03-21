@@ -33,46 +33,41 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
           ],
         };
       }
-      Tag.find(query)
+      const tags = await Tag.find(query)
         .skip(offset) //Notice here
         .limit(limit)
-        .exec((err, resource) => {
-          if (err) {
-            return res.json(err);
-          }
-          Resource.countDocuments(query).exec((count_error, count) => {
-            if (err) {
-              handleError(res, err, "resource/tags");
-            }
-            return res.status(200).json({
-              data: {
-                type: "resource",
-                id: "tags",
-                totalItems: count,
-                totalPages: getTotalPages(count, limit),
-                attributes: resource.map((element) => ({
-                  uid: element._id,
-                  owner: element.owner,
-                  slug: element.slug,
-                  data: element.data,
-                  likes: element.likes,
-                  validated: element.validated,
-                })),
-              },
-            });
-          });
-        });
+        .select("-__v");
+
+      return res.status(200).json({
+        data: {
+          type: "resource",
+          id: "tags",
+          totalItems: tags.length,
+          totalPages: getTotalPages(tags.length, limit),
+          attributes: tags,
+        },
+      });
+    } else if (req.method === "PUT") {
+      const tag = await Tag.findByIdAndUpdate(req.body._id, {
+        validated: req.body.validated,
+      });
+      // update all resources with this tag //TODO: fix
+      const resources = await Resource.updateMany(
+        { tags: { $elemMatch: { _id: tag._id } } },
+        { $set: { "tags.$.validated": req.body.validated } }
+      );
+
+      return res.status(201).json({
+        data: {
+          type: "resource",
+          id: "tags",
+          attributes: await Tag.findById(req.body._id),
+          resourcesModified: resources.modifiedCount,
+        },
+      });
     }
   } catch (err) {
-    res.status(500).json({
-      error: {
-        code: 500,
-        message:
-          err instanceof Error
-            ? err.message
-            : "an error occured on resource:tag",
-      },
-    });
+    handleError(res, err, "resource/admin/tags");
   }
 }
 

@@ -79,7 +79,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     const resource = await Resource.create({
       slug: slugResource,
       description,
-      tags: tagsInDB,
+      tags: tagsInDB.map((t) => ({ ...t, _id: t._id.toString() })),
       data: { type, attributes },
       owner: {
         fullName: user.fullName,

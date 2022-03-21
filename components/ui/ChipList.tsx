@@ -2,6 +2,12 @@ import { classes } from "@utils/classes";
 import { Dispatch, SetStateAction } from "react";
 import { Chip } from "./Chip";
 
+interface ChipElement {
+  label: string;
+  value: string;
+  validated?: boolean;
+}
+
 export const ChipList = ({
   list = [],
   selected = [],
@@ -10,9 +16,12 @@ export const ChipList = ({
   size = "normal",
   multiple = true,
 }: {
-  list: {label, value}[];
-  selected?: {label, value}[];
-  setSelected?: ((selected?: {label, value}[]) => void) | Dispatch<SetStateAction<{label, value}[]>> | null;
+  list: ChipElement[];
+  selected?: ChipElement[];
+  setSelected?:
+    | ((selected?: ChipElement[]) => void)
+    | Dispatch<SetStateAction<ChipElement[]>>
+    | null;
   color?: string;
   size: "normal" | "small";
   multiple?: boolean;
@@ -25,24 +34,28 @@ export const ChipList = ({
       )}
     >
       {list.map((el, index) => {
-        const accSelected = !multiple ? [] : [...selected]
-        return(
-            <Chip
-                color={color}
-                element={el}
-                key={index}
-                size={size}
-                checked={selected.findIndex((chip) => chip.label === el.label) !== -1}
-                onClick={
-                  setSelected
-                      ? () =>
-                          selected.findIndex((chip) => chip.label === el.label) === -1
-                              ? setSelected([...accSelected, el])
-                              : setSelected(selected.filter((chip) => chip.label !== el.label))
-                      : null
-                }
-            />
-        )
+        const accSelected = !multiple ? [] : [...selected];
+        return (
+          <Chip
+            color={color}
+            element={el}
+            key={index}
+            size={size}
+            checked={
+              selected.findIndex((chip) => chip.label === el.label) !== -1
+            }
+            onClick={
+              setSelected
+                ? () =>
+                    selected.findIndex((chip) => chip.label === el.label) === -1
+                      ? setSelected([...accSelected, el])
+                      : setSelected(
+                          selected.filter((chip) => chip.label !== el.label)
+                        )
+                : null
+            }
+          />
+        );
       })}
     </div>
   );

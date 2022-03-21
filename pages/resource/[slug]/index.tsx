@@ -233,9 +233,10 @@ const ResourceSlug: NextPage<any> = ({
                   : "amber"
               }
               size="normal"
-              list={tags.map((tag: TagDocument) => ({
+              list={(tags as TagDocument[]).map((tag: TagDocument) => ({
                 label: tag.name,
                 value: tag._id.toString(),
+                validated: tag.validated,
               }))}
             />
           </div>
