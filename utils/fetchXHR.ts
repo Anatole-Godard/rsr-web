@@ -1,4 +1,10 @@
-export const makeRequest = async (method: string, url: string | URL) => {
+/**
+ * It takes a method and a URL, and returns a promise that resolves to the response of the request
+ * @param {string} method - The HTTP method to use, such as GET, POST, PUT, DELETE, etc.
+ * @param {string | URL} url - The URL to fetch.
+ * @returns A promise.
+ */
+export const fetchXHR = async (method: string, url: string | URL) => {
   return new Promise(function (resolve, reject) {
     let xhr = new XMLHttpRequest();
     xhr.open(method, url);

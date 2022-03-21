@@ -8,7 +8,7 @@ import {
   XCircleIcon,
   XIcon,
 } from "@heroicons/react/solid";
-import { makeRequest } from "@utils/asyncXHR";
+import { fetchXHR } from "@utils/fetchXHR";
 import { classes } from "@utils/classes";
 import { types, visibilities } from "constants/resourcesTypes";
 import type { GetServerSideProps, NextPage } from "next";
@@ -113,7 +113,7 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
 
   useEffect(() => {
     const fetchLocation = async () => {
-      const response = await makeRequest(
+      const response = await fetchXHR(
         "GET",
         `https://api-adresse.data.gouv.fr/reverse/?lat=${position.lat}&lon=${position.lng}`
       );

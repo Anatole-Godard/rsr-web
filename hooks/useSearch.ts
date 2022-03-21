@@ -1,5 +1,11 @@
 import { ChangeEvent, useEffect, useState } from "react";
 
+/**
+ * It returns a search function that can be used to filter items.
+ * @param key - the key of the object that we want to search on.
+ * @param {T[]} items - The array of items to search through.
+ * @returns The `useSearch` hook returns an object
+ */
 export function useSearch<T = object>(key: keyof T, items: T[]) {
   const [search, setSearch] = useState("");
   const [filtered, setFiltered] = useState<T[]>(items);

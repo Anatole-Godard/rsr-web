@@ -15,6 +15,14 @@ type Action<T> =
   | { type: "fetched"; payload: T }
   | { type: "error"; payload: Error };
 
+
+/**
+ * It fetches data from a given url and stores it in a cache
+ * @param {string} [url] - The url to fetch data from.
+ * @param {any} [session] - The session object to use for authentication.
+ * @param {RequestInit} [options] - RequestInit
+ * @returns The state object.
+ */
 function useFetchRSR<T = unknown>(
   url?: string,
   session?: any,

@@ -14,6 +14,13 @@ type Action<T> =
   | { type: "fetched"; payload: T }
   | { type: "error"; payload: Error };
 
+
+/**
+ * It fetches data from a given url and returns the data in the form of a state
+ * @param {string} [url] - The url to fetch data from.
+ * @param {RequestInit} [options] - RequestInit
+ * @returns The state object.
+ */
 function useFetch<T = unknown>(url?: string, options?: RequestInit): State<T> {
   const cache = useRef<Cache<T>>({});
 
