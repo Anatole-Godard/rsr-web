@@ -15,7 +15,14 @@ type Action<T> =
   | { type: "fetched"; payload: T }
   | { type: "error"; payload: Error };
 
-function useFetchRSR<T = unknown>(
+
+/**
+ * It fetches data from a given url and returns the data in the form of a state
+ * @param {string} [url] - The url to fetch data from.
+ * @param {RequestInit} [options] - RequestInit
+ * @returns The state object.
+ */
+function useFetch<T = unknown>(
   propsURL?: string,
   options?: RequestInit
 ): State<T> {

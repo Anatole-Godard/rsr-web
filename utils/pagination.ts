@@ -1,13 +1,26 @@
+/**
+ * Given the current page number and the number of entities per page,
+ * return the limit and offset values to be used in a query
+ * @param currentPage - The current page number.
+ * @param entitiesPerPage - The number of entities to display per page.
+ * @returns The pagination object is being returned.
+ */
 export function getPagination(currentPage, entitiesPerPage) {
-    const limit = entitiesPerPage ? parseInt(entitiesPerPage, 10) : 1000;
-    const offset =
-              currentPage && currentPage !== 1
-                  ? (parseInt(currentPage, 10) - 1) * limit
-                  : 0;
+  const limit = entitiesPerPage ? parseInt(entitiesPerPage, 10) : 1000;
+  const offset =
+    currentPage && currentPage !== 1
+      ? (parseInt(currentPage, 10) - 1) * limit
+      : 0;
 
-    return { limit, offset };
+  return { limit, offset };
 }
 
-export function getTotalPages (entitiesCount, size) {
-    return Math.ceil(entitiesCount / size);
+/**
+ * Given the number of entities and the size of the page, return the total number of pages
+ * @param entitiesCount - the total number of entities
+ * @param size - the number of entities to show per page
+ * @returns An array of objects.
+ */
+export function getTotalPages(entitiesCount, size) {
+  return Math.ceil(entitiesCount / size);
 }

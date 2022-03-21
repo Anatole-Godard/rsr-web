@@ -10,7 +10,7 @@ import {
   XIcon,
 } from "@heroicons/react/solid";
 import { useAuth } from "@hooks/useAuth";
-import { makeRequest } from "@utils/asyncXHR";
+import { fetchXHR } from "@utils/fetchXHR";
 import { classes } from "@utils/classes";
 import { fetchRSR } from "@utils/fetchRSR";
 import { types, visibilities } from "constants/resourcesTypes";
@@ -130,7 +130,7 @@ const ResourceCreate: NextPage<any> = ({
   useEffect(() => {
     const fetchLocation = async () => {
       console.log(position);
-      const response = await makeRequest(
+      const response = await fetchXHR(
         "GET",
         `https://api-adresse.data.gouv.fr/reverse/?lat=${position.lat}&lon=${position.lng}`
       );

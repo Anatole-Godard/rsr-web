@@ -8,7 +8,12 @@ const NotificationContext = createContext({});
 /**
  * TODO: improve this by using sockets instead of polling
  *
- *
+ * This function is the provider for the notification context. It returns a provider that contains the
+ * notifications and the functions to add and remove notifications
+ * @param  - `children`: The children of the component.
+ * @returns The `NotificationProvider` component returns a `NotificationContext.Provider` component
+ * that wraps the children. The `NotificationContext.Provider` component is a React Context Provider
+ * component. It provides the `NotificationContext` to its children.
  */
 function NotificationProvider({
   children,
@@ -85,12 +90,17 @@ function NotificationProvider({
   );
 }
 
+/* A type definition for the `NotificationContext` type. It is used to make sure that the
+`NotificationContext` type is consistent. */
 interface NotificationContextType {
   notifications: Notification[];
   setNotifications: (notifications: Notification[]) => void;
   removeNotification: (id: string) => void;
 }
 
+/**
+ * It returns the value of the NotificationContext
+ */
 const useNotifications = () =>
   useContext(NotificationContext) as NotificationContextType;
 

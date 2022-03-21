@@ -2,8 +2,10 @@ import SessionToken from "@models/SessionToken";
 import jwt from "jsonwebtoken";
 import { NextApiRequest, NextApiResponse } from "next";
 
-// Exported functions
-
+/**
+ * It generates a JWT token and a refresh token
+ * @param userData - { uid: string; role: string }
+ */
 export const genToken = (userData: { uid: string; role: string }) => ({
   token: jwt.sign(
     {
@@ -30,9 +32,23 @@ export const genToken = (userData: { uid: string; role: string }) => ({
   issuedAt: new Date().getTime(),
 });
 
-export const parseAuthorization = (authorization: string | undefined) =>
+
+/**
+ * Given an authorization header, return the token
+ * @param {string | undefined} authorization - The authorization header that you want to parse.
+ */
+export const parseAuthorization = (
+  authorization: string | undefined
+): string | null =>
   authorization != null ? authorization.replace("Bearer ", "") : null;
 
+/**
+ * It checks if the token is valid and returns a boolean
+ * @param {string | undefined} authorization - The authorization header sent by the client.
+ * @param {NextApiRequest} req - NextApiRequest
+ * @param {NextApiResponse} res - NextApiResponse
+ * @returns A boolean value indicating if the token is valid or not.
+ */
 export const isTokenValid = async (
   authorization: string | undefined,
   req: NextApiRequest,
@@ -51,13 +67,18 @@ export const isTokenValid = async (
       });
     } else result = { valid: false, code: "TokenHeaderInexistantError" };
   } catch (err) {
-    console.error(err)
+    console.error(err);
     result = { valid: false, code: err.name };
   }
-  
+
   return result;
 };
 
+/**
+ * If the request has a valid token, then the handler is called. Otherwise, the request is rejected
+ * @param {Function} handler - Function
+ * @returns A function that takes in a NextApiRequest and NextApiResponse and returns a Promise.
+ */
 export const withAuth =
   (handler: Function) => async (req: NextApiRequest, res: NextApiResponse) => {
     const headerAuth = req.headers.authorization;
@@ -77,6 +98,12 @@ export const withAuth =
       });
   };
 
+/**
+ * It takes in a request and a response, and it checks if the refresh token is valid. If it is, it
+ * generates a new token and returns it
+ * @param {NextApiRequest} req - NextApiRequest
+ * @param {NextApiResponse} res - NextApiResponse
+ */
 export const refreshTokenHandler = (
   req: NextApiRequest,
   res: NextApiResponse

@@ -5,12 +5,9 @@ import { useCookies } from "react-cookie";
 const AuthContext = createContext({});
 
 /**
- * Provider that handles authentication
- *
- * Returns children if logged in, otherwise returns NotLogged
- *
- * @param {Object} props
- * @returns {JSX.Element}
+ * React component that wraps around the children and provides them with the AuthContext
+ * @param  - `children`: The children of the component.
+ * @returns The AuthProvider component is returning the AuthContext.Provider component.
  */
 function AuthProvider({
   children,
@@ -143,14 +140,8 @@ interface AuthContextType {
 }
 
 /**
- * Get auth credentials with the use of the react context
- *
- * @returns context
+ * It returns the AuthContextType from the AuthContext.
  */
 const useAuth = () => useContext(AuthContext) as AuthContextType;
 
 export { AuthProvider, useAuth };
-
-const NotLogged = () => {
-  return <div>Not logged in</div>;
-};
