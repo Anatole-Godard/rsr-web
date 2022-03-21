@@ -1,10 +1,12 @@
 import { fetchRSR } from "@utils/fetchRSR";
-import { useEffect, useReducer, useRef } from "react";
+import { useEffect, useReducer, useRef, useState } from "react";
 
 interface State<T> {
   data?: T;
   error?: Error;
   loading: boolean;
+  revalidate: () => void;
+  payload?: T | Error;
 }
 
 type Cache<T> = { [url: string]: T };
@@ -24,10 +26,11 @@ type Action<T> =
  * @returns The state object.
  */
 function useFetchRSR<T = unknown>(
-  url?: string,
+  propsURL?: string,
   session?: any,
   options?: RequestInit
 ): State<T> {
+  const [url, setUrl] = useState(propsURL);
   const cache = useRef<Cache<T>>({});
 
   // Used to prevent state update if the component is unmounted
@@ -37,7 +40,11 @@ function useFetchRSR<T = unknown>(
     error: undefined,
     data: undefined,
     loading: true,
+    revalidate: () => console.log("nothing to fetch"),
+    payload: undefined,
   };
+  const [data, setData] = useState<T>(undefined);
+  const [revalidate, setRevalidate] = useState(false);
 
   // Keep state logic separated
   const fetchReducer = (state: State<T>, action: Action<T>): State<T> => {
@@ -45,9 +52,26 @@ function useFetchRSR<T = unknown>(
       case "loading":
         return { ...initialState, loading: true };
       case "fetched":
-        return { ...initialState, data: action.payload, loading: false };
+        setData(
+          (action.payload as unknown as { data: { attributes: any } })?.data
+            .attributes
+        );
+        return {
+          ...initialState,
+          data: (action.payload as unknown as { data: { attributes: any } })
+            ?.data.attributes,
+          loading: false,
+          revalidate: () => setRevalidate(true),
+          payload: action.payload,
+        };
       case "error":
-        return { ...initialState, error: action.payload, loading: false };
+        return {
+          ...initialState,
+          error: (action.payload as unknown as { error: any })?.error,
+          loading: false,
+          revalidate: () => setRevalidate(true),
+          payload: action.payload,
+        };
       default:
         return state;
     }
@@ -74,15 +98,14 @@ function useFetchRSR<T = unknown>(
           throw new Error(response.statusText);
         }
 
-        const data = (await response.json()) as T;
-        cache.current[url] = data;
-        if (cancelRequest.current) return;
+        const body = (await response.json()) as T;
+        cache.current[url] = body;
 
-        dispatch({ type: "fetched", payload: data });
+        dispatch({ type: "fetched", payload: body });
+        if (cancelRequest.current) return;
       } catch (error) {
-        if (cancelRequest.current) return;
-
         dispatch({ type: "error", payload: error as Error });
+        if (cancelRequest.current) return;
       }
     };
 
@@ -96,7 +119,15 @@ function useFetchRSR<T = unknown>(
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [url]);
 
-  return state;
+  useEffect(() => {
+    if (revalidate === true) {
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      setUrl(`${propsURL}?revalidate=${Date.now()}`);
+      setRevalidate(false);
+    }
+  }, [propsURL, revalidate, url]);
+
+  return { ...state, data };
 }
 
 export default useFetchRSR;

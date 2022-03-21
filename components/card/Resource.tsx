@@ -130,18 +130,22 @@ export const ResourceCard = (props: Resource) => {
           />
         </div>
         <div className="flex flex-col mx-2 text-xs">
-          <div className="inline-flex items-center ">
-            {likes.find((l) => l.uid === user?.data.uid) ? (
-              <HeartIconSolid className="w-3 h-3 mr-0.5 text-red-500" />
-            ) : (
-              <HeartIconOutline className="w-3 h-3 mr-0.5 text-red-500" />
-            )}{" "}
-            {likes.length || 0}
-          </div>
-          <div className="inline-flex items-center space-x-1">
-            <ChatAlt2Icon className="w-3 h-3 mr-0.5 text-gray-700 dark:text-gray-200" />{" "}
-            {comments.length || 0}
-          </div>
+          {likes && (
+            <div className="inline-flex items-center ">
+              {likes.find((l) => l.uid === user?.data.uid) ? (
+                <HeartIconSolid className="w-3 h-3 mr-0.5 text-red-500" />
+              ) : (
+                <HeartIconOutline className="w-3 h-3 mr-0.5 text-red-500" />
+              )}{" "}
+              {likes.length || 0}
+            </div>
+          )}
+          {comments && (
+            <div className="inline-flex items-center space-x-1">
+              <ChatAlt2Icon className="w-3 h-3 mr-0.5 text-gray-700 dark:text-gray-200" />{" "}
+              {comments.length || 0}
+            </div>
+          )}
         </div>
         <button
           onClick={() => {

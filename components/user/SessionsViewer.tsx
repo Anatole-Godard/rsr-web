@@ -14,18 +14,17 @@ import { useState } from "react";
 
 export const SessionsViewer = () => {
   const { user } = useAuth();
-  const [url, setUrl] = useState<string>(
-    `/api/user/${user?.session.uid}/sessions`
-  );
   const {
     data: sessionsFetchedData,
     error,
     loading: isLoading,
+    revalidate,
   }: {
-    data?: { data: { attributes: any[] } };
+    data?: any[];
     error?: any;
     loading: boolean;
-  } = useFetchRSR(url, user?.session);
+    revalidate: () => void;
+  } = useFetchRSR(`/api/user/${user?.session.uid}/sessions`, user?.session);
 
   const revoke = async (session: { token: any }) => {
     const res = await fetchRSR(`/api/auth/revoke`, user?.session, {
@@ -34,9 +33,7 @@ export const SessionsViewer = () => {
         Authorization: `Bearer ${session.token}`,
       },
     });
-    if (res.ok) {
-      setUrl((old) => old + `?`);
-    }
+    if (res.ok) revalidate();
   };
 
   return (
@@ -57,7 +54,7 @@ export const SessionsViewer = () => {
       </div>
 
       <div className="flex flex-col w-full space-y-3 grow">
-        {sessionsFetchedData?.data.attributes.map((session, key) => {
+        {sessionsFetchedData?.map((session, key) => {
           return (
             <div
               className="inline-flex items-center w-full p-2 bg-gray-100 rounded-md"

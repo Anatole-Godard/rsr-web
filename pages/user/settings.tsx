@@ -17,16 +17,14 @@ const UserIndexPage: NextPage<any> = () => {
     <AppLayout>
       <div className="flex flex-col w-full h-full bg-white dark:bg-black ">
         <div className="flex flex-col w-full px-6 py-6 space-y-3 bg-white lg:justify-between lg:items-end lg:flex-row shrink-0 lg:px-12 dark:bg-black dark:border-gray-800 lg:space-y-0">
-          <div className="inline-flex items-end">
-            <div className="w-auto h-auto">
-              <Image
-                className="rounded-full"
-                src={user?.data.photoURL || "/uploads/user/default.png"}
-                width={64}
-                height={64}
-                alt={user?.data.fullName}
-              />
-            </div>
+          <div className="inline-flex items-center">
+            <Image
+              className="rounded-full"
+              src={user?.data.photoURL || "/uploads/user/default.png"}
+              width={32}
+              height={32}
+              alt={user?.data.fullName}
+            />
             <h3 className="ml-5 text-2xl font-extrabold text-gray-800 font-marianne dark:text-gray-200">
               Paramètres
             </h3>
@@ -55,8 +53,6 @@ const UserIndexPage: NextPage<any> = () => {
   );
 };
 
-export default UserIndexPage;
-
 export const getServerSideProps = async (ctx) => {
   const {
     cookies: { user },
@@ -73,3 +69,5 @@ export const getServerSideProps = async (ctx) => {
     props: {},
   };
 };
+
+export default UserIndexPage;

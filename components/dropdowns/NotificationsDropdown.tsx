@@ -33,7 +33,7 @@ export const NotificationsDropdown = () => {
     error,
     loading,
   }: {
-    data?: { data: { attributes: Channel[] } };
+    data?: Channel[];
     error?: any;
     loading: boolean;
   } = useFetchRSR("/api/channel", user?.session);
@@ -103,7 +103,7 @@ export const NotificationsDropdown = () => {
               {!loading ? (
                 !error ? (
                   <div className="relative flex w-full gap-4 pb-4 overflow-x-auto snap-x">
-                    {channels?.data.attributes?.map((channel: Channel, idx) => (
+                    {channels?.map((channel: Channel, idx) => (
                       <div
                         key={idx}
                         className={classes(

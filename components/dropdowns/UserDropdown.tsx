@@ -7,6 +7,7 @@ import { Menu, Transition } from "@headlessui/react";
 import Link from "next/link";
 import {
   CogIcon,
+  CollectionIcon,
   LoginIcon,
   LogoutIcon,
   MoonIcon,
@@ -14,11 +15,7 @@ import {
   UserAddIcon,
 } from "@heroicons/react/outline";
 
-import {
-  ArrowRightIcon,
-  UserCircleIcon,
-  UserIcon,
-} from "@heroicons/react/solid";
+import { ArrowRightIcon, UserCircleIcon } from "@heroicons/react/solid";
 
 import { useAuth } from "@hooks/useAuth";
 import { classes } from "@utils/classes";
@@ -132,6 +129,17 @@ export const UserDropdown = () => {
                       <div className="pr-3">
                         <ArrowRightIcon className="w-4 h-4 text-gray-600 dark:text-gray-200" />
                       </div>
+                    </a>
+                  </Link>
+
+                  
+                  <Link href="/user/playlists">
+                    <a
+                      className="inline-flex items-center w-full px-4 py-2 text-sm leading-5 text-gray-700 transition duration-150 ease-in-out cursor-pointer dark:text-gray-300 hover:text-bleuFrance-500 hover:bg-bleuFrance-50 font-marianne dark:hover:bg-bleuFrance-800"
+                      
+                    >
+                      <CollectionIcon className="w-6 h-6 pr-2 mr-2 text-center border-r border-gray-200 font-marianne dark:border-gray-800" />
+                      Mes playlists
                     </a>
                   </Link>
 

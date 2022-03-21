@@ -1,12 +1,9 @@
 import { AppLayout } from "@components/layouts/AppLayout";
 import { UserResources } from "@components/user/UserResources";
-import { useAuth } from "@hooks/useAuth";
 import { NextPage } from "next";
 import Image from "next/image";
 
 const UserUIDPage: NextPage<any> = ({ uid, photoURL, fullName, resources }) => {
-  const { user } = useAuth();
-
   return (
     <AppLayout>
       <div className="flex flex-col w-full max-h-full bg-white dark:bg-gray-900 ">

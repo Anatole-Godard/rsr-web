@@ -2,6 +2,7 @@ import { Logo } from "@components/ui/Logo";
 import {
   ChatIcon,
   CogIcon,
+  CollectionIcon,
   HomeIcon,
   LibraryIcon,
   PlusIcon,
@@ -41,6 +42,12 @@ export const Sidebar = () => {
               active={pathname.includes("/user")}
               text="Profil"
               href="/user"
+            />
+            <SidebarIconXL
+              icon={<CollectionIcon {...className} />}
+              active={pathname.includes("/user/playlists")}
+              text="Playlists"
+              href="/user/playlists"
             />
             <SidebarIconXL
               icon={<CogIcon {...className} />}
