@@ -3,7 +3,8 @@ import Resource from "@models/Resource";
 import withDatabase from "@middleware/mongoose";
 import { handleError } from "@utils/handleError";
 import { withAuth } from "@middleware/auth";
-import { isAdmin } from '@utils/getCurrentUser';
+import { getUser, isAdmin } from "@utils/getCurrentUser";
+import Tag from "@models/Tag";
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== "PUT") {
@@ -46,9 +47,34 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       }
     }
 
+    const user = await getUser(req);
+
+    await Tag.bulkWrite(
+      req.body.tags.map((t: string) => ({
+        updateOne: {
+          filter: { name: t },
+          update: {
+            name: t,
+            owner: {
+              uid: user._id.toString(),
+              fullName: user.fullName,
+              photoURL: user.photoURL,
+            },
+          },
+          upsert: true,
+        },
+      }))
+    );
+    const tagsInDB = await Tag.find({ name: { $in: req.body.tags } }).select(
+      "-__v"
+    );
+
     resource = await Resource.findOneAndUpdate(
       { slug: req.query.slug },
-      req.body
+      {
+        ...req.body,
+        tags: tagsInDB.map((t) => ({ ...t, _id: t._id.toString() })),
+      }
     ).lean();
 
     res.status(200).json({

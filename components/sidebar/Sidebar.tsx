@@ -12,7 +12,13 @@ import {
 } from "@heroicons/react/outline";
 import { useAuth } from "@hooks/useAuth";
 import { useRouter } from "next/router";
-import { SidebarIcon, SidebarIconXL } from "./SidebarIcon";
+import {
+  Divider,
+  DividerXL,
+  SidebarIcon,
+  SidebarIconXL,
+  SidebarTitle,
+} from "./SidebarIcon";
 
 const className = { className: "shrink-0 w-5 h-5" };
 
@@ -116,12 +122,3 @@ export const Sidebar = () => {
     </div>
   );
 };
-
-const Divider = () => <hr className="sidebar-hr" />;
-const DividerXL = () => <hr className="hidden sidebar-hr xl:flex" />;
-
-const SidebarTitle = ({ text }) => (
-  <h4 className="pl-2.5 my-2 text-xs hidden xl:flex text-gray-400 dark:text-gray-600 font-marianne">
-    {text}
-  </h4>
-);

@@ -128,7 +128,10 @@ export const CustomTable = ({
           <div
             className="inline-flex items-center"
             onClick={() => {
-              theadValue.validEntity(value.uid, !value[theadValue.name]);
+              theadValue.validEntity(
+                theadValue.isTag ? value._id.toString() : value.uid,
+                !value[theadValue.name]
+              );
             }}
           >
             {value[theadValue.name] ? (
@@ -219,7 +222,7 @@ export const CustomTable = ({
                   {deleteEntity && (
                     <td
                       className="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white font-spectral"
-                      onClick={() => deleteEntity(value.slug || value.uid)}
+                      onClick={() => deleteEntity(value.slug || value.uid || value._id)}
                     >
                       <a className="px-2 py-2 cursor-pointer btn-red">
                         <TrashIcon className="w-4 h-4 shrink-0" />

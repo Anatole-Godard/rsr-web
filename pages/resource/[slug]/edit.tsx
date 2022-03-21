@@ -21,6 +21,8 @@ import { fetchRSR } from "@utils/fetchRSR";
 import { useAuth } from "@hooks/useAuth";
 import { UserMinimum } from "@definitions/User";
 import { TrashIcon } from "@heroicons/react/outline";
+import useFetchRSR from "@hooks/useFetchRSR";
+import { TagDocument } from "@definitions/Resource/Tag";
 
 const Map: any = dynamic(() => import("@components/map/Map") as any, {
   ssr: false,
@@ -39,7 +41,7 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
   const { user } = useAuth();
 
   const [pictureUrl, setPictureUrl] = useState(
-    props.data?.attributes.image.url || null
+    props.data?.attributes.properties?.image?.url || null
   );
   const [pictureFile, setPictureFile] = useState(null);
   const [name, setName] = useState<string>(
@@ -49,7 +51,7 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
     props.data?.attributes.properties.description || props.description
   );
   const [tags, setTags] = useState<{ label: string; value: string }[]>(
-    props.tags?.map((tag) => ({ label: tag, value: tag }))
+    props.tags?.map((tag) => ({ label: tag.name, value: tag.name }))
   );
   const [tagInputValue, setTagInputValue] = useState<string>("");
 
@@ -180,7 +182,11 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
       description,
       tags: tags.map((tag) => tag.value),
       data,
-      visibility: visibility.value,
+      visibility: (
+        visibility as unknown as {
+          value: "public" | "private" | "unlisted";
+        }
+      ).value,
       members,
     } as Resource;
   };
@@ -272,6 +278,12 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
     location,
     startDate,
   ]);
+
+  const {
+    data: tagsOptions,
+  }: {
+    data?: TagDocument[];
+  } = useFetchRSR("/api/resource/tags", user?.session);
 
   return (
     <AppLayout>
@@ -434,6 +446,7 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
                 <Select
                   name="members"
                   className="w-full"
+                  menuPlacement="auto"
                   isMulti
                   placeholder={
                     <div className="text-sm font-semibold font-spectral">
@@ -491,11 +504,20 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
                 className="w-full"
                 isClearable
                 isMulti
-                menuIsOpen={false}
+                menuPlacement="auto"
+                options={tagsOptions
+                  ?.filter(
+                    (tag: TagDocument) =>
+                      !tags.includes({ value: tag.name, label: tag.name })
+                  )
+                  .map((tag: TagDocument) => ({
+                    label: tag.name,
+                    value: tag.name,
+                  }))}
                 value={tags}
                 inputValue={tagInputValue}
                 onInputChange={(e: string) => setTagInputValue(e)}
-                onChange={(e: any[]) => setTags(e?.map((e: any) => e.value))}
+                onChange={(e: any[]) => setTags(e)}
                 placeholder={
                   <div className="text-sm font-semibold font-spectral">
                     Utilisez des étiquettes pour mieux identifier la ressource
@@ -850,8 +872,11 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   }
   try {
     let parsedUser = JSON.parse(user);
-    const res = await fetch(
-      "http://localhost:3000/api/resource/" + context.params.slug
+    const res = await fetchRSR(
+      `${
+        process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000/api"
+      }/resource/${context.params.slug}`,
+      parsedUser.session
     );
     const body = await res.json();
     const resource: Resource = body?.data?.attributes;

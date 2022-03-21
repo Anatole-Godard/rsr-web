@@ -114,7 +114,7 @@ export const ResourceCard = (props: Resource) => {
           <ChipList
             list={
               props.tags
-                ?.map((el, i) => (i < 2 ? { label: el, value: i } : null))
+                ?.map((el, i) => (i < 2 ? { label: el.name, value: i } : null))
                 .filter((e) => e !== null) || []
             }
             size="small"

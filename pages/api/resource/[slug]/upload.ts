@@ -98,6 +98,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
             .split(".")
             .at(-1)}`,
         };
+        resource.markModified("data.attributes.properties.image");
         await resource.save();
 
         res.status(200).json({

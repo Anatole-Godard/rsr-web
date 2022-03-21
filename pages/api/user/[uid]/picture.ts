@@ -1,5 +1,7 @@
 import { withAuth } from "@middleware/auth";
 import withDatabase from "@middleware/mongoose";
+import Notification from "@models/Notification";
+import Resource from "@models/Resource";
 import User from "@models/User";
 import { handleError } from "@utils/handleError";
 import { NextApiRequest, NextApiResponse } from "next";
@@ -71,6 +73,36 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         );
         user.photoURL = `/uploads/user/${uid}.${fields.name.split(".").at(-1)}`;
         await user.save();
+
+        await Resource.updateMany(
+          { "owner.uid": uid },
+          { $set: { "owner.photoURL": user.photoURL } }
+        );
+
+        await Resource.updateMany(
+          { comments: { $elemMatch: { "owner.uid": uid } } },
+          { $set: { "comments.$.owner.photoURL": user.photoURL } }
+        );
+
+        await Resource.updateMany(
+          { likes: { $elemMatch: { "owner.uid": uid } } },
+          { $set: { "likes.$.owner.photoURL": user.photoURL } }
+        );
+
+        await Notification.updateMany(
+          { "emitter.uid": uid },
+          { $set: { "emitter.photoURL": user.photoURL } }
+        );
+        await Notification.updateMany(
+          { "user.uid": uid },
+          { $set: { "user.photoURL": user.photoURL } }
+        );
+
+        await Notification.updateMany(
+          { "document.owner.uid": uid },
+          { $set: { "document.owner.photoURL": user.photoURL } }
+        );
+        
 
         res.status(200).json({
           data: {

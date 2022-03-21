@@ -2,6 +2,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import Resource from "@models/Resource";
 import withDatabase from "@middleware/mongoose";
 import { handleError } from "@utils/handleError";
+import { TagDocument } from "@definitions/Resource/Tag";
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { uid = undefined } = req.headers as { uid: string | undefined };
@@ -42,7 +43,12 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
                           $options: "i",
                         },
                       },
-                      { tags: { $in: [search] } },
+                      {
+                        "tags.name": {
+                          $regex: search,
+                          $options: "i",
+                        },
+                      },
                     ],
                   },
                 ]
@@ -70,7 +76,12 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
                           $options: "i",
                         },
                       },
-                      { tags: { $in: [search] } },
+                      {
+                        "tags.name": {
+                          $regex: search,
+                          $options: "i",
+                        },
+                      },
                     ],
                   },
                 ]
@@ -92,7 +103,14 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         data: {
           id: "search",
           type: "resource",
-          attributes: resources,
+          attributes: resources.map((r) =>
+            uid === r.owner.uid
+              ? r.toObject()
+              : {
+                  ...r.toObject(),
+                  tags: r.tags.filter((t: TagDocument) => t.validated),
+                }
+          ),
         },
       });
     } catch (error) {
@@ -115,7 +133,14 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         data: {
           id: "all",
           type: "resource",
-          attributes: resources,
+          attributes: resources.map((r) =>
+            uid === r.owner.uid
+              ? r.toObject()
+              : {
+                  ...r.toObject(),
+                  tags: r.tags.filter((t: TagDocument) => t.validated),
+                }
+          ),
           search: false,
         },
       });

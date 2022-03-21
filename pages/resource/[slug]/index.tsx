@@ -46,6 +46,7 @@ import "react-nice-dates/build/style.css";
 import { DateRangePickerCalendar } from "react-nice-dates";
 import { ShowMoreText } from "@components/ui/ShowMore";
 import { PlaylistDropdown } from "@components/dropdowns/PlaylistDropdown";
+import { TagDocument } from "@definitions/Resource/Tag";
 
 const Map: any = dynamic(() => import("@components/map/Map") as any, {
   ssr: false,
@@ -232,7 +233,11 @@ const ResourceSlug: NextPage<any> = ({
                   : "amber"
               }
               size="normal"
-              list={tags.map((tag: string) => ({ label: tag, value: tag }))}
+              list={(tags as TagDocument[]).map((tag: TagDocument) => ({
+                label: tag.name,
+                value: tag._id.toString(),
+                validated: tag.validated,
+              }))}
             />
           </div>
         </div>
@@ -342,10 +347,22 @@ const ResourceSlug: NextPage<any> = ({
 export default ResourceSlug;
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const res = await fetch(
-    "http://localhost:3000/api/resource/" + context.params.slug
-  );
-  const body = await res.json();
+  const {
+    cookies: { user },
+  } = context.req;
+  const uid = JSON.parse(user || "null")?.data.uid || undefined;
+  const body = await (
+    await fetch(
+      `${
+        process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000/api"
+      }/resource/${context.params.slug}`,
+      uid
+        ? {
+            headers: { uid },
+          }
+        : undefined
+    )
+  ).json();
 
   const resource: Resource[] = body?.data?.attributes;
 

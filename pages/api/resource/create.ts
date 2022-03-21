@@ -1,6 +1,7 @@
 import { withAuth } from "@middleware/auth";
 import withDatabase from "@middleware/mongoose";
 import Resource from "@models/Resource";
+import Tag from "@models/Tag";
 import { getUser } from "@utils/getCurrentUser";
 import { handleError } from "@utils/handleError";
 import { NextApiRequest, NextApiResponse } from "next";
@@ -52,11 +53,29 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       });
       return;
     }
+    await Tag.bulkWrite(
+      tags.map((t: string) => ({
+        updateOne: {
+          filter: { name: t },
+          update: {
+            name: t,
+            owner: {
+              uid: user._id.toString(),
+              fullName: user.fullName,
+              photoURL: user.photoURL,
+            },
+          },
+          upsert: true,
+        },
+      }))
+    );
+    const tagsInDB = await Tag.find({ name: { $in: tags } }).select("-__v");
+
 
     const resource = await Resource.create({
       slug: slugResource,
       description,
-      tags,
+      tags: tagsInDB.map((t) => ({ ...t, _id: t._id.toString() })),
       data: { type, attributes },
       owner: {
         fullName: user.fullName,
