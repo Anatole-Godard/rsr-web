@@ -74,21 +74,6 @@ export const UserStatistics = ({
         setTotalResourceViews(count);
     }, [resources]);
 
-    const months = (config) => {
-        const cfg = config || {};
-        const count = cfg.count || 12;
-        const values = [];
-
-        const d = new Date();
-        let currentMonth = d.getMonth();
-
-        MONTHS.slice(currentMonth, currentMonth + count).forEach((month, index) => {
-            values.push(month);
-        });
-
-        return values;
-    }
-
     const Config = {
         plugins: {
             legend: {
@@ -126,7 +111,7 @@ export const UserStatistics = ({
     }
 
     const data = {
-        labels: months({count: 6}),
+        labels: MONTHS,
         datasets: [{
             data: getStatistics(),
             fill: false,
