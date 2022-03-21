@@ -8,7 +8,7 @@ import { SearchIcon, TagIcon } from "@heroicons/react/outline";
 import { TagDocument } from "@definitions/Resource/Tag";
 
 const TagManager: NextPage<any> = (props) => {
-  console.log(props)
+  console.log(props);
   const [tags, setTags] = useState<TagDocument[]>(props?.data?.attributes);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [limitPerPage, setLimitPerPage] = useState<number>(
@@ -22,6 +22,13 @@ const TagManager: NextPage<any> = (props) => {
     await fetchRSR(`/api/resource/admin/tags`, user.session, {
       method: "PUT",
       body,
+    });
+    getTags();
+  };
+  const deleteTag = async (_id: string) => {
+    await fetchRSR(`/api/resource/admin/tags/`, user.session, {
+      method: "DELETE",
+      body: JSON.stringify({ _id }),
     });
     getTags();
   };
@@ -85,6 +92,8 @@ const TagManager: NextPage<any> = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentPage]);
 
+  
+
   const updatePage = (data: { selected: number }) => {
     const currentPage = data.selected + 1;
     setCurrentPage(currentPage);
@@ -139,6 +148,7 @@ const TagManager: NextPage<any> = (props) => {
             valuesList={tags}
             totalPages={totalPages}
             updateCurrentPage={updatePage}
+            deleteEntity={deleteTag}
           />
         </div>
       </div>
