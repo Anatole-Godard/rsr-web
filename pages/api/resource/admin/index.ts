@@ -58,6 +58,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
                 data: element.data,
                 likes: element.likes,
                 validated: element.validated,
+                createdAt: element.createdAt,
               })),
             },
           });

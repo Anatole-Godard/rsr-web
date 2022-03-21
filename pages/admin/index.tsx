@@ -9,13 +9,30 @@ import {useAuth} from "@hooks/useAuth";
 import {fetchRSR} from "@utils/fetchRSR";
 import {Resource} from "@definitions/Resource";
 import ResourceModel from '@models/Resource';
+import moment from "moment";
+import {Popover} from "@headlessui/react";
 
 const Home: NextPage<any> = ({resources = []}: { resources: Resource[] }) => {
     const [displayChart, setDisplayChart] = useState<boolean>(false);
-    const {user} = useAuth();
+    const [minPeriod, setMinPeriod] = useState<string>(moment(resources[0]?.createdAt).format('YYYY-MM'));
+    const [maxPeriod, setMaxPeriod] = useState<string>(moment(resources[-1]?.createdAt).format('YYYY-MM'));
+    const [resourcesFiltered, setResourcesFiltered] = useState<Resource[]>(resources);
 
     const setDisplayType = () => {
         setDisplayChart(!displayChart);
+    };
+
+    const resetFilters = () => {
+        setMinPeriod(moment(resources[0]?.createdAt).format('YYYY-MM'));
+        setMaxPeriod(moment(resources[-1]?.createdAt).format('YYYY-MM'));
+        setResourcesFiltered(resources);
+    };
+
+    const getResourcesByPeriod = (min, max) => {
+        var filtered = resources.filter(resource => {
+            return moment(min).year() <= moment(resource.createdAt).year() && moment(resource.createdAt).year() <= moment(max).year() && moment(min).month() <= moment(resource.createdAt).month() && moment(resource.createdAt).month() <= moment(max).month();
+        })
+        setResourcesFiltered(filtered);
     };
 
     return (
@@ -48,15 +65,46 @@ const Home: NextPage<any> = ({resources = []}: { resources: Resource[] }) => {
                             Filtres
                         </h6>
                         <div className="inline-flex w-full mt-2">
+                            <Popover className="relative">
+                                <Popover.Button className="btn-blue mr-2">Période</Popover.Button>
+                                <Popover.Panel className="absolute p-5 bg-white rounded">
+                                    {({close}) => (
+                                    <div className="flex flex-col">
+                                        <div className="grid grid-rows-2">
+                                            <p>De :</p>
+                                            <input type="month" value={minPeriod}
+                                                   onInput={(e) => setMinPeriod(e.target.value)}/>
+                                            <p>à :</p>
+                                            <input type="month" value={maxPeriod}
+                                                   onInput={(e) => setMaxPeriod(e.target.value)}/>
+                                            <button className="btn-blue w-20 my-2" onClick={() => {
+                                                getResourcesByPeriod(minPeriod, maxPeriod);
+                                                close();
+                                            }}>Filtrer
+                                            </button>
+                                            <button className="btn-red w-20 my-2" onClick={() => {
+                                                resetFilters()
+                                                close();
+                                            }}>Annuler
+                                            </button>
+                                        </div>
+                                    </div>
+                                        )}
+                                </Popover.Panel>
+                            </Popover>
                             <button className="btn-blue mr-2" onClick={() => setDisplayType()}>Catégorie</button>
-                            <button className="btn-blue mr-2" onClick={() => setDisplayType()}>Période</button>
                             <button className="btn-blue mr-2" onClick={() => setDisplayType()}>Type de resource</button>
+                            <button className="btn-red mr-2" onClick={() => {
+                                resetFilters();
+                            }}>Supprimer les filtres
+                            </button>
                         </div>
                     </div>
                     <div className="grid gap-3 lg:grid-cols-2 xl:grid-cols-3">
                         <div className="bg-white rounded-lg px-5 py-5">
-                            {displayChart ? <ChartDisplay label="Nombre de ressources postées" resources={resources}/> :
-                                <GlobalDisplay label="Nombre de ressources postées" data={resources.length}/>}
+                            {displayChart ?
+                                <ChartDisplay label="Nombre de ressources postées" resources={resourcesFiltered} minPeriod={minPeriod} maxPeriod={maxPeriod}/> :
+                                <GlobalDisplay label="Nombre de ressources postées" data={resourcesFiltered.length}/>}
                         </div>
                     </div>
                 </div>

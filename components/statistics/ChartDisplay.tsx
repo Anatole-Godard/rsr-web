@@ -56,14 +56,16 @@ Chart.register(
     SubTitle
 );
 
-export const ChartDisplay = ({label, resources}:{label: String, resources: Resource[]}) => {
+export const ChartDisplay = ({label, resources, minPeriod, maxPeriod}:{label: String, resources: Resource[], minPeriod: string, maxPeriod: string}) => {
 
-    console.log(resources)
-    // resources.map((e, i) => {
-    //     console.log("hzefk ", e);
-    // });
+    let min = moment(minPeriod);
+    let max = moment(maxPeriod);
+    const values = [];
 
-    const MONTHS = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
+    while (max > min || min.format('M') === max.format('M')) {
+        values.push(min.format('MMMM YYYY'));
+        min.add(1,'month');
+    }
 
     const Config = {
         plugins: {
@@ -104,7 +106,7 @@ export const ChartDisplay = ({label, resources}:{label: String, resources: Resou
     }
 
     const data = {
-        labels: MONTHS,
+        labels: values,
         datasets: [{
             data: getStatistics(),
             fill: false,
