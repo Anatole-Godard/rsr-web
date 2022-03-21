@@ -27,6 +27,7 @@ import {
     SubTitle
 } from 'chart.js';
 import {Resource} from "@definitions/Resource";
+import moment from "moment";
 
 Chart.register(
     ArcElement,
@@ -64,21 +65,6 @@ export const ChartDisplay = ({label, resources}:{label: String, resources: Resou
 
     const MONTHS = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
 
-    const months = (config) => {
-        const cfg = config || {};
-        const count = cfg.count || 12;
-        const values = [];
-
-        const d = new Date();
-        let currentMonth = d.getMonth();
-
-        MONTHS.slice(currentMonth, currentMonth + count).forEach((month, index) => {
-            values.push(month);
-        });
-
-        return values;
-    }
-
     const Config = {
         plugins: {
             legend: {
@@ -100,12 +86,27 @@ export const ChartDisplay = ({label, resources}:{label: String, resources: Resou
             x: {display: true},
             y: {display: true},
         },
+
+        scale: {
+            ticks: {
+                precision: 0
+            },
+        },
     };
 
+    const getStatistics = () => {
+        let data = Array(12).fill(0)
+        resources.filter(resource => {
+            let index = moment(resource.createdAt).month()
+            data[index]++
+        })
+        return data
+    }
+
     const data = {
-        labels: months({count: 6}),
+        labels: MONTHS,
         datasets: [{
-            data: [65, 59, 80, 81, 56, 55, 40],
+            data: getStatistics(),
             fill: false,
             borderColor: 'rgb(75, 192, 192)',
             tension: 0.1

@@ -43,11 +43,17 @@ const Home: NextPage<any> = ({resources = []}: { resources: Resource[] }) => {
                     </div>
                 </div>
                 <div className="p-6 overflow-y-auto bg-gray-100 grow xl:rounded-tl-xl">
-                    <div className="grid gap-3 lg:grid-cols-2 xl:grid-cols-3">
-                        <div className="bg-white rounded-lg px-5 py-5">
-                            {displayChart ? <ChartDisplay label="Nombre de visites" resources={resources}/> :
-                                <GlobalDisplay label="Nombre de visites" data={resources.length}/>}
+                    <div className="bg-white rounded-lg px-5 py-5 mb-2">
+                        <h6 className="font-bold text-gray-900 font-marianne">
+                            Filtres
+                        </h6>
+                        <div className="inline-flex w-full mt-2">
+                            <button className="btn-blue mr-2" onClick={() => setDisplayType()}>Catégorie</button>
+                            <button className="btn-blue mr-2" onClick={() => setDisplayType()}>Période</button>
+                            <button className="btn-blue mr-2" onClick={() => setDisplayType()}>Type de resource</button>
                         </div>
+                    </div>
+                    <div className="grid gap-3 lg:grid-cols-2 xl:grid-cols-3">
                         <div className="bg-white rounded-lg px-5 py-5">
                             {displayChart ? <ChartDisplay label="Nombre de ressources postées" resources={resources}/> :
                                 <GlobalDisplay label="Nombre de ressources postées" data={resources.length}/>}
