@@ -3076,6 +3076,11 @@ quick-lru@^5.1.1:
   resolved "https://registry.yarnpkg.com/quick-lru/-/quick-lru-5.1.1.tgz#366493e6b3e42a3a6885e2e99d18f80fb7a8c932"
   integrity sha512-WuyALRjWPDGtt/wzJiadO5AXY+8hZ80hVpe6MyivgraREW751X3SbhRvG3eLKOYN+8VEvqLcf3wdnt44Z4S4SA==
 
+react-circular-progressbar@^2.0.4:
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/react-circular-progressbar/-/react-circular-progressbar-2.0.4.tgz#5b04a9cf6be8c522c180e4e99ec6db63677335b0"
+  integrity sha512-OfX0ThSxRYEVGaQSt0DlXfyl5w4DbXHsXetyeivmoQrh9xA9bzVPHNf8aAhOIiwiaxX2WYWpLDB3gcpsDJ9oww==
+
 react-cookie@^4.1.1:
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/react-cookie/-/react-cookie-4.1.1.tgz#832e134ad720e0de3e03deaceaab179c4061a19d"
