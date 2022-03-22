@@ -19,7 +19,7 @@ const withDatabase = (handler) => async (req, res) => {
       process.env.DB_HOST
     }/${
       process.env.DB_NAME || "rsr"
-    }?retryWrites=true&w=majority`,
+    }?retryWrites=true&w=majority&authSource=admin`,
 
     {
       useUnifiedTopology: true,
