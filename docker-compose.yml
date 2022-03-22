@@ -46,6 +46,6 @@ services:
     ports:
         - "3000:3000"
     env_file:
-      - .env.atlas
+      - .env.local
     environment:
       NEXT_PUBLIC_BACK_OFFICE_MAX_ENTITIES: 20
