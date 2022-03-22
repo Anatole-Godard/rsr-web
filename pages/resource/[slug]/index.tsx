@@ -87,6 +87,7 @@ const ResourceSlug: NextPage<any> = ({
       console.log(body);
     }
   };
+
   const like = async () => {
     const res = await fetchRSR(`/api/resource/${slug}/like`, user?.session);
     if (res.ok) {
@@ -94,6 +95,7 @@ const ResourceSlug: NextPage<any> = ({
       setNewLikes(body?.data.attributes.likes);
     }
   };
+
   const comment = async (e) => {
     e.preventDefault();
     const res = await fetchRSR(`/api/resource/${slug}/comment`, user?.session, {
@@ -704,6 +706,26 @@ const EventView = ({ attributes, slug }: EventViewProps) => {
 const CommentView = ({ comment, slug }: CommentViewProps) => {
   const { owner, content, createdAt } = comment;
   const { user } = useAuth();
+
+  const report = async () => {
+    const res = await fetchRSR(`/api/report/create`, user?.session, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        appsource: "web",
+      },
+      body: JSON.stringify({
+        type: "user",
+        documentUid: owner.uid,
+        context: `${owner.fullName}: ${content}`,
+      }),
+    });
+    if (res.ok) {
+      const body = await res.json();
+      console.log(body);
+    }
+  };
+
   return (
     <li className="mb-6 ml-[2.25rem] last:pb-6">
       <span className="absolute  flex items-center justify-center w-[2.25rem] h-[2.25rem] bg-blue-200 rounded-full -left-3 ring-8 ring-white dark:ring-gray-800 dark:bg-blue-900">
@@ -726,7 +748,7 @@ const CommentView = ({ comment, slug }: CommentViewProps) => {
             &bull;
           </time>
           <button
-            // todo
+              onClick={report}
             className="inline-flex items-center text-xs text-yellow-600 duration-300 hover:text-yellow-800 font-spectral"
           >
             <ExclamationIcon className="w-3 h-3 mr-1 shrink-0" />
