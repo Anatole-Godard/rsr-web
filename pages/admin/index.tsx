@@ -1,8 +1,9 @@
 import {AppLayoutAdmin} from "components/layouts/AppLayoutAdmin";
 import type {NextPage} from "next";
 import {GetServerSideProps} from 'next';
-import {useEffect, useState} from "react";
-import {ChartSquareBarIcon, CheckIcon} from "@heroicons/react/outline";
+import {useEffect, useState, Fragment} from "react";
+import {ChartSquareBarIcon} from "@heroicons/react/outline";
+import {SelectorIcon, CheckIcon} from "@heroicons/react/solid";
 import {ChartDisplay} from "@components/statistics/ChartDisplay";
 import {GlobalDisplay} from "@components/statistics/GlobalDisplay";
 import {useAuth} from "@hooks/useAuth";
@@ -10,7 +11,7 @@ import {fetchRSR} from "@utils/fetchRSR";
 import {Resource} from "@definitions/Resource";
 import ResourceModel from '@models/Resource';
 import moment from "moment";
-import {Popover, Combobox} from "@headlessui/react";
+import {Popover, Combobox, Transition} from "@headlessui/react";
 import {types} from "../../constants/resourcesTypes";
 
 const Home: NextPage<any> = ({resources = []}: { resources: Resource[] }) => {
@@ -18,7 +19,7 @@ const Home: NextPage<any> = ({resources = []}: { resources: Resource[] }) => {
     const [minPeriod, setMinPeriod] = useState<string>(moment(resources[0]?.createdAt).format('YYYY-MM'));
     const [maxPeriod, setMaxPeriod] = useState<string>(moment(resources[-1]?.createdAt).format('YYYY-MM'));
     const [resourcesFiltered, setResourcesFiltered] = useState<Resource[]>(resources);
-    const [selectedType, setSelectedType] = useState<string>('Tous');
+    const [selectedType, setSelectedType] = useState<string>('Type');
     const [query, setQuery] = useState<string>('');
 
     const setDisplayType = () => {
@@ -29,6 +30,7 @@ const Home: NextPage<any> = ({resources = []}: { resources: Resource[] }) => {
         setMinPeriod(moment(resources[0]?.createdAt).format('YYYY-MM'));
         setMaxPeriod(moment(resources[-1]?.createdAt).format('YYYY-MM'));
         setResourcesFiltered(resources);
+        setSelectedType('Type');
     };
 
     const getResourcesByPeriod = (min, max) => {
@@ -102,30 +104,58 @@ const Home: NextPage<any> = ({resources = []}: { resources: Resource[] }) => {
                                     )}
                                 </Popover.Panel>
                             </Popover>
-                            <Combobox value={selectedType} onChange={(v) => {
-                                setSelectedType(v.label);
-                                getResourcesByType(v.value);
-                            }}>
-                                <Combobox.Label>Type :</Combobox.Label>
-                                <Combobox.Input
-                                    onChange={(e) => setQuery(e.target.value)}
-                                    displayValue={() => selectedType}
-                                    className="bg-white focus:outline-none focus:shadow-outline border border-blue-500 rounded-lg py-2 px-4 block appearance-none leading-normal"
-                                />
-                                <Combobox.Options className="absolute">
-                                    {types.map((type) => (
-                                        <Combobox.Option key={type.label} value={type}>
-                                            {({active, selected}) => (
-                                                <li className={`${
-                                                    active ? 'bg-blue-500 text-white' : 'bg-white text-black'}`}>
-                                                    {selected && <CheckIcon/>}
-                                                    {type.label}
-                                                </li>
-                                            )}
-                                        </Combobox.Option>
-                                    ))}
-                                </Combobox.Options>
-                            </Combobox>
+                            <div className="w-72">
+                                <Combobox value={selectedType} onChange={(v) => {
+                                    setSelectedType(v.label);
+                                    getResourcesByType(v.value);
+                                }}>
+                                    <div className="relative mt-1">
+                                        <div
+                                            className="relative w-full text-left bg-white rounded-lg shadow-md cursor-default focus:outline-none focus-visible:ring-2 focus-visible:ring-opacity-75 focus-visible:ring-white focus-visible:ring-offset-teal-300 focus-visible:ring-offset-2 sm:text-sm overflow-hidden">
+                                            <Combobox.Input
+                                                onChange={(e) => setQuery(e.target.value)}
+                                                displayValue={() => selectedType}
+                                                className="w-full border-none focus:ring-0 py-2 pl-3 pr-10 text-sm leading-5 text-gray-900"
+                                            />
+                                            <Combobox.Button
+                                                className="absolute inset-y-0 right-0 flex items-center pr-2">
+                                                <SelectorIcon
+                                                    className="w-5 h-5 text-gray-400 align-middle"
+                                                    aria-hidden="true"
+                                                />
+                                            </Combobox.Button>
+                                        </div>
+                                        <Transition
+                                            as={Fragment}
+                                            leave="transition ease-in duration-100"
+                                            leaveFrom="opacity-100"
+                                            leaveTo="opacity-0"
+                                            afterLeave={() => setQuery('')}
+                                        >
+                                            <Combobox.Options
+                                                className="absolute w-full py-1 mt-1 overflow-auto text-base bg-white rounded-md shadow-lg max-h-60 ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm p-5">
+                                                {types.length === 0 && query !== '' ? (
+                                                        <div
+                                                            className="cursor-default select-none relative py-2 px-4 text-gray-700">
+                                                            Nothing found.
+                                                        </div>
+                                                    ) :
+                                                    (types.map((type) => (
+                                                        <Combobox.Option key={type.label} value={type}>
+                                                            {({active, selected}) => (
+                                                                <li className={`${
+                                                                    active ? 'bg-blue-500 text-white' : 'bg-white text-black'}`}>
+                                                                    {selected && <CheckIcon/>}
+                                                                    {type.label}
+                                                                </li>
+                                                            )}
+                                                        </Combobox.Option>
+                                                    )))}
+                                            </Combobox.Options>
+                                        </Transition>
+                                    </div>
+                                </Combobox>
+                            </div>
                             <button className="btn-blue mr-2" onClick={() => setDisplayType()}>Catégorie</button>
                             <button className="btn-red mr-2" onClick={() => {
                                 resetFilters();
