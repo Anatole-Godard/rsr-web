@@ -76,7 +76,7 @@ const UserIndexPage: NextPage<any> = ({
                     {user && (
                         <div>
                             <div className="grid gap-6 lg:grid-cols-2 xl:grid-cols-3 h-fit">
-                                {displayStats && (<UserStatistics user={user} resources={resources}/>)}
+                                {displayStats && (<UserStatistics user={user} resources={resources} allResources={allResources.filter((r: Resource) => r.seenBy.some((u) => u.uid === user.data.uid))}/>)}
                                 <UserResources resources={resources}/>
                                 <UserLikedResources resources={likes}/>
                             </div>

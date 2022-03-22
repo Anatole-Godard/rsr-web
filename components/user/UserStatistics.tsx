@@ -61,7 +61,8 @@ Chart.register(
 export const UserStatistics = ({
                                    resources,
                                    user,
-                               }: { resources: Resource[]; user: any; }) => {
+                                   allResources
+                               }: { resources: Resource[]; user: any; allResources: Resource[] }) => {
 
     const MONTHS = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
     const [totalResourceViews, setTotalResourceViews] = useState(0);
@@ -149,7 +150,7 @@ export const UserStatistics = ({
                         Ressources consultées
                     </h6>
                     {/* TODO: change resources props to not filter only user's resources */}
-                    <p className="text-5xl text-gray-900 font-marianne">2</p>
+                    <p className="text-5xl text-gray-900 font-marianne">{allResources.length}</p>
                 </div>
                 <div className="">
                     <h6 className="font-bold text-gray-900 font-marianne">
@@ -166,17 +167,6 @@ export const UserStatistics = ({
                         </h6>
                     </div>
                     <div>
-                        <Line data={data} options={Config} width={400} height={200}/>
-                    </div>
-                </div>
-                <div className="inline-flex flex flex-col w-full px-3 mb-3">
-                    <div>
-                        <h6 className="font-bold text-gray-900 font-marianne">
-                            Ressources consultées
-                        </h6>
-                    </div>
-                    <div>
-                        {/* TODO: change resources props to not filter only user's resources (change data value) */}
                         <Line data={data} options={Config} width={400} height={200}/>
                     </div>
                 </div>
