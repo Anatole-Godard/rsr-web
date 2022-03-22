@@ -40,10 +40,12 @@ services:
         - rsr-network
     restart: always
     volumes:
-        - .:/app
-        - /app/node_modules
-        - /app/.next
+        - .:/usr/src/app
+        - /usr/src/app/node_modules
+        - /usr/src/app/.next
     ports:
         - "3000:3000"
+    env_file:
+      - .env.atlas
     environment:
       NEXT_PUBLIC_BACK_OFFICE_MAX_ENTITIES: 20

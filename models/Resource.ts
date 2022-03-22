@@ -50,6 +50,10 @@ const ResourceSchema = new Schema({
     type: Array,
     required: false,
   },
+  seenBy: {
+    type: Array,
+    default: [],
+  },
 });
 
 const Resource =

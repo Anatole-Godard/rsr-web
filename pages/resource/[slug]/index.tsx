@@ -363,7 +363,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         : undefined
     )
   ).json();
-
+  const parsedUser = JSON.parse(user || "null");
+  if(parsedUser?.session) await fetchRSR(`http://localhost:3000/api/resource/${context.params.slug}/seen`, parsedUser.session);
   const resource: Resource[] = body?.data?.attributes;
 
   return {

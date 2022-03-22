@@ -19,7 +19,7 @@ export type Resource = {
   likes: UserMinimum[];
   comments?: Comment[];
   validated: boolean;
-
+  seenBy: UserMinimum[];
   visibility: "public" | "private" | "unlisted";
   members?: UserMinimum[];
 };
@@ -41,4 +41,5 @@ export type ResourceMinimum = {
   validated: boolean;
   visibility: "public" | "private" | "unlisted";
   members?: UserMinimum[];
+  seenBy: UserMinimum[];
 };
