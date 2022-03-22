@@ -12,9 +12,9 @@ import { useCookies } from "react-cookie";
 export const CookieAlert = () => {
   const router = useRouter();
 
-  const [cookie, setCookie] = useCookies(["cookie-accepted"]);
+  const [cookie, setCookie] = useCookies(["rsr-cookie_accepted"]);
   const [show, setShow] = useState<boolean>(
-    cookie["cookie-accepted"] !== "true"
+    cookie["rsr-cookie_accepted"] !== "true"
   );
 
   const [blur, setBlur] = useState(false);
@@ -25,7 +25,7 @@ export const CookieAlert = () => {
 
   const handleClose = async () => {
     setShow(false);
-    setCookie("cookie-accepted", true, {
+    setCookie("rsr-cookie_accepted", true, {
       path: "/",
       maxAge: 3600 * 24, // Expires after 1day
       sameSite: true,
@@ -48,7 +48,9 @@ export const CookieAlert = () => {
           <div
             className={classes(
               "group flex flex-col items-center justify-between h-full px-4 py-4 text-white bg-bleuFrance-500 border-0 motion-safe:backdrop-filter motion-safe:backdrop-blur-md rounded-xl duration-500 transition-all ease-in-out hover:bg-opacity-95 dark:bg-bleuFrance-200",
-              blur ? "bg-opacity-10 text-bleuFrance-700 dark:bg-opacity-50" : "bg-opacity-90"
+              blur
+                ? "bg-opacity-10 text-bleuFrance-700 dark:bg-opacity-50"
+                : "bg-opacity-90"
             )}
           >
             <div className="inline-flex items-center w-full h-full select-none">

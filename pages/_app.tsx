@@ -7,6 +7,7 @@ import { AnimatePresence } from "framer-motion";
 import { AuthProvider } from "@hooks/useAuth";
 import { NotificationProvider } from "@hooks/useNotifications";
 import { Fragment } from "react";
+import { GetStarted } from "@components/ui/GetStarted";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
@@ -17,6 +18,7 @@ function MyApp({ Component, pageProps }: AppProps) {
             <Fragment key={"app"}>
               <Component {...pageProps} />
               <DarkModeToggler />
+              <GetStarted />
             </Fragment>
           </AnimatePresence>
         </NotificationProvider>
