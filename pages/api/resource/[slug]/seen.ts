@@ -32,6 +32,7 @@ const handler = async(req: NextApiRequest, res: NextApiResponse) => {
   } else {
     console.log("Seen");
     resource.seenBy.push({uid: user.uid, fullName: user.fullName, photoURL: user.photoURL});
+    resource.markModified("seenBy");
     await resource.save();
     return res.status(200).json({data: {attributes: resource, type: "resource", id: resource._id}, error: null});
   }
