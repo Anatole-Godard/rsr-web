@@ -24,9 +24,8 @@ const UserUIDPage: NextPage<any> = ({ uid, photoURL, fullName, resources }) => {
           </div>
         </div>
         <div className="flex flex-col p-6 overflow-y-auto bg-gray-100 grow xl:rounded-tl-xl">
-          <div className="grid gap-3 lg:grid-cols-2 xl:grid-cols-3 h-fit">
-            <UserResources resources={resources} />
-          </div>
+          {/* <div className="grid gap-3 lg:grid-cols-2 xl:grid-cols-3 h-fit"></div> */}
+          <UserResources resources={resources} />
         </div>
       </div>
     </AppLayout>

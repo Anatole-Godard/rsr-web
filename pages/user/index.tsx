@@ -23,7 +23,7 @@ const UserIndexPage: NextPage<any> = ({
       <div className="flex flex-col w-full h-full bg-white dark:bg-black ">
         <div className="flex flex-col w-full px-6 py-6 space-y-3 bg-white lg:justify-between lg:items-end lg:flex-row shrink-0 lg:px-12 dark:bg-black dark:border-gray-800 lg:space-y-0">
           <div className="inline-flex items-center">
-          <Image
+            <Image
               className="rounded-full"
               src={user?.data.photoURL || "/uploads/user/default.png"}
               width={32}
@@ -55,10 +55,12 @@ const UserIndexPage: NextPage<any> = ({
         </div>
         <div className="flex flex-col p-6 overflow-y-auto bg-gray-100 dark:bg-gray-900 grow xl:rounded-tl-xl">
           {user && (
-            <div className="grid gap-6 lg:grid-cols-2 xl:grid-cols-3 h-fit">
+            // <div className="grid gap-6 lg:grid-cols-2 xl:grid-cols-3 h-fit">
+            <>
               <UserResources resources={resources} />
               <UserLikedResources resources={likes} />
-            </div>
+            </>
+            // </div>
           )}
         </div>
       </div>

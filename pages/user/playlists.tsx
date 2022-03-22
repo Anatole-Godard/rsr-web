@@ -19,8 +19,6 @@ const UserPlaylist: NextPage = () => {
     data: playlists,
     error,
     loading,
-    revalidate,
-    payload,
   }: {
     data?: Playlist;
     error?: any;
@@ -67,7 +65,7 @@ const UserPlaylist: NextPage = () => {
               Une erreur est survenue
             </p>
           )}
-          {playlists &&
+          {playlists && playlists.keys.length > 0 ? (
             playlists?.keys.map((key: string, index: number) => (
               <Disclosure key={index} defaultOpen={index === 0}>
                 {({ open }) => (
@@ -78,7 +76,7 @@ const UserPlaylist: NextPage = () => {
                         {key}
                       </span>
                       <ChevronUpIcon
-                        className={`${
+                        className={`duration-300 ${
                           open ? "transform rotate-180" : ""
                         } w-5 h-5 text-bleuFrance-500`}
                       />
@@ -93,17 +91,19 @@ const UserPlaylist: NextPage = () => {
                       leaveFrom="transform scale-100 opacity-100"
                       leaveTo="transform scale-95 opacity-0"
                     >
-                      <Disclosure.Panel
-                        static
-                        className="py-2 mb-2 "
-                      >
-                       <UserPlaylistResources resources={playlists?.[key]} />
+                      <Disclosure.Panel static className="py-2 mb-2 ">
+                        <UserPlaylistResources resources={playlists?.[key]} />
                       </Disclosure.Panel>
                     </Transition>
                   </>
                 )}
               </Disclosure>
-            ))}
+            ))
+          ) : (
+            <p className="flex items-center justify-center w-full font-spectral h-72">
+              Aucune playlist
+            </p>
+          )}
         </div>
       </div>
     </AppLayout>
