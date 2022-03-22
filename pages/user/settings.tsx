@@ -9,6 +9,7 @@ import { NextPage } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { RetrieveAccount } from "@components/user/RetrieveAccount";
+import { GetStartedResetter } from "@components/user/GetStartedResetter";
 
 const UserIndexPage: NextPage<any> = () => {
   const { user } = useAuth();
@@ -45,6 +46,7 @@ const UserIndexPage: NextPage<any> = () => {
               <SessionsViewer />
               <DisableAccount />
               <RetrieveAccount />
+              <GetStartedResetter />
             </div>
           )}
         </div>
