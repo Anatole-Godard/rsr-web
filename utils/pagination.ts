@@ -1,4 +1,6 @@
 export function getPagination(currentPage, entitiesPerPage) {
+
+    console.log(entitiesPerPage)
     const limit = entitiesPerPage ? parseInt(entitiesPerPage, 10) : 1000;
     const offset =
               currentPage && currentPage !== 1

@@ -2,7 +2,7 @@ import {AppLayoutAdmin} from "components/layouts/AppLayoutAdmin";
 import type {NextPage} from "next";
 import {GetServerSideProps} from 'next';
 import {useEffect, useState, Fragment} from "react";
-import {ChartSquareBarIcon} from "@heroicons/react/outline";
+import {ChartSquareBarIcon, SearchIcon as HISearchIcon} from "@heroicons/react/outline";
 import {SelectorIcon, CheckIcon} from "@heroicons/react/solid";
 import {ChartDisplay} from "@components/statistics/ChartDisplay";
 import {GlobalDisplay} from "@components/statistics/GlobalDisplay";
@@ -43,6 +43,13 @@ const Home: NextPage<any> = ({resources = []}: { resources: Resource[] }) => {
     const getResourcesByType = (type) => {
         var filtered = resources.filter(resource => {
             return resource.data.type === type;
+        })
+        setResourcesFiltered(filtered);
+    };
+
+    const getResourcesByTag = (tag) => {
+        var filtered = resources.filter(resource => {
+            return resource.tags.includes(tag);
         })
         setResourcesFiltered(filtered);
     };
@@ -156,7 +163,29 @@ const Home: NextPage<any> = ({resources = []}: { resources: Resource[] }) => {
                                     </div>
                                 </Combobox>
                             </div>
-                            <button className="btn-blue mr-2" onClick={() => setDisplayType()}>Catégorie</button>
+                            <div>
+                                <label className="relative w-full text-gray-400 focus-within:text-gray-600 md:w-3/5">
+                                    <HISearchIcon className="absolute w-4 h-4 duration-300 transform -translate-y-1/2 pointer-events-none top-1/2 left-3" />
+                                    <input
+                                        id="search"
+                                        name="search"
+                                        type="text"
+                                        autoComplete="off"
+                                        value={query}
+                                        onChange={(e) => setQuery(e.target.value)}
+                                        required
+                                        className="input px-5 py-2 h-9 pl-[2.25rem] placeholder-gray-500 w-full text-ellipsis"
+                                        placeholder="Filtrer par tag"
+                                        onKeyPress={(e) => {
+                                            if (e.key === 'Enter') {
+                                                e.preventDefault();
+                                                setQuery('');
+                                                getResourcesByTag(query);
+                                            }
+                                        }}
+                                    />
+                                </label>
+                            </div>
                             <button className="btn-red mr-2" onClick={() => {
                                 resetFilters();
                             }}>Supprimer les filtres
@@ -202,7 +231,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         };
     }
 
-    const response = await fetchRSR(`http://localhost:3000/api/resource/admin`, parseUser?.session)
+    const response = await fetchRSR(`http://localhost:3000/api/resource/admin?limit=0`, parseUser?.session)
     const body = await response.json();
 
 

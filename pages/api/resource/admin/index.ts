@@ -21,8 +21,8 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     const param = req.query;
     const search = param.search;
     const { limit, offset } = getPagination(
-      parseInt(<string>param.page) || 0,
-      parseInt(<string>param.limit) || 3
+      parseInt((param.page || 0).toString()),
+      parseInt((param.limit || 3).toString())
     );
     let query = {};
     if (search && search.length > 0) {
@@ -59,6 +59,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
                 likes: element.likes,
                 validated: element.validated,
                 createdAt: element.createdAt,
+                tags: element.tags,
               })),
             },
           });
