@@ -2,8 +2,8 @@ import {AppLayoutAdmin} from "components/layouts/AppLayoutAdmin";
 import type {NextPage} from "next";
 import {GetServerSideProps} from 'next';
 import {useEffect, useState, Fragment} from "react";
-import {ChartSquareBarIcon, SearchIcon as HISearchIcon} from "@heroicons/react/outline";
-import {SelectorIcon, CheckIcon} from "@heroicons/react/solid";
+import {ChartSquareBarIcon, SearchIcon as HISearchIcon, CalculatorIcon, CodeIcon} from "@heroicons/react/outline";
+import {SelectorIcon, CheckIcon, ChevronDownIcon} from "@heroicons/react/solid";
 import {ChartDisplay} from "@components/statistics/ChartDisplay";
 import {GlobalDisplay} from "@components/statistics/GlobalDisplay";
 import {useAuth} from "@hooks/useAuth";
@@ -11,7 +11,7 @@ import {fetchRSR} from "@utils/fetchRSR";
 import {Resource} from "@definitions/Resource";
 import ResourceModel from '@models/Resource';
 import moment from "moment";
-import {Popover, Combobox, Transition} from "@headlessui/react";
+import {Popover, Combobox, Transition, Menu} from "@headlessui/react";
 import {types} from "../../constants/resourcesTypes";
 
 const Home: NextPage<any> = ({resources = []}: { resources: Resource[] }) => {
@@ -54,6 +54,16 @@ const Home: NextPage<any> = ({resources = []}: { resources: Resource[] }) => {
         setResourcesFiltered(filtered);
     };
 
+    const exportJSONStatistics = () => {
+        let dataStr = JSON.stringify(resourcesFiltered);
+        let dataUri = 'data:application/json;charset=utf-8,' + encodeURIComponent(dataStr);
+        let exportFileDefaultName = 'resourcesStatistics.json';
+        let linkElement = document.createElement('a');
+        linkElement.setAttribute('href', dataUri);
+        linkElement.setAttribute('download', exportFileDefaultName);
+        linkElement.click();
+    }
+
     return (
         <AppLayoutAdmin>
             <div className="flex flex-col w-full h-full bg-white dark:bg-black grow">
@@ -84,7 +94,7 @@ const Home: NextPage<any> = ({resources = []}: { resources: Resource[] }) => {
                             Filtres
                         </h6>
                         <div className="inline-flex w-full mt-2">
-                            <Popover className="relative">
+                            <Popover className="relative mr-2">
                                 <Popover.Button className="btn-blue mr-2">Période</Popover.Button>
                                 <Popover.Panel className="absolute p-5 bg-white rounded">
                                     {({close}) => (
@@ -111,7 +121,7 @@ const Home: NextPage<any> = ({resources = []}: { resources: Resource[] }) => {
                                     )}
                                 </Popover.Panel>
                             </Popover>
-                            <div className="w-72">
+                            <div className="w-72 mr-2">
                                 <Combobox value={selectedType} onChange={(v) => {
                                     setSelectedType(v.label);
                                     getResourcesByType(v.value);
@@ -163,9 +173,10 @@ const Home: NextPage<any> = ({resources = []}: { resources: Resource[] }) => {
                                     </div>
                                 </Combobox>
                             </div>
-                            <div>
+                            <div className="mr-2">
                                 <label className="relative w-full text-gray-400 focus-within:text-gray-600 md:w-3/5">
-                                    <HISearchIcon className="absolute w-4 h-4 duration-300 transform -translate-y-1/2 pointer-events-none top-1/2 left-3" />
+                                    <HISearchIcon
+                                        className="absolute w-4 h-4 duration-300 transform -translate-y-1/2 pointer-events-none top-1/2 left-3"/>
                                     <input
                                         id="search"
                                         name="search"
@@ -190,6 +201,57 @@ const Home: NextPage<any> = ({resources = []}: { resources: Resource[] }) => {
                                 resetFilters();
                             }}>Supprimer les filtres
                             </button>
+                            <Menu as="div" className="relative inline-block text-left">
+                                <div>
+                                    <Menu.Button
+                                        className="inline-flex justify-center w-full px-4 py-2 text-sm text-green-500 bg-green-100 rounded-md hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75">
+                                        Exporter
+                                        <ChevronDownIcon
+                                            className="w-5 h-5 ml-2 -mr-1 text-green-500 hover:text-green-500"
+                                            aria-hidden="true"
+                                        />
+                                    </Menu.Button>
+                                </div>
+                                <Transition
+                                    as={Fragment}
+                                    enter="transition ease-out duration-100"
+                                    enterFrom="transform opacity-0 scale-95"
+                                    enterTo="transform opacity-100 scale-100"
+                                    leave="transition ease-in duration-75"
+                                    leaveFrom="transform opacity-100 scale-100"
+                                    leaveTo="transform opacity-0 scale-95"
+                                >
+                                    <Menu.Items
+                                        className="absolute right-0 w-56 mt-2 origin-top-right bg-white divide-y divide-gray-100 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                                        <div className="px-1 py-1 ">
+                                            <Menu.Item>
+                                                {({ active }) => (
+                                                    <button
+                                                        className={`${
+                                                            active ? 'bg-green-100 text-green-500' : 'text-gray-900'
+                                                        } group flex rounded-md items-center w-full px-2 py-2 text-sm`} onClick={() => exportJSONStatistics()}>
+                                                        <CodeIcon
+                                                            className="w-5 h-5 mr-2"
+                                                            aria-hidden="true"/>
+                                                        JSON
+                                                    </button>
+                                                )}
+                                            </Menu.Item>
+                                            <Menu.Item disabled>
+                                                {({ active }) => (
+                                                    <span
+                                                        className='text-gray-500 group flex rounded-md items-center w-full px-2 py-2 text-sm'>
+                                                        <CalculatorIcon
+                                                            className="w-5 h-5 mr-2"
+                                                            aria-hidden="true"/>
+                                                        CSV (bientôt disponible)
+                                                    </span>
+                                                )}
+                                            </Menu.Item>
+                                        </div>
+                                    </Menu.Items>
+                                </Transition>
+                            </Menu>
                         </div>
                     </div>
                     <div className="grid gap-3 lg:grid-cols-2 xl:grid-cols-3">
