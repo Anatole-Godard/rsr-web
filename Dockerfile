@@ -1,6 +1,5 @@
 FROM node:lts-alpine
-RUN mkdir /app
-WORKDIR /app
+WORKDIR usr/src/app
 
 RUN apk --no-cache add --virtual builds-deps build-base python3
 

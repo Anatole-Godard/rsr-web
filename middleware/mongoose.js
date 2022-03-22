@@ -14,11 +14,12 @@ const withDatabase = (handler) => async (req, res) => {
   // Use new db connection
 
   await mongoose.connect(
-    `mongodb://${process.env.DB_USER}:${process.env.DB_PASS}@${
+    `mongodb${process.env.IN_ATLAS==="ATLAS" ?'+srv':''}://${process.env.DB_USER}:${
+      process.env.DB_PASS}@${
       process.env.DB_HOST
     }/${
       process.env.DB_NAME || "rsr"
-    }?retryWrites=true&w=majority&authSource=admin`,
+    }?retryWrites=true&w=majority`,
 
     {
       useUnifiedTopology: true,
