@@ -2,7 +2,7 @@ import {AppLayoutAdmin} from "components/layouts/AppLayoutAdmin";
 import type {NextPage} from "next";
 import {GetServerSideProps} from 'next';
 import {useEffect, useState} from "react";
-import {ChartSquareBarIcon} from "@heroicons/react/outline";
+import {ChartSquareBarIcon, CheckIcon} from "@heroicons/react/outline";
 import {ChartDisplay} from "@components/statistics/ChartDisplay";
 import {GlobalDisplay} from "@components/statistics/GlobalDisplay";
 import {useAuth} from "@hooks/useAuth";
@@ -18,7 +18,7 @@ const Home: NextPage<any> = ({resources = []}: { resources: Resource[] }) => {
     const [minPeriod, setMinPeriod] = useState<string>(moment(resources[0]?.createdAt).format('YYYY-MM'));
     const [maxPeriod, setMaxPeriod] = useState<string>(moment(resources[-1]?.createdAt).format('YYYY-MM'));
     const [resourcesFiltered, setResourcesFiltered] = useState<Resource[]>(resources);
-    const [selectedType, setSelectedType] = useState<string>('Type');
+    const [selectedType, setSelectedType] = useState<string>('Tous');
     const [query, setQuery] = useState<string>('');
 
     const setDisplayType = () => {
@@ -34,6 +34,13 @@ const Home: NextPage<any> = ({resources = []}: { resources: Resource[] }) => {
     const getResourcesByPeriod = (min, max) => {
         var filtered = resources.filter(resource => {
             return moment(min).year() <= moment(resource.createdAt).year() && moment(resource.createdAt).year() <= moment(max).year() && moment(min).month() <= moment(resource.createdAt).month() && moment(resource.createdAt).month() <= moment(max).month();
+        })
+        setResourcesFiltered(filtered);
+    };
+
+    const getResourcesByType = (type) => {
+        var filtered = resources.filter(resource => {
+            return resource.data.type === type;
         })
         setResourcesFiltered(filtered);
     };
@@ -72,48 +79,54 @@ const Home: NextPage<any> = ({resources = []}: { resources: Resource[] }) => {
                                 <Popover.Button className="btn-blue mr-2">Période</Popover.Button>
                                 <Popover.Panel className="absolute p-5 bg-white rounded">
                                     {({close}) => (
-                                    <div className="flex flex-col">
-                                        <div className="grid grid-rows-2">
-                                            <p>De :</p>
-                                            <input type="month" value={minPeriod}
-                                                   onInput={(e) => setMinPeriod(e.target.value)}/>
-                                            <p>à :</p>
-                                            <input type="month" value={maxPeriod}
-                                                   onInput={(e) => setMaxPeriod(e.target.value)}/>
-                                            <button className="btn-blue w-20 my-2" onClick={() => {
-                                                getResourcesByPeriod(minPeriod, maxPeriod);
-                                                close();
-                                            }}>Filtrer
-                                            </button>
-                                            <button className="btn-red w-20 my-2" onClick={() => {
-                                                resetFilters()
-                                                close();
-                                            }}>Annuler
-                                            </button>
+                                        <div className="flex flex-col">
+                                            <div className="grid grid-rows-2">
+                                                <p>De :</p>
+                                                <input type="month" value={minPeriod}
+                                                       onInput={(e) => setMinPeriod(e.target.value)}/>
+                                                <p>à :</p>
+                                                <input type="month" value={maxPeriod}
+                                                       onInput={(e) => setMaxPeriod(e.target.value)}/>
+                                                <button className="btn-blue w-20 my-2" onClick={() => {
+                                                    getResourcesByPeriod(minPeriod, maxPeriod);
+                                                    close();
+                                                }}>Filtrer
+                                                </button>
+                                                <button className="btn-red w-20 my-2" onClick={() => {
+                                                    resetFilters()
+                                                    close();
+                                                }}>Annuler
+                                                </button>
+                                            </div>
                                         </div>
-                                    </div>
-                                        )}
+                                    )}
                                 </Popover.Panel>
                             </Popover>
-                            <Combobox value={selectedType} onChange={(v) => setSelectedType(v.label)}>
+                            <Combobox value={selectedType} onChange={(v) => {
+                                setSelectedType(v.label);
+                                getResourcesByType(v.value);
+                            }}>
+                                <Combobox.Label>Type :</Combobox.Label>
                                 <Combobox.Input
                                     onChange={(e) => setQuery(e.target.value)}
                                     displayValue={() => selectedType}
+                                    className="bg-white focus:outline-none focus:shadow-outline border border-blue-500 rounded-lg py-2 px-4 block appearance-none leading-normal"
                                 />
-                                <Combobox.Options>
-                                    {/* TODO: Add type filter on resources*/}
+                                <Combobox.Options className="absolute">
                                     {types.map((type) => (
-                                        <Combobox.Option
-                                            key={type.label}
-                                            value={type}
-                                        >
-                                            {type.label}
+                                        <Combobox.Option key={type.label} value={type}>
+                                            {({active, selected}) => (
+                                                <li className={`${
+                                                    active ? 'bg-blue-500 text-white' : 'bg-white text-black'}`}>
+                                                    {selected && <CheckIcon/>}
+                                                    {type.label}
+                                                </li>
+                                            )}
                                         </Combobox.Option>
                                     ))}
                                 </Combobox.Options>
                             </Combobox>
                             <button className="btn-blue mr-2" onClick={() => setDisplayType()}>Catégorie</button>
-                            <button className="btn-blue mr-2" onClick={() => setDisplayType()}>Type de resource</button>
                             <button className="btn-red mr-2" onClick={() => {
                                 resetFilters();
                             }}>Supprimer les filtres
@@ -123,7 +136,8 @@ const Home: NextPage<any> = ({resources = []}: { resources: Resource[] }) => {
                     <div className="grid gap-3 lg:grid-cols-2 xl:grid-cols-3">
                         <div className="bg-white rounded-lg px-5 py-5">
                             {displayChart ?
-                                <ChartDisplay label="Nombre de ressources postées" resources={resourcesFiltered} minPeriod={minPeriod} maxPeriod={maxPeriod}/> :
+                                <ChartDisplay label="Nombre de ressources postées" resources={resourcesFiltered}
+                                              minPeriod={minPeriod} maxPeriod={maxPeriod}/> :
                                 <GlobalDisplay label="Nombre de ressources postées" data={resourcesFiltered.length}/>}
                         </div>
                     </div>
