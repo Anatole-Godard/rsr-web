@@ -23,6 +23,7 @@ import { UserMinimum } from "@definitions/User";
 import { TrashIcon } from "@heroicons/react/outline";
 import useFetchRSR from "@hooks/useFetchRSR";
 import { TagDocument } from "@definitions/Resource/Tag";
+import {isAdmin} from "@utils/getCurrentUser";
 
 const Map: any = dynamic(() => import("@components/map/Map") as any, {
   ssr: false,
@@ -890,13 +891,16 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       };
     }
 
-    if (resource.owner.uid !== parsedUser?.data.uid)
-      return {
-        redirect: {
-          permanent: false,
-          destination: "/channel",
-        },
-      };
+    if (!(await isAdmin({headers: parsedUser.session})))
+      if( resource.owner.uid !== parsedUser?.data.uid){
+        return {
+          redirect: {
+            permanent: false,
+            destination: "/resource",
+          },
+        };
+      }
+
 
     const users = await (await fetch("http://localhost:3000/api/user")).json();
 
