@@ -30,6 +30,7 @@ const Home: NextPage<any> = ({resources = []}: { resources: Resource[] }) => {
         setMinPeriod(moment(resources[0]?.createdAt).format('YYYY-MM'));
         setMaxPeriod(moment(resources[-1]?.createdAt).format('YYYY-MM'));
         setResourcesFiltered(resources);
+        setQuery('');
         setSelectedType('Type');
     };
 
@@ -51,12 +52,31 @@ const Home: NextPage<any> = ({resources = []}: { resources: Resource[] }) => {
         var filtered = resources.filter(resource => {
             return resource.tags.some(t => t.name.toLowerCase() === tag.toLowerCase())
         })
-        console.log(filtered)
         setResourcesFiltered(filtered);
     };
 
     const exportJSONStatistics = () => {
-        let dataStr = JSON.stringify(resourcesFiltered);
+        const data = {
+            filters: [
+                {
+                    name: 'Period',
+                    value: `${minPeriod} - ${maxPeriod}`
+                },
+                {
+                    name: 'Type',
+                    value: selectedType
+                },
+                {
+                    name: 'Tag',
+                    value: query
+                }
+            ],
+            data: {
+                length: resourcesFiltered.length,
+                resources: resourcesFiltered
+            }
+        }
+        let dataStr = JSON.stringify(data, null, 2);
         let dataUri = 'data:application/json;charset=utf-8,' + encodeURIComponent(dataStr);
         let exportFileDefaultName = 'resourcesStatistics.json';
         let linkElement = document.createElement('a');
@@ -191,7 +211,6 @@ const Home: NextPage<any> = ({resources = []}: { resources: Resource[] }) => {
                                         onKeyPress={(e) => {
                                             if (e.key === 'Enter') {
                                                 e.preventDefault();
-                                                setQuery('');
                                                 getResourcesByTag(query);
                                             }
                                         }}
