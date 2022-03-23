@@ -49,8 +49,9 @@ const Home: NextPage<any> = ({resources = []}: { resources: Resource[] }) => {
 
     const getResourcesByTag = (tag) => {
         var filtered = resources.filter(resource => {
-            return resource.tags.includes(tag);
+            return resource.tags.some(t => t.name.toLowerCase() === tag.toLowerCase())
         })
+        console.log(filtered)
         setResourcesFiltered(filtered);
     };
 
