@@ -24,6 +24,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       description,
       tags,
       data: { type, attributes },
+      visibility,
     } = req.body;
     const {
       properties: { name },
@@ -71,7 +72,6 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     );
     const tagsInDB = await Tag.find({ name: { $in: tags } }).select("-__v");
 
-
     const resource = await Resource.create({
       slug: slugResource,
       description,
@@ -82,6 +82,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         photoURL: user.photoURL,
         uid: user._id.toString(),
       },
+      visibility,
     });
 
     res.status(201).json({
