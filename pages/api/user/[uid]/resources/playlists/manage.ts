@@ -46,9 +46,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   };
 
   try {
-    const user = await UserModel.findOne({ uid: headersUid }).select(
-      "-password"
-    );
+    const user = await UserModel.findById(headersUid).select("-password");
     if (req.method === "POST") {
       user.playlists[playlistKey].push(resource);
     } else if (req.method === "DELETE") {

@@ -43,7 +43,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   };
 
   try {
-    let user = await UserModel.findOne({ uid: headersUid }).select("-password");
+    let user = await UserModel.findById(headersUid).select("-password");
     const playlists = user.playlists;
     playlists.keys = [...playlists.keys, playlistKey];
     playlists[playlistKey] = [];
@@ -51,7 +51,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     user.playlists = playlists;
     user.markModified("playlists");
     await user.save();
-
 
     res.status(200).json({
       data: {
