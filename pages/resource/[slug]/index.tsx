@@ -13,6 +13,7 @@ import {
   TrashIcon,
   UsersIcon,
   XIcon,
+    EyeIcon,
 } from "@heroicons/react/outline";
 import {
   HandIcon,
@@ -63,10 +64,12 @@ const ResourceSlug: NextPage<any> = ({
   createdAt,
   validated,
   visibility,
+    seenBy,
 }: Resource) => {
   const [message, setMessage] = useState<string>("");
   const [newLikes, setNewLikes] = useState<UserMinimum[]>(likes || []);
   const [newComments, setNewComments] = useState<Comment[]>(comments || []);
+  const [newViews, setNewViews] = useState<UserMinimum[]>(seenBy || []);
 
   const { user } = useAuth();
   const report = async () => {
@@ -159,6 +162,19 @@ const ResourceSlug: NextPage<any> = ({
               <div className="items-center hidden pl-1 text-xs text-gray-500 transition duration-200 lg:inline-flex hover:text-gray-700 dark:text-gray-400">
                 En attente de validation
               </div>
+            )}
+            {newViews.length >= 1 ? (
+                <div className="items-center hidden text-xs text-gray-500 transition duration-200 lg:inline-flex hover:text-gray-700 dark:text-gray-400">
+                  <EyeIcon className="hidden lg:flex items-center fas fa-users flex-shrink-0 mx-1.5 h-4 w-4 " />
+                  {newViews?.length || 0}{" "}
+                  {newViews?.length > 1 ? "vues" : "vue"}
+                </div>
+            ) : (
+                <div className="items-center hidden text-xs text-gray-500 transition duration-200 lg:inline-flex hover:text-gray-700 dark:text-gray-400">
+                  <EyeIcon className="hidden lg:flex items-center fas fa-users flex-shrink-0 mx-1.5 h-4 w-4 " />
+
+                  {"Personne n'a vu pour l'instant"}
+                </div>
             )}
           </div>
 
