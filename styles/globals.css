@@ -1,0 +1,308 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  @font-face {
+    font-family: Marianne;
+    font-weight: 100;
+    src: url(/fonts/marianne/Marianne-Thin.woff) format("woff");
+  }
+  @font-face {
+    font-family: Marianne;
+    font-weight: 300;
+    src: url(/fonts/marianne/Marianne-Light.woff) format("woff");
+  }
+  @font-face {
+    font-family: Marianne;
+    font-weight: 400;
+    src: url(/fonts/marianne/Marianne-Regular.woff) format("woff");
+  }
+  @font-face {
+    font-family: Marianne;
+    font-weight: 500;
+    src: url(/fonts/marianne/Marianne-Medium.woff) format("woff");
+  }
+  @font-face {
+    font-family: Marianne;
+    font-weight: 700;
+    src: url(/fonts/marianne/Marianne-Bold.woff) format("woff");
+  }
+  @font-face {
+    font-family: Marianne;
+    font-weight: 800;
+    src: url(/fonts/marianne/Marianne-ExtraBold.woff) format("woff");
+  }
+
+  @font-face {
+    font-family: "Spectral";
+    src: url(/fonts/spectral/Spectral-Bold.woff2) format("woff2"),
+      url(/fonts/spectral/Spectral-Bold.woff) format("woff"),
+      url(/fonts/spectral/Spectral-Bold.ttf) format("truetype");
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: "Spectral";
+    src: url(/fonts/spectral/Spectral-BoldItalic.woff2) format("woff2"),
+      url(/fonts/spectral/Spectral-BoldItalic.woff) format("woff"),
+      url(/fonts/spectral/Spectral-BoldItalic.ttf) format("truetype");
+    font-weight: bold;
+    font-style: italic;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: "Spectral";
+    src: url(/fonts/spectral/Spectral-ExtraBold.woff2) format("woff2"),
+      url(/fonts/spectral/Spectral-ExtraBold.woff) format("woff"),
+      url(/fonts/spectral/Spectral-ExtraBold.ttf) format("truetype");
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: "Spectral";
+    src: url(/fonts/spectral/Spectral-ExtraBoldItalic.woff2) format("woff2"),
+      url(/fonts/spectral/Spectral-ExtraBoldItalic.woff) format("woff"),
+      url(/fonts/spectral/Spectral-ExtraBoldItalic.ttf) format("truetype");
+    font-weight: bold;
+    font-style: italic;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: "Spectral";
+    src: url(/fonts/spectral/Spectral-ExtraLight.woff2) format("woff2"),
+      url(/fonts/spectral/Spectral-ExtraLight.woff) format("woff"),
+      url(/fonts/spectral/Spectral-ExtraLight.ttf) format("truetype");
+    font-weight: 200;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: "Spectral";
+    src: url(/fonts/spectral/Spectral-Regular.woff2) format("woff2"),
+      url(/fonts/spectral/Spectral-Regular.woff) format("woff"),
+      url(/fonts/spectral/Spectral-Regular.ttf) format("truetype");
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: "Spectral";
+    src: url(/fonts/spectral/Spectral-Italic.woff2) format("woff2"),
+      url(/fonts/spectral/Spectral-Italic.woff) format("woff"),
+      url(/fonts/spectral/Spectral-Italic.ttf) format("truetype");
+    font-weight: normal;
+    font-style: italic;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: "Spectral";
+    src: url(/fonts/spectral/Spectral-LightItalic.woff2) format("woff2"),
+      url(/fonts/spectral/Spectral-LightItalic.woff) format("woff"),
+      url(/fonts/spectral/Spectral-LightItalic.ttf) format("truetype");
+    font-weight: 300;
+    font-style: italic;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: "Spectral";
+    src: url(/fonts/spectral/Spectral-SemiBold.woff2) format("woff2"),
+      url(/fonts/spectral/Spectral-SemiBold.woff) format("woff"),
+      url(/fonts/spectral/Spectral-SemiBold.ttf) format("truetype");
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: "Spectral";
+    src: url(/fonts/spectral/Spectral-Medium.woff2) format("woff2"),
+      url(/fonts/spectral/Spectral-Medium.woff) format("woff"),
+      url(/fonts/spectral/Spectral-Medium.ttf) format("truetype");
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: "Spectral";
+    src: url(/fonts/spectral/Spectral-Light.woff2) format("woff2"),
+      url(/fonts/spectral/Spectral-Light.woff) format("woff"),
+      url(/fonts/spectral/Spectral-Light.ttf) format("truetype");
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: "Spectral";
+    src: url(/fonts/spectral/Spectral-MediumItalic.woff2) format("woff2"),
+      url(/fonts/spectral/Spectral-MediumItalic.woff) format("woff"),
+      url(/fonts/spectral/Spectral-MediumItalic.ttf) format("truetype");
+    font-weight: 500;
+    font-style: italic;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: "Spectral";
+    src: url(/fonts/spectral/Spectral-ExtraLightItalic.woff2) format("woff2"),
+      url(/fonts/spectral/Spectral-ExtraLightItalic.woff) format("woff"),
+      url(/fonts/spectral/Spectral-ExtraLightItalic.ttf) format("truetype");
+    font-weight: 200;
+    font-style: italic;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: "Spectral";
+    src: url(/fonts/spectral/Spectral-SemiBoldItalic.woff2) format("woff2"),
+      url(/fonts/spectral/Spectral-SemiBoldItalic.woff) format("woff"),
+      url(/fonts/spectral/Spectral-SemiBoldItalic.ttf) format("truetype");
+    font-weight: 600;
+    font-style: italic;
+    font-display: swap;
+  }
+}
+
+@layer components {
+  .sidebar {
+    @apply min-h-[calc(100vh-4rem)] z-[41] flex-col hidden px-2 bg-white shadow-lg top-16 xl:items-start md:flex min-w-max dark:bg-black dark:border-r dark:border-gray-900;
+  }
+
+  .sidebar-icon {
+    @apply relative flex items-center justify-center  w-full min-h-[4rem] mx-auto mt-2 mb-2 transition-all duration-300 ease-linear bg-gray-100 cursor-pointer dark:bg-gray-800 group-hover:text-white group-hover:rounded-xl rounded-xl  flex-col flex-shrink-0 px-5;
+  }
+
+  .sidebar-tooltip {
+    @apply absolute w-auto p-2 m-2 text-xs font-bold text-white transition-all duration-100 origin-left scale-0 bg-gray-900 rounded-md shadow-md min-w-max left-14;
+  }
+
+  .sidebar-hr {
+    @apply mx-3 bg-gray-200 border border-gray-100 rounded-full dark:bg-gray-800 dark:border-gray-800;
+  }
+
+  .top-navigation-icon {
+    @apply ml-4 mr-3 text-gray-500 transition duration-300 ease-in-out cursor-pointer hover:text-gray-800 dark:hover:text-gray-200;
+  }
+
+  .input {
+    @apply w-full px-3 py-2 text-sm font-light text-gray-600 transition-all duration-300 bg-gray-100 rounded-lg hover:bg-gray-200 active:bg-gray-100 font-spectral focus:outline-none dark:focus:ring-bleuFrance-800 focus:ring focus:ring-offset-2 focus:ring-bleuFrance-400 focus:bg-gray-50 placeholder-shown:text-gray-400 dark:text-gray-200 dark:bg-gray-800 dark:placeholder-shown:text-gray-200 dark:focus:ring-offset-0;
+  }
+
+  .input-auth {
+    @apply block w-full px-3 py-2 placeholder-gray-400 duration-300 border border-gray-300 rounded-md shadow-sm appearance-none dark:border-gray-700 focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:focus:outline-none dark:focus:ring-blue-500 dark:focus:border-blue-500 sm:text-sm disabled:opacity-75;
+  }
+
+  .invalid {
+    @apply text-red-500 dark:text-red-200 ring-red-500 ring-offset-2 ring-1;
+  }
+
+  .btn {
+    @apply inline-flex items-center px-2 py-2 text-sm font-light transition-all duration-300 rounded-lg sm:px-4 font-spectral active:ring ring-offset-1 focus:outline-none;
+  }
+
+  .btn-outline {
+    @apply border btn;
+  }
+
+  .btn-blue {
+    @apply text-blue-600 bg-blue-200 btn dark:bg-blue-800 dark:text-blue-200 hover:bg-blue-300 active:bg-blue-700 active:text-blue-100 ring-blue-500;
+  }
+
+  .btn-bleuFrance {
+    @apply text-bleuFrance-600 bg-bleuFrance-100 btn dark:bg-bleuFrance-800 dark:text-bleuFrance-200 hover:bg-bleuFrance-200 active:bg-bleuFrance-700 active:text-bleuFrance-100 ring-bleuFrance-500;
+  }
+
+  .btn-green {
+    @apply text-green-700 bg-green-100 btn hover:bg-green-300 active:bg-green-700 active:text-green-100 hover:text-green-800 dark:bg-green-800 dark:text-green-200 ring-green-500;
+  }
+
+  .btn-red {
+    @apply text-red-700 bg-red-100 btn hover:bg-red-300 active:bg-red-700 active:text-red-100 hover:text-red-800 ring-red-500;
+  }
+
+  .btn-yellow {
+    @apply text-amber-700 bg-amber-100 btn hover:bg-amber-300 active:bg-amber-700 active:text-amber-100 hover:text-amber-800 dark:bg-amber-800 dark:text-amber-200 ring-amber-500;
+  }
+
+  .btn-amber {
+    @apply text-amber-700 bg-amber-100 btn hover:bg-amber-300 active:bg-amber-700 active:text-amber-100 hover:text-amber-800 dark:bg-amber-800 dark:text-amber-200 ring-amber-500;
+  }
+
+  .btn-gray {
+    @apply text-gray-700 bg-gray-100 btn hover:bg-gray-300 active:bg-gray-700 active:text-gray-100 hover:text-gray-800 dark:bg-gray-800 dark:text-gray-200 ring-gray-500;
+  }
+
+  /* Buttons : text variants */
+  .btn-text-gray {
+    @apply text-gray-500 btn hover:bg-gray-100 active:bg-gray-300 active:text-gray-700;
+  }
+
+  .btn-text-green {
+    @apply text-green-500 btn hover:bg-green-100 active:bg-green-300 active:text-green-700;
+  }
+
+  .btn-text-blue {
+    @apply text-blue-500 btn hover:bg-blue-100 active:bg-blue-300 active:text-blue-700;
+  }
+
+  .btn-text-bleuFrance {
+    @apply text-bleuFrance-600 btn hover:bg-bleuFrance-100 active:bg-bleuFrance-300 active:text-bleuFrance-700;
+  }
+
+  .btn-text-yellow {
+    @apply text-amber-500 btn hover:bg-amber-100 active:bg-amber-300 active:text-amber-700;
+  }
+  .btn-text-red {
+    @apply text-red-500 btn hover:bg-red-100 active:bg-red-300 active:text-red-700;
+  }
+
+  .btn-outline-bleuFrance {
+    @apply text-bleuFrance-600 btn-outline border-bleuFrance-600 hover:bg-bleuFrance-100 active:bg-bleuFrance-300 active:text-bleuFrance-700;
+  }
+}
+
+.leaflet-popup-content {
+  margin: 0 !important;
+}
+
+.leaflet-popup-content-wrapper {
+  padding: 0 !important;
+}
+
+.leaflet-popup-content-wrapper,
+.leaflet-popup-tip {
+  background: none !important;
+}
+
+.leaflet-control-container {
+  display: none;
+}
+
+.leaflet-pane {
+  z-index: 0 !important;
+}
+
+.form-checkbox:checked {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='M6 10l3 3l6-6'/%3e%3c/svg%3e");
+}
+
+.form-checkbox:checked,
+.form-radio:checked {
+  border-color: transparent;
+  background-color: currentColor;
+  background-size: 100% 100%;
+  background-position: 50%;
+  background-repeat: no-repeat;
+}
