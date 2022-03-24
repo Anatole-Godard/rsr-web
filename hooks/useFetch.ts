@@ -117,4 +117,4 @@ function useFetch<T = unknown>(
   return state;
 }
 
-export default useFetchRSR;
+export default useFetch;

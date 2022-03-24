@@ -84,13 +84,13 @@ export const UserStatistics = ({
     "Décembre",
   ];
   const [totalResourceViews, setTotalResourceViews] = useState(0);
-  let count = 0;
 
   useEffect(() => {
-    resources.forEach((resource) => {
-      count += resource.seenBy.length;
-    });
-    setTotalResourceViews(count);
+    setTotalResourceViews(
+      resources.reduce((acc, curr) => {
+        return acc + curr.seenBy.length;
+      }, 0)
+    );
   }, [resources]);
 
   const Config = {

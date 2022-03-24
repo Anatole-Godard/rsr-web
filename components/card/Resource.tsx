@@ -1,7 +1,6 @@
 import { ChipList } from "@components/ui/ChipList";
 import { Resource } from "@definitions/Resource";
 import {
-  CheckCircleIcon,
   ExternalLinkIcon,
   HandIcon,
   LocationMarkerIcon,
