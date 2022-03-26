@@ -72,14 +72,16 @@ export const ResourceCard = (props: Resource) => {
                   .find((v) => v.value === visibility)
                   ?.icon.outline({ className: "w-3 h-3 mr-1" })}
                 {visibilities.find((v) => v.value === visibility).label}
-                <span className="hidden md:block">
-                  {visibility === "unlisted" &&
-                    `: ${members?.length} ${
-                      members.length > 1
-                        ? "membres y ont accès"
-                        : "membre y a accès"
-                    }`}
-                </span>
+                {members && (
+                  <span className="hidden md:block">
+                    {visibility === "unlisted" &&
+                      `: ${members?.length} ${
+                        members.length > 1
+                          ? "membres y ont accès"
+                          : "membre y a accès"
+                      }`}
+                  </span>
+                )}
               </div>
             </div>
           </div>

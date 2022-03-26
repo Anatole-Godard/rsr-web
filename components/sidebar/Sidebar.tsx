@@ -86,26 +86,32 @@ export const Sidebar = () => {
           text="Bibliothèque"
           href="/resource"
         />
-        <SidebarIconXL
-          icon={<PlusIcon {...className} />}
-          active={pathname.includes("/resource/create")}
-          text="Créer une ressource"
-          href="/resource/create"
-        />
-        <DividerXL />
-        <SidebarTitle text="Salons" />
-        <SidebarIcon
-          icon={<ChatIcon {...className} />}
-          active={pathname.includes("/channel")}
-          text="Salons"
-          href="/channel"
-        />
-        <SidebarIconXL
-          icon={<PlusIcon {...className} />}
-          active={pathname.includes("/channel/create")}
-          text="Créer un salon"
-          href="/channel/create"
-        />
+        {user && (
+          <SidebarIconXL
+            icon={<PlusIcon {...className} />}
+            active={pathname.includes("/resource/create")}
+            text="Créer une ressource"
+            href="/resource/create"
+          />
+        )}
+        {user && (
+          <>
+            <DividerXL />
+            <SidebarTitle text="Salons" />
+            <SidebarIcon
+              icon={<ChatIcon {...className} />}
+              active={pathname.includes("/channel")}
+              text="Salons"
+              href="/channel"
+            />
+            <SidebarIconXL
+              icon={<PlusIcon {...className} />}
+              active={pathname.includes("/channel/create")}
+              text="Créer un salon"
+              href="/channel/create"
+            />
+          </>
+        )}
       </div>
       {user &&
         (user.session.role === "admin" ||
