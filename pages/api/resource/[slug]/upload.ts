@@ -70,7 +70,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
           (type: ResourceType) => type.value === resource.data.type
         ) === undefined ||
         !types.find((type: ResourceType) => type.value === resource.data.type)
-          .hasImage
+          .hasMedia
       ) {
         res.status(400).json({
           data: null,

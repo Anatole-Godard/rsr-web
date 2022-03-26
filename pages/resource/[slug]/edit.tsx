@@ -591,7 +591,7 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
                 </div>
               </Tab.Group>
 
-              {types.find((t) => t.value === type.value).hasImage && (
+              {types.find((t) => t.value === type.value).hasMedia && (
                 <label className="flex flex-col grow">
                   <h4 className="mb-1 text-sm font-semibold text-gray-700 font-marianne">
                     Image de la ressource

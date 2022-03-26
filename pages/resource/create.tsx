@@ -496,7 +496,7 @@ const ResourceCreate: NextPage<any> = ({
                 </div>
               </Tab.Group>
 
-              {types.find((t) => t.value === type.value).hasImage && (
+              {types.find((t) => t.value === type.value).hasMedia && (
                 <label className="flex flex-col grow">
                   <h4
                     className={classes(

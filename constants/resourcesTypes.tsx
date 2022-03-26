@@ -6,6 +6,7 @@ import {
   GlobeIcon as GlobeIconOutline,
   BanIcon as BanIconOutline,
   CalendarIcon as CalendarIconOutline,
+  QuestionMarkCircleIcon as QuestionMarkCircleIconOutline,
 } from "@heroicons/react/outline";
 import {
   LinkIcon as ExternalLinkIconSolid,
@@ -15,6 +16,7 @@ import {
   GlobeIcon as GlobeIconSolid,
   BanIcon as BanIconSolid,
   CalendarIcon as CalendarIconSolid,
+  QuestionMarkCircleIcon as QuestionMarkCircleIconSolid,
 } from "@heroicons/react/solid";
 
 const HandIconOutlineFnc = (props) => <HandIconOutline {...props} />;
@@ -34,6 +36,13 @@ const LocationMarkerIconSolidFnc = (props) => (
 const CalendarIconOutlineFnc = (props) => <CalendarIconOutline {...props} />;
 const CalendarIconSolidFnc = (props) => <CalendarIconSolid {...props} />;
 
+const QuestionMarkCircleIconOutlineFnc = (props) => (
+  <QuestionMarkCircleIconOutline {...props} />
+);
+const QuestionMarkCircleIconSolidFnc = (props) => (
+  <QuestionMarkCircleIconSolid {...props} />
+);
+
 const GlobeIconOutlineFnc = (props) => <GlobeIconOutline {...props} />;
 const GlobeIconSolidFnc = (props) => <GlobeIconSolid {...props} />;
 const BanIconOutlineFnc = (props) => <BanIconOutline {...props} />;
@@ -47,13 +56,13 @@ export const types = [
   {
     label: "Objet physique",
     value: "physical_item",
-    hasImage: true,
+    hasMedia: true,
     icon: { outline: HandIconOutlineFnc, solid: HandIconSolidFnc },
   },
   {
     label: "Position",
     value: "location",
-    hasImage: false,
+    hasMedia: false,
     icon: {
       outline: LocationMarkerIconOutlineFnc,
       solid: LocationMarkerIconSolidFnc,
@@ -62,7 +71,7 @@ export const types = [
   {
     label: "Lien externe",
     value: "external_link",
-    hasImage: true,
+    hasMedia: true,
     icon: {
       outline: ExternalLinkIconOutlineFnc,
       solid: ExternalLinkIconSolidFnc,
@@ -71,15 +80,24 @@ export const types = [
   {
     label: "Événement",
     value: "event",
-    hasImage: true,
+    hasMedia: true,
     icon: { outline: CalendarIconOutlineFnc, solid: CalendarIconSolidFnc },
+  },
+  {
+    label: "Autre",
+    value: "other",
+    hasMedia: true,
+    icon: {
+      outline: QuestionMarkCircleIconOutlineFnc,
+      solid: QuestionMarkCircleIconSolidFnc,
+    },
   },
 ];
 
 export type ResourceType = {
   label: string;
   value: string;
-  hasImage: boolean;
+  hasMedia: boolean;
   icon: Icon;
 };
 
