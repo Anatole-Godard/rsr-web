@@ -13,7 +13,7 @@ export type Resource = {
   description?: string;
   tags?: TagDocument[] | string[];
   data: {
-    type: "location" | "physical_item" | "external_link" | "event" | string;
+    type: "location" | "physical_item" | "external_link" | "event" | "other";
     attributes: GeoJSON_Point | PhysicalItem | ExternalLink | Event | any;
   };
   likes: UserMinimum[];
