@@ -1,4 +1,4 @@
-import { fetchRSR } from "@utils/fetchRSR";
+import { fetchRSR } from "libs/fetchRSR";
 import { useRouter } from "next/router";
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { useCookies } from "react-cookie";

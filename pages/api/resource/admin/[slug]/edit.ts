@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import resource from '@models/Resource';
-import { isAdmin } from '@utils/getCurrentUser';
+import { isAdmin } from 'libs/getCurrentUser';
 import Report from '@models/Report';
 
 export default async function handler(

@@ -18,7 +18,7 @@ import {
 import { ArrowRightIcon, UserCircleIcon } from "@heroicons/react/solid";
 
 import { useAuth } from "@hooks/useAuth";
-import { classes } from "@utils/classes";
+import { classes } from "libs/classes";
 import Image from "next/image";
 import { formatDistance } from "date-fns";
 import { fr } from "date-fns/locale";

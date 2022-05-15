@@ -100,7 +100,7 @@ const ResourceIndex: NextPage<any> = ({
               </label>
 
               <label className="relative text-gray-400 focus-within:text-gray-600">
-                {type === null ? (
+                {selectedType === null ? (
                   <SearchIcon className="absolute w-4 h-4 transform -translate-y-1/2 pointer-events-none top-1/2 left-3" />
                 ) : (
                   types

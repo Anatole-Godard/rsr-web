@@ -16,7 +16,7 @@ import { useEffect, useRef, useState } from "react";
 import io from "socket.io-client";
 import { Message } from "@definitions/Message";
 import { useAuth } from "@hooks/useAuth";
-import { fetchRSR } from "@utils/fetchRSR";
+import { fetchRSR } from "libs/fetchRSR";
 import { Channel } from "@definitions/Channel";
 import { HistoryItem } from "@components/channel/HistoryItem";
 import Image from "next/image";

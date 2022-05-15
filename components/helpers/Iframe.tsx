@@ -1,4 +1,4 @@
-import { classes } from "@utils/classes";
+import { classes } from "libs/classes";
 
 export const Iframe = ({
   src,

@@ -4,7 +4,7 @@ import { CustomTable } from "@components/customTable/CustomTable";
 import { useCallback, useEffect, useState } from "react";
 import { Report } from "@definitions/Report";
 import { useAuth } from "@hooks/useAuth";
-import { fetchRSR } from "@utils/fetchRSR";
+import { fetchRSR } from "libs/fetchRSR";
 import { SearchIcon, UserIcon } from "@heroicons/react/outline";
 
 const ReportAdmin: NextPage<any> = (props) => {

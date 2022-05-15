@@ -1,9 +1,9 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import Resource from "@models/Resource";
 import withDatabase from "@middleware/mongoose";
-import { handleError } from "@utils/handleError";
+import { handleError } from "libs/handleError";
 import { withAuth } from "@middleware/auth";
-import { getUser, isAdmin } from "@utils/getCurrentUser";
+import { getUser, isAdmin } from "libs/getCurrentUser";
 import Tag from "@models/Tag";
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {

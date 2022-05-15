@@ -2,7 +2,7 @@ import { AppLayoutAdmin } from "components/layouts/AppLayoutAdmin";
 import { GetServerSideProps, NextPage } from "next";
 import { CustomTable } from "@components/customTable/CustomTable";
 import { useCallback, useEffect, useState } from "react";
-import { fetchRSR } from "@utils/fetchRSR";
+import { fetchRSR } from "libs/fetchRSR";
 import { useAuth } from "@hooks/useAuth";
 import { Resource } from "@definitions/Resource";
 import { LibraryIcon, SearchIcon } from "@heroicons/react/outline";

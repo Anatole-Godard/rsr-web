@@ -1,4 +1,4 @@
-import { classes } from "@utils/classes";
+import { classes } from "libs/classes";
 import { Dispatch, SetStateAction } from "react";
 import { Chip } from "./Chip";
 

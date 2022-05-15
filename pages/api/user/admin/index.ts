@@ -1,10 +1,10 @@
 import { withAuth } from "@middleware/auth";
 import withDatabase from "@middleware/mongoose";
 import User from "@models/User";
-import { handleError } from "@utils/handleError";
-import { getPagination, getTotalPages } from "@utils/pagination";
+import { handleError } from "libs/handleError";
+import { getPagination, getTotalPages } from "libs/pagination";
 import type { NextApiRequest, NextApiResponse } from "next";
-import { isAdmin } from '@utils/getCurrentUser';
+import { isAdmin } from 'libs/getCurrentUser';
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
     try {

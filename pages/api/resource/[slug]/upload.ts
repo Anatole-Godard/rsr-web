@@ -1,7 +1,7 @@
 import { withAuth } from "@middleware/auth";
 import withDatabase from "@middleware/mongoose";
 import Resource from "@models/Resource";
-import { handleError } from "@utils/handleError";
+import { handleError } from "libs/handleError";
 import { ResourceType, types } from "constants/resourcesTypes";
 import { NextApiRequest, NextApiResponse } from "next";
 const fs = require("fs").promises;

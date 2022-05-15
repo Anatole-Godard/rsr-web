@@ -9,7 +9,7 @@ import {
 
 import Link from "next/link";
 import { Channel } from "@definitions/Channel";
-import { classes } from "@utils/classes";
+import { classes } from "libs/classes";
 import { UserMinimum } from "@definitions/User";
 import Image from "next/image";
 import { useSearch } from "@hooks/useSearch";

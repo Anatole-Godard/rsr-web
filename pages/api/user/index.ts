@@ -1,7 +1,7 @@
 import { withAuth } from "@middleware/auth";
 import withDatabase from "@middleware/mongoose";
 import User from "@models/User";
-import { handleError } from "@utils/handleError";
+import { handleError } from "libs/handleError";
 import type { NextApiRequest, NextApiResponse } from "next";
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {

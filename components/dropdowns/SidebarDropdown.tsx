@@ -4,7 +4,7 @@ import { Menu, Transition } from "@headlessui/react";
 import Link from "next/link";
 import { ChatIcon, HomeIcon, LibraryIcon } from "@heroicons/react/outline";
 
-import { classes } from "@utils/classes";
+import { classes } from "libs/classes";
 import { ChevronDownIcon } from "@heroicons/react/solid";
 
 const className = { className: "shrink-0 w-6 h-6" };

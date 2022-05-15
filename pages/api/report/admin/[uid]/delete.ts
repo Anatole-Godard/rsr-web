@@ -1,9 +1,9 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import Report from "@models/Report";
 import withDatabase from "@middleware/mongoose";
-import { handleError } from "@utils/handleError";
+import { handleError } from "libs/handleError";
 import { withAuth } from "@middleware/auth";
-import { isAdmin } from '@utils/getCurrentUser';
+import { isAdmin } from 'libs/getCurrentUser';
 import { Notification } from '@definitions/Notification';
 import NotificationModel from '@models/Notification';
 

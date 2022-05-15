@@ -2,7 +2,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import Resource from "@models/Resource";
 import User from "@models/User";
 import withDatabase from "@middleware/mongoose";
-import { handleError } from "@utils/handleError";
+import { handleError } from "libs/handleError";
 import { withAuth } from "@middleware/auth";
 import Notification from "@models/Notification";
 
