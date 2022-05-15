@@ -10,15 +10,17 @@ import {
   XIcon,
 } from "@heroicons/react/solid";
 import { useAuth } from "@hooks/useAuth";
-import { fetchXHR } from "@utils/fetchXHR";
-import { classes } from "@utils/classes";
-import { fetchRSR } from "@utils/fetchRSR";
+import { fetchXHR } from "libs/fetchXHR";
+import { classes } from "libs/classes";
+import { fetchRSR } from "libs/fetchRSR";
 import { types, visibilities } from "constants/resourcesTypes";
 import type { NextPage } from "next";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { PlusCircleIcon } from "@heroicons/react/outline";
+import { Media, MediaUploader } from "@components/helpers/MediaUploader";
 
 const Map: any = dynamic(() => import("@components/map/Map") as any, {
   ssr: false,
@@ -36,8 +38,6 @@ const ResourceCreate: NextPage<any> = ({
   const router = useRouter();
   const { user } = useAuth();
 
-  const [pictureUrl, setPictureUrl] = useState(null);
-  const [pictureFile, setPictureFile] = useState(null);
   const [name, setName] = useState<string>("");
   const [description, setDescription] = useState<string | null>(null);
   const [tags, setTags] = useState<{ label: string; value: string }[]>([]);
@@ -66,13 +66,18 @@ const ResourceCreate: NextPage<any> = ({
   //   Event["location"]["data"] | null
   // >(null);
 
+  const [pictureUrl, setPictureUrl] = useState(null);
+  const [pictureFile, setPictureFile] = useState(null);
+
+  const [medias, setMedias] = useState<Media[]>([]);
+
   const [validForm, setValidForm] = useState<boolean>(false);
   const [requestOk, setRequestOk] = useState<boolean | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
 
   const formatResource = (): Resource => {
     let data: Resource["data"] = {
-      type: type.value,
+      type: type.value as Resource["data"]["type"],
       attributes: {},
     };
     if (type.value === "physical_item") {
@@ -343,8 +348,8 @@ const ResourceCreate: NextPage<any> = ({
                       key={v.value}
                       className={({ selected }) =>
                         classes(
-                          "w-full py-2.5 text-xs leading-5 font-medium rounded-md",
-                          "focus:outline-none transition-all duration-300 focus:ring-2 ring-offset-2 ring-bleuFrance-500",
+                          "w-full py-2.5 text-xs inline-flex items-center justify-center  leading-5 font-medium rounded-md",
+                          "focus:outline-none transition-all duration-300 focus:ring-2 ring-offset-2 ring-bleuFrance-500 truncate",
                           selected
                             ? "bg-bleuFrance-700  text-bleuFrance-100 font-semibold shadow"
                             : "text-bleuFrance-700 bg-bleuFrance-100 hover:bg-bleuFrance-200 hover:text-bleuFrance-800",
@@ -353,6 +358,7 @@ const ResourceCreate: NextPage<any> = ({
                         )
                       }
                     >
+                      {v.icon.outline({ className: "w-4 h-4 mr-1 shrink-0" })}
                       {v.label}
                     </Tab>
                   ))}
@@ -479,8 +485,8 @@ const ResourceCreate: NextPage<any> = ({
                         key={type.value}
                         className={({ selected }) =>
                           classes(
-                            "w-full py-2.5 text-xs leading-5 font-medium rounded-md",
-                            "focus:outline-none transition-all duration-300 focus:ring-2 ring-offset-2 ring-bleuFrance-500",
+                            "w-full inline-flex items-center justify-center py-2.5 text-xs leading-5 font-medium rounded-md",
+                            "focus:outline-none transition-all duration-300 focus:ring-2 ring-offset-2 ring-bleuFrance-500 truncate",
                             selected
                               ? "bg-bleuFrance-700  text-bleuFrance-100 font-semibold shadow"
                               : "text-bleuFrance-700 bg-bleuFrance-100 hover:bg-bleuFrance-200 hover:text-bleuFrance-800",
@@ -489,6 +495,10 @@ const ResourceCreate: NextPage<any> = ({
                           )
                         }
                       >
+                        {type.icon.outline({
+                          className: "w-4 h-4 mr-1 shrink-0",
+                        })}
+
                         {type.label}
                       </Tab>
                     ))}
@@ -497,7 +507,7 @@ const ResourceCreate: NextPage<any> = ({
               </Tab.Group>
 
               {types.find((t) => t.value === type.value).hasMedia && (
-                <label className="flex flex-col grow">
+                <div className="flex flex-col h-full overflow-hidden grow">
                   <h4
                     className={classes(
                       "mb-1 text-sm font-semibold text-gray-700 font-marianne",
@@ -506,77 +516,81 @@ const ResourceCreate: NextPage<any> = ({
                         : ""
                     )}
                   >
-                    Image de la ressource
+                    Médias
                   </h4>
-                  {pictureUrl && (
-                    <div className="relative w-full grow">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
-                        src={pictureUrl}
-                        className="object-cover object-center w-full rounded-lg aspect-video"
-                        alt="Event picture"
-                      ></img>
-                      <div
-                        className="absolute top-0 right-0 flex items-center justify-center w-6 h-6 -mt-1 -mr-1 text-red-700 transition duration-300 bg-red-200 rounded-full cursor-pointer hover:bg-red-300"
-                        onClick={() => {
-                          setPictureUrl(null);
-                          setPictureFile(null);
-                        }}
-                      >
-                        <XIcon className="w-3 h-3 stroke-2"></XIcon>
-                      </div>
-                    </div>
-                  )}
-                  {!pictureUrl && (
-                    <div className="w-full grow">
-                      <input
-                        id="filePicture"
-                        type="file"
-                        accept="image/*"
-                        onChange={(e) => {
-                          let file =
-                            e.target.files instanceof FileList
-                              ? e.target.files[0]
-                              : null;
-                          if (file) {
-                            setPictureFile(file);
-                            setPictureUrl(URL.createObjectURL(file));
-                          }
-                        }}
-                        className="hidden"
-                      ></input>
-                      <label
-                        htmlFor="filePicture"
-                        className="relative flex flex-col items-center justify-center w-full h-full p-12 duration-300 border-2 border-gray-300 border-dashed rounded-lg hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                      >
-                        <svg
-                          className="w-12 h-12 mx-auto text-gray-400"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"
-                          />
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"
-                          />
-                        </svg>
 
-                        <span className="block mt-2 text-sm font-medium text-gray-900">
-                          Ajouter une image
-                        </span>
-                      </label>
-                    </div>
-                  )}
-                </label>
+                  <MediaUploader files={medias} setFiles={setMedias} />
+
+                  {/* <>
+                    {pictureUrl && (
+                      <div className="relative w-full grow">
+                        <img
+                          src={pictureUrl}
+                          className="object-cover object-center w-full rounded-lg aspect-video"
+                          alt="Event picture"
+                        ></img>
+                        <div
+                          className="absolute top-0 right-0 flex items-center justify-center w-6 h-6 -mt-1 -mr-1 text-red-700 transition duration-300 bg-red-200 rounded-full cursor-pointer hover:bg-red-300"
+                          onClick={() => {
+                            setPictureUrl(null);
+                            setPictureFile(null);
+                          }}
+                        >
+                          <XIcon className="w-3 h-3 stroke-2"></XIcon>
+                        </div>
+                      </div>
+                    )}
+                    {!pictureUrl && (
+                      <div className="w-full grow">
+                        <input
+                          id="filePicture"
+                          type="file"
+                          accept="image/*"
+                          onChange={(e) => {
+                            let file =
+                              e.target.files instanceof FileList
+                                ? e.target.files[0]
+                                : null;
+                            if (file) {
+                              setPictureFile(file);
+                              setPictureUrl(URL.createObjectURL(file));
+                            }
+                          }}
+                          className="hidden"
+                        ></input>
+                        <label
+                          htmlFor="filePicture"
+                          className="relative flex flex-col items-center justify-center w-full h-full p-12 duration-300 border-2 border-gray-300 border-dashed rounded-lg hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                        >
+                          <svg
+                            className="w-12 h-12 mx-auto text-gray-400"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"
+                            />
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"
+                            />
+                          </svg>
+
+                          <span className="block mt-2 text-sm font-medium text-gray-900">
+                            Ajouter une image
+                          </span>
+                        </label>
+                      </div>
+                    )}
+                  </> */}
+                </div>
               )}
               {type.value === "physical_item" && (
                 <>
