@@ -2,8 +2,8 @@ import { withAuth } from "@middleware/auth";
 import withDatabase from "@middleware/mongoose";
 import Resource from "@models/Resource";
 import Tag from "@models/Tag";
-import { getUser } from "@utils/getCurrentUser";
-import { handleError } from "@utils/handleError";
+import { getUser } from "libs/getCurrentUser";
+import { handleError } from "libs/handleError";
 import { NextApiRequest, NextApiResponse } from "next";
 import slug from "slug";
 

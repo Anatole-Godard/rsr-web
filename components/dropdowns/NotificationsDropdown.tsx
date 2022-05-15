@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import React from "react";
 import { Menu, Transition } from "@headlessui/react";
-import { classes } from "@utils/classes";
+import { classes } from "libs/classes";
 import {
   BellIcon as BellOutlineIcon,
   ChatAlt2Icon,

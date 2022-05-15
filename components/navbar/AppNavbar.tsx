@@ -7,7 +7,7 @@ import { v4 as uuidv4 } from "uuid";
 import { motion } from "framer-motion";
 import { NotificationsDropdown } from "@components/dropdowns/NotificationsDropdown";
 import { useRouter } from "next/router";
-import { classes } from "@utils/classes";
+import { classes } from "libs/classes";
 
 export const Navbar: React.FC<any> = () => {
   const router = useRouter();

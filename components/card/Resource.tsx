@@ -10,7 +10,7 @@ import {
 import { HeartIcon as HeartIconSolid } from "@heroicons/react/solid";
 import { ChatAlt2Icon, ShareIcon } from "@heroicons/react/solid";
 import { useAuth } from "@hooks/useAuth";
-import { classes } from "@utils/classes";
+import { classes } from "libs/classes";
 import { types, visibilities } from "constants/resourcesTypes";
 import { formatDistance } from "date-fns";
 import { fr } from "date-fns/locale";

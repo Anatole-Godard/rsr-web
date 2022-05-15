@@ -8,8 +8,8 @@ import {
   XCircleIcon,
   XIcon,
 } from "@heroicons/react/solid";
-import { fetchXHR } from "@utils/fetchXHR";
-import { classes } from "@utils/classes";
+import { fetchXHR } from "libs/fetchXHR";
+import { classes } from "libs/classes";
 import { types, visibilities } from "constants/resourcesTypes";
 import type { GetServerSideProps, NextPage } from "next";
 import dynamic from "next/dynamic";
@@ -17,7 +17,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { Fragment, useEffect, useState } from "react";
-import { fetchRSR } from "@utils/fetchRSR";
+import { fetchRSR } from "libs/fetchRSR";
 import { useAuth } from "@hooks/useAuth";
 import { UserMinimum } from "@definitions/User";
 import { TrashIcon } from "@heroicons/react/outline";
@@ -134,7 +134,7 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
 
   const formatResource = (): Resource => {
     let data: Resource["data"] = {
-      type: type.value,
+      type: type.value as Resource["data"]["type"],
       attributes: {},
     };
     if (type.value === "physical_item") {
@@ -424,7 +424,7 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
                       className={({ selected }) =>
                         classes(
                           "w-full py-2.5 text-xs leading-5 font-medium rounded-md",
-                          "focus:outline-none transition-all duration-300 focus:ring-2 ring-offset-2 ring-amber-500",
+                          "focus:outline-none transition-all duration-300 focus:ring-2 ring-offset-2 ring-amber-500 truncate inline-flex items-center justify-center",
                           selected
                             ? "bg-amber-700  text-amber-100 font-semibold shadow"
                             : "text-amber-700 bg-amber-100 hover:bg-amber-300 hover:text-amber-800",
@@ -433,6 +433,8 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
                         )
                       }
                     >
+                      {v.icon.outline({ className: "w-4 h-4 mr-1 shrink-0" })}
+
                       {v.label}
                     </Tab>
                   ))}
@@ -576,7 +578,7 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
                         className={({ selected }) =>
                           classes(
                             "w-full py-2.5 text-xs leading-5 font-medium rounded-md",
-                            "focus:outline-none transition-all duration-300 focus:ring-2 ring-offset-2 ring-amber-500",
+                            "focus:outline-none transition-all duration-300 focus:ring-2 ring-offset-2 ring-amber-500 truncate inline-flex items-center justify-center",
                             selected
                               ? "bg-amber-700  text-amber-100 font-semibold shadow"
                               : "text-amber-700 bg-amber-100 hover:bg-amber-300 hover:text-amber-800",
@@ -585,6 +587,10 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
                           )
                         }
                       >
+                        {type.icon.outline({
+                          className: "w-4 h-4 mr-1 shrink-0",
+                        })}
+
                         {type.label}
                       </Tab>
                     ))}

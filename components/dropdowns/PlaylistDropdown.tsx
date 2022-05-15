@@ -10,8 +10,8 @@ import {
 } from "@heroicons/react/outline";
 import { useAuth } from "@hooks/useAuth";
 import useFetchRSR from "@hooks/useFetchRSR";
-import { classes } from "@utils/classes";
-import { fetchRSR } from "@utils/fetchRSR";
+import { classes } from "libs/classes";
+import { fetchRSR } from "libs/fetchRSR";
 import { Fragment, useState } from "react";
 
 export const PlaylistDropdown = ({

@@ -2,8 +2,8 @@ import { ResourceMinimum } from "@definitions/Resource";
 import { User } from "@definitions/User";
 import { withAuth } from "@middleware/auth";
 import withDatabase from "@middleware/mongoose";
-import { getUser } from "@utils/getCurrentUser";
-import { handleError } from "@utils/handleError";
+import { getUser } from "libs/getCurrentUser";
+import { handleError } from "libs/handleError";
 import { NextApiRequest, NextApiResponse } from "next";
 import UserModel from "@models/User";
 

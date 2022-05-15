@@ -4,7 +4,7 @@ import { UserResources } from "@components/user/UserResources";
 import { Resource } from "@definitions/Resource";
 import { CogIcon, CollectionIcon } from "@heroicons/react/outline";
 import { useAuth } from "@hooks/useAuth";
-import { fetchRSR } from "@utils/fetchRSR";
+import { fetchRSR } from "libs/fetchRSR";
 import { NextPage } from "next";
 import Image from "next/image";
 import Link from "next/link";

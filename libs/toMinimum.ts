@@ -14,4 +14,5 @@ export const toResourceMinimum = (resource: Resource): ResourceMinimum => ({
   createdAt: resource.createdAt,
   visibility: resource.visibility,
   members: resource.members,
+  seenBy: resource.seenBy,
 });

@@ -1,6 +1,6 @@
 import { DownloadIcon } from "@heroicons/react/outline";
 import { useAuth } from "@hooks/useAuth";
-import { fetchRSR } from "@utils/fetchRSR";
+import { fetchRSR } from "libs/fetchRSR";
 import Image from "next/image";
 
 export const RetrieveAccount = () => {

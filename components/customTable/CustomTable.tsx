@@ -16,8 +16,8 @@ import Link from "next/link";
 import { Transition } from "@headlessui/react";
 import React, { Fragment, useEffect, useRef, useState } from "react";
 import { ChipList } from "@components/ui/ChipList";
-import { classes } from "@utils/classes";
-import { fetchRSR } from "@utils/fetchRSR";
+import { classes } from "libs/classes";
+import { fetchRSR } from "libs/fetchRSR";
 import { useAuth } from "@hooks/useAuth";
 
 const roleType = [

@@ -5,7 +5,7 @@ import { ChatAlt2Icon, ChatIcon, UserAddIcon, ExclamationIcon} from "@heroicons/
 import { formatDistance } from "date-fns";
 import { fr } from "date-fns/locale";
 import Image from "next/image";
-import { fetchRSR } from '@utils/fetchRSR';
+import { fetchRSR } from 'libs/fetchRSR';
 import { useAuth } from '@hooks/useAuth';
 
 type History = (Message | Activity) & {

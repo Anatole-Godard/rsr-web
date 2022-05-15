@@ -7,7 +7,7 @@ import {SelectorIcon, CheckIcon, ChevronDownIcon} from "@heroicons/react/solid";
 import {ChartDisplay} from "@components/statistics/ChartDisplay";
 import {GlobalDisplay} from "@components/statistics/GlobalDisplay";
 import {useAuth} from "@hooks/useAuth";
-import {fetchRSR} from "@utils/fetchRSR";
+import {fetchRSR} from "libs/fetchRSR";
 import {Resource} from "@definitions/Resource";
 import ResourceModel from '@models/Resource';
 import moment from "moment";
