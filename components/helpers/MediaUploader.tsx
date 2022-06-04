@@ -5,6 +5,7 @@ import {
   PhotographIcon,
   VideoCameraIcon,
   DocumentIcon,
+  CloudUploadIcon,
 } from "@heroicons/react/outline";
 import { Dispatch, useState, Fragment } from "react";
 import { Transition, Dialog } from "@headlessui/react";
@@ -20,8 +21,6 @@ export const MediaUploader = ({
   setFiles: Dispatch<Media[]>;
 }) => {
   let [isOpen, setIsOpen] = useState<boolean>(false);
-
-  console.log(files);
 
   return (
     <>
@@ -82,7 +81,7 @@ export const MediaUploader = ({
           )}
         </button>
       </div>
-      <Transition appear show={isOpen} as={Fragment}>
+      <Transition appear show={isOpen && files.length <= 3} as={Fragment}>
         <Dialog
           as="div"
           className="relative z-10"
@@ -114,11 +113,12 @@ export const MediaUploader = ({
                 <Dialog.Panel className="w-full max-w-md p-6 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl">
                   <Dialog.Title
                     as="h3"
-                    className="text-lg font-medium leading-6 text-gray-900 font-marianne"
+                    className="inline-flex items-center justify-center w-full text-xl font-medium text-gray-900 font-marianne"
                   >
+                    <CloudUploadIcon className="w-6 h-6 mt-1 mr-2 stroke-2" />
                     Ajouter un média
                   </Dialog.Title>
-                  <div className="mt-2">
+                  <div className="mt-4">
                     <div className="w-full grow">
                       <input
                         id="file"
@@ -129,18 +129,24 @@ export const MediaUploader = ({
                             e.target.files instanceof FileList
                               ? e.target.files[0]
                               : null;
-                          if (file) {
+                          if (
+                            file &&
+                            file.size <= 5_000_000 &&
+                            files.length < 3
+                          ) {
                             setFiles([...files, file]);
                             setIsOpen(false);
+                          } else {
+                            alert("Votre fichier est trop lourd");
                           }
                         }}
                         className="hidden"
                       ></input>
                       <label
                         htmlFor="file"
-                        className="relative flex flex-col items-center justify-center w-full h-full p-12 duration-300 border-2 border-gray-300 border-dashed rounded-lg group hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                        className="relative flex flex-col items-center justify-center w-full h-full p-12 duration-300 border-2 border-gray-300 border-dashed rounded-lg group hover:border-gray-500 focus:outline-none active:border-bleuFrance-500 active:ring-4 ring-opacity-60 ring-bleuFrance-300"
                       >
-                        <div className="inline-flex items-center justify-center w-full text-lg text-gray-300 duration-150 group-hover:text-gray-400">
+                        <div className="inline-flex items-center justify-center w-full text-lg text-gray-500 duration-150 group-hover:text-gray-600">
                           <VolumeUpIcon className="w-6 h-6 mx-2" />
                           <span>/</span>
                           <PhotographIcon className="w-6 h-6 mx-2" />
@@ -149,25 +155,26 @@ export const MediaUploader = ({
                           <span>/</span>
                           <DocumentIcon className="w-6 h-6 mx-2" />
                         </div>
-                        <span className="text-sm text-gray-400 duration-300 group-hover:text-gray-600 font-spectral">
+                        <span className="text-sm text-gray-600 duration-300 group-hover:text-gray-700 font-spectral">
                           Fichier audio, image, vidéo, pdf accepté
                         </span>
-                        <span className="text-xs text-gray-400 duration-300 group-hover:text-gray-500 font-spectral">
-                          Maximum 2 Mo par fichier ({"jusqu'à 3 fichiers"})
+                        <span className="text-xs text-gray-500 duration-300 group-hover:text-gray-600 font-spectral">
+                          Maximum 5 Mo par fichier ({"jusqu'à 3 fichiers"})
                         </span>
-                        <span className="text-xs text-gray-300 duration-300 group-hover:text-gray-400 font-spectral">
+                        <span className="text-xs text-gray-500 duration-300 group-hover:text-gray-600 font-spectral">
                           {3 - files.length} fichiers restants
                         </span>
                       </label>
                     </div>
                   </div>
 
-                  <div className="mt-4">
+                  <div className="inline-flex justify-end w-full mt-4">
                     <button
                       type="button"
                       className="btn-red"
                       onClick={() => setIsOpen(false)}
                     >
+                      <XIcon className="w-4 h-4 mr-2" />
                       Annuler
                     </button>
                   </div>

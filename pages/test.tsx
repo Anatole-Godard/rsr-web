@@ -1,8 +1,12 @@
-import { Media, MediaUploader } from "@components/helpers/MediaUploader";
-import { useState } from "react";
+import { Input, WrapperModularInputs } from "@components/helpers/ModularInput";
+import { useEffect, useState } from "react";
 
 export default function TestPage() {
-  const [medias, setMedias] = useState<Media[]>([]);
+  const [inputs, setInputs] = useState<Input[]>([]);
 
-  return <MediaUploader files={medias} setFiles={setMedias} />;
+  useEffect(() => {
+    console.log("parent", inputs);
+  }, [inputs]);
+
+  return <WrapperModularInputs data={inputs} setData={setInputs} />;
 }
