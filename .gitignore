@@ -38,3 +38,6 @@ yarn-error.log*
 # vercel
 .vercel
 yarn.lock
+/test-results/
+/playwright-report/
+/playwright/.cache/
