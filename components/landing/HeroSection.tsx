@@ -68,7 +68,7 @@ export const HeroSection = () => {
                 </p>
                 <div className="flex items-center mt-6 space-x-3 sm:flex-row">
                   <Link href="/resource">
-                    <a className="btn-bleuFrance">
+                    <a className="btn-bleuFrance" id="btn-resource-redirect">
                       <EyeIcon className="w-4 h-4 mr-2" />
                       Consulter les ressources
                     </a>
@@ -82,7 +82,7 @@ export const HeroSection = () => {
                     </Link>
                   ) : (
                     <Link href="/auth/login">
-                      <a className="btn-gray">
+                      <a className="btn-gray" id="btn-login-redirect">
                         <UserCircleIcon className="w-4 h-4 mr-2" />
                         Se connecter
                       </a>
