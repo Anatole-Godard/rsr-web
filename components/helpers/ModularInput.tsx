@@ -6,18 +6,22 @@ import {
   ExclamationIcon,
   MenuAlt2Icon,
   PlusCircleIcon,
+  XIcon,
 } from "@heroicons/react/outline";
 import { CursorClickIcon } from "@heroicons/react/solid";
 import { Dispatch, useState } from "react";
+import slug from "slug";
 
 export type Input = {
   label: string;
-  value: string;
+  slug: string;
+  value: string | number | boolean;
   type: "date" | "string" | "number" | "boolean";
 };
 
 const DEFAULT_INPUT_TYPE = "string";
 const DEFAULT_INPUT_LABEL = "Identifiant du champ";
+const DEFAULT_INPUT_SLUG = slug(DEFAULT_INPUT_LABEL);
 
 export const WrapperModularInputs = ({
   data,
@@ -31,14 +35,19 @@ export const WrapperModularInputs = ({
       ...data,
       {
         label: DEFAULT_INPUT_LABEL,
+        slug: DEFAULT_INPUT_SLUG,
         value: "",
         type: DEFAULT_INPUT_TYPE,
       },
     ]);
   };
 
+  const removeInput = (slug: string) => {
+    setData(data.filter((input) => input.slug !== slug));
+  };
+
   return (
-    <div className="flex flex-col h-full max-h-full p-2 space-y-1 bg-gray-200 rounded-lg">
+    <div className="flex flex-col justify-between h-full max-h-full p-2 space-y-1 bg-gray-200 rounded-lg">
       {data.length === 0 && (
         <div className="flex flex-col items-center justify-center p-4">
           <ExclamationIcon className="w-8 h-8" />
@@ -48,31 +57,37 @@ export const WrapperModularInputs = ({
           </p>
         </div>
       )}
-      {data.map((input, index) => (
-        <Input
-          key={index}
-          label={input.label}
-          value={input.value}
-          type={input.type}
-          onValueChange={(value) => {
-            const newData = [...data];
-            newData[index].value = value;
-            setData(newData);
-          }}
-          onTypeChange={(value: Input["type"]) => {
-            const newData = [...data];
-            newData[index].type = value;
-            setData(newData);
-          }}
-          onLabelChange={(value) => {
-            const newData = [...data];
-            newData[index].label = value;
-            setData(newData);
-          }}
-        />
-      ))}
-      <div className="inline-flex justify-end w-full mt-2 ">
-        <button className="btn-gray" onClick={appendInput}>
+      <div className="flex flex-col space-y-1">
+        {data.map((input, index) => (
+          <Input
+            key={index}
+            label={input.label}
+            value={input.value}
+            type={input.type}
+            onValueChange={(value) => {
+              const newData = [...data];
+              newData[index].value = value;
+              setData(newData);
+            }}
+            onTypeChange={(value: Input["type"]) => {
+              const newData = [...data];
+              newData[index].type = value;
+              newData[index].value = "";
+              setData(newData);
+            }}
+            onLabelChange={(value) => {
+              const newData = [...data];
+              newData[index].label = value;
+              newData[index].slug = slug(value);
+              setData(newData);
+            }}
+            slug={input.slug}
+            removeInput={removeInput}
+          />
+        ))}
+      </div>
+      <div className="inline-flex justify-end w-full mt-4 ">
+        <button className="btn-gray" onClick={appendInput} type="button">
           <PlusCircleIcon className="w-4 h-4 mr-2" />
           Ajouter un champ
         </button>
@@ -82,18 +97,21 @@ export const WrapperModularInputs = ({
 };
 
 interface IInputProps extends Input {
-  onValueChange: (value: string) => void;
+  onValueChange: (value: string | number | boolean) => void;
   onTypeChange: (type: string) => void;
   onLabelChange: (label: string) => void;
+  removeInput: (slug: string) => void;
 }
 
 const Input = ({
   label,
   value,
   type,
+  slug,
   onValueChange,
   onTypeChange,
   onLabelChange,
+  removeInput,
 }: IInputProps) => {
   const [isEditingLabel, setIsEditingLabel] = useState(false);
   return (
@@ -106,6 +124,7 @@ const Input = ({
               onChange={(e) => onLabelChange(e.target.value)}
               className="input hover:bg-gray-300 w-fit"
               placeholder="Nom du champ"
+              onBlur={() => setIsEditingLabel(false)}
             />
             <button
               className="px-2.5 py-2.5 btn-bleuFrance"
@@ -161,22 +180,39 @@ const Input = ({
             </select>
             <ChevronDownIcon className="absolute w-4 h-4 transform -translate-y-1/2 pointer-events-none top-1/2 right-3" />
           </label>
-          {type !== "boolean" ? (
-            <input
-              className="input hover:bg-gray-300"
-              type={type}
-              value={value}
-              onChange={(e) => onValueChange(e.target.value)}
-              placeholder={`Entrez ${label}`}
-            />
-          ) : (
-            <input
-              className="w-4 h-4 p-0 rounded-md appearance-none input active:bg-bleuFrance-600 checked:bg-bleuFrance-500 checked:ring-2 ring-bleuFrance-200"
-              type="checkbox"
-              value={value}
-              onChange={(e) => onValueChange(e.target.checked.toString())}
-            />
-          )}
+          <div className="inline-flex items-center w-full space-x-2">
+            {type !== "boolean" ? (
+              <input
+                className="input hover:bg-gray-300 grow"
+                type={type}
+                // @ts-ignore
+                value={type === "number" ? value : value.toString()}
+                onChange={(e) =>
+                  onValueChange(
+                    type === "number"
+                      ? parseFloat(e.target.value)
+                      : e.target.value
+                  )
+                }
+                placeholder={`Entrez ${label}`}
+              />
+            ) : (
+              <input
+                className="w-4 h-4 p-0 rounded-md appearance-none input active:bg-bleuFrance-600 checked:bg-bleuFrance-500 checked:ring-2 ring-bleuFrance-200"
+                type="checkbox"
+                // @ts-ignore
+                checked={value}
+                onChange={(e) => onValueChange(e.target.checked)}
+              />
+            )}
+            <button
+              type="button"
+              className="px-2.5 py-2.5 btn-red shrink-0"
+              onClick={() => removeInput(slug)}
+            >
+              <XIcon className="w-4 h-4" />
+            </button>
+          </div>
         </div>
       </div>
     </div>

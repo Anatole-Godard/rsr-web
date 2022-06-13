@@ -64,7 +64,11 @@ export const MediaUploader = ({
         </div>
         <button
           key="add-media"
-          onClick={() => setIsOpen(true)}
+          type="button"
+          onClick={(e) => {
+            e.preventDefault();
+            setIsOpen(true);
+          }}
           className="rounded-md btn-gray w-fit"
           disabled={files.length >= 3}
         >

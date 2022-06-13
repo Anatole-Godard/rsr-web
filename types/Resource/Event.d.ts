@@ -1,3 +1,4 @@
+import { Media } from "@components/helpers/MediaUploader";
 import { UserMinimum } from "@definitions/User";
 import { ExternalLinkWithoutRedundancy } from "./ExternalLink";
 import { GeoJSONPointWithoutRedundancy } from "./GeoJSON";
@@ -11,7 +12,7 @@ export interface Event {
     name: string;
     startDate: string | Date;
     endDate?: string | Date;
-    image?: any;
+    medias?: any;
     participants: UserMinimum[];
   };
 }

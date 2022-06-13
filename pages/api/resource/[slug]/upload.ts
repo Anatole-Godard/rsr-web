@@ -87,19 +87,17 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 
       try {
         await fs.writeFile(
-          `/app/public/uploads/resource/${resource.slug}.${fields.name
-            .split(".")
-            .at(-1)}`,
+          `/usr/src/app/public/uploads/resource/${resource.slug}-${fields.name}`,
           await fs.readFile(files.file.filepath)
         );
-        resource.data.attributes.properties.image = {
+        resource.data.attributes.properties.medias.push({
           ...fields,
-          url: `/uploads/resource/${resource.slug}.${fields.name
-            .split(".")
-            .at(-1)}`,
-        };
-        resource.markModified("data.attributes.properties.image");
-        await resource.save();
+          url: `/uploads/resource/${resource.slug}-${fields.name}`,
+        });
+        resource.markModified("data.attributes.properties.medias");
+
+        
+        await resource.update();
 
         res.status(200).json({
           data: {

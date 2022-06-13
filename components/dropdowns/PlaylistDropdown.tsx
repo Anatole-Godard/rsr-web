@@ -76,7 +76,7 @@ export const PlaylistDropdown = ({
               )}
             >
               <CollectionIcon className="w-4 h-4 md:mr-1 shrink-0 lg:mr-2" />
-              <span className="hidden md:block">Ajouter à la playlist</span>
+              <span className="hidden md:block">Ajouter</span>
               <ChevronDownIcon
                 className={classes(
                   "w-4 h-4 ml-1 lg:ml-2 duration-200 transition-all",
