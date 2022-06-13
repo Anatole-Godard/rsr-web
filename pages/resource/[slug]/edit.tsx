@@ -94,7 +94,8 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
   );
 
   const [medias, setMedias] = useState<Media[]>(
-    props.data?.attributes.properties.medias || []
+    // props.data?.attributes.properties.medias || []
+    []
   );
   const [inputs, setInputs] = useState<Input[]>(
     toModularInput(props.data?.attributes.properties) || []
@@ -192,6 +193,7 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
       });
     }
 
+    // resetting to default data.attributes.properties.medias
     if (type.hasMedia) data.attributes.properties.medias = [];
 
     return {
@@ -223,23 +225,23 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
 
         const body = await response.json();
         if (response.ok && medias.length > 0) {
-          const allUploads = await Promise.all(
-            medias.map(async (media) => {
-              const formData = new FormData();
-              formData.append("file", media);
-              formData.append("name", media.name);
-              formData.append("type", media.type);
-              formData.append("size", media.size.toString());
-              return await fetch(
-                `/api/resource/${body.data.attributes.slug}/upload`,
-                {
-                  method: "POST",
-                  body: formData,
-                }
-              );
-            })
-          );
-          if (allUploads.every((r) => r.ok)) {
+          
+
+          const responses = [];
+          for (const media of medias) {
+            const formData = new FormData();
+            formData.append("file", media);
+            formData.append("name", media.name);
+            formData.append("type", media.type);
+            formData.append("size", media.size.toString());
+            responses.push(
+              await fetch(`/api/resource/${body.data.attributes.slug}/upload`, {
+                method: "POST",
+                body: formData,
+              })
+            );
+          }
+          if (responses.every((r) => r.ok)) {
             setRequestOk(true);
             router.push(`/resource/${body.data.attributes.slug}`);
           } else setRequestOk(false);
