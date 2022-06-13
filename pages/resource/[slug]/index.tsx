@@ -13,7 +13,10 @@ import {
   TrashIcon,
   UsersIcon,
   XIcon,
-    EyeIcon,
+  EyeIcon,
+  CalculatorIcon,
+  MenuAlt2Icon,
+  CheckCircleIcon,
 } from "@heroicons/react/outline";
 import {
   HandIcon,
@@ -48,6 +51,9 @@ import { DateRangePickerCalendar } from "react-nice-dates";
 import { ShowMoreText } from "@components/ui/ShowMore";
 import { PlaylistDropdown } from "@components/dropdowns/PlaylistDropdown";
 import { TagDocument } from "@definitions/Resource/Tag";
+import { Input } from "@components/helpers/ModularInput";
+import { Other } from "@definitions/Resource/Other";
+import { toModularInput } from "@utils/toModularInput";
 
 const Map: any = dynamic(() => import("@components/map/Map") as any, {
   ssr: false,
@@ -64,7 +70,7 @@ const ResourceSlug: NextPage<any> = ({
   createdAt,
   validated,
   visibility,
-    seenBy,
+  seenBy,
 }: Resource) => {
   const [message, setMessage] = useState<string>("");
   const [newLikes, setNewLikes] = useState<UserMinimum[]>(likes || []);
@@ -166,17 +172,16 @@ const ResourceSlug: NextPage<any> = ({
               </div>
             )}
             {newViews.length >= 1 ? (
-                <div className="items-center hidden text-xs text-gray-500 transition duration-200 lg:inline-flex hover:text-gray-700 dark:text-gray-400">
-                  <EyeIcon className="hidden lg:flex items-center fas fa-users flex-shrink-0 mx-1.5 h-4 w-4 " />
-                  {newViews?.length || 0}{" "}
-                  {newViews?.length > 1 ? "vues" : "vue"}
-                </div>
+              <div className="items-center hidden text-xs text-gray-500 transition duration-200 lg:inline-flex hover:text-gray-700 dark:text-gray-400">
+                <EyeIcon className="hidden lg:flex items-center fas fa-users flex-shrink-0 mx-1.5 h-4 w-4 " />
+                {newViews?.length || 0} {newViews?.length > 1 ? "vues" : "vue"}
+              </div>
             ) : (
-                <div className="items-center hidden text-xs text-gray-500 transition duration-200 lg:inline-flex hover:text-gray-700 dark:text-gray-400">
-                  <EyeIcon className="hidden lg:flex items-center fas fa-users flex-shrink-0 mx-1.5 h-4 w-4 " />
+              <div className="items-center hidden text-xs text-gray-500 transition duration-200 lg:inline-flex hover:text-gray-700 dark:text-gray-400">
+                <EyeIcon className="hidden lg:flex items-center fas fa-users flex-shrink-0 mx-1.5 h-4 w-4 " />
 
-                  {"Personne n'a vu pour l'instant"}
-                </div>
+                {"Personne n'a vu pour l'instant"}
+              </div>
             )}
           </div>
 
@@ -207,6 +212,7 @@ const ResourceSlug: NextPage<any> = ({
                       data,
                       validated,
                       visibility,
+                      seenBy,
                     }}
                   />
                   <button onClick={report} className="btn-yellow">
@@ -382,7 +388,11 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     )
   ).json();
   const parsedUser = JSON.parse(user || "null");
-  if(parsedUser?.session) await fetchRSR(`http://localhost:3000/api/resource/${context.params.slug}/seen`, parsedUser.session);
+  if (parsedUser?.session)
+    await fetchRSR(
+      `http://localhost:3000/api/resource/${context.params.slug}/seen`,
+      parsedUser.session
+    );
   const resource: Resource[] = body?.data?.attributes;
 
   return {
@@ -414,6 +424,11 @@ interface EventViewProps {
   slug: string;
 }
 
+interface OtherViewProps {
+  attributes: Other;
+  slug: string;
+}
+
 interface CommentViewProps {
   comment: Comment;
   slug: string;
@@ -432,6 +447,7 @@ const ResourceView = ({ type, attributes, slug }: ResourceViewProps) => {
         <ExternalLinkView attributes={attributes} slug={slug} />
       )}
       {type === "event" && <EventView attributes={attributes} slug={slug} />}
+      {type === "other" && <OtherView attributes={attributes} slug={slug} />}
     </div>
   );
 };
@@ -461,19 +477,15 @@ const ExternalLinkView = ({ attributes, slug }: ExternalLinkViewProps) => {
   return (
     <>
       <div className="relative h-full overflow-hidden rounded-lg xl:col-span-2">
-        {attributes.properties.image ? (
-          <img
-            src={attributes.properties.image.url}
-            alt={attributes.properties.name}
-            className="h-full"
-          />
+        {attributes.properties.medias ? (
+          <MediaView medias={attributes.properties.medias} />
         ) : (
           <div className="flex flex-col items-center justify-center h-full text-amber-800 bg-amber-200 dark:text-amber-200 dark:bg-amber-800">
             <LinkIcon className="w-12 h-12 mb-1" />
             <p className="text-lg font-spectral">Lien externe</p>
-            {!attributes.properties.image && (
+            {!attributes.properties.medias && (
               <p className="pt-2 mx-12 mt-2 text-sm text-center border-t border-amber-500 text-amber-600 dark:text-amber-400 font-spectral">
-                {"Aucune image n'est disponible pour cette ressource"}
+                {"Aucun média n'est disponible pour cette ressource"}
               </p>
             )}
           </div>
@@ -502,19 +514,15 @@ const PhysicalItemView = ({ attributes, slug }: PhysicalItemViewProps) => {
   return (
     <>
       <div className="relative h-full overflow-hidden rounded-lg xl:col-span-2">
-        {attributes.properties.image ? (
-          <img
-            src={attributes.properties.image.url}
-            alt={attributes.properties.name}
-            className="h-full"
-          />
+        {attributes.properties.medias ? (
+          <MediaView medias={attributes.properties.medias} />
         ) : (
           <div className="flex flex-col items-center justify-center h-full text-emerald-800 bg-emerald-200 dark:text-emerald-200 dark:bg-emerald-800">
             <HandIcon className="w-12 h-12 mb-1" />
             <p className="text-lg font-spectral">Objet physique</p>
-            {!attributes.properties.image && (
+            {!attributes.properties.medias && (
               <p className="pt-2 mx-12 mt-2 text-sm text-center border-t border-emerald-500 text-emerald-600 dark:text-emerald-400 font-spectral">
-                {"Aucune image n'est disponible pour cette ressource"}
+                {"Aucun média n'est disponible pour cette ressource"}
               </p>
             )}
           </div>
@@ -581,12 +589,8 @@ const EventView = ({ attributes, slug }: EventViewProps) => {
         />
       </div>
       <div className="flex flex-col pt-3 pr-3 space-y-3">
-        {attributes.properties.image ? (
-          <img
-            src={attributes.properties.image.url}
-            alt={attributes.properties.name}
-            className="h-48"
-          />
+        {attributes.properties.medias ? (
+          <MediaView medias={attributes.properties.medias} />
         ) : (
           <div className="flex flex-col items-center justify-center h-48 text-red-800 bg-red-200 rounded-lg dark:text-red-200 dark:bg-red-800">
             <CalendarIcon className="w-12 h-12 mb-1" />
@@ -719,6 +723,74 @@ const EventView = ({ attributes, slug }: EventViewProps) => {
   );
 };
 
+const OtherView = ({ attributes, slug }: OtherViewProps) => {
+  return (
+    <>
+      <div className="relative h-full overflow-hidden rounded-lg xl:col-span-2">
+        {attributes.properties.medias ? (
+          <MediaView medias={attributes.properties.medias} />
+        ) : (
+          <div className="flex flex-col items-center justify-center h-full text-emerald-800 bg-emerald-200 dark:text-emerald-200 dark:bg-emerald-800">
+            <HandIcon className="w-12 h-12 mb-1" />
+            <p className="text-lg font-spectral">Objet physique</p>
+            {!attributes.properties.image && (
+              <p className="pt-2 mx-12 mt-2 text-sm text-center border-t border-emerald-500 text-emerald-600 dark:text-emerald-400 font-spectral">
+                {"Aucune image n'est disponible pour cette ressource"}
+              </p>
+            )}
+          </div>
+        )}
+      </div>
+      <div className="">
+        {toModularInput(attributes.properties).map((input, i) => (
+          <>
+            <div
+              key={input.slug + "-" + i}
+              className="flex flex-col mb-3 first:mt-6 "
+            >
+              <h4 className="inline-flex items-center space-x-2 text-2xl font-bold font-marianne">
+                <span className="mb-1 ">{input.label}</span>
+                {input.type === "string" && (
+                  <span className="btn-bleuFrance text-xs px-1 py-0.5">
+                    <MenuAlt2Icon className="w-3 h-3 mr-1" />
+                    Texte
+                  </span>
+                )}
+                {input.type === "date" && (
+                  <span className="btn-bleuFrance text-xs px-1 py-0.5">
+                    <CalendarIcon className="w-3 h-3 mr-1" />
+                    Date
+                  </span>
+                )}
+                {input.type === "number" && (
+                  <span className="btn-bleuFrance text-xs px-1 py-0.5">
+                    <CalculatorIcon className="w-3 h-3 mr-1" />
+                    Nombre
+                  </span>
+                )}
+                {input.type === "boolean" && (
+                  <span className="btn-bleuFrance text-xs px-1 py-0.5">
+                    <CheckCircleIcon className="w-3 h-3 mr-1" />
+                    Oui/Non
+                  </span>
+                )}
+              </h4>
+              <p className="text-sm leading-5 prose text-gray-500 font-spectral dark:text-gray-400">
+                {input.type !== "boolean"
+                  ? input.value
+                  : input.value
+                  ? "Oui"
+                  : "Non"}
+              </p>
+            </div>
+            <hr className="mx-5 mb-3 border-gray-300 dark:border-gray-700 last:border-0" />
+          </>
+        ))}
+      </div>
+    </>
+  );
+};
+
 const CommentView = ({ comment, slug }: CommentViewProps) => {
   const { owner, content, createdAt } = comment;
   const { user } = useAuth();
@@ -786,4 +858,8 @@ const CommentView = ({ comment, slug }: CommentViewProps) => {
       </div>
     </li>
   );
+};
+
+const MediaView = ({ medias }) => {
+  return <pre>{JSON.stringify(medias)}</pre>;
 };

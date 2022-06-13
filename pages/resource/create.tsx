@@ -7,7 +7,6 @@ import {
   CheckIcon,
   CloudUploadIcon,
   XCircleIcon,
-  XIcon,
 } from "@heroicons/react/solid";
 import { useAuth } from "@hooks/useAuth";
 import { fetchXHR } from "libs/fetchXHR";
@@ -19,8 +18,10 @@ import dynamic from "next/dynamic";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { PlusCircleIcon } from "@heroicons/react/outline";
 import { Media, MediaUploader } from "@components/helpers/MediaUploader";
+import { Input, WrapperModularInputs } from "@components/helpers/ModularInput";
+import { TagDocument } from "@definitions/Resource/Tag";
+import useFetchRSR from "@hooks/useFetchRSR";
 
 const Map: any = dynamic(() => import("@components/map/Map") as any, {
   ssr: false,
@@ -58,18 +59,9 @@ const ResourceCreate: NextPage<any> = ({
 
   const [startDate, setStartDate] = useState<string | null>(null);
   const [endDate, setEndDate] = useState<string | null>(null);
-  // const [locationType, setLocationType] = useState<
-  //   Event["location"]["type"] | null
-  // >(null);
-
-  // const [locationData, setlocationData] = useState<
-  //   Event["location"]["data"] | null
-  // >(null);
-
-  const [pictureUrl, setPictureUrl] = useState(null);
-  const [pictureFile, setPictureFile] = useState(null);
 
   const [medias, setMedias] = useState<Media[]>([]);
+  const [inputs, setInputs] = useState<Input[]>([]);
 
   const [validForm, setValidForm] = useState<boolean>(false);
   const [requestOk, setRequestOk] = useState<boolean | null>(null);
@@ -108,7 +100,6 @@ const ResourceCreate: NextPage<any> = ({
           name,
           description,
           url: externalLink,
-          image: null,
         },
       };
     } else if (type.value === "event") {
@@ -121,7 +112,19 @@ const ResourceCreate: NextPage<any> = ({
           participants: [],
         },
       };
+    } else if (type.value === "other") {
+      data.attributes = {
+        properties: {
+          name,
+          description,
+        },
+      };
+      inputs.map((input) => {
+        data.attributes.properties[input.slug] = input;
+      });
     }
+
+    if (type.hasMedia) data.attributes.properties.medias = [];
 
     return {
       description,
@@ -159,26 +162,28 @@ const ResourceCreate: NextPage<any> = ({
         });
 
         const body = await response.json();
-        if (response.ok && pictureFile) {
-          const fd = new FormData();
-          fd.append("file", pictureFile);
-          fd.append("name", pictureFile.name);
-          fd.append("type", pictureFile.type);
-          fd.append("size", pictureFile.size.toString());
-          const responseFileUpload = await fetch(
-            `/api/resource/${body.data.attributes.slug}/upload`,
-            {
-              method: "POST",
-              body: fd,
-            }
+        if (response.ok && medias.length > 0) {
+          const allUploads = await Promise.all(
+            medias.map(async (media) => {
+              const formData = new FormData();
+              formData.append("file", media);
+              formData.append("name", media.name);
+              formData.append("type", media.type);
+              formData.append("size", media.size.toString());
+              return await fetch(
+                `/api/resource/${body.data.attributes.slug}/upload`,
+                {
+                  method: "POST",
+                  body: formData,
+                }
+              );
+            })
           );
-          if (!responseFileUpload.ok) {
-            setRequestOk(false);
-          } else {
+          if (allUploads.every((r) => r.ok)) {
             setRequestOk(true);
             router.push(`/resource/${body.data.attributes.slug}`);
-          }
-        } else if (response.ok && !pictureFile) {
+          } else setRequestOk(false);
+        } else if (response.ok && medias.length === 0) {
           setRequestOk(true);
           router.push(`/resource/${body.data.attributes.slug}`);
         }
@@ -194,7 +199,7 @@ const ResourceCreate: NextPage<any> = ({
     // Form Verifications
     switch (type.value) {
       case "physical_item":
-        if (name && description && pictureFile && category) setValidForm(true);
+        if (name && description && medias && category) setValidForm(true);
         break;
 
       case "location":
@@ -208,12 +213,15 @@ const ResourceCreate: NextPage<any> = ({
         if (name && description && startDate) setValidForm(true);
         break;
 
+      case "other":
+        if (name && description) setValidForm(true);
+        break;
+
       default:
         setValidForm(false);
         break;
     }
   }, [
-    pictureUrl,
     name,
     description,
     tags,
@@ -222,10 +230,19 @@ const ResourceCreate: NextPage<any> = ({
     price,
     externalLink,
     category,
-    pictureFile,
     location,
     startDate,
+    inputs,
+    medias,
+    // pictureUrl,
+    // pictureFile,
   ]);
+
+  const {
+    data: tagsOptions,
+  }: {
+    data?: TagDocument[];
+  } = useFetchRSR("/api/resource/tags", user?.session);
 
   return (
     <AppLayout>
@@ -432,6 +449,15 @@ const ResourceCreate: NextPage<any> = ({
                 isMulti
                 menuIsOpen={false}
                 value={tags}
+                options={tagsOptions
+                  ?.filter(
+                    (tag: TagDocument) =>
+                      !tags.includes({ value: tag.name, label: tag.name })
+                  )
+                  .map((tag: TagDocument) => ({
+                    label: tag.name,
+                    value: tag.name,
+                  }))}
                 inputValue={tagInputValue}
                 onInputChange={(e: string) => setTagInputValue(e)}
                 onChange={(e: any[]) => setTags(e?.map((e: any) => e.value))}
@@ -631,6 +657,10 @@ const ResourceCreate: NextPage<any> = ({
                     </div>
                   </div>
                 </>
+              )}
+
+              {type.value === "other" && (
+                <WrapperModularInputs data={inputs} setData={setInputs} />
               )}
             </div>
           </div>
