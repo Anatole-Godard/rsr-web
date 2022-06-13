@@ -6,10 +6,12 @@ import {
   VideoCameraIcon,
   DocumentIcon,
   CloudUploadIcon,
+  ExclamationIcon,
 } from "@heroicons/react/outline";
 import { Dispatch, useState, Fragment } from "react";
 import { Transition, Dialog } from "@headlessui/react";
 import { formatBytes } from "libs/formatBytes";
+import { useRouter } from "next/router";
 
 export type Media = File;
 
@@ -20,11 +22,18 @@ export const MediaUploader = ({
   files: Media[];
   setFiles: Dispatch<Media[]>;
 }) => {
+  const router = useRouter();
   let [isOpen, setIsOpen] = useState<boolean>(false);
 
   return (
     <>
       <div className="flex flex-col h-full max-h-full p-2 space-y-1 bg-gray-200 rounded-lg">
+        {router.pathname.includes("edit") && (
+          <small className="inline-flex items-center w-full text-sm font-spectral">
+            <ExclamationIcon className="w-4 h-4 mr-1 " />
+            Éditer la ressource réinitialisera vos médias.
+          </small>
+        )}
         <div className="flex flex-col space-y-1 overflow-y-scroll grow">
           {files.map((media, i) => (
             <div
@@ -85,7 +94,7 @@ export const MediaUploader = ({
           )}
         </button>
       </div>
-      <Transition appear show={isOpen && files.length <= 3} as={Fragment}>
+      <Transition appear show={isOpen} as={Fragment}>
         <Dialog
           as="div"
           className="relative z-10"
@@ -100,10 +109,10 @@ export const MediaUploader = ({
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <div className="fixed inset-0 bg-black bg-opacity-25" />
+            <div className="fixed inset-0 z-10 bg-black bg-opacity-25" />
           </Transition.Child>
 
-          <div className="fixed inset-0 overflow-y-auto">
+          <div className="fixed inset-0 z-20 overflow-y-auto">
             <div className="flex items-center justify-center min-h-full p-4 text-center">
               <Transition.Child
                 as={Fragment}
@@ -139,10 +148,11 @@ export const MediaUploader = ({
                             files.length < 3
                           ) {
                             setFiles([...files, file]);
-                            setIsOpen(false);
                           } else {
-                            alert("Votre fichier est trop lourd");
+                            // alert("Votre fichier est trop lourd");
+                            //TODO: react-hot-toast
                           }
+                          setIsOpen(false);
                         }}
                         className="hidden"
                       ></input>

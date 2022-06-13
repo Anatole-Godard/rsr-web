@@ -25,7 +25,7 @@ import {
   UserIcon,
 } from "@heroicons/react/solid";
 import { GetServerSideProps, NextPage } from "next";
-import { useState } from "react";
+import { Fragment, useState } from "react";
 
 import dynamic from "next/dynamic";
 import Link from "next/link";
@@ -741,11 +741,8 @@ const OtherView = ({ attributes, slug }: OtherViewProps) => {
       </div>
       <div className="">
         {toModularInput(attributes.properties).map((input, i) => (
-          <>
-            <div
-              key={input.slug + "-" + i}
-              className="flex flex-col mb-3 first:mt-6 "
-            >
+          <Fragment key={input.slug + "-" + i}>
+            <div className="flex flex-col mb-3 first:mt-6 ">
               <h4 className="inline-flex items-center space-x-2 text-2xl font-bold font-marianne">
                 <span className="mb-1 ">{input.label}</span>
                 {input.type === "string" && (
@@ -782,7 +779,7 @@ const OtherView = ({ attributes, slug }: OtherViewProps) => {
               </p>
             </div>
             <hr className="mx-5 mb-3 border-gray-300 dark:border-gray-700 last:border-0" />
-          </>
+          </Fragment>
         ))}
       </div>
     </>
@@ -839,5 +836,5 @@ const CommentView = ({ comment, slug }: CommentViewProps) => {
 };
 
 const MediaView = ({ medias }) => {
-  return <pre>{JSON.stringify(medias)}</pre>;
+  return <pre className="text-xs">{JSON.stringify(medias, undefined, 2)}</pre>;
 };
