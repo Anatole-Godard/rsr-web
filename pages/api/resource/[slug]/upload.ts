@@ -87,7 +87,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 
       try {
         await fs.writeFile(
-          `/app/public/uploads/resource/${resource.slug}.${fields.name
+          `/usr/src/app/public/uploads/resource/${resource.slug}.${fields.name
             .split(".")
             .at(-1)}`,
           await fs.readFile(files.file.filepath)
