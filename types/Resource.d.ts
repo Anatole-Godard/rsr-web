@@ -22,6 +22,8 @@ export type Resource = {
   seenBy: UserMinimum[];
   visibility: "public" | "private" | "unlisted";
   members?: UserMinimum[];
+  createdAt: Date | string;
+  updatedAt: Date | string;
 };
 
 export type ResourceMinimum = {
