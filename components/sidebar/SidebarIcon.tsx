@@ -9,14 +9,16 @@ export const SidebarIcon = ({
   text = "tooltip 💡",
   active = false,
   href,
+  id,
 }: {
   icon: JSX.Element | any;
   text?: string;
   active?: boolean;
   href: string;
+  id: string;
 }) => (
   <Link href={href}>
-    <a className="flex w-full my-2 cursor-pointer xl:items-center xl:px-2 group">
+    <a className="flex w-full my-2 cursor-pointer xl:items-center xl:px-2 group" id={id}>
       <div
         className={
           (active
@@ -58,11 +60,13 @@ export const SidebarIconXL = ({
   text = "tooltip 💡",
   active = false,
   href,
+  id,
 }: {
   icon: JSX.Element | any;
   text?: string;
   active?: boolean;
   href: string;
+  id: string;
 }) => (
   <Link href={href}>
     <a className="hidden w-full my-2 cursor-pointer xl:flex xl:items-center xl:px-2 group">

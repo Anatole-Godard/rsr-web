@@ -38,6 +38,7 @@ export const Sidebar = () => {
           active={pathname === "/"}
           href="/"
           text="Accueil"
+          id="link-home"
         />
         <Divider />
         <SidebarTitle text="Profil" />
@@ -48,18 +49,21 @@ export const Sidebar = () => {
               active={pathname.includes("/user")}
               text="Profil"
               href="/user"
+              id="link-user-profile"
             />
             <SidebarIconXL
               icon={<CollectionIcon {...className} />}
               active={pathname.includes("/user/playlists")}
               text="Playlists"
               href="/user/playlists"
+              id="link-user-playlists"
             />
             <SidebarIconXL
               icon={<CogIcon {...className} />}
               active={pathname.includes("/user/settings")}
               text="Paramètres"
               href="/user/settings"
+              id="link-user-settings"
             />
           </>
         ) : (
@@ -69,12 +73,14 @@ export const Sidebar = () => {
               active={false}
               text="Se connecter"
               href="/auth/login"
+              id="link-login"
             />
             <SidebarIcon
               icon={<UserAddIcon {...className} />}
               active={false}
               text="Créer un compte"
               href="/auth/register"
+              id="link-register"
             />
           </>
         )}
@@ -85,6 +91,7 @@ export const Sidebar = () => {
           active={pathname.includes("/resource")}
           text="Bibliothèque"
           href="/resource"
+          id="link-resource-library"
         />
         {user && (
           <SidebarIconXL
@@ -92,6 +99,7 @@ export const Sidebar = () => {
             active={pathname.includes("/resource/create")}
             text="Créer une ressource"
             href="/resource/create"
+            id="link-resource-create"
           />
         )}
         {user && (
@@ -103,12 +111,14 @@ export const Sidebar = () => {
               active={pathname.includes("/channel")}
               text="Salons"
               href="/channel"
+              id="link-channels"
             />
             <SidebarIconXL
               icon={<PlusIcon {...className} />}
               active={pathname.includes("/channel/create")}
               text="Créer un salon"
               href="/channel/create"
+              id="link-channel-create"
             />
           </>
         )}
@@ -122,6 +132,7 @@ export const Sidebar = () => {
               active={pathname.includes("/admin")}
               text="Administration"
               href="/admin"
+              id="link-admin"
             />
           </div>
         )}
