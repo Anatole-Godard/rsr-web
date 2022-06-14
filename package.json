@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "codehawk": "codehawk ."
+    "codehawk": "codehawk .",
+    "test": "npx playwright test --project=chromium"
   },
   "dependencies": {
     "@headlessui/react": "^1.4.1",
