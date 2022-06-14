@@ -1,9 +1,5 @@
 name: Playwright Tests
-on:
-  push:
-    branches: [ main, master, dev, feat/ci-cd ]
-  pull_request:
-    branches: [ main, master, dev ]
+on: [push]
 jobs:
   test:
     timeout-minutes: 60
@@ -17,8 +13,10 @@ jobs:
       run: yarn
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps
+    - name: Build application
+      run: yarn build
     - name: Run Playwright tests
-      run: yarn playwright test
+      run: yarn test
     - uses: actions/upload-artifact@v2
       if: always()
       with:
