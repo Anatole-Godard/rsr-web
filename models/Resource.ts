@@ -15,6 +15,10 @@ const ResourceSchema = new Schema({
     type: Date,
     default: Date.now,
   },
+  updatedAt: {
+    type: Date,
+    default: Date.now,
+  },
   description: {
     type: String,
     required: false,
@@ -60,3 +64,8 @@ const Resource =
   mongoose.models.Resource || mongoose.model("Resource", ResourceSchema);
 
 export default Resource;
+
+ResourceSchema.post("save", function (next) {
+  this.updatedAt = Date.now();
+  next();
+});

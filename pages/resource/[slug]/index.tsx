@@ -17,6 +17,11 @@ import {
   CalculatorIcon,
   MenuAlt2Icon,
   CheckCircleIcon,
+  DownloadIcon,
+  ChevronRightIcon,
+  VideoCameraIcon,
+  VolumeUpIcon,
+  DocumentIcon,
 } from "@heroicons/react/outline";
 import {
   HandIcon,
@@ -25,7 +30,7 @@ import {
   UserIcon,
 } from "@heroicons/react/solid";
 import { GetServerSideProps, NextPage } from "next";
-import { Fragment, useState } from "react";
+import { Fragment, Key, useState } from "react";
 
 import dynamic from "next/dynamic";
 import Link from "next/link";
@@ -34,9 +39,9 @@ import { fetchRSR } from "libs/fetchRSR";
 import { useAuth } from "@hooks/useAuth";
 import { UserMinimum } from "@definitions/User";
 import { Comment } from "@definitions/Resource/Comment";
-import { Tab } from "@headlessui/react";
+import { Dialog, Tab, Transition } from "@headlessui/react";
 import { classes } from "libs/classes";
-import { format, formatDistance } from "date-fns";
+import { format, formatDistance, formatRelative } from "date-fns";
 import { fr } from "date-fns/locale";
 import { types, visibilities } from "constants/resourcesTypes";
 import { AvatarGroup } from "@components/ui/AvatarGroup";
@@ -51,9 +56,10 @@ import { DateRangePickerCalendar } from "react-nice-dates";
 import { ShowMoreText } from "@components/ui/ShowMore";
 import { PlaylistDropdown } from "@components/dropdowns/PlaylistDropdown";
 import { TagDocument } from "@definitions/Resource/Tag";
-import { Input } from "@components/helpers/ModularInput";
 import { Other } from "@definitions/Resource/Other";
 import { toModularInput } from "@utils/toModularInput";
+import { useCarousel } from "@hooks/useCarousel";
+import { useEventListener } from "@hooks/useEventListener";
 
 const Map: any = dynamic(() => import("@components/map/Map") as any, {
   ssr: false,
@@ -67,10 +73,11 @@ const ResourceSlug: NextPage<any> = ({
   comments,
   likes,
   tags,
-  createdAt,
   validated,
   visibility,
   seenBy,
+  createdAt,
+  updatedAt,
 }: Resource) => {
   const [message, setMessage] = useState<string>("");
   const [newLikes, setNewLikes] = useState<UserMinimum[]>(likes || []);
@@ -263,9 +270,9 @@ const ResourceSlug: NextPage<any> = ({
             />
           </div>
         </div>
-        <div className="flex flex-col w-full px-6 pt-3 pb-8 space-y-6 grow lg:px-24">
+        <div className="flex flex-col w-full h-full px-6 pt-2 pb-6 space-y-3 grow lg:px-24">
           <Tab.Group>
-            <Tab.List className="flex lg:flex-row p-2 space-y-1.5 flex-col lg:space-y-0 lg:space-x-3 bg-white dark:bg-black rounded-xl">
+            <Tab.List className="flex flex-col p-2 space-y-1 bg-white lg:flex-row lg:space-y-0 lg:space-x-3 dark:bg-black rounded-xl">
               <Tab
                 className={({ selected }) =>
                   classes(
@@ -319,11 +326,11 @@ const ResourceSlug: NextPage<any> = ({
                 Commentaires
               </Tab>
             </Tab.List>
-            <Tab.Panels className="p-2 bg-white dark:bg-black rounded-xl focus:outline-none">
-              <Tab.Panel className="min-h-[24rem] h-full">
-                <ResourceView {...data} slug={slug} />
+            <Tab.Panels className="p-2 bg-white max-h-max dark:bg-black rounded-xl focus:outline-none">
+              <Tab.Panel className="max-h-[24rem] min-h-[24rem] h-full">
+                <ResourceView {...data} slug={slug} updatedAt={updatedAt} />
               </Tab.Panel>
-              <Tab.Panel className="min-h-[24rem] h-full flex flex-col justify-between ">
+              <Tab.Panel className="max-h-[24rem] min-h-[24rem] h-full flex flex-col justify-between ">
                 {newComments.length > 0 ? (
                   <ul className="relative h-full mx-2 my-2 overflow-x-visible overflow-y-scroll border-l border-gray-200 max-h-96 grow dark:border-gray-700">
                     {newComments.map((comment: Comment) => (
@@ -402,6 +409,7 @@ interface ResourceViewProps {
   type: Resource["data"]["type"];
   attributes: Resource["data"]["attributes"];
   slug: Resource["slug"];
+  updatedAt: Resource["updatedAt"];
 }
 
 interface LocationViewProps {
@@ -411,20 +419,24 @@ interface LocationViewProps {
 interface ExternalLinkViewProps {
   attributes: ExternalLink;
   slug: string;
+  updatedAt: string;
 }
 interface PhysicalItemViewProps {
   attributes: PhysicalItem;
   slug: string;
+  updatedAt: string;
 }
 
 interface EventViewProps {
   attributes: Event;
   slug: string;
+  updatedAt: string;
 }
 
 interface OtherViewProps {
   attributes: Other;
   slug: string;
+  updatedAt: string;
 }
 
 interface CommentViewProps {
@@ -432,20 +444,45 @@ interface CommentViewProps {
   slug: string;
 }
 
-const ResourceView = ({ type, attributes, slug }: ResourceViewProps) => {
+const ResourceView = ({
+  type,
+  attributes,
+  slug,
+  updatedAt,
+}: ResourceViewProps) => {
   return (
     <div className="grid h-full gap-6 min-h-max xl:grid-cols-3 md:grid-cols-2">
       {type === "location" && (
         <LocationView attributes={attributes} slug={slug} />
       )}
       {type === "physical_item" && (
-        <PhysicalItemView attributes={attributes} slug={slug} />
+        <PhysicalItemView
+          attributes={attributes}
+          slug={slug}
+          updatedAt={updatedAt.toString()}
+        />
       )}
       {type === "external_link" && (
-        <ExternalLinkView attributes={attributes} slug={slug} />
+        <ExternalLinkView
+          attributes={attributes}
+          slug={slug}
+          updatedAt={updatedAt.toString()}
+        />
       )}
-      {type === "event" && <EventView attributes={attributes} slug={slug} />}
-      {type === "other" && <OtherView attributes={attributes} slug={slug} />}
+      {type === "event" && (
+        <EventView
+          attributes={attributes}
+          slug={slug}
+          updatedAt={updatedAt.toString()}
+        />
+      )}
+      {type === "other" && (
+        <OtherView
+          attributes={attributes}
+          slug={slug}
+          updatedAt={updatedAt.toString()}
+        />
+      )}
     </div>
   );
 };
@@ -471,12 +508,16 @@ const LocationView = ({ attributes, slug }: LocationViewProps) => {
   );
 };
 
-const ExternalLinkView = ({ attributes, slug }: ExternalLinkViewProps) => {
+const ExternalLinkView = ({
+  attributes,
+  slug,
+  updatedAt,
+}: ExternalLinkViewProps) => {
   return (
     <>
       <div className="relative h-full overflow-hidden rounded-lg xl:col-span-2">
         {attributes.properties.medias ? (
-          <MediaView medias={attributes.properties.medias} />
+          <MediaCarouselView medias={attributes.properties.medias} updatedAt />
         ) : (
           <div className="flex flex-col items-center justify-center h-full text-amber-800 bg-amber-200 dark:text-amber-200 dark:bg-amber-800">
             <LinkIcon className="w-12 h-12 mb-1" />
@@ -508,12 +549,19 @@ const ExternalLinkView = ({ attributes, slug }: ExternalLinkViewProps) => {
   );
 };
 
-const PhysicalItemView = ({ attributes, slug }: PhysicalItemViewProps) => {
+const PhysicalItemView = ({
+  attributes,
+  slug,
+  updatedAt,
+}: PhysicalItemViewProps) => {
   return (
     <>
       <div className="relative h-full overflow-hidden rounded-lg xl:col-span-2">
         {attributes.properties.medias ? (
-          <MediaView medias={attributes.properties.medias} />
+          <MediaCarouselView
+            medias={attributes.properties.medias}
+            updatedAt={updatedAt}
+          />
         ) : (
           <div className="flex flex-col items-center justify-center h-full text-emerald-800 bg-emerald-200 dark:text-emerald-200 dark:bg-emerald-800">
             <HandIcon className="w-12 h-12 mb-1" />
@@ -544,7 +592,7 @@ const PhysicalItemView = ({ attributes, slug }: PhysicalItemViewProps) => {
   );
 };
 
-const EventView = ({ attributes, slug }: EventViewProps) => {
+const EventView = ({ attributes, slug, updatedAt }: EventViewProps) => {
   const { user } = useAuth();
   const participate = async () => {
     const res = await fetchRSR(
@@ -588,7 +636,10 @@ const EventView = ({ attributes, slug }: EventViewProps) => {
       </div>
       <div className="flex flex-col pt-3 pr-3 space-y-3">
         {attributes.properties.medias ? (
-          <MediaView medias={attributes.properties.medias} />
+          <MediaCarouselView
+            medias={attributes.properties.medias}
+            updatedAt={updatedAt}
+          />
         ) : (
           <div className="flex flex-col items-center justify-center h-48 text-red-800 bg-red-200 rounded-lg dark:text-red-200 dark:bg-red-800">
             <CalendarIcon className="w-12 h-12 mb-1" />
@@ -721,12 +772,15 @@ const EventView = ({ attributes, slug }: EventViewProps) => {
   );
 };
 
-const OtherView = ({ attributes, slug }: OtherViewProps) => {
+const OtherView = ({ attributes, slug, updatedAt }: OtherViewProps) => {
   return (
     <>
       <div className="relative h-full overflow-hidden rounded-lg xl:col-span-2">
         {attributes.properties.medias ? (
-          <MediaView medias={attributes.properties.medias} />
+          <MediaCarouselView
+            medias={attributes.properties.medias}
+            updatedAt={updatedAt}
+          />
         ) : (
           <div className="flex flex-col items-center justify-center h-full text-emerald-800 bg-emerald-200 dark:text-emerald-200 dark:bg-emerald-800">
             <HandIcon className="w-12 h-12 mb-1" />
@@ -835,6 +889,260 @@ const CommentView = ({ comment, slug }: CommentViewProps) => {
   );
 };
 
-const MediaView = ({ medias }) => {
-  return <pre className="text-xs">{JSON.stringify(medias, undefined, 2)}</pre>;
+type Media = {
+  name: string;
+  type: string;
+  size: string;
+  url: string;
+};
+
+const INTERVAL = 5000;
+const MediaCarouselView = ({ medias, updatedAt }) => {
+  const length = medias.length;
+  const [active, setActive, handlers, style] = useCarousel(length, INTERVAL);
+
+  const [modalContent, setModalContent] = useState<Media | undefined>(
+    undefined
+  );
+
+  return (
+    length > 0 && (
+      <>
+        <div className="relative h-full group">
+          <div className="absolute top-0 inline-flex gap-2 w-full p-2 z-[8]">
+            {medias.map((_: any, index: number) => (
+              <span
+                onClick={() => setActive(index)}
+                key={index}
+                className={classes(
+                  "h-1 rounded transition-colors duration-300 cursor-pointer",
+                  active === index ? "bg-gray-100" : "bg-gray-400 bg-opacity-50"
+                )}
+                style={{ width: `${100 / length}%` }}
+              />
+            ))}
+          </div>
+          <div
+            className="absolute inline-flex bg-opacity-25 bg-gradient-to-b from-black to-black via-transparent h-full z-[6] overflow-x-hidden"
+            {...handlers}
+            onClick={() => setModalContent(medias[active])}
+            // style={style}
+          >
+            <MediaView {...medias[active]} />
+          </div>
+          <div className="absolute w-full h-1/3 z-[7] bg-gradient-to-b from-gray-800 to-transparent top-0 left-0"></div>
+          <div
+            className="transition-all duration-200 absolute w-full h-1/3 z-[9] bg-gradient-to-t from-gray-800 to-transparent bottom-0 left-0 group-hover:opacity-100 opacity-0 flex flex-col justify-end pb-3 px-3"
+            style={{ width: `${100 / (length - 2)}%` }}
+          >
+            <p className="text-xl font-extrabold text-white font-marianne">
+              {medias[active].name}
+            </p>
+            <p className="text-xs text-gray-400 font-spectral">
+              mis à jour{" "}
+              {formatRelative(new Date(updatedAt), new Date(), { locale: fr })}
+            </p>
+          </div>
+
+          <div
+            className="absolute left-0 top-[calc(50%-5rem)] z-[8] p-12 cursor-pointer text-white opacity-60 duration-200 hover:opacity-100"
+            onClick={() => {
+              setActive(active === 0 ? length - 1 : active - 1);
+            }}
+          >
+            <ChevronLeftIcon className="w-12 h-12" />
+          </div>
+          <div
+            className="absolute right-0 top-[calc(50%-5rem)] z-[8] p-12 cursor-pointer text-white opacity-60 duration-200 hover:opacity-100"
+            onClick={() => {
+              setActive(active === length - 1 ? 0 : active + 1);
+            }}
+          >
+            <ChevronRightIcon className="w-12 h-12" />
+          </div>
+        </div>
+        {modalContent && (
+          <MediaModal
+            media={modalContent}
+            onClose={() => {
+              setModalContent(undefined);
+            }}
+            updatedAt={updatedAt}
+          />
+        )}
+      </>
+    )
+  );
+};
+
+const MediaView = ({ name, url, type }: Media) => {
+  return (
+    <div className="relative flex flex-col w-full h-full rounded-md sm:rounded-lg ">
+      {type.includes("image") && (
+        <Image src={url} alt={name} layout="fill" objectFit="cover" />
+      )}
+      {type.includes("audio") && (
+        <div className="relative w-full h-full">
+          <img
+            src="https://source.unsplash.com/random/?meeting"
+            className="z-[6] w-full object-cover absolute"
+            alt="meeting"
+          />
+
+          <div className="absolute inset-0 z-[8]">
+            <VolumeUpIcon className="w-12 h-12" />
+          </div>
+        </div>
+      )}
+      {type.includes("video") && (
+        <div className="relative w-full h-full">
+          <video
+            autoPlay={false}
+            muted
+            className="object-cover w-full z-[6]"
+          >
+            <source src={url} type={type} />
+            Your browser does not support the audio element.
+          </video>
+          <div className="absolute h-full w-full flex items-center justify-center z-[8]">
+            <VideoCameraIcon className="w-12 h-12 text-white" />
+          </div>
+        </div>
+      )}
+      {type.includes("application/pdf") && (
+        <div className="relative w-full h-full">
+          <img
+            src="https://source.unsplash.com/random/?meeting"
+            className="z-[6] w-full object-cover"
+            alt="meeting"
+          />
+
+          <div className="absolute inset-0 w-full h-full z-[8]">
+            <DocumentIcon className="w-12 h-12" />
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+const MediaModal = ({
+  onClose,
+  media: { name, url, type, size },
+  updatedAt,
+}: {
+  onClose: () => void;
+  media: Media;
+  updatedAt: string;
+}) => {
+  const download = () => {
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = name;
+    link.click();
+    link.remove();
+  };
+
+  useEventListener("keydown", (e: KeyboardEvent) => {
+    if (e.key === "Escape") onClose();
+  });
+
+  return (
+    <Transition appear show={true} as={Fragment}>
+      <Dialog as="div" className="relative z-[60]" onClose={onClose}>
+        <Transition.Child
+          as={Fragment}
+          enter="ease-out duration-300"
+          enterFrom="opacity-0"
+          enterTo="opacity-100"
+          leave="ease-in duration-200"
+          leaveFrom="opacity-100"
+          leaveTo="opacity-0"
+        >
+          <div className="fixed inset-0 bg-black bg-opacity-75" />
+        </Transition.Child>
+
+        <div className="fixed inset-0 overflow-y-auto">
+          <div className="flex min-h-full">
+            <Transition.Child
+              as={Fragment}
+              enter="ease-out duration-300"
+              enterFrom="opacity-0 scale-95"
+              enterTo="opacity-100 scale-100"
+              leave="ease-in duration-200"
+              leaveFrom="opacity-100 scale-100"
+              leaveTo="opacity-0 scale-95"
+            >
+              <Dialog.Panel className="w-full h-full absolute  top-0 left-0  z-[61]">
+                <div className="relative z-[61] top-0 left-0 w-full h-full">
+                  {type.includes("image") && (
+                    <Image
+                      src={url}
+                      alt={name}
+                      layout="fill"
+                      objectFit="cover"
+                    />
+                  )}
+                  {type.includes("audio") && (
+                    <div className="relative flex items-center justify-center w-full h-full">
+                      <audio controls>
+                        <source src={url} type={type} />
+                        Your browser does not support the audio element.
+                      </audio>
+                    </div>
+                  )}
+                  {type.includes("video") && (
+                    <div className="relative flex items-center justify-center w-full h-full">
+                      <video controls className="w-full aspect-video">
+                        <source src={url} type={type} />
+                        Your browser does not support the audio element.
+                      </video>
+                    </div>
+                  )}
+                  {type.includes("application/pdf") && (
+                    <div className="relative flex items-end justify-center w-full h-full">
+                      <iframe className="w-full aspect-[16/8]" src={url} />
+                    </div>
+                  )}
+                </div>
+                <div className="absolute top-0 w-full left-0 z-[62] bg-gradient-to-b from-black to-transparent opacity-50 h-48"></div>
+                <div className="absolute top-0 w-full inline-flex items-center justify-between left-0 z-[62]  p-6">
+                  <div className="inline-flex items-center grow">
+                    <button
+                      onClick={onClose}
+                      className="justify-center w-10 h-10 px-0 py-0 mt-1 mr-3 rounded-full btn-gray"
+                    >
+                      <XIcon className="w-5 h-5" />
+                    </button>
+                    <div className="flex flex-col">
+                      <Dialog.Title
+                        as="h3"
+                        className="text-2xl font-extrabold text-white font-marianne"
+                      >
+                        {name}
+                      </Dialog.Title>
+                      <div className="">
+                        <p className="text-gray-200 text-md font-spectral">
+                          mis à jour{" "}
+                          {formatRelative(new Date(updatedAt), new Date(), {
+                            locale: fr,
+                          })}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  <button
+                    onClick={download}
+                    className="justify-center w-10 h-10 px-0 py-0 mt-1 rounded-full btn-gray"
+                  >
+                    <DownloadIcon className="w-5 h-5" />
+                  </button>
+                </div>
+              </Dialog.Panel>
+            </Transition.Child>
+          </div>
+        </div>
+      </Dialog>
+    </Transition>
+  );
 };
