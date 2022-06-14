@@ -10,6 +10,10 @@
     "codehawk": "codehawk .",
     "test": "npx playwright test --project=chromium"
   },
+  "resolutions": {
+    "@types/react": "17.0.2",
+    "@types/react-dom": "17.0.2"
+  },
   "dependencies": {
     "@headlessui/react": "^1.4.1",
     "@heroicons/react": "^1.0.4",
