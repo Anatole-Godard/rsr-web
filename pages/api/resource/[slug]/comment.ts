@@ -9,6 +9,8 @@ import { getUser } from "libs/getCurrentUser";
 import { handleError } from "libs/handleError";
 import { toResourceMinimum } from "libs/toMinimum";
 import { NextApiRequest, NextApiResponse } from "next";
+import {UserMinimum} from "@definitions/User";
+import {TagDocument} from "@definitions/Resource/Tag";
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   const slug = req.query.slug as string;
@@ -50,7 +52,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     resource.markModified("comments");
     await resource.save();
 
-    const resourceMinimum: ResourceMinimum = toResourceMinimum(resource);
+    const resourceMinimum: { owner: UserMinimum; createdAt: Date | string; data: { type: "location" | "physical_item" | "external_link" | "event" | string; attributes: any }; validated: boolean; visibility: "public" | "private" | "unlisted"; members: UserMinimum[]; description: string; slug: string; tags: TagDocument[] | string[]; seenBy: UserMinimum[] } = toResourceMinimum(resource);
 
     if (resource.owner.uid.toString() !== user._id.toString()) {
       const notification: Notification = {

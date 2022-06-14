@@ -1,7 +1,7 @@
 import {AdminLayout} from "@components/Layout/AdminLayout";
 import type {NextPage} from "next";
 import {GetServerSideProps} from 'next';
-import {useEffect, useState, Fragment} from "react";
+import {useEffect, useState, Fragment, FormEvent} from "react";
 import {ChartSquareBarIcon, SearchIcon as HISearchIcon, CalculatorIcon, CodeIcon} from "@heroicons/react/outline";
 import {SelectorIcon, CheckIcon, ChevronDownIcon} from "@heroicons/react/solid";
 import {ChartDisplay} from "@components/Statistic/ChartDisplay";
@@ -123,11 +123,11 @@ const Home: NextPage<any> = ({resources = []}: { resources: Resource[] }) => {
                                             <div className="grid grid-rows-2">
                                                 <p>De :</p>
                                                 <input type="month" value={minPeriod}
-                                                       onInput={(e) => setMinPeriod(e.target.value)}/>
+                                                       onInput={(e) => setMinPeriod(e.currentTarget.value)}/>
                                                 <p>à :</p>
                                                 <input type="month" value={maxPeriod}
-                                                       onInput={(e) => setMaxPeriod(e.target.value)}/>
-                                                <button className="w-20 my-2 btn-blue" onClick={() => {
+                                                       onInput={(e) => setMaxPeriod(e.currentTarget.value)}/>
+                                                <button className="btn-blue w-20 my-2" onClick={() => {
                                                     getResourcesByPeriod(minPeriod, maxPeriod);
                                                     close();
                                                 }}>Filtrer
@@ -142,8 +142,8 @@ const Home: NextPage<any> = ({resources = []}: { resources: Resource[] }) => {
                                     )}
                                 </Popover.Panel>
                             </Popover>
-                            <div className="mr-2 w-72">
-                                <Combobox value={selectedType} onChange={(v) => {
+                            <div className="w-72 mr-2">
+                                <Combobox value={selectedType} onChange={(v: any) => {
                                     setSelectedType(v.label);
                                     getResourcesByType(v.value);
                                 }}>

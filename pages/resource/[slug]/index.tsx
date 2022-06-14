@@ -117,6 +117,7 @@ const ResourceSlug: NextPage<any> = ({
     }
   };
 
+  // @ts-ignore
   return (
     <AppLayout>
       <section className="flex flex-col w-full bg-gray-100 h-fit dark:bg-gray-900">

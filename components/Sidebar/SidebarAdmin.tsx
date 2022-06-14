@@ -37,6 +37,7 @@ export const SidebarAdmin = () => {
           active={false}
           href="/"
           text="Retour à l'accueil"
+          id="link-home"
         />
         <SidebarIcon
           key={uuidv4()}
@@ -44,6 +45,7 @@ export const SidebarAdmin = () => {
           active={pathname === "/admin"}
           href="/admin"
           text="Tableau de bord"
+          id="link-admin-dashboard"
         />
         <Divider />
         <SidebarTitle text="Ressources" />
@@ -52,12 +54,14 @@ export const SidebarAdmin = () => {
           active={pathname.includes("/admin/resource")}
           text="Ressources"
           href="/admin/resource"
+          id="link-admin-resources-library"
         />
         <SidebarIconXL
           icon={<TagIcon {...className} />}
           active={pathname.includes("/admin/tags")}
           text="Étiquettes"
           href="/admin/tags"
+          id="link-admin-resources-tags"
         />
         <DividerXL />
 
@@ -72,6 +76,7 @@ export const SidebarAdmin = () => {
                 icon={<UserIcon {...className} />}
                 text="Utilisateurs"
                 href="/admin/user"
+                id="link-admin-users"
               />
               <DividerXL />
             </>
@@ -84,6 +89,7 @@ export const SidebarAdmin = () => {
           icon={<ExclamationIcon {...className} />}
           text="Signalements"
           href="/admin/report"
+          id="link-admin-report"
         />
       </div>
     </div>

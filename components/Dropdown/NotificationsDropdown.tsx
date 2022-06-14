@@ -221,6 +221,10 @@ interface NotificationComponentProps extends Notification {
   remove: (id: string) => void;
 }
 
+interface ChannelDocument {
+  name: string;
+}
+
 const NotificationComponent = ({
   _id,
   user,
