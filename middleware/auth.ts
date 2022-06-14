@@ -98,6 +98,12 @@ export const withAuth =
       });
   };
 
+interface Decoded {
+  refresh: boolean;
+  uid: string;
+  role: string;
+}
+
 /**
  * It takes in a request and a response, and it checks if the refresh token is valid. If it is, it
  * generates a new token and returns it
@@ -123,7 +129,7 @@ export const refreshTokenHandler = (
     refreshToken as string,
     process.env.JWT_SECRET as string,
     (err, decoded) => {
-      if (err || !decoded?.refresh) {
+      if (err || !(decoded as Decoded)?.refresh) {
         if (err?.name === "TokenExpiredError") {
           res.status(401).json({
             error: err.name,
@@ -139,8 +145,8 @@ export const refreshTokenHandler = (
         }
       } else {
         const userData = {
-          uid: decoded.uid,
-          role: decoded.role,
+          uid: (decoded as Decoded).uid,
+          role: (decoded as Decoded).role,
         };
 
         const token = genToken(userData);

@@ -114,6 +114,7 @@ const ResourceSlug: NextPage<any> = ({
     }
   };
 
+  // @ts-ignore
   return (
     <AppLayout>
       <section className="flex flex-col w-full bg-gray-100 h-fit dark:bg-gray-900">
@@ -207,7 +208,8 @@ const ResourceSlug: NextPage<any> = ({
                       data,
                       validated,
                       visibility,
-                    }}
+                      seenBy
+                  }}
                   />
                   <button onClick={report} className="btn-yellow">
                     <ExclamationIcon className="w-4 h-4 select-none md:mr-1 shrink-0" />

@@ -211,6 +211,10 @@ interface NotificationComponentProps extends Notification {
   remove: (id: string) => void;
 }
 
+interface ChannelDocument {
+  name: string;
+}
+
 const NotificationComponent = ({
   _id,
   user,
@@ -224,7 +228,7 @@ const NotificationComponent = ({
   const goTo = (id: string) => {
     remove(id);
 
-    if (document?.name) router.push(`/channel/${document.slug}`);
+    if ((document as ChannelDocument)?.name) router.push(`/channel/${document.slug}`);
 
     if (document?.data?.attributes.properties.name)
       router.push(`/resource/${document.slug}`);
@@ -265,14 +269,14 @@ const NotificationComponent = ({
             </h4>
             <div className="text-xs font-normal font-spectral">
               {notifications.find((e) => e.type === type).message}
-              {document?.name && (
+              {(document as ChannelDocument)?.name && (
                 <span className="inline-flex items-center ml-1">
                   dans{" "}
                   <a
                     onClick={() => goTo(_id)}
                     className="ml-1 underline cursor-pointer text-bleuFrance-500 dark:text-bleuFrance-100"
                   >
-                    {document.name}
+                    {(document as ChannelDocument).name}
                   </a>
                 </span>
               )}
