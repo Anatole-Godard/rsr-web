@@ -236,16 +236,16 @@ export const CustomTable = ({
       </table>
       {totalPages !== null && (
         <ReactPaginate
-          previousLabel={
+          previousLabel={(
             <button className="px-2 py-2 btn-gray">
               <ChevronLeftIcon className="w-4 h-4 shrink-0" />
             </button>
-          }
-          nextLabel={
+          )}
+          nextLabel={(
             <button className="px-2 py-2 btn-gray">
               <ChevronRightIcon className="w-4 h-4 shrink-0" />
             </button>
-          }
+          )}
           breakLabel="..."
           breakClassName="break-me"
           pageCount={totalPages}
