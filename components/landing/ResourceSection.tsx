@@ -14,7 +14,7 @@ export const ResourceSection = ({ resources }: { resources: Resource[] }) => {
           </span>
         </h3>
         <Link href="/resource">
-          <a className="flex flex-row items-center mb-1 text-sm font-medium transition duration-300 cursor-pointer font-spectral dark:text-gray-300 dark:hover:text-bleuFrance-200 hover:text-bleuFrance-500">
+          <a className="flex flex-row items-center mb-1 text-sm font-medium transition duration-300 cursor-pointer font-spectral dark:text-gray-300 dark:hover:text-bleuFrance-200 hover:text-bleuFrance-500" id="link-resources-library">
             Voir tout
             <ChevronRightIcon className="w-4 h-4 ml-2" />
           </a>

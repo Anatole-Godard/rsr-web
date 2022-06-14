@@ -135,14 +135,14 @@ const ResourceIndex: NextPage<any> = ({
             </div>
 
             <Link href={"/resource/create"}>
-              <a className="btn-bleuFrance">
+              <a className="btn-bleuFrance" id="link-resource-create">
                 <PlusIcon className="w-4 h-4 sm:mr-2" />
                 <span className="hidden sm:block">Poster une ressource</span>
               </a>
             </Link>
           </div>
         </div>
-        <div className="grid min-h-full grid-cols-1 gap-3 p-6 bg-gray-100 dark:bg-gray-900 grow xl:rounded-tl-xl lg:grid-cols-4 2xl:grid-cols-4 md:grid-cols-2 lg:gap-6 lg:p-12 md:overflow-y-auto">
+        <div className="grid min-h-full grid-cols-1 gap-3 p-6 bg-gray-100 dark:bg-gray-900 grow xl:rounded-tl-xl lg:grid-cols-4 2xl:grid-cols-4 md:grid-cols-2 lg:gap-6 lg:p-12 md:overflow-y-auto" id="grid-resources">
           {displayables.map((el, index) => (
             <ResourceCard key={index} {...el} />
           ))}

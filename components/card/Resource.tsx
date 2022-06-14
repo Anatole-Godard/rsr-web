@@ -35,7 +35,7 @@ export const ResourceCard = (props: Resource) => {
       )}
     >
       <Link href={"/resource/" + slug}>
-        <a>
+        <a id="link-resource-details">
           <div
             className={classes(
               "flex items-center relative justify-center w-full h-32 rounded-lg duration-300",
