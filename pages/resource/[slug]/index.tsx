@@ -899,8 +899,13 @@ type Media = {
 const INTERVAL = 10000;
 const MediaCarouselView = ({ medias, updatedAt }) => {
   // const [active, setActive, handlers, style] = useCarousel(length, INTERVAL);
-  const { active, activeIndex, previous, next, jumpTo, wrapperStyle } =
-    useCarousel(medias, INTERVAL);
+  const {
+    active,
+    previous,
+    next,
+    wrapperStyle,
+    IndicatorsComponent,
+  } = useCarousel(medias, INTERVAL);
 
   const [modalContent, setModalContent] = useState<Media | undefined>(
     undefined
@@ -910,33 +915,11 @@ const MediaCarouselView = ({ medias, updatedAt }) => {
     medias.length > 0 && (
       <>
         <div className="relative min-h-[12rem] h-full group">
-          <div className="absolute top-0 inline-flex gap-2 w-full p-2 z-[8]">
-            {medias.map((_: any, index: number) => (
-              <span onClick={() => jumpTo(index)} style={{ width: `${100 / medias.length}%` }} className="pb-16 cursor-pointer ">
-                <div
-                  
-                  key={index}
-                  className={classes(
-                    "h-1 w-full rounded",
-                    "bg-gray-400 bg-opacity-50"
-                  )}
-                  
-                >
-                  <div
-                    className={classes(
-                      "h-1 rounded cursor-pointer",
-                      activeIndex === index ? "bg-white animate-stories" : ""
-                    )}
-                  />
-                </div>
-              </span>
-            ))}
-          </div>
+          <IndicatorsComponent />
           <div
             className="bg-opacity-25 bg-gradient-to-b from-black to-black via-transparent min-h-[12rem] z-[6]"
             style={wrapperStyle}
             onClick={() => setModalContent(active as Media)}
-            // style={style}
           >
             <MediaView {...(active as Media)} />
           </div>
