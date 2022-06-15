@@ -46,7 +46,9 @@ export const ResourceCard = (props: Resource) => {
               type === "external_link" &&
                 "bg-amber-100 group-hover:bg-amber-200 dark:bg-amber-800 dark:group-hover:bg-amber-900",
               type === "event" &&
-                "bg-red-100 group-hover:bg-red-200 dark:bg-red-800 dark:group-hover:bg-red-900"
+                "bg-red-100 group-hover:bg-red-200 dark:bg-red-800 dark:group-hover:bg-red-900",
+              type === "other" &&
+                "bg-gray-100 group-hover:bg-gray-200 dark:bg-gray-800 dark:group-hover:bg-gray-900"
             )}
           >
             <div
@@ -57,7 +59,8 @@ export const ResourceCard = (props: Resource) => {
                   "text-emerald-700 dark:text-emerald-200",
                 type === "external_link" &&
                   "text-amber-700 dark:text-amber-200",
-                type === "event" && "text-red-700 dark:text-red-200"
+                type === "event" && "text-red-700 dark:text-red-200",
+                type === "other" && "text-gray-700 dark:text-gray-200"
               )}
             >
               {types
@@ -126,7 +129,9 @@ export const ResourceCard = (props: Resource) => {
                 ? "emerald"
                 : type === "external_link"
                 ? "amber"
-                : "red"
+                : type === "event"
+                ? "red"
+                : "gray"
             }
           />
         </div>

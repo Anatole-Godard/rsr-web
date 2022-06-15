@@ -30,7 +30,7 @@ export const ChipList = ({
     <div
       className={classes(
         "inline-flex items-center max-w-max  overflow-x-auto ",
-        size === "normal" ? "space-x-3 p-1.5" : " space-x-1 p-0.5"
+        size === "normal" ? "space-x-2" : " space-x-1"
       )}
     >
       {list.map((el, index) => {

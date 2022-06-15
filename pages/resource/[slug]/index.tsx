@@ -22,6 +22,7 @@ import {
   VideoCameraIcon,
   VolumeUpIcon,
   DocumentIcon,
+  QuestionMarkCircleIcon,
 } from "@heroicons/react/outline";
 import {
   HandIcon,
@@ -82,7 +83,6 @@ const ResourceSlug: NextPage<any> = ({
   const [message, setMessage] = useState<string>("");
   const [newLikes, setNewLikes] = useState<UserMinimum[]>(likes || []);
   const [newComments, setNewComments] = useState<Comment[]>(comments || []);
-  const [newViews, setNewViews] = useState<UserMinimum[]>(seenBy || []);
 
   const { user } = useAuth();
   const report = async () => {
@@ -133,7 +133,7 @@ const ResourceSlug: NextPage<any> = ({
         {/* 2xl:sticky 2xl:top-0 z-[47] */}
         <div className="flex flex-col w-full px-6 py-6 bg-white border-b border-gray-200 lg:px-24 dark:bg-black dark:border-gray-800">
           <Link href="/resource">
-            <a className="mb-1 text-xs btn-gray w-max">
+            <a className="hidden mb-1 text-xs btn-gray w-max lg:flex">
               <ChevronLeftIcon className="w-4 h-4 mr-1" />
               Retour
             </a>
@@ -146,7 +146,7 @@ const ResourceSlug: NextPage<any> = ({
               {types.find((t) => t.value === data?.type)?.label}
             </div>
 
-            <div className="items-center hidden text-xs text-gray-500 transition duration-200 lg:inline-flex hover:text-gray-700 dark:text-gray-400">
+            <div className="inline-flex items-center text-xs text-gray-500 transition duration-200 hover:text-gray-700 dark:text-gray-400">
               <CalendarIcon className="w-4 h-4 mx-1 shrink-0" />
               {formatDistance(new Date(createdAt), new Date(), {
                 addSuffix: true,
@@ -154,38 +154,38 @@ const ResourceSlug: NextPage<any> = ({
               })}
             </div>
             {newLikes.length >= 1 ? (
-              <div className="items-center hidden text-xs text-gray-500 transition duration-200 lg:inline-flex hover:text-gray-700 dark:text-gray-400">
+              <div className="inline-flex items-center text-xs text-gray-500 transition duration-200 hover:text-gray-700 dark:text-gray-400">
                 <AvatarGroup users={newLikes} limit={5} />
-                <UsersIcon className="hidden lg:flex items-center fas fa-users flex-shrink-0 mx-1.5 h-4 w-4 " />
+                <UsersIcon className="hidden lg:flex items-center shrink-0 mx-1.5 h-4 w-4 " />
                 {newLikes?.length || 0}{" "}
                 {newLikes?.length > 1 ? "personnes aiment" : "personne aime"}
               </div>
             ) : (
-              <div className="items-center hidden text-xs text-gray-500 transition duration-200 lg:inline-flex hover:text-gray-700 dark:text-gray-400">
-                <UsersIcon className="hidden lg:flex items-center fas fa-users flex-shrink-0 mx-1.5 h-4 w-4 " />
+              <div className="inline-flex items-center text-xs text-gray-500 transition duration-200 hover:text-gray-700 dark:text-gray-400">
+                <UsersIcon className="flex items-center shrink-0 ml-1 mr-1.5 h-4 w-4 " />
 
                 {"Personne n'aime pour l'instant"}
               </div>
             )}
-            <div className="items-center hidden text-xs text-gray-500 transition duration-200 lg:inline-flex hover:text-gray-700 dark:text-gray-400">
+            <div className="inline-flex items-center text-xs text-gray-500 transition duration-200 hover:text-gray-700 dark:text-gray-400">
               {visibilities
                 .find((v) => v.value === visibility)
                 ?.icon.outline({ className: "w-4 h-4 mx-1 shrink-0" })}
               {visibilities.find((v) => v.value === visibility)?.label}
             </div>
             {user?.data.uid === owner.uid && !validated && (
-              <div className="items-center hidden pl-1 text-xs text-gray-500 transition duration-200 lg:inline-flex hover:text-gray-700 dark:text-gray-400">
+              <div className="inline-flex items-center pl-1 text-xs text-gray-500 transition duration-200 hover:text-gray-700 dark:text-gray-400">
                 En attente de validation
               </div>
             )}
-            {newViews.length >= 1 ? (
-              <div className="items-center hidden text-xs text-gray-500 transition duration-200 lg:inline-flex hover:text-gray-700 dark:text-gray-400">
-                <EyeIcon className="hidden lg:flex items-center fas fa-users flex-shrink-0 mx-1.5 h-4 w-4 " />
-                {newViews?.length || 0} {newViews?.length > 1 ? "vues" : "vue"}
+            {seenBy.length >= 1 ? (
+              <div className="inline-flex items-center text-xs text-gray-500 transition duration-200 hover:text-gray-700 dark:text-gray-400">
+                <EyeIcon className="flex items-center shrink-0 ml-1 mr-1.5 h-4 w-4 " />
+                {seenBy?.length || 0} {seenBy?.length > 1 ? "vues" : "vue"}
               </div>
             ) : (
-              <div className="items-center hidden text-xs text-gray-500 transition duration-200 lg:inline-flex hover:text-gray-700 dark:text-gray-400">
-                <EyeIcon className="hidden lg:flex items-center fas fa-users flex-shrink-0 mx-1.5 h-4 w-4 " />
+              <div className="inline-flex items-center text-xs text-gray-500 transition duration-200 hover:text-gray-700 dark:text-gray-400">
+                <EyeIcon className="flex items-center shrink-0 ml-1 mr-1.5 h-4 w-4 " />
 
                 {"Personne n'a vu pour l'instant"}
               </div>
@@ -197,6 +197,12 @@ const ResourceSlug: NextPage<any> = ({
               {data.attributes.properties.name}
             </h2>
             <div className="flex mt-2 space-x-3 lg:mt-0 lg:ml-4">
+              <Link href="/resource">
+                <a className="flex text-xs btn-gray lg:hidden">
+                  <ChevronLeftIcon className="w-4 h-4 mr-1" />
+                  Retour
+                </a>
+              </Link>
               {!newLikes.find((l) => l.uid === user?.data.uid) ? (
                 <button className="btn-red " key="likeBtn" onClick={like}>
                   <HeartIconOutline className="w-4 h-4 select-none md:mr-1 shrink-0" />
@@ -238,21 +244,19 @@ const ResourceSlug: NextPage<any> = ({
               )}
             </div>
           </div>
-          <div className="inline-flex w-full pt-2 pb-2 text-sm prose text-justify text-gray-500 font-spectral dark:text-gray-400">
+          <div className="inline-flex items-center justify-between w-full my-2 ">
             <ShowMoreText
               /* Default options */
               lines={3}
               more="Voir plus"
               less="Voir moins"
-              className="w-full grow"
+              className="w-full text-sm prose text-justify text-gray-500 grow font-spectral dark:text-gray-400"
               anchorClass="text-bleuFrance-500 dark:text-bleuFrance-300 underline"
               expanded={false}
               truncatedEndingComponent={"... "}
             >
               {description}
             </ShowMoreText>
-          </div>
-          <div className="inline-flex pt-3 -ml-2 overflow-x-hidden md:pt-0">
             <ChipList
               color={
                 data.type === "location"
@@ -329,7 +333,7 @@ const ResourceSlug: NextPage<any> = ({
               </Tab>
             </Tab.List>
             <Tab.Panels className="p-2 bg-white max-h-max dark:bg-black rounded-xl focus:outline-none">
-              <Tab.Panel className="max-h-[24rem] min-h-[24rem] h-full">
+              <Tab.Panel className=" min-h-[24rem] h-full">
                 <ResourceView {...data} slug={slug} updatedAt={updatedAt} />
               </Tab.Panel>
               <Tab.Panel className="max-h-[24rem] min-h-[24rem] h-full flex flex-col justify-between ">
@@ -614,18 +618,7 @@ const EventView = ({ attributes, slug, updatedAt }: EventViewProps) => {
 
   return (
     <>
-      <div className="relative h-full overflow-hidden rounded-lg xl:col-span-2">
-        {/* <DateRange
-          onChange={() => {}}
-          editableDateInputs={false}
-          ranges={{
-            startDate: new Date(attributes.properties.startDate.toString()),
-            ...(attributes.properties.endDate
-              ? { endDate: new Date(attributes.properties.endDate.toString()) }
-              : null),
-          }}
-          direction="horizontal"
-        /> */}
+      <div className="overflow-hidden rounded-lg xl:col-span-2">
         <DateRangePickerCalendar
           startDate={new Date(attributes.properties.startDate.toString())}
           endDate={
@@ -636,7 +629,7 @@ const EventView = ({ attributes, slug, updatedAt }: EventViewProps) => {
           locale={fr}
         />
       </div>
-      <div className="flex flex-col pt-3 pr-3 space-y-3">
+      <div className="">
         {attributes.properties.medias ? (
           <MediaCarouselView
             medias={attributes.properties.medias}
@@ -648,127 +641,125 @@ const EventView = ({ attributes, slug, updatedAt }: EventViewProps) => {
             <p className="text-lg font-spectral">Évenement</p>
           </div>
         )}
-        <hr className="mt-3 border-gray-100 dark:border-gray-800" />
-        <div className="flex flex-col p-3 bg-gray-50 dark:bg-gray-900 rounded-xl">
-          <div className="flex flex-col">
+      </div>
+      <div className="flex flex-col p-3 bg-gray-50 dark:bg-gray-900 rounded-xl">
+        <div className="flex flex-col">
+          <div className="inline-flex items-center justify-between w-full pt-2 pb-4 space-x-4 ">
+            <span className="inline-flex items-center flex-grow space-x-4">
+              {attributes.properties.endDate ? (
+                <div className="flex flex-col items-center w-6 ml-4 ">
+                  <ClockIcon className="w-4 h-4 text-center " />
+                  <span className="text-[0.6rem] font-bold uppercase">
+                    from
+                  </span>
+                </div>
+              ) : (
+                <ClockIcon className="w-6 h-6 ml-4 text-center" />
+              )}
+
+              <div className="flex flex-col">
+                <p className="text-xs first-letter:uppercase">
+                  {format(new Date(attributes.properties.startDate), "PPPP", {
+                    locale: fr,
+                  })}
+                </p>
+                <p className="text-sm font-bold">
+                  {format(new Date(attributes.properties.startDate), "p", {
+                    locale: fr,
+                  })}
+                </p>
+              </div>
+            </span>
+            <a
+              rel="noreferrer"
+              href={
+                "https://calendar.google.com/calendar/render?action=TEMPLATE&" +
+                `dates=${format(
+                  new Date(attributes.properties.startDate),
+                  "yyyyMMdd'T'HHmmss'Z'"
+                )}${
+                  attributes.properties.endDate
+                    ? "%2F" +
+                      format(
+                        new Date(attributes.properties.endDate),
+                        "yyyyMMdd'T'HHmmss'Z'"
+                      )
+                    : ""
+                }&text=${attributes.properties.name}`
+              }
+              target="_blank"
+            >
+              <img
+                src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Google_Calendar_icon_%282020%29.svg/768px-Google_Calendar_icon_%282020%29.svg.png"
+                className="h-6 px-3 text-center shrink-0"
+                alt="GCalendar"
+              ></img>
+            </a>
+          </div>
+
+          {attributes.properties.endDate && (
             <div className="inline-flex items-center justify-between w-full pt-2 pb-4 space-x-4 ">
               <span className="inline-flex items-center flex-grow space-x-4">
-                {attributes.properties.endDate ? (
-                  <div className="flex flex-col items-center w-6 ml-4 ">
-                    <ClockIcon className="w-4 h-4 text-center " />
-                    <span className="text-[0.6rem] font-bold uppercase">
-                      from
-                    </span>
-                  </div>
-                ) : (
-                  <ClockIcon className="w-6 h-6 ml-4 text-center" />
-                )}
+                <div className="flex flex-col items-center w-6 ml-4 ">
+                  <ClockIcon className="w-4 h-4 text-center" />
+                  <span className="text-[0.6rem] text-center font-bold uppercase">
+                    to
+                  </span>
+                </div>
 
                 <div className="flex flex-col">
                   <p className="text-xs first-letter:uppercase">
-                    {format(new Date(attributes.properties.startDate), "PPPP", {
+                    {format(new Date(attributes.properties.endDate), "PPPP", {
                       locale: fr,
                     })}
                   </p>
                   <p className="text-sm font-bold">
-                    {format(new Date(attributes.properties.startDate), "p", {
+                    {format(new Date(attributes.properties.endDate), "p", {
                       locale: fr,
                     })}
                   </p>
                 </div>
               </span>
-              <a
-                rel="noreferrer"
-                href={
-                  "https://calendar.google.com/calendar/render?action=TEMPLATE&" +
-                  `dates=${format(
-                    new Date(attributes.properties.startDate),
-                    "yyyyMMdd'T'HHmmss'Z'"
-                  )}${
-                    attributes.properties.endDate
-                      ? "%2F" +
-                        format(
-                          new Date(attributes.properties.endDate),
-                          "yyyyMMdd'T'HHmmss'Z'"
-                        )
-                      : ""
-                  }&text=${attributes.properties.name}`
-                }
-                target="_blank"
-              >
-                <img
-                  src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Google_Calendar_icon_%282020%29.svg/768px-Google_Calendar_icon_%282020%29.svg.png"
-                  className="h-6 px-3 text-center shrink-0"
-                  alt="GCalendar"
-                ></img>
-              </a>
             </div>
-
-            {attributes.properties.endDate && (
-              <div className="inline-flex items-center justify-between w-full pt-2 pb-4 space-x-4 ">
-                <span className="inline-flex items-center flex-grow space-x-4">
-                  <div className="flex flex-col items-center w-6 ml-4 ">
-                    <ClockIcon className="w-4 h-4 text-center" />
-                    <span className="text-[0.6rem] text-center font-bold uppercase">
-                      to
-                    </span>
-                  </div>
-
-                  <div className="flex flex-col">
-                    <p className="text-xs first-letter:uppercase">
-                      {format(new Date(attributes.properties.endDate), "PPPP", {
-                        locale: fr,
-                      })}
-                    </p>
-                    <p className="text-sm font-bold">
-                      {format(new Date(attributes.properties.endDate), "p", {
-                        locale: fr,
-                      })}
-                    </p>
-                  </div>
-                </span>
-              </div>
-            )}
-          </div>
+          )}
         </div>
-        <hr className="mt-3 border-gray-100 dark:border-gray-800" />
-        <div className="flex flex-col p-3 space-y-3 bg-gray-50 dark:bg-gray-900 rounded-xl">
-          <div className="inline-flex items-center justify-between">
-            <h4 className="text-lg font-bold font-spectral">
-              {participants.length.toString() +
-                " " +
-                (participants.length > 1 ? "participants" : "participant")}
-            </h4>
+      </div>
+      <div className="flex flex-col p-3 space-y-3 bg-gray-50 dark:bg-gray-900 rounded-xl">
+        <div className="inline-flex items-center justify-between">
+          <h4 className="text-lg font-bold font-spectral">
+            {participants.length.toString() +
+              " " +
+              (participants.length > 1 ? "participants" : "participant")}
+          </h4>
 
-            {user ? (
-              participants.find((p) => p.uid === user.data.uid) ? (
-                <button
-                  onClick={participate}
-                  className="px-2 py-1 text-xs btn-text-gray"
-                >
-                  <XIcon className="w-4 h-4 mr-1" />
-                  Retirer ma participation
-                </button>
-              ) : (
-                <button
-                  onClick={participate}
-                  className="px-2 py-1 text-xs btn-text-gray"
-                >
-                  <PlusCircleIcon className="w-4 h-4 mr-1" />
-                  Participer
-                </button>
-              )
+          {user ? (
+            participants.find((p) => p.uid === user.data.uid) ? (
+              <button
+                onClick={participate}
+                className="px-2 py-1 text-xs btn-text-gray"
+              >
+                <XIcon className="w-4 h-4 mr-1" />
+                Retirer ma participation
+              </button>
             ) : (
-              <Link href="/auth/login">
-                <a className="px-2 py-1 text-xs btn-text-gray">
-                  <UserIcon className="w-4 h-4 mr-1" />
-                  Se connecter
-                </a>
-              </Link>
-            )}
-          </div>
-          <AvatarGroup users={participants} xl />
+              <button
+                onClick={participate}
+                className="px-2 py-1 text-xs btn-text-gray"
+              >
+                <PlusCircleIcon className="w-4 h-4 mr-1" />
+                Participer
+              </button>
+            )
+          ) : (
+            <Link href="/auth/login">
+              <a className="px-2 py-1 text-xs btn-text-gray">
+                <UserIcon className="w-4 h-4 mr-1" />
+                Se connecter
+              </a>
+            </Link>
+          )}
         </div>
+        <AvatarGroup users={participants} xl />
       </div>
     </>
   );
@@ -784,12 +775,12 @@ const OtherView = ({ attributes, slug, updatedAt }: OtherViewProps) => {
             updatedAt={updatedAt}
           />
         ) : (
-          <div className="flex flex-col items-center justify-center h-full text-emerald-800 bg-emerald-200 dark:text-emerald-200 dark:bg-emerald-800">
-            <HandIcon className="w-12 h-12 mb-1" />
-            <p className="text-lg font-spectral">Objet physique</p>
+          <div className="flex flex-col items-center justify-center h-full text-gray-800 bg-gray-200 dark:text-gray-200 dark:bg-gray-800">
+            <QuestionMarkCircleIcon className="w-12 h-12 mb-1" />
+            <p className="text-lg font-spectral">Autre</p>
             {!attributes.properties.image && (
-              <p className="pt-2 mx-12 mt-2 text-sm text-center border-t border-emerald-500 text-emerald-600 dark:text-emerald-400 font-spectral">
-                {"Aucune image n'est disponible pour cette ressource"}
+              <p className="pt-2 mx-12 mt-2 text-sm text-center text-gray-600 border-t border-gray-500 dark:text-gray-400 font-spectral">
+                {"Aucun média n'est disponible pour cette ressource"}
               </p>
             )}
           </div>
@@ -921,13 +912,8 @@ type Media = {
 const INTERVAL = 10000;
 const MediaCarouselView = ({ medias, updatedAt }) => {
   // const [active, setActive, handlers, style] = useCarousel(length, INTERVAL);
-  const {
-    active,
-    previous,
-    next,
-    wrapperStyle,
-    IndicatorsComponent,
-  } = useCarousel(medias, INTERVAL);
+  const { active, previous, next, wrapperStyle, IndicatorsComponent } =
+    useCarousel(medias, INTERVAL);
 
   const [modalContent, setModalContent] = useState<Media | undefined>(
     undefined
