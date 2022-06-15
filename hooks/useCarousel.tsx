@@ -1,11 +1,9 @@
+import { classes } from "@utils/classes";
 import { CSSProperties, useEffect, useState } from "react";
 
-const DEFAULT_TRANSITION_TIME = 400;
 const DEFAULT_INTERVAL_TIME = 5000;
-const TRANSITION_ELASTIC = `transform ${DEFAULT_TRANSITION_TIME}ms cubic-bezier(0.68, -0.55, 0.265, 1.55)`;
-const TRANSITION_SMOOTH = `transform ${DEFAULT_TRANSITION_TIME}ms ease`;
 
-export function useCarousel<T = object>(
+export function useCarousel<T = any>(
   items: T[],
   interval: number = DEFAULT_INTERVAL_TIME
 ) {
@@ -42,7 +40,6 @@ export function useCarousel<T = object>(
     width: "100%",
     height: "100%",
     position: "relative",
-    transition: TRANSITION_ELASTIC,
     flex: items.length,
   };
 
@@ -51,7 +48,31 @@ export function useCarousel<T = object>(
     flex: 1,
   };
 
-  
+  const IndicatorsComponent = () => {
+    return (
+      <div className="absolute top-0 inline-flex gap-2 w-full p-2 z-[8]">
+        {items.map((_: any, index: number) => (
+          <span
+            onClick={() => jumpTo(index)}
+            style={{ width: `${100 / items.length}%` }}
+            className="pb-16 cursor-pointer"
+          >
+            <div
+              key={index}
+              className="w-full h-1 bg-gray-400 bg-opacity-50 rounded"
+            >
+              <div
+                className={classes(
+                  "h-1 rounded cursor-pointer",
+                  currentIndex === index ? "bg-white animate-stories" : ""
+                )}
+              />
+            </div>
+          </span>
+        ))}
+      </div>
+    );
+  };
 
   useEffect(() => {
     const _interval = setInterval(() => {
@@ -70,5 +91,7 @@ export function useCarousel<T = object>(
 
     wrapperStyle,
     itemStyle,
+
+    IndicatorsComponent,
   };
 }
