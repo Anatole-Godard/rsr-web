@@ -209,7 +209,7 @@
   }
 
   .btn {
-    @apply inline-flex items-center px-2 py-2 text-sm font-light transition-all duration-300 rounded-lg sm:px-4 font-spectral active:ring ring-offset-1 focus:outline-none;
+    @apply inline-flex items-center px-2 py-2 text-sm font-light transition-all duration-300 rounded-lg md:px-4 font-spectral active:ring ring-offset-1 focus:outline-none;
   }
 
   .btn-outline {
@@ -307,15 +307,22 @@
   background-repeat: no-repeat;
 } */
 
-.image-container {
-  width: 100%;
+.nice-dates-week-header_day {
+  width: calc(1/7)!important;
+
 }
-.image-container > div {
-  position: unset !important;
+
+.nice-dates-day {
+  font-family: "Spectral", sans-serif;
+  height: 3rem !important;
 }
-.image-container .image {
-  object-fit: contain;
-  width: 100% !important;
-  position: relative !important;
-  height: unset !important;
+
+.nice-dates-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  height: 250px !important;
+}
+
+.nice-dates-navigation_previous, .nice-dates-navigation_next {
+  padding-bottom: 4rem !important;
 }
