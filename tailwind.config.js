@@ -51,6 +51,20 @@ module.exports = {
           900: "#171717",
         },
       },
+      animation: {
+        stories: "stories 10s linear"
+      },
+
+      keyframes: {
+        stories: {
+          "0%": {
+           width: "0%"
+          },
+          "100%": {
+            width: "100%"
+          },
+        },
+      },
     },
     variants: {
       extend: {},
