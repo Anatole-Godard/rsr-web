@@ -3,10 +3,14 @@
 import { UserMinimum } from "@definitions/User";
 import Link from "next/link";
 
+const DEFAULT_LIMIT = 5;
+const DEFAULT_LARGE = false
+
+
 export const AvatarGroup = ({
   users,
-  limit = 5,
-  xl = false,
+  limit = DEFAULT_LIMIT,
+  xl = DEFAULT_LARGE,
 }: {
   users: UserMinimum[];
   limit?: number;

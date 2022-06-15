@@ -1,4 +1,4 @@
-import { AppLayout } from "@components/layouts/AppLayout";
+import { AppLayout } from "@components/Layout/AppLayout";
 import { Resource } from "@definitions/Resource";
 import { Event } from "@definitions/Resource/Event";
 import { UserMinimum } from "@definitions/User";
@@ -18,12 +18,13 @@ import dynamic from "next/dynamic";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { Media, MediaUploader } from "@components/helpers/MediaUploader";
-import { Input, WrapperModularInputs } from "@components/helpers/ModularInput";
+import { MediaUploader } from "@components/Resource/Helper/Media/Uploader";
+import { Input, WrapperModularInputs } from "@components/Resource/Helper/ModularInput";
 import { TagDocument } from "@definitions/Resource/Tag";
 import useFetchRSR from "@hooks/useFetchRSR";
+import { Media } from "@definitions/Resource/Media";
 
-const Map: any = dynamic(() => import("@components/map/Map") as any, {
+const Map: any = dynamic(() => import("@components/Map/Map") as any, {
   ssr: false,
 });
 
@@ -166,7 +167,7 @@ const ResourceCreate: NextPage<any> = ({
           const responses = [];
           for (const media of medias) {
             const formData = new FormData();
-            formData.append("file", media);
+            formData.append("file", media as any);
             formData.append("name", media.name);
             formData.append("type", media.type);
             formData.append("size", media.size.toString());

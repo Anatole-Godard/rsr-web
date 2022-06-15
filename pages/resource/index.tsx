@@ -1,5 +1,5 @@
-import { ResourceCard } from "@components/card/Resource";
-import { AppLayout } from "@components/layouts/AppLayout";
+import { ResourceCard } from "@components/Resource/Card";
+import { AppLayout } from "@components/Layout/AppLayout";
 import { Resource } from "@definitions/Resource";
 import { ChevronDownIcon, SearchIcon } from "@heroicons/react/outline";
 import { PlusIcon } from "@heroicons/react/solid";

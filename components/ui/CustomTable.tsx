@@ -15,7 +15,7 @@ import ReactPaginate from "react-paginate";
 import Link from "next/link";
 import { Transition } from "@headlessui/react";
 import React, { Fragment, useEffect, useRef, useState } from "react";
-import { ChipList } from "@components/ui/ChipList";
+import { ChipList } from "@components/UI/Chip/ChipList";
 import { classes } from "libs/classes";
 import { fetchRSR } from "libs/fetchRSR";
 import { useAuth } from "@hooks/useAuth";

@@ -13,8 +13,7 @@ import { Transition, Dialog } from "@headlessui/react";
 import { formatBytes } from "libs/formatBytes";
 import { useRouter } from "next/router";
 import { useEventListener } from "@hooks/useEventListener";
-
-export type Media = File;
+import { Media } from "@definitions/Resource/Media";
 
 export const MediaUploader = ({
   files,
@@ -75,7 +74,9 @@ export const MediaUploader = ({
 
               {media.name}
 
-              <span className="ml-2 text-xs">{formatBytes(media.size)}</span>
+              <span className="ml-2 text-xs">
+                {formatBytes(parseInt(media.size))}
+              </span>
               <button
                 id={"btn-" + media.name + i}
                 key={"btn-" + media.name + i}
@@ -168,7 +169,7 @@ export const MediaUploader = ({
                               file.size <= 5_000_000 &&
                               files.length < 3
                             ) {
-                              setFiles([...files, file]);
+                              setFiles([...files, file as any]);
                               setHasChanges(true);
                             } else {
                               // alert("Votre fichier est trop lourd");

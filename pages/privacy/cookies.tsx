@@ -1,4 +1,4 @@
-import { AppLayout } from "@components/layouts/AppLayout";
+import { AppLayout } from "@components/Layout/AppLayout";
 import { NextPage } from "next";
 
 const CookiePage: NextPage = () => {

@@ -155,7 +155,7 @@ export const GetStarted = () => {
                           href="/resource"
                         />
                         <Item
-                          label="Créer une playlist et y renseigner une ressources"
+                          label="Créer une playlist et y renseigner une ressource"
                           condition={getStarted?.create_playlist}
                           href="/resource"
                         />
