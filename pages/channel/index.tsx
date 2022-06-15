@@ -1,5 +1,5 @@
-import { Sidebar } from "@components/channel/Sidebar";
-import { AppLayout } from "@components/layouts/AppLayout";
+import { Sidebar } from "@components/Channel/Sidebar";
+import { AppLayout } from "@components/Layout/AppLayout";
 import { Channel } from "@definitions/Channel";
 import { fetchRSR } from "libs/fetchRSR";
 import { GetServerSideProps, NextPage } from "next";

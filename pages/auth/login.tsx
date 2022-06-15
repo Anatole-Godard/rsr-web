@@ -1,9 +1,9 @@
-import { GuestLayout } from "@components/layouts/GuestLayout";
+import { GuestLayout } from "@components/Layout/GuestLayout";
 import { useAuth } from "@hooks/useAuth";
 import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
-import { Logo } from "@components/ui/Logo";
+import { Logo } from "@components/UI/Logo";
 import { UserCircleIcon } from "@heroicons/react/outline";
 
 export default function Login() {

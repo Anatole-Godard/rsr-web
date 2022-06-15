@@ -1,4 +1,4 @@
-import { AppLayout } from "@components/layouts/AppLayout";
+import { AppLayout } from "@components/Layout/AppLayout";
 import { Channel } from "@definitions/Channel";
 import { UserMinimum } from "@definitions/User";
 import { Dialog, Transition } from "@headlessui/react";

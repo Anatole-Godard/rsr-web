@@ -1,5 +1,5 @@
-import { AppLayout } from "@components/layouts/AppLayout";
-import { UserResources } from "@components/user/UserResources";
+import { AppLayout } from "@components/Layout/AppLayout";
+import { UserResources } from "@components/User/UserResources";
 import { NextPage } from "next";
 import Image from "next/image";
 

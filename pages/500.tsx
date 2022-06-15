@@ -1,4 +1,4 @@
-import { AppLayout } from "components/layouts/AppLayout";
+import { AppLayout } from "@components/Layout/AppLayout";
 import type { NextPage } from "next";
 import Link from "next/link";
 

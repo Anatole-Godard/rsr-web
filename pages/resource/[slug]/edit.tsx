@@ -1,4 +1,4 @@
-import { AppLayout } from "@components/layouts/AppLayout";
+import { AppLayout } from "@components/Layout/AppLayout";
 import { Resource } from "@definitions/Resource";
 import { Dialog, Tab, Transition } from "@headlessui/react";
 import {
@@ -23,11 +23,12 @@ import { UserMinimum } from "@definitions/User";
 import { TrashIcon } from "@heroicons/react/outline";
 import useFetchRSR from "@hooks/useFetchRSR";
 import { TagDocument } from "@definitions/Resource/Tag";
-import { Media, MediaUploader } from "@components/helpers/MediaUploader";
-import { Input, WrapperModularInputs } from "@components/helpers/ModularInput";
+import { MediaUploader } from "@components/Resource/Helper/Media/Uploader";
+import { Input, WrapperModularInputs } from "@components/Resource/Helper/ModularInput";
 import { toModularInput } from "@utils/toModularInput";
+import { Media } from "@definitions/Resource/Media";
 
-const Map: any = dynamic(() => import("@components/map/Map") as any, {
+const Map: any = dynamic(() => import("@components/Map/Map") as any, {
   ssr: false,
 });
 
@@ -229,7 +230,7 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
           const responses = [];
           for (const media of medias) {
             const formData = new FormData();
-            formData.append("file", media);
+            formData.append("file", media as any);
             formData.append("name", media.name);
             formData.append("type", media.type);
             formData.append("size", media.size.toString());

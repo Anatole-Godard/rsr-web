@@ -1,4 +1,4 @@
-import { ResourceCard } from "@components/card/Resource";
+import { ResourceCard } from "@components/Resource/Card";
 import { Resource } from "@definitions/Resource";
 import { classes } from "libs/classes";
 

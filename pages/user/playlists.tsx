@@ -1,5 +1,5 @@
-import { AppLayout } from "@components/layouts/AppLayout";
-import { UserPlaylistResources } from "@components/user/UserPlaylistsResources";
+import { AppLayout } from "@components/Layout/AppLayout";
+import { UserPlaylistResources } from "@components/User/UserPlaylistsResources";
 import { Playlist } from "@definitions/Playlist";
 import { Disclosure, Transition } from "@headlessui/react";
 import {

@@ -1,11 +1,11 @@
-import {AppLayoutAdmin} from "components/layouts/AppLayoutAdmin";
+import {AdminLayout} from "@components/Layout/AdminLayout";
 import type {NextPage} from "next";
 import {GetServerSideProps} from 'next';
 import {useEffect, useState, Fragment} from "react";
 import {ChartSquareBarIcon, SearchIcon as HISearchIcon, CalculatorIcon, CodeIcon} from "@heroicons/react/outline";
 import {SelectorIcon, CheckIcon, ChevronDownIcon} from "@heroicons/react/solid";
-import {ChartDisplay} from "@components/statistics/ChartDisplay";
-import {GlobalDisplay} from "@components/statistics/GlobalDisplay";
+import {ChartDisplay} from "@components/Statistic/ChartDisplay";
+import {GlobalDisplay} from "@components/Statistic/GlobalDisplay";
 import {useAuth} from "@hooks/useAuth";
 import {fetchRSR} from "libs/fetchRSR";
 import {Resource} from "@definitions/Resource";
@@ -86,7 +86,7 @@ const Home: NextPage<any> = ({resources = []}: { resources: Resource[] }) => {
     }
 
     return (
-        <AppLayoutAdmin>
+        <AdminLayout>
             <div className="flex flex-col w-full h-full bg-white dark:bg-black grow">
                 <div
                     className="flex flex-col w-full px-6 py-6 bg-white shrink-0 lg:px-12 dark:bg-black dark:border-gray-800">
@@ -110,13 +110,13 @@ const Home: NextPage<any> = ({resources = []}: { resources: Resource[] }) => {
                     </div>
                 </div>
                 <div className="p-6 overflow-y-auto bg-gray-100 grow xl:rounded-tl-xl">
-                    <div className="bg-white rounded-lg px-5 py-5 mb-2">
+                    <div className="px-5 py-5 mb-2 bg-white rounded-lg">
                         <h6 className="font-bold text-gray-900 font-marianne">
                             Filtres
                         </h6>
                         <div className="inline-flex w-full mt-2">
                             <Popover className="relative mr-2">
-                                <Popover.Button className="btn-blue mr-2">Période</Popover.Button>
+                                <Popover.Button className="mr-2 btn-blue">Période</Popover.Button>
                                 <Popover.Panel className="absolute p-5 bg-white rounded">
                                     {({close}) => (
                                         <div className="flex flex-col">
@@ -127,12 +127,12 @@ const Home: NextPage<any> = ({resources = []}: { resources: Resource[] }) => {
                                                 <p>à :</p>
                                                 <input type="month" value={maxPeriod}
                                                        onInput={(e) => setMaxPeriod(e.target.value)}/>
-                                                <button className="btn-blue w-20 my-2" onClick={() => {
+                                                <button className="w-20 my-2 btn-blue" onClick={() => {
                                                     getResourcesByPeriod(minPeriod, maxPeriod);
                                                     close();
                                                 }}>Filtrer
                                                 </button>
-                                                <button className="btn-red w-20 my-2" onClick={() => {
+                                                <button className="w-20 my-2 btn-red" onClick={() => {
                                                     resetFilters()
                                                     close();
                                                 }}>Annuler
@@ -142,18 +142,18 @@ const Home: NextPage<any> = ({resources = []}: { resources: Resource[] }) => {
                                     )}
                                 </Popover.Panel>
                             </Popover>
-                            <div className="w-72 mr-2">
+                            <div className="mr-2 w-72">
                                 <Combobox value={selectedType} onChange={(v) => {
                                     setSelectedType(v.label);
                                     getResourcesByType(v.value);
                                 }}>
                                     <div className="relative mt-1">
                                         <div
-                                            className="relative w-full text-left bg-white rounded-lg shadow-md cursor-default focus:outline-none focus-visible:ring-2 focus-visible:ring-opacity-75 focus-visible:ring-white focus-visible:ring-offset-teal-300 focus-visible:ring-offset-2 sm:text-sm overflow-hidden">
+                                            className="relative w-full overflow-hidden text-left bg-white rounded-lg shadow-md cursor-default focus:outline-none focus-visible:ring-2 focus-visible:ring-opacity-75 focus-visible:ring-white focus-visible:ring-offset-teal-300 focus-visible:ring-offset-2 sm:text-sm">
                                             <Combobox.Input
                                                 onChange={(e) => setQuery(e.target.value)}
                                                 displayValue={() => selectedType}
-                                                className="w-full border-none focus:ring-0 py-2 pl-3 pr-10 text-sm leading-5 text-gray-900"
+                                                className="w-full py-2 pl-3 pr-10 text-sm leading-5 text-gray-900 border-none focus:ring-0"
                                             />
                                             <Combobox.Button
                                                 className="absolute inset-y-0 right-0 flex items-center pr-2">
@@ -171,10 +171,10 @@ const Home: NextPage<any> = ({resources = []}: { resources: Resource[] }) => {
                                             afterLeave={() => setQuery('')}
                                         >
                                             <Combobox.Options
-                                                className="absolute w-full py-1 mt-1 overflow-auto text-base bg-white rounded-md shadow-lg max-h-60 ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm p-5">
+                                                className="absolute w-full p-5 py-1 mt-1 overflow-auto text-base bg-white rounded-md shadow-lg max-h-60 ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
                                                 {types.length === 0 && query !== '' ? (
                                                         <div
-                                                            className="cursor-default select-none relative py-2 px-4 text-gray-700">
+                                                            className="relative px-4 py-2 text-gray-700 cursor-default select-none">
                                                             Nothing found.
                                                         </div>
                                                     ) :
@@ -217,7 +217,7 @@ const Home: NextPage<any> = ({resources = []}: { resources: Resource[] }) => {
                                     />
                                 </label>
                             </div>
-                            <button className="btn-red mr-2" onClick={() => {
+                            <button className="mr-2 btn-red" onClick={() => {
                                 resetFilters();
                             }}>Supprimer les filtres
                             </button>
@@ -260,7 +260,7 @@ const Home: NextPage<any> = ({resources = []}: { resources: Resource[] }) => {
                                             <Menu.Item disabled>
                                                 {({ active }) => (
                                                     <span
-                                                        className='text-gray-500 group flex rounded-md items-center w-full px-2 py-2 text-sm'>
+                                                        className='flex items-center w-full px-2 py-2 text-sm text-gray-500 rounded-md group'>
                                                         <CalculatorIcon
                                                             className="w-5 h-5 mr-2"
                                                             aria-hidden="true"/>
@@ -275,7 +275,7 @@ const Home: NextPage<any> = ({resources = []}: { resources: Resource[] }) => {
                         </div>
                     </div>
                     <div className="grid gap-3 lg:grid-cols-2 xl:grid-cols-3">
-                        <div className="bg-white rounded-lg px-5 py-5">
+                        <div className="px-5 py-5 bg-white rounded-lg">
                             {displayChart ?
                                 <ChartDisplay label="Nombre de ressources postées" resources={resourcesFiltered}
                                               minPeriod={minPeriod} maxPeriod={maxPeriod}/> :
@@ -284,7 +284,7 @@ const Home: NextPage<any> = ({resources = []}: { resources: Resource[] }) => {
                     </div>
                 </div>
             </div>
-        </AppLayoutAdmin>
+        </AdminLayout>
     );
 };
 

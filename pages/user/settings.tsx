@@ -1,15 +1,15 @@
-import { AppLayout } from "@components/layouts/AppLayout";
-import { ChangePassword } from "@components/user/ChangePassword";
-import { PictureChanger } from "@components/user/PictureChanger";
-import { DisableAccount } from "@components/user/DisableAccount";
-import { SessionsViewer } from "@components/user/SessionsViewer";
+import { AppLayout } from "@components/Layout/AppLayout";
+import { ChangePassword } from "@components/User/ChangePassword";
+import { PictureChanger } from "@components/User/PictureChanger";
+import { DisableAccount } from "@components/User/DisableAccount";
+import { SessionsViewer } from "@components/User/SessionsViewer";
 import { ArrowLeftIcon } from "@heroicons/react/outline";
 import { useAuth } from "@hooks/useAuth";
 import { NextPage } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { RetrieveAccount } from "@components/user/RetrieveAccount";
-import { GetStartedResetter } from "@components/user/GetStartedResetter";
+import { RetrieveAccount } from "@components/User/RetrieveAccount";
+import { GetStartedResetter } from "@components/User/GetStartedResetter";
 
 const UserIndexPage: NextPage<any> = () => {
   const { user } = useAuth();

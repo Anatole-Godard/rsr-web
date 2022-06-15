@@ -1,4 +1,4 @@
-import { Iframe } from "@components/helpers/Iframe";
+import { Iframe } from "@components/Channel/Iframe";
 import { Activity } from "@definitions/Activity";
 import { Message } from "@definitions/Message";
 import { ChatAlt2Icon, ChatIcon, UserAddIcon, ExclamationIcon} from "@heroicons/react/outline";
@@ -73,7 +73,7 @@ export const HistoryItem = ({ user, data, createdAt, context }: History) => {
             </time>
               <button
                   onClick={()=>{report('user', user.fullName + (': ' + data?.text) || '' )}}
-                  className="m-0 ml-1 px-2 text-gray-700 bg-gray-100 btn-text-yellow order-last"
+                  className="order-last px-2 m-0 ml-1 text-gray-700 bg-gray-100 btn-text-yellow"
               >
                   <ExclamationIcon className="w-4 h-4" />
               </button>
@@ -105,7 +105,7 @@ export const HistoryItem = ({ user, data, createdAt, context }: History) => {
             </time>
               <button
                   onClick={()=>{report('user', user.fullName + (': ' + data?.text) || '' )}}
-                  className="m-0 ml-1 px-2 text-gray-700 bg-gray-100 btn-text-yellow order-last"
+                  className="order-last px-2 m-0 ml-1 text-gray-700 bg-gray-100 btn-text-yellow"
               >
                   <ExclamationIcon className="w-4 h-4" />
               </button>
@@ -127,6 +127,7 @@ export const HistoryItem = ({ user, data, createdAt, context }: History) => {
           </div>
           {data.text?.match(/(\/resource\/[\S]*)/) && (
             <>
+            {/* TODO: why not change to ResourceView component ? */}
               <div className="hidden p-3 mt-3 text-xs italic font-normal text-gray-500 border border-gray-200 rounded-lg md:block bg-gray-50 dark:bg-gray-600 dark:border-gray-500 dark:text-gray-300 w-fit">
                 <Iframe
                   src={data.text?.match(/(\/resource\/[\S]*)/)[0]}

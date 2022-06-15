@@ -1,4 +1,4 @@
-import { Logo } from "@components/ui/Logo";
+import { Logo } from "@components/UI/Logo";
 import {
   ChatIcon,
   CogIcon,
@@ -8,7 +8,6 @@ import {
   PlusIcon,
   UserAddIcon,
   UserIcon,
-  // ShoppingBagIcon,
 } from "@heroicons/react/outline";
 import { useAuth } from "@hooks/useAuth";
 import { useRouter } from "next/router";

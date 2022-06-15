@@ -1,4 +1,4 @@
-import { ChipList } from "@components/ui/ChipList";
+import { ChipList } from "@components/UI/Chip/ChipList";
 import { Resource } from "@definitions/Resource";
 import {
   ExternalLinkIcon,
