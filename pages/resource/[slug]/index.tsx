@@ -775,7 +775,7 @@ const EventView = ({ attributes, slug, updatedAt }: EventViewProps) => {
 const OtherView = ({ attributes, slug, updatedAt }: OtherViewProps) => {
   return (
     <>
-      <div className="relative h-full overflow-hidden rounded-lg xl:col-span-2">
+      <div className="relative min-h-[18rem] md:min-h-0 h-full overflow-hidden rounded-lg xl:col-span-2">
         {attributes.properties.medias ? (
           <MediaCarouselView
             medias={attributes.properties.medias}
@@ -896,47 +896,54 @@ type Media = {
   url: string;
 };
 
-const INTERVAL = 5000;
+const INTERVAL = 10000;
 const MediaCarouselView = ({ medias, updatedAt }) => {
-  const length = medias.length;
-  const [active, setActive, handlers, style] = useCarousel(length, INTERVAL);
+  // const [active, setActive, handlers, style] = useCarousel(length, INTERVAL);
+  const { active, activeIndex, previous, next, jumpTo, wrapperStyle } =
+    useCarousel(medias, INTERVAL);
 
   const [modalContent, setModalContent] = useState<Media | undefined>(
     undefined
   );
 
   return (
-    length > 0 && (
+    medias.length > 0 && (
       <>
-        <div className="relative h-full group">
+        <div className="relative min-h-[12rem] h-full group">
           <div className="absolute top-0 inline-flex gap-2 w-full p-2 z-[8]">
             {medias.map((_: any, index: number) => (
-              <span
-                onClick={() => setActive(index)}
-                key={index}
-                className={classes(
-                  "h-1 rounded transition-colors duration-300 cursor-pointer",
-                  active === index ? "bg-gray-100" : "bg-gray-400 bg-opacity-50"
-                )}
-                style={{ width: `${100 / length}%` }}
-              />
+              <span onClick={() => jumpTo(index)} style={{ width: `${100 / medias.length}%` }} className="pb-16 cursor-pointer ">
+                <div
+                  
+                  key={index}
+                  className={classes(
+                    "h-1 w-full rounded",
+                    "bg-gray-400 bg-opacity-50"
+                  )}
+                  
+                >
+                  <div
+                    className={classes(
+                      "h-1 rounded cursor-pointer",
+                      activeIndex === index ? "bg-white animate-stories" : ""
+                    )}
+                  />
+                </div>
+              </span>
             ))}
           </div>
           <div
-            className="absolute inline-flex bg-opacity-25 bg-gradient-to-b from-black to-black via-transparent h-full z-[6] overflow-x-hidden"
-            {...handlers}
-            onClick={() => setModalContent(medias[active])}
+            className="bg-opacity-25 bg-gradient-to-b from-black to-black via-transparent min-h-[12rem] z-[6]"
+            style={wrapperStyle}
+            onClick={() => setModalContent(active as Media)}
             // style={style}
           >
-            <MediaView {...medias[active]} />
+            <MediaView {...(active as Media)} />
           </div>
           <div className="absolute w-full h-1/3 z-[7] bg-gradient-to-b from-gray-800 to-transparent top-0 left-0"></div>
-          <div
-            className="transition-all duration-200 absolute w-full h-1/3 z-[9] bg-gradient-to-t from-gray-800 to-transparent bottom-0 left-0 group-hover:opacity-100 opacity-0 flex flex-col justify-end pb-3 px-3"
-            style={{ width: `${100 / (length - 2)}%` }}
-          >
+          <div className="transition-all duration-200 absolute w-full h-1/3 z-[9] bg-gradient-to-t from-gray-800 to-transparent bottom-0 left-0 group-hover:opacity-100 opacity-0 flex flex-col justify-end pb-3 px-3">
             <p className="text-xl font-extrabold text-white font-marianne">
-              {medias[active].name}
+              {(active as Media).name}
             </p>
             <p className="text-xs text-gray-400 font-spectral">
               mis à jour{" "}
@@ -945,18 +952,14 @@ const MediaCarouselView = ({ medias, updatedAt }) => {
           </div>
 
           <div
-            className="absolute left-0 top-[calc(50%-5rem)] z-[8] p-12 cursor-pointer text-white opacity-60 duration-200 hover:opacity-100"
-            onClick={() => {
-              setActive(active === 0 ? length - 1 : active - 1);
-            }}
+            className="absolute left-0 top-[calc(50%-4rem)] z-[8] p-12 cursor-pointer text-white opacity-60 duration-200 hover:opacity-100"
+            onClick={previous}
           >
             <ChevronLeftIcon className="w-12 h-12" />
           </div>
           <div
-            className="absolute right-0 top-[calc(50%-5rem)] z-[8] p-12 cursor-pointer text-white opacity-60 duration-200 hover:opacity-100"
-            onClick={() => {
-              setActive(active === length - 1 ? 0 : active + 1);
-            }}
+            className="absolute right-0 top-[calc(50%-4rem)] z-[8] p-12 cursor-pointer text-white opacity-60 duration-200 hover:opacity-100"
+            onClick={next}
           >
             <ChevronRightIcon className="w-12 h-12" />
           </div>
@@ -982,43 +985,43 @@ const MediaView = ({ name, url, type }: Media) => {
         <Image src={url} alt={name} layout="fill" objectFit="cover" />
       )}
       {type.includes("audio") && (
-        <div className="relative w-full h-full">
+        <div className="relative w-full h-full overflow-hidden bg-yellow-500">
           <img
-            src="https://source.unsplash.com/random/?meeting"
-            className="z-[6] w-full object-cover absolute"
+            src="https://source.unsplash.com/random/?audio"
+            className="z-[6] h-full xl:h-auto xl:w-full object-cover overflow-hidden absolute"
             alt="meeting"
           />
 
-          <div className="absolute inset-0 z-[8]">
-            <VolumeUpIcon className="w-12 h-12" />
+          <div className="absolute flex justify-center items-center h-full w-full bg-black bg-opacity-60 z-[8]">
+            <VolumeUpIcon className="w-24 h-24 stroke-[1.5] text-white" />
           </div>
         </div>
       )}
       {type.includes("video") && (
-        <div className="relative w-full h-full">
+        <div className="relative w-full h-full overflow-hidden bg-blue-500">
           <video
             autoPlay={false}
             muted
-            className="object-cover w-full z-[6]"
+            className="z-[6] h-full xl:h-auto xl:w-full object-cover overflow-hidden absolute"
           >
             <source src={url} type={type} />
             Your browser does not support the audio element.
           </video>
-          <div className="absolute h-full w-full flex items-center justify-center z-[8]">
-            <VideoCameraIcon className="w-12 h-12 text-white" />
+          <div className="absolute flex justify-center items-center h-full w-full bg-black bg-opacity-60 z-[9]">
+            <VideoCameraIcon className="w-24 h-24 stroke-[1.5] text-white" />
           </div>
         </div>
       )}
       {type.includes("application/pdf") && (
-        <div className="relative w-full h-full">
+        <div className="relative w-full h-full overflow-hidden bg-green-500">
           <img
-            src="https://source.unsplash.com/random/?meeting"
-            className="z-[6] w-full object-cover"
+            src="https://source.unsplash.com/random/?document"
+            className="z-[6] h-full xl:h-auto xl:w-full object-cover overflow-hidden absolute"
             alt="meeting"
           />
 
-          <div className="absolute inset-0 w-full h-full z-[8]">
-            <DocumentIcon className="w-12 h-12" />
+          <div className="absolute flex justify-center items-center h-full w-full bg-black bg-opacity-60 z-[8]">
+            <DocumentIcon className="w-24 h-24 stroke-[1.5] text-white" />
           </div>
         </div>
       )}
@@ -1100,8 +1103,8 @@ const MediaModal = ({
                     </div>
                   )}
                   {type.includes("application/pdf") && (
-                    <div className="relative flex items-end justify-center w-full h-full">
-                      <iframe className="w-full aspect-[16/8]" src={url} />
+                    <div className="relative flex items-center justify-center w-full h-full">
+                      <iframe className="w-3/4 aspect-[16/9]" src={url} />
                     </div>
                   )}
                 </div>
