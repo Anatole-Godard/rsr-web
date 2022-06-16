@@ -13,6 +13,7 @@ import useFetchRSR from "@hooks/useFetchRSR";
 import { classes } from "libs/classes";
 import { fetchRSR } from "libs/fetchRSR";
 import { Fragment, useState } from "react";
+import toast from "react-hot-toast";
 
 export const PlaylistDropdown = ({
   resource,
@@ -36,6 +37,11 @@ export const PlaylistDropdown = ({
   );
 
   const manage = async (playlistKey: string, action: "add" | "remove") => {
+    const toastID = toast.loading(
+      action === "add"
+        ? "Ajout de la ressource dans la playlist..."
+        : "Retrait de la ressource dans la playlist"
+    );
     const res = await fetchRSR(
       `/api/user/${user.data.uid}/resources/playlists/manage`,
       user.session,
@@ -47,10 +53,19 @@ export const PlaylistDropdown = ({
         }),
       }
     );
-    if (res.ok) revalidate();
+    toast.dismiss(toastID);
+    if (res.ok) {
+      revalidate();
+      toast.success(
+        action === "add"
+          ? "Ajout de la ressource dans la playlist effectué"
+          : "Retrait de la ressource dans la playlist effectué"
+      );
+    } else toast.error("Une erreur est survenue lors de l'opération");
   };
 
   const deletePlaylist = async (key: string) => {
+    const toastID = toast.loading("Suppression de la playlist en cours...");
     const res = await fetchRSR(
       `/api/user/${user.data.uid}/resources/playlists/delete`,
       user.session,
@@ -61,7 +76,13 @@ export const PlaylistDropdown = ({
         }),
       }
     );
-    if (res.ok) revalidate();
+    toast.dismiss(toastID);
+    if (res.ok) {
+      revalidate();
+      toast.success("Playlist supprimée");
+    } else {
+      toast.error("Une erreur est survenue");
+    }
   };
 
   return (
@@ -179,6 +200,7 @@ const PlaylistCreator = ({
   const create = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
     if (key) {
+      const toastID = toast.loading("Création de la playlist...");
       const res = await fetchRSR(
         `${
           process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000/api"
@@ -191,12 +213,16 @@ const PlaylistCreator = ({
           }),
         }
       );
+      toast.dismiss(toastID);
       const body = await res.json();
       console.log(body);
       if (res.ok) {
+        toast.success("Playlist créée");
         setOpen(false);
         setKey("");
         revalidate();
+      } else {
+        toast.error("Une erreur est survenue");
       }
     }
   };
