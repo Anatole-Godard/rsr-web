@@ -233,8 +233,6 @@ const ResourceCreate: NextPage<any> = ({
     startDate,
     inputs,
     medias,
-    // pictureUrl,
-    // pictureFile,
   ]);
 
   const {
