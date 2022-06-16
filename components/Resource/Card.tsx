@@ -162,27 +162,29 @@ export const ResourceCard = (props: Resource) => {
             </div>
           )}
         </div>
-        <button
-          onClick={() => {
-            if (navigator.share) {
-              navigator
-                .share({
-                  title: `${name} - RSR`,
-                  url:
-                    document.location.protocol +
-                    "//" +
-                    document.location.host +
-                    "/resource/" +
-                    slug,
-                })
-                .then(() => console.log("Successful share"))
-                .catch((error) => console.log("Error sharing", error));
-            }
-          }}
-          className="px-2 btn-gray shrink-0"
-        >
-          <ShareIcon className="w-4 h-4 select-none"></ShareIcon>
-        </button>
+        {navigator.share && (
+          <button
+            onClick={() => {
+              if (navigator.share) {
+                navigator
+                  .share({
+                    title: `${name} - RSR`,
+                    url:
+                      document.location.protocol +
+                      "//" +
+                      document.location.host +
+                      "/resource/" +
+                      slug,
+                  })
+                  .then(() => console.log("Successful share"))
+                  .catch((error) => console.log("Error sharing", error));
+              }
+            }}
+            className="px-2 btn-gray shrink-0"
+          >
+            <ShareIcon className="w-4 h-4 select-none"></ShareIcon>
+          </button>
+        )}
       </div>
     </div>
   );
