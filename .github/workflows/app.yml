@@ -25,7 +25,6 @@ jobs:
           envkey_DB_NAME: ${{ secrets.DB_NAME }}
           envkey_DB_HOST: ${{ secrets.DB_HOST }}
           envkey_JWT_SECRET: ${{ secrets.JWT_SECRET }}
-          envkey_BASE_URL: ${{ secrets.BASE_URL }}
           file_name: .env.local
           fail_on_empty: true
 
