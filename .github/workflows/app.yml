@@ -10,7 +10,7 @@ jobs:
         with:
           node-version: '14.x'
       - name: Install dependencies
-        run: yarn
+        run: yarn install --frozen-lockfile
       - name: Build application
         run: yarn build
 
@@ -25,9 +25,8 @@ jobs:
         run: npx playwright install --with-deps
       - name: Install dependencies
         run: yarn install --frozen-lockfile
-      - name: Start application
-        continue-on-error: false
-        run: yarn dev & yarn test
+      - name: Build the stack and launch e2e tests
+        run: docker-compose up -d & yarn test:e2e
       - uses: actions/upload-artifact@v2
         if: always()
         with:

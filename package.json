@@ -4,11 +4,11 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "next build && next export",
     "start": "next start",
     "lint": "next lint",
     "codehawk": "codehawk .",
-    "test": "npx playwright test --project=chromium"
+    "test:e2e": "npx playwright test --project=chromium"
   },
   "resolutions": {
     "@types/react": "17.0.2",
