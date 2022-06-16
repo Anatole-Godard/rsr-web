@@ -63,6 +63,7 @@ function AuthProvider({
     }
 
     if (response.ok) {
+      toast.success("Vous êtes déconnecté");
       removeCookie("user", { path: "/" });
       setUser(null);
       router.push("/");
