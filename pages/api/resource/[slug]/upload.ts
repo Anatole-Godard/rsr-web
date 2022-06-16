@@ -6,7 +6,6 @@ import { ResourceType, types } from "constants/resourcesTypes";
 import { NextApiRequest, NextApiResponse } from "next";
 
 import { promises as fs } from "fs";
-// const fs = require("fs").promises;
 
 const DEFAULT_PATH = `/usr/src/app/public/uploads/resource`;
 
