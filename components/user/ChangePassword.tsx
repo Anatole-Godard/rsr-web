@@ -4,6 +4,7 @@ import { fetchRSR } from "libs/fetchRSR";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import zxcvbn from "zxcvbn";
 
 export const ChangePassword = () => {
@@ -36,6 +37,9 @@ export const ChangePassword = () => {
       newPassword !== oldPassword
     ) {
       setLoading(true);
+
+      const toastID = toast.loading("Modification du mot de passe...");
+
       const res = await fetchRSR("/api/auth/change-password", user.session, {
         method: "POST",
         body: JSON.stringify({
@@ -45,11 +49,16 @@ export const ChangePassword = () => {
         }),
       });
 
+      toast.dismiss(toastID);
+
       if (res.ok) {
-        alert("Mot de passe modifié");
+        toast.success("Votre mot de passe a été modifié avec succès");
         if (disconnectAll) removeUser("/");
       } else {
-        alert(JSON.stringify(await res.json()));
+        toast.error(
+          "Une erreur est survenue lors de la modification du mot de passe"
+        );
+        // alert(JSON.stringify(await res.json()));
       }
       setLoading(false);
     }
@@ -72,7 +81,7 @@ export const ChangePassword = () => {
         </div>
       </div>
       <label>
-      <h4 className="mb-1 after:content-['*'] after:ml-0.5 after:text-red-500 text-xs font-medium text-gray-700 font-marianne">
+        <h4 className="mb-1 after:content-['*'] after:ml-0.5 after:text-red-500 text-xs font-medium text-gray-700 font-marianne">
           Ancien mot de passe
         </h4>
         <input
@@ -114,7 +123,7 @@ export const ChangePassword = () => {
         ></div>
       </div>
       <label>
-      <h4 className="mb-1 after:content-['*'] after:ml-0.5 after:text-red-500 text-xs font-medium text-gray-700 font-marianne">
+        <h4 className="mb-1 after:content-['*'] after:ml-0.5 after:text-red-500 text-xs font-medium text-gray-700 font-marianne">
           Confirmer le nouveau mot de passe
         </h4>
         <input
@@ -142,7 +151,11 @@ export const ChangePassword = () => {
         </div>
       </label>
       <div className="inline-flex justify-end w-full pt-3 mt-3">
-        <button className="btn-green" onClick={post}>
+        <button
+          className="btn-green"
+          onClick={post}
+          disabled={!oldPassword && !newPassword && !confirmPassword}
+        >
           {loading ? (
             <svg
               className="w-5 h-5 text-white animate-spin"
