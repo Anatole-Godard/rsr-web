@@ -10,7 +10,8 @@ import { NextApiResponse } from "next";
 export const handleError = (
   res: NextApiResponse,
   error: Error,
-  fnc: Function | string
+  location: Function | string,
+  client: string = "Une erreur est survenue"
 ) => {
   const { message = "internal server error", stack } = error;
 
@@ -18,7 +19,7 @@ export const handleError = (
     data: null,
     error: {
       message,
-      location: typeof fnc === "function" ? fnc.name : fnc,
+      location: typeof location === "function" ? location.name : location,
       stack,
     },
   });
