@@ -2,6 +2,7 @@ import { Dialog, Transition } from "@headlessui/react";
 import { BanIcon, XIcon } from "@heroicons/react/outline";
 import Image from "next/image";
 import { Fragment, useState } from "react";
+import toast from "react-hot-toast";
 
 export const DisableAccount = () => {
   let [isOpen, setIsOpen] = useState<boolean>(false);
@@ -9,7 +10,7 @@ export const DisableAccount = () => {
   const closeModal = () => setIsOpen(false);
 
   const disable = async () => {
-    console.log("disable");
+    toast.success("Compte désactivé à la déconnexion");
     closeModal();
   };
 

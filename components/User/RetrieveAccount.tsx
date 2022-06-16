@@ -2,13 +2,19 @@ import { DownloadIcon } from "@heroicons/react/outline";
 import { useAuth } from "@hooks/useAuth";
 import { fetchRSR } from "libs/fetchRSR";
 import Image from "next/image";
+import toast from "react-hot-toast";
 
 export const RetrieveAccount = () => {
   const { user } = useAuth();
   const fetchExport = async () => {
     if (user) {
+      let toastID = toast.loading("Récupération de votre compte...");
       const res = await fetchRSR("/api/auth/export", user.session);
+      toast.dismiss(toastID);
+
       if (res.status === 200) {
+        toast.success("Votre compte a été récupéré avec succès");
+
         const blob = await res.blob();
         let url = window.URL.createObjectURL(blob);
         let aDOM = document.createElement("a");
@@ -19,6 +25,8 @@ export const RetrieveAccount = () => {
         document.body.appendChild(aDOM);
         aDOM.click();
         aDOM.remove();
+      } else {
+        toast.error("Une erreur est survenue lors de la récupération de votre compte");
       }
     }
   };
