@@ -25,7 +25,7 @@ jobs:
           envkey_DB_NAME: ${{ secrets.DB_NAME }}
           envkey_DB_HOST: ${{ secrets.DB_HOST }}
           envkey_JWT_SECRET: ${{ secrets.JWT_SECRET }}
-          directory: home/runner/work/rsr-web/rsr-web/
+          directory: ./home/runner/work/rsr-web/rsr-web/
           file_name: .env.local
           fail_on_empty: true
 
