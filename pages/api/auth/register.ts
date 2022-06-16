@@ -8,9 +8,13 @@ const argon2 = require("argon2");
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== "POST") {
     return res.status(400).json({
-      error: "MethodNotAllowedError",
-      method: req.method,
-      message: "Method not allowed",
+      data: null,
+      error: {
+        name: "MethodNotAllowedError",
+        method: req.method,
+        message: "Method not allowed",
+        client: "Méthode non autorisée",
+      },
     });
   }
   const { email, password, birthDate, fullName } = req.body;
@@ -18,20 +22,29 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 
   if (!email || !password || !birthDate || !fullName) {
     return res.status(400).json({
-      error: "MissingParametersError",
-      message: "Missing required fields",
-      fields: {
-        email: !email,
-        password: !password,
-        birthDate: !birthDate,
-        fullName: !fullName,
+      data: null,
+      error: {
+        name: "MissingParametersError",
+        message: "Missing required fields",
+        fields: {
+          email: !email,
+          password: !password,
+          birthDate: !birthDate,
+          fullName: !fullName,
+        },
+        client:
+          "Merci de fournir un email, un mot de passe, une date de naissance et un nom complet",
       },
     });
   }
   if (!appsource) {
     return res.status(400).json({
-      error: "MissingAppSourceError",
-      message: "Please provide appsource",
+      data: null,
+      error: {
+        name: "MissingAppSourceError",
+        message: "Please provide appsource",
+        client: "Une erreur est survenue",
+      },
     });
   }
 
@@ -68,12 +81,23 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       session,
     });
   } catch (err) {
+    if (err.message.includes("E11000 duplicate key error")) {
+      return res.status(400).json({
+        data: null,
+        error: {
+          name: "DuplicateEmailError",
+          message: "Email already exists",
+          client: "Cet email existe déjà",
+        },
+      });
+    }
     return res.status(500).json({
       data: null,
       error: {
         name: err instanceof Error ? err.name : "InternalServerError",
         message:
           err instanceof Error ? err.message : "an error occured on: register",
+        client: "Une erreur est survenue",
       },
     });
   }

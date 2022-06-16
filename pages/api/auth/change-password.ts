@@ -5,7 +5,7 @@ import User from "@models/User";
 import { handleError } from "libs/handleError";
 import { NextApiRequest, NextApiResponse } from "next";
 
-const argon2 = require("argon2");
+import argon2 from "argon2";
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
@@ -13,9 +13,15 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     const user = await User.findOne({ _id: req.headers.uid });
 
     if (!(await argon2.verify(user.password, oldPassword))) {
-      return res
-        .status(401)
-        .json({ data: null, error: { message: "Wrong password", code: 401 } });
+      return res.status(401).json({
+        data: null,
+        error: {
+          name: "InvalidPasswordError",
+          message: "Wrong password",
+          code: 401,
+          client: "Mot de passe incorrect",
+        },
+      });
     }
 
     user.password = await argon2.hash(newPassword);

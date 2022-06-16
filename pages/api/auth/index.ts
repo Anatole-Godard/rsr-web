@@ -8,19 +8,27 @@ const argon2 = require("argon2");
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== "POST") {
     return res.status(400).json({
-      error: "MethodNotAllowedError",
-      method: req.method,
-      message: "Method not allowed",
+      data: null,
+      error: {
+        name: "MethodNotAllowedError",
+        method: req.method,
+        message: "Method not allowed",
+        client: "Méthode non autorisée",
+      },
     });
   }
 
   if (!req.body.email || !req.body.password) {
     return res.status(400).json({
-      error: "MissingParametersError",
-      message: "Please provide email and password",
-      fields: {
-        email: !req.body.email,
-        password: !req.body.password,
+      data: null,
+      error: {
+        name: "MissingParametersError",
+        message: "Please provide email and password",
+        fields: {
+          email: !req.body.email,
+          password: !req.body.password,
+        },
+        client: "Merci de fournir un email et un mot de passe",
       },
     });
   }
@@ -30,8 +38,12 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 
   if (!appsource) {
     return res.status(400).json({
-      error: "MissingAppSourceError",
-      message: "Please provide appsource",
+      data: null,
+      error: {
+        name: "MissingAppSourceError",
+        message: "Please provide appsource",
+        client: "Une erreur est survenue",
+      },
     });
   }
 
@@ -66,15 +78,23 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       });
     } else {
       return res.status(400).json({
-        error: "InvalidCredentialsError",
-        message: "Invalid email or password",
+        data: null,
+        error: {
+          name: "InvalidCredentialsError",
+          message: "Invalid email or password",
+          client: "Mauvais email ou mot de passe",
+        },
       });
     }
   } catch (err) {
     return res.status(500).json({
-      error: err instanceof Error ? err.name : "InternalServerError",
-      message:
-        err instanceof Error ? err.message : "an error occured on: login",
+      data: null,
+      error: {
+        name: err instanceof Error ? err.name : "InternalServerError",
+        message:
+          err instanceof Error ? err.message : "an error occured on: login",
+        client: "Une erreur est survenue lors de la connexion",
+      },
     });
   }
 }
