@@ -40,7 +40,7 @@ jobs:
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
       - name: Build the stack
-        run: ENV_FILE="./.env" docker-compose -f docker-compose.dev.yml up -d
+        run: ENV_FILE="/github/workspace/.env" docker-compose -f docker-compose.dev.yml up -d
       - name: Launch e2e tests
         if: success()
         run: yarn test:e2e
