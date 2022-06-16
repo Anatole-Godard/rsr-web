@@ -25,8 +25,11 @@ jobs:
         run: npx playwright install --with-deps
       - name: Install dependencies
         run: yarn install --frozen-lockfile
-      - name: Build the stack and launch e2e tests
-        run: docker-compose up -d & yarn test:e2e
+      - name: Build the stack
+        run: docker-compose up -d
+      - name: Launch e2e tests
+        if: success()
+        run: yarn test:e2e
       - uses: actions/upload-artifact@v2
         if: always()
         with:
