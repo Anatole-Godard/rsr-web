@@ -25,6 +25,7 @@ jobs:
           envkey_DB_NAME: ${{ secrets.DB_NAME }}
           envkey_DB_HOST: ${{ secrets.DB_HOST }}
           envkey_JWT_SECRET: ${{ secrets.JWT_SECRET }}
+          directory: home/runner/work/rsr-web/rsr-web/
           file_name: .env.local
           fail_on_empty: true
 
@@ -35,10 +36,10 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
-      - name: Install Playwright Browsers
-        run: npx playwright install --with-deps
       - name: Install dependencies
         run: yarn install --frozen-lockfile
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps
       - name: Build the stack
         run: docker-compose up -d
       - name: Launch e2e tests
