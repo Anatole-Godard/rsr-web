@@ -12,12 +12,28 @@ jobs:
       - name: Install dependencies
         run: yarn install --frozen-lockfile
       - name: Build application
-        run: yarn build
+        run: yarn 
+  
+  create-env-file:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Make env file
+        uses: SpicyPizza/create-envfile@v1.3
+        with:
+          envkey_DB_USER: ${{ secrets.DB_USER }}
+          envkey_DB_PASS: ${{ secrets.DB_PASS }}
+          envkey_DB_NAME: ${{ secrets.DB_NAME }}
+          envkey_DB_HOST: ${{ secrets.DB_HOST }}
+          envkey_JWT_SECRET: ${{ secrets.JWT_SECRET }}
+          envkey_BASE_URL: ${{ secrets.BASE_URL }}
+          envkey_API_URL: ${{ secrets.API_URL }}
+          file_name: .env.local
+          fail_on_empty: true
 
   e2e-tests:
     timeout-minutes: 60
     runs-on: ubuntu-latest
-    needs: build
+    needs: [build, create-env-file]
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
