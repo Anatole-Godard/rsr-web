@@ -1,18 +1,18 @@
 name: 'Application'
 on: [push]
 jobs:
-  build:
-    timeout-minutes: 60
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
-        with:
-          node-version: '14.x'
-      - name: Install dependencies
-        run: yarn install --frozen-lockfile
-      - name: Build application
-        run: yarn 
+  # build:
+  #   timeout-minutes: 60
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #     - uses: actions/setup-node@v2
+  #       with:
+  #         node-version: '14.x'
+  #     - name: Install dependencies
+  #       run: yarn install --frozen-lockfile
+  #     - name: Build application
+  #       run: yarn 
   
   create-env-file:
     runs-on: ubuntu-latest
