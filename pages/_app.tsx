@@ -19,9 +19,9 @@ function MyApp({ Component, pageProps }: AppProps) {
             <Fragment key={"app"}>
               <Component {...pageProps} />
               <DarkModeToggler />
-              <GetStarted />
             </Fragment>
           </AnimatePresence>
+          <GetStarted />
         </NotificationProvider>
       </AuthProvider>
       <Toaster position="top-right" />

@@ -110,7 +110,7 @@ export const ResourceCard = (props: Resource) => {
               </div>
             )}
           </div>
-          {((props.tags || []).length > 0 || navigator.share || likes || comments) && (
+          {((props.tags || []).length > 0 || likes || comments) && (
             <hr className="mx-6 my-1 border-gray-200 dark:border-gray-700" />
           )}
         </a>
@@ -162,29 +162,27 @@ export const ResourceCard = (props: Resource) => {
             </div>
           )}
         </div>
-        {navigator.share && (
-          <button
-            onClick={() => {
-              if (navigator.share) {
-                navigator
-                  .share({
-                    title: `${name} - RSR`,
-                    url:
-                      document.location.protocol +
-                      "//" +
-                      document.location.host +
-                      "/resource/" +
-                      slug,
-                  })
-                  .then(() => console.log("Successful share"))
-                  .catch((error) => console.log("Error sharing", error));
-              }
-            }}
-            className="px-2 btn-gray shrink-0"
-          >
-            <ShareIcon className="w-4 h-4 select-none"></ShareIcon>
-          </button>
-        )}
+        <button
+          onClick={() => {
+            if (navigator.share) {
+              navigator
+                .share({
+                  title: `${name} - RSR`,
+                  url:
+                    document.location.protocol +
+                    "//" +
+                    document.location.host +
+                    "/resource/" +
+                    slug,
+                })
+                .then(() => console.log("Successful share"))
+                .catch((error) => console.log("Error sharing", error));
+            }
+          }}
+          className="px-2 btn-gray shrink-0"
+        >
+          <ShareIcon className="w-4 h-4 select-none"></ShareIcon>
+        </button>
       </div>
     </div>
   );
