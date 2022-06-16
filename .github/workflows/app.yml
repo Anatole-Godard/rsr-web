@@ -24,12 +24,10 @@ jobs:
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
       - name: Install dependencies
-        run: yarn
+        run: yarn install --frozen-lockfile
       - name: Start application
-        run: yarn start
-      - name: Run tests
         continue-on-error: false
-        run: yarn test
+        run: yarn start & yarn test
       - uses: actions/upload-artifact@v2
         if: always()
         with:
