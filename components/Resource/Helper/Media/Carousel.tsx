@@ -9,7 +9,6 @@ import { MediaView } from "./View";
 
 const INTERVAL = 10000;
 export const MediaCarouselView = ({ medias, updatedAt }) => {
-  // const [active, setActive, handlers, style] = useCarousel(length, INTERVAL);
   const { active, previous, next, wrapperStyle, IndicatorsComponent } =
     useCarousel(medias, INTERVAL);
 
