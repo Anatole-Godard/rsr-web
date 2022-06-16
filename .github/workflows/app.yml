@@ -25,7 +25,6 @@ jobs:
           envkey_DB_NAME: ${{ secrets.DB_NAME }}
           envkey_DB_HOST: ${{ secrets.DB_HOST }}
           envkey_JWT_SECRET: ${{ secrets.JWT_SECRET }}
-          directory: /home/runner/work/rsr-web/rsr-web/
           file_name: .env.local
           fail_on_empty: true
 
@@ -41,7 +40,7 @@ jobs:
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
       - name: Build the stack
-        run: docker-compose up -d
+        run: ENV_FILE=".env.local" docker-compose -f docker-compose.dev.yml up -d
       - name: Launch e2e tests
         if: success()
         run: yarn test:e2e
