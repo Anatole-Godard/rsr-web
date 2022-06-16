@@ -23,20 +23,10 @@ jobs:
       - uses: actions/setup-node@v2
       - name: Install dependencies
         run: yarn install --frozen-lockfile
-      - name: Make env file
-        uses: SpicyPizza/create-envfile@v1.3
-        with:
-          envkey_DB_USER: ${{ secrets.DB_USER }}
-          envkey_DB_PASS: ${{ secrets.DB_PASS }}
-          envkey_DB_NAME: ${{ secrets.DB_NAME }}
-          envkey_DB_HOST: ${{ secrets.DB_HOST }}
-          envkey_JWT_SECRET: ${{ secrets.JWT_SECRET }}
-          file_name: .env
-          fail_on_empty: true
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
       - name: Build the stack
-        run: ENV_FILE="/github/workspace/.env" docker-compose -f docker-compose.dev.yml up -d
+        run: yarn dev
       - name: Launch e2e tests
         if: success()
         run: yarn test:e2e
