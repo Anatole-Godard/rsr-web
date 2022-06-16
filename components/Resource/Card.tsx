@@ -110,30 +110,39 @@ export const ResourceCard = (props: Resource) => {
               </div>
             )}
           </div>
-          <hr className="mx-6 my-1 border-gray-200 dark:border-gray-700" />
+          {((props.tags || []).length > 0 || likes || comments) && (
+            <hr className="mx-6 my-1 border-gray-200 dark:border-gray-700" />
+          )}
         </a>
       </Link>
       <div className="inline-flex p-2">
-        <div className="inline-flex overflow-x-hidden grow">
-          <ChipList
-            list={
-              props.tags
-                ?.map((el, i) => (i < 2 ? { label: el.name, value: i } : null))
-                .filter((e) => e !== null) || []
-            }
-            size="small"
-            color={
-              type === "location"
-                ? "indigo"
-                : type === "physical_item"
-                ? "emerald"
-                : type === "external_link"
-                ? "amber"
-                : type === "event"
-                ? "red"
-                : "gray"
-            }
-          />
+        <div className="inline-flex items-center overflow-x-hidden grow">
+          {
+            (props.tags || []).length > 0 ? (
+              <ChipList
+                list={
+                  props.tags
+                    ?.map((el, i) =>
+                      i < 2 ? { label: el.name, value: i } : null
+                    )
+                    .filter((e) => e !== null) || []
+                }
+                size="small"
+                color={
+                  type === "location"
+                    ? "indigo"
+                    : type === "physical_item"
+                    ? "emerald"
+                    : type === "external_link"
+                    ? "amber"
+                    : type === "event"
+                    ? "red"
+                    : "gray"
+                }
+              />
+            ) : null
+            // <small className="text-xs font-spectral">Aucune étiquette</small>
+          }
         </div>
         <div className="flex flex-col mx-2 text-xs">
           {likes && (
@@ -153,27 +162,29 @@ export const ResourceCard = (props: Resource) => {
             </div>
           )}
         </div>
-        <button
-          onClick={() => {
-            if (navigator.share) {
-              navigator
-                .share({
-                  title: `${name} - RSR`,
-                  url:
-                    document.location.protocol +
-                    "//" +
-                    document.location.host +
-                    "/resource/" +
-                    slug,
-                })
-                .then(() => console.log("Successful share"))
-                .catch((error) => console.log("Error sharing", error));
-            }
-          }}
-          className="px-2 btn-gray shrink-0"
-        >
-          <ShareIcon className="w-4 h-4 select-none"></ShareIcon>
-        </button>
+        {navigator.share && (
+          <button
+            onClick={() => {
+              if (navigator.share) {
+                navigator
+                  .share({
+                    title: `${name} - RSR`,
+                    url:
+                      document.location.protocol +
+                      "//" +
+                      document.location.host +
+                      "/resource/" +
+                      slug,
+                  })
+                  .then(() => console.log("Successful share"))
+                  .catch((error) => console.log("Error sharing", error));
+              }
+            }}
+            className="px-2 btn-gray shrink-0"
+          >
+            <ShareIcon className="w-4 h-4 select-none"></ShareIcon>
+          </button>
+        )}
       </div>
     </div>
   );

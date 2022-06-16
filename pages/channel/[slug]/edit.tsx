@@ -17,6 +17,7 @@ import dynamic from "next/dynamic";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { Fragment, useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import slug from "slug";
 
 const Select: any = dynamic(() => import("react-select") as any, {
@@ -51,6 +52,7 @@ const ChannelCreate: NextPage<any> = (props) => {
   const [deleteModalOpen, setDeleteModalOpen] = useState<boolean>(false);
 
   const deleteChannel = async () => {
+    const toastID = toast.loading("Suppression en cours...");
     const res = await fetchRSR(
       `/api/channel/${props.slug}/delete`,
       user?.session,
@@ -58,7 +60,11 @@ const ChannelCreate: NextPage<any> = (props) => {
         method: "DELETE",
       }
     );
-    if (res.ok) router.push("/channel");
+    toast.dismiss(toastID);
+    if (res.ok) {
+      router.push("/channel");
+      toast.success("Suppression réussie");
+    } else toast.error("Suppression échouée");
   };
 
   const handleSubmit = async (e: { preventDefault: () => void }) => {
@@ -66,11 +72,12 @@ const ChannelCreate: NextPage<any> = (props) => {
     if (validForm) {
       setLoading(true);
       try {
+        const toastID = toast.loading("Envoi en cours...");
         const response = await fetchRSR(
           "/api/channel/" + props.slug + "/edit",
           user?.session,
           {
-            method: "POST",
+            method: "PUT",
             body: JSON.stringify({
               name,
               description,
@@ -84,9 +91,12 @@ const ChannelCreate: NextPage<any> = (props) => {
             }),
           }
         );
+        toast.dismiss(toastID);
+        if (response.ok) toast.success("Modification réussie");
+        else toast.error("Modification échouée");
+
         setRequestOk(response.ok);
         const body = await response.json();
-        console.log(body);
       } catch (err) {
         console.log(err);
       }

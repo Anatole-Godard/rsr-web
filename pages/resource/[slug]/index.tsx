@@ -13,7 +13,7 @@ import {
 } from "@heroicons/react/outline";
 import { HeartIcon } from "@heroicons/react/solid";
 import { GetServerSideProps, NextPage } from "next";
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 
 import Link from "next/link";
 import { ChipList } from "@components/UI/Chip/ChipList";
@@ -33,6 +33,7 @@ import { PlaylistDropdown } from "@components/Dropdown/PlaylistDropdown";
 import { TagDocument } from "@definitions/Resource/Tag";
 import { CommentView } from "@components/Resource/CommentView";
 import { ResourceView } from "@components/Resource/ResourceView";
+import toast from "react-hot-toast";
 
 const ResourceSlug: NextPage<any> = ({
   slug,
@@ -54,6 +55,7 @@ const ResourceSlug: NextPage<any> = ({
 
   const { user } = useAuth();
   const report = async () => {
+    const toastID = toast.loading("Signalement en cours...");
     const res = await fetchRSR(`/api/report/create`, user?.session, {
       method: "POST",
       headers: {
@@ -66,32 +68,52 @@ const ResourceSlug: NextPage<any> = ({
         context: slug,
       }),
     });
+    toast.dismiss(toastID);
     if (res.ok) {
+      toast.success("Signalement envoyé");
       const body = await res.json();
       console.log(body);
+    } else {
+      toast.error("Une erreur est survenue");
     }
   };
 
   const like = async () => {
+    const toastID = toast.loading("Ajout du like en cours...");
     const res = await fetchRSR(`/api/resource/${slug}/like`, user?.session);
+    toast.dismiss(toastID);
     if (res.ok) {
       const body = await res.json();
       setNewLikes(body?.data.attributes.likes);
+      toast.success(
+        body?.data.attributes.likes.findIndex(
+          (l: UserMinimum) => l.uid === user?.data.uid
+        ) !== -1
+          ? "Like ajouté"
+          : "Like supprimé"
+      );
+    } else {
+      toast.error("Une erreur est survenue");
     }
   };
 
-  const comment = async (e) => {
+  const comment = async (e: FormEvent) => {
     e.preventDefault();
+    const toastID = toast.loading("Ajout du commentaire en cours...");
     const res = await fetchRSR(`/api/resource/${slug}/comment`, user?.session, {
       method: "POST",
       body: JSON.stringify({
         commentContent: message,
       }),
     });
+    toast.dismiss(toastID);
     if (res.ok) {
+      toast.success("Commentaire ajouté");
       const body = await res.json();
       setNewComments(body?.data.attributes.comments);
       setMessage("");
+    } else {
+      toast.error("Une erreur est survenue");
     }
   };
 
@@ -123,10 +145,14 @@ const ResourceSlug: NextPage<any> = ({
             </div>
             {newLikes.length >= 1 ? (
               <div className="inline-flex items-center text-xs text-gray-500 transition duration-200 hover:text-gray-700 dark:text-gray-400">
-                <AvatarGroup users={newLikes} limit={5} />
-                <UsersIcon className="hidden lg:flex items-center shrink-0 mx-1.5 h-4 w-4 " />
-                {newLikes?.length || 0}{" "}
-                {newLikes?.length > 1 ? "personnes aiment" : "personne aime"}
+                <span className="xl:ml-1">
+                  <AvatarGroup users={newLikes} limit={5} />
+                </span>
+                <UsersIcon className="hidden lg:flex items-center shrink-0 ml-1.5 h-4 w-4 " />
+                <span className="ml-1.5">
+                  {newLikes?.length || 0}{" "}
+                  {newLikes?.length > 1 ? "personnes aiment" : "personne aime"}
+                </span>
               </div>
             ) : (
               <div className="inline-flex items-center text-xs text-gray-500 transition duration-200 hover:text-gray-700 dark:text-gray-400">

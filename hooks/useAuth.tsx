@@ -2,6 +2,7 @@ import { fetchRSR } from "libs/fetchRSR";
 import { useRouter } from "next/router";
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { useCookies } from "react-cookie";
+import toast from "react-hot-toast";
 const AuthContext = createContext({});
 
 /**
@@ -43,7 +44,10 @@ function AuthProvider({
       });
       setUser(body);
       router.push(getLastUrl());
-    } else setUser(null);
+    } else {
+      toast.error(body?.error?.client);
+      setUser(null);
+    }
   };
 
   const signOut = async () => {
@@ -52,12 +56,14 @@ function AuthProvider({
     });
     const body = await response.json();
     if (body.error) {
+      toast.error(body?.error?.client);
       removeCookie("user", { path: "/" });
       setUser(null);
       router.push("/");
     }
 
     if (response.ok) {
+      toast.success("Vous êtes déconnecté");
       removeCookie("user", { path: "/" });
       setUser(null);
       router.push("/");
@@ -87,7 +93,10 @@ function AuthProvider({
         sameSite: true,
       });
       router.push(getLastUrl());
-    } else setUser(null);
+    } else {
+      toast.error(body?.error?.client);
+      setUser(null);
+    }
   };
 
   const removeUser = (redirect = "/", flash?: string) => {

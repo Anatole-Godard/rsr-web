@@ -3,6 +3,7 @@ import { XIcon } from "@heroicons/react/solid";
 import { useAuth } from "@hooks/useAuth";
 import Image from "next/image";
 import { useState } from "react";
+import toast from "react-hot-toast";
 
 export const PictureChanger = () => {
   const { user, changePicture } = useAuth();
@@ -20,6 +21,9 @@ export const PictureChanger = () => {
       fd.append("name", pictureFile.name);
       fd.append("type", pictureFile.type);
       fd.append("size", pictureFile.size.toString());
+
+      const toastID = toast.loading("Envoi de la photo...");
+
       const responseFileUpload = await fetch(
         `/api/user/${user.data.uid}/picture`,
         {
@@ -27,13 +31,18 @@ export const PictureChanger = () => {
           body: fd,
         }
       );
+      toast.dismiss(toastID);
+
       if (responseFileUpload.ok) {
+        toast.success("Photo envoyée avec succès");
         const body = await responseFileUpload.json();
         if (body?.data.attributes.photoURL) {
           changePicture(body.data.attributes.photoURL);
           setPictureUrl(null);
           setPictureFile(null);
         }
+      } else {
+        toast.error("Une erreur est survenue lors de l'envoi de la photo");
       }
       setLoading(false);
     }
@@ -57,7 +66,7 @@ export const PictureChanger = () => {
       </div>
       <div className="inline-flex items-center justify-center w-full grow">
         <div className="flex flex-col grow">
-        <h4 className="mb-1 text-xs font-medium text-gray-700 font-marianne">
+          <h4 className="mb-1 text-xs font-medium text-gray-700 font-marianne">
             Ancienne photo
           </h4>
           <div className="relative w-auto h-24 lg:h-36 grow">
@@ -145,7 +154,7 @@ export const PictureChanger = () => {
         </label>
       </div>
       <div className="inline-flex justify-end w-full pt-3 mt-3">
-        <button className="btn-green" onClick={post}>
+        <button className="btn-green" onClick={post} disabled={!pictureFile}>
           <CheckIcon className="w-4 h-4 mr-2" />
           Envoyer
         </button>

@@ -1,4 +1,3 @@
-import { withAuth } from "@middleware/auth";
 import withDatabase from "@middleware/mongoose";
 import Notification from "@models/Notification";
 import Resource from "@models/Resource";
@@ -6,7 +5,7 @@ import User from "@models/User";
 import { handleError } from "libs/handleError";
 import { NextApiRequest, NextApiResponse } from "next";
 const fs = require("fs").promises;
-const formidable = require("formidable");
+import formidable from "formidable";
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { uid } = req.query;
@@ -68,7 +67,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 
       try {
         await fs.writeFile(
-          `/app/public/uploads/user/${uid}.${fields.name.split(".").at(-1)}`,
+          `/usr/src/app/public/uploads/user/${uid}.${fields.name.split(".").at(-1)}`,
           await fs.readFile(files.file.filepath)
         );
         user.photoURL = `/uploads/user/${uid}.${fields.name.split(".").at(-1)}`;

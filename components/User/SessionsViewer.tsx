@@ -11,6 +11,7 @@ import { formatDistance } from "date-fns";
 import fr from "date-fns/locale/fr";
 import Image from "next/image";
 import { useState } from "react";
+import toast from "react-hot-toast";
 
 export const SessionsViewer = () => {
   const { user } = useAuth();
@@ -27,13 +28,22 @@ export const SessionsViewer = () => {
   } = useFetchRSR(`/api/user/${user?.session.uid}/sessions`, user?.session);
 
   const revoke = async (session: { token: any }) => {
+    const toastID = toast.loading("Suppression de la session...");
     const res = await fetchRSR(`/api/auth/revoke`, user?.session, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${session.token}`,
       },
     });
-    if (res.ok) revalidate();
+    toast.dismiss(toastID);
+    revalidate();
+    if (res.ok) {
+      toast.success("La session a été révoquée avec succès");
+    } else {
+      toast.error(
+        "Une erreur est survenue lors de la révocation de la session"
+      );
+    }
   };
 
   return (

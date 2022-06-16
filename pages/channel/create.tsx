@@ -13,6 +13,7 @@ import dynamic from "next/dynamic";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import slug from "slug";
 
 const Select: any = dynamic(() => import("react-select") as any, {
@@ -46,6 +47,7 @@ const ChannelCreate: NextPage<any> = ({
     if (validForm) {
       setLoading(true);
       try {
+        const toastID = toast.loading("Création du salon en cours...");
         const response = await fetchRSR("/api/channel/create", user?.session, {
           method: "POST",
           body: JSON.stringify({
@@ -60,6 +62,7 @@ const ChannelCreate: NextPage<any> = ({
             })),
           }),
         });
+        toast.dismiss(toastID);
 
         const body = await response.json();
         if (response.ok && pictureFile) {
@@ -76,16 +79,20 @@ const ChannelCreate: NextPage<any> = ({
             }
           );
           if (!responseFileUpload.ok) {
+            toast.error("Erreur lors de l'envoi du fichier");
             setRequestOk(false);
           } else {
+            toast.success("Salon créé avec succès");
             router.push(`/channel/${body.data.attributes.slug}`);
             setRequestOk(true);
           }
         } else if (response.ok && !pictureFile) {
+          toast.success("Salon créé avec succès");
           router.push(`/channel/${body.data.attributes.slug}`);
           setRequestOk(true);
         }
       } catch (err) {
+        toast.error("Erreur lors de la création du salon");
         console.log(err);
       }
       setLoading(false);
@@ -94,7 +101,6 @@ const ChannelCreate: NextPage<any> = ({
 
   // Form validations
   useEffect(() => {
-    console.table([pictureUrl, name, description, members]);
     if (name && description && (members.length > 0 || !privateGroup)) {
       setValidForm(true);
     } else setValidForm(false);
@@ -135,6 +141,7 @@ const ChannelCreate: NextPage<any> = ({
             </div>
             <button
               type="submit"
+              disabled={!validForm && loading}
               className={classes(
                 requestOk ? "btn-green" : validForm ? "btn-green" : "btn-red",
                 "group h-fit"

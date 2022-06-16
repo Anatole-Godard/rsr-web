@@ -55,7 +55,7 @@ export const GetStarted = () => {
   return (
     user &&
     show && (
-      <div className="absolute  z-[60] left-4 md:left-20 xl:left-44 bottom-4">
+      <div className="absolute z-[60] left-4 md:left-20 xl:left-44 bottom-4">
         <Menu
           as="div"
           className="relative flex items-center h-full"

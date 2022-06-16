@@ -23,6 +23,7 @@ import { Input, WrapperModularInputs } from "@components/Resource/Helper/Modular
 import { TagDocument } from "@definitions/Resource/Tag";
 import useFetchRSR from "@hooks/useFetchRSR";
 import { Media } from "@definitions/Resource/Media";
+import toast from "react-hot-toast";
 
 const Map: any = dynamic(() => import("@components/Map/Map") as any, {
   ssr: false,
@@ -180,13 +181,16 @@ const ResourceCreate: NextPage<any> = ({
           }
           if (responses.every((r) => r.ok)) {
             setRequestOk(true);
+            toast.success("Ressource créée avec succès");
             router.push(`/resource/${body.data.attributes.slug}`);
           } else setRequestOk(false);
         } else if (response.ok && medias.length === 0) {
           setRequestOk(true);
+          toast.success("Ressource créée avec succès");
           router.push(`/resource/${body.data.attributes.slug}`);
         }
       } catch (err) {
+        toast.error("Une erreur est survenue");
         console.log(err);
       }
       setLoading(false);

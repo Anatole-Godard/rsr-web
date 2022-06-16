@@ -1,11 +1,12 @@
 import { GetServerSideProps, NextPage } from "next";
 import { AdminLayout } from "@components/Layout/AdminLayout";
-import { CustomTable } from "@components/UI/CustomTable"
+import { CustomTable } from "@components/UI/CustomTable";
 import { useCallback, useEffect, useState } from "react";
 import { User } from "@definitions/User";
 import { useAuth } from "@hooks/useAuth";
 import { fetchRSR } from "libs/fetchRSR";
 import { SearchIcon, UserIcon } from "@heroicons/react/outline";
+import toast from "react-hot-toast";
 
 const UserAdmin: NextPage<any> = (props) => {
   const [users, setUsers] = useState<User[]>(props?.data?.attributes);
@@ -20,14 +21,22 @@ const UserAdmin: NextPage<any> = (props) => {
     getUsers();
   };
 
-  const validUser = (id: number, validated: Boolean) => {
+  const validUser = async (id: number, validated: Boolean) => {
     const body = JSON.stringify({ action: "validate", validated });
-    fetchRSR(`/api/user/admin/${id}/edit`, user.session, {
+    const toastID = toast.loading(
+      validated ? "Validation en cours..." : "Suspension en cours..."
+    );
+    const res = await fetchRSR(`/api/user/admin/${id}/edit`, user.session, {
       method: "PUT",
       body,
-    }).then(() => {
-      getUsers();
     });
+    toast.dismiss(toastID);
+
+    if (res.ok)
+      toast.success(validated ? "Validation réussie" : "Suspension réussie");
+    else toast.error("Une erreur est survenue");
+
+    getUsers();
   };
 
   const theadList = [
@@ -55,12 +64,13 @@ const UserAdmin: NextPage<any> = (props) => {
   };
 
   const getUsers = useCallback(
-    (search?) => {
+    async (search?) => {
       let filter = "";
       if (search) {
         filter = search;
       }
-      fetchRSR(
+
+      const res = await fetchRSR(
         "/api/user/admin?limit=" +
           limitPerPage +
           "&page=" +
@@ -68,28 +78,24 @@ const UserAdmin: NextPage<any> = (props) => {
           "&search=" +
           filter,
         user.session
-      )
-        .then((res) => res.json())
-        .then((body) => {
-          if (body.data?.attributes) {
-            setTotalPages(body.data?.totalPages);
-            setUsers(body.data?.attributes);
-          }
-        })
-        .catch();
+      );
+      if (res.ok) {
+        const body = await res.json();
+        if (body.data?.attributes) {
+          toast.success("Récupération des utilisateurs réussie");
+          setTotalPages(body.data?.totalPages);
+          setUsers(body.data?.attributes);
+        }
+      } else {
+        toast.error("Une erreur est survenue");
+      }
     },
     [currentPage, limitPerPage, user?.session]
   );
 
   useEffect(() => {
     getUsers();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
-    getUsers();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentPage]);
+  }, [currentPage, getUsers]);
 
   const [search, setSearch] = useState<string>("");
 
