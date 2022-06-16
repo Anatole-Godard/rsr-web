@@ -1,11 +1,12 @@
 import { AdminLayout } from "@components/Layout/AdminLayout";
 import { GetServerSideProps, NextPage } from "next";
-import { CustomTable } from "@components/UI/CustomTable"
+import { CustomTable } from "@components/UI/CustomTable";
 import { useCallback, useEffect, useState } from "react";
 import { fetchRSR } from "libs/fetchRSR";
 import { useAuth } from "@hooks/useAuth";
 import { SearchIcon, TagIcon } from "@heroicons/react/outline";
 import { TagDocument } from "@definitions/Resource/Tag";
+import toast from "react-hot-toast";
 
 const TagManager: NextPage<any> = (props) => {
   console.log(props);
@@ -19,17 +20,34 @@ const TagManager: NextPage<any> = (props) => {
 
   const validate = async (_id: string, validated: Boolean) => {
     const body = JSON.stringify({ action: "validate", validated, _id });
-    await fetchRSR(`/api/resource/admin/tags`, user.session, {
+    const toastID = toast.loading(
+      validated
+        ? "Validation de l'étiquette en cours..."
+        : "Suspension de l'étiquette en cours..."
+    );
+    const res = await fetchRSR(`/api/resource/admin/tags`, user.session, {
       method: "PUT",
       body,
     });
+    toast.dismiss(toastID);
+    if (res.ok)
+      toast.success(
+        validated
+          ? "Validation de l'étiquette réussie"
+          : "Suspension de l'étiquette réussie"
+      );
+
     getTags();
   };
   const deleteTag = async (_id: string) => {
-    await fetchRSR(`/api/resource/admin/tags/`, user.session, {
+    const toastID = toast.loading("Suppression de l'étiquette en cours...");
+    const res = await fetchRSR(`/api/resource/admin/tags/`, user.session, {
       method: "DELETE",
       body: JSON.stringify({ _id }),
     });
+    toast.dismiss(toastID);
+    if (res.ok) toast.success("Suppression de l'étiquette réussie");
+    else toast.error("Une erreur est survenue");
     getTags();
   };
 
@@ -55,13 +73,13 @@ const TagManager: NextPage<any> = (props) => {
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const getTags = useCallback(
-    (search?) => {
+    async (search?) => {
       let filter = "";
       if (search) {
         filter = search;
       }
 
-      fetchRSR(
+      const res = await fetchRSR(
         "/api/resource/admin/tags?limit=" +
           limitPerPage +
           "&page=" +
@@ -69,30 +87,24 @@ const TagManager: NextPage<any> = (props) => {
           "&search=" +
           filter,
         user.session
-      )
-        .then((res) => res.json())
-        .then((body) => {
-          if (body.data?.attributes) {
-            setTags(body.data?.attributes);
-            setTotalPages(body.data?.totalPages);
-          }
-        })
-        .catch();
+      );
+      if (res.ok) {
+        const body = await res.json();
+        if (body.data?.attributes) {
+          setTags(body.data?.attributes);
+          setTotalPages(body.data?.totalPages);
+        }
+        toast.success("Récupération des étiquettes réussie");
+      } else {
+        toast.error("Une erreur est survenue");
+      }
     },
     [currentPage, limitPerPage, user?.session]
   );
 
   useEffect(() => {
     getTags();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
-    getTags();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentPage]);
-
-  
+  }, [currentPage, limitPerPage, getTags]);
 
   const updatePage = (data: { selected: number }) => {
     const currentPage = data.selected + 1;
