@@ -226,7 +226,7 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
 
         const body = await response.json();
         if (response.ok && medias.length > 0) {
-          
+
 
           const responses = [];
           for (const media of medias) {

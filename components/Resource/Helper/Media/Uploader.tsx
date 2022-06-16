@@ -1,19 +1,19 @@
 import {
-  PlusCircleIcon,
-  XIcon,
-  VolumeUpIcon,
-  PhotographIcon,
-  VideoCameraIcon,
-  DocumentIcon,
   CloudUploadIcon,
+  DocumentIcon,
   ExclamationIcon,
-} from "@heroicons/react/outline";
-import { Dispatch, useState, Fragment, useEffect } from "react";
-import { Transition, Dialog } from "@headlessui/react";
-import { formatBytes } from "libs/formatBytes";
-import { useRouter } from "next/router";
-import { useEventListener } from "@hooks/useEventListener";
-import { Media } from "@definitions/Resource/Media";
+  PhotographIcon,
+  PlusCircleIcon,
+  VideoCameraIcon,
+  VolumeUpIcon,
+  XIcon
+} from '@heroicons/react/outline';
+import { Dispatch, Fragment, useEffect, useState } from 'react';
+import { Dialog, Transition } from '@headlessui/react';
+import { formatBytes } from 'libs/formatBytes';
+import { useRouter } from 'next/router';
+import { useEventListener } from '@hooks/useEventListener';
+import { Media } from '@definitions/Resource/Media';
 
 export const MediaUploader = ({
   files,
