@@ -20,9 +20,10 @@ import { Notification } from "@definitions/Notification";
 import { useRouter } from "next/router";
 import { formatDistance } from "date-fns";
 import { fr } from "date-fns/locale";
-import { Channel } from "@definitions/Channel";
+import { Channel, ChannelMinimum } from "@definitions/Channel";
 import Link from "next/link";
 import useFetchRSR from "@hooks/useFetchRSR";
+import { ResourceMinimum } from "@definitions/Resource";
 
 export const NotificationsDropdown = () => {
   const { user } = useAuth();
@@ -146,24 +147,33 @@ export const NotificationsDropdown = () => {
                 )}
               </div>
 
-              <div className="flex flex-col px-3 lg:px-6">
-                {notifications
-                  .sort(
-                    (a, b) =>
-                      new Date(b.createdAt.toString()).getTime() -
-                      new Date(a.createdAt.toString()).getTime()
-                  )
-                  .map(
-                    (e, i) =>
-                      i < 3 && (
-                        <NotificationComponent
-                          key={i}
-                          {...e}
-                          remove={removeNotification}
-                        />
-                      )
-                  )}
-              </div>
+              {notifications?.length > 0 ? (
+                <div className="flex flex-col px-3 lg:px-6">
+                  {notifications
+                    .sort(
+                      (a, b) =>
+                        new Date(b.createdAt.toString()).getTime() -
+                        new Date(a.createdAt.toString()).getTime()
+                    )
+                    .map(
+                      (e, i) =>
+                        i < 3 && (
+                          <NotificationComponent
+                            key={i}
+                            {...e}
+                            remove={removeNotification}
+                          />
+                        )
+                    )}
+                </div>
+              ) : (
+                <div className="flex flex-col items-center justify-center w-full h-24">
+                  <p className="font-semibold font-marianne">
+                    Aucune notification à afficher
+                  </p>
+                  <p className="text-sm font-spectral">Vous êtes à jour !</p>
+                </div>
+              )}
             </Menu.Items>
           </Transition>
         </>
@@ -224,9 +234,10 @@ const NotificationComponent = ({
   const goTo = (id: string) => {
     remove(id);
 
-    if (document?.name) router.push(`/channel/${document.slug}`);
+    if ((document as ChannelMinimum)?.name)
+      router.push(`/channel/${document.slug}`);
 
-    if (document?.data?.attributes.properties.name)
+    if ((document as ResourceMinimum)?.data?.attributes.properties.name)
       router.push(`/resource/${document.slug}`);
   };
 
@@ -265,24 +276,28 @@ const NotificationComponent = ({
             </h4>
             <div className="text-xs font-normal font-spectral">
               {notifications.find((e) => e.type === type).message}
-              {document?.name && (
+              {(document as ChannelMinimum)?.name && (
                 <span className="inline-flex items-center ml-1">
                   dans{" "}
                   <a
                     onClick={() => goTo(_id)}
                     className="ml-1 underline cursor-pointer text-bleuFrance-500 dark:text-bleuFrance-100"
                   >
-                    {document.name}
+                    {(document as ChannelMinimum).name}
                   </a>
                 </span>
               )}
-              {document?.data?.attributes.properties.name && (
+              {(document as ResourceMinimum)?.data?.attributes.properties
+                .name && (
                 <span className="inline-flex items-center ml-1">
                   <a
                     onClick={() => goTo(_id)}
                     className="underline cursor-pointer text-bleuFrance-500 dark:text-bleuFrance-100"
                   >
-                    {document.data?.attributes.properties.name}
+                    {
+                      (document as ResourceMinimum).data?.attributes.properties
+                        .name
+                    }
                   </a>
                 </span>
               )}

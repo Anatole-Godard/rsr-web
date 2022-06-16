@@ -2,8 +2,12 @@ import { Notification } from "@definitions/Notification";
 import { fetchRSR } from "libs/fetchRSR";
 import { useRouter } from "next/router";
 import React, { createContext, useContext, useState, useEffect } from "react";
+import toast from "react-hot-toast";
 import { useAuth } from "./useAuth";
 const NotificationContext = createContext({});
+
+const DEFAULT_POLLING_INTERVAL = 10000;
+
 
 /**
  * TODO: improve this by using sockets instead of polling
@@ -36,8 +40,10 @@ function NotificationProvider({
       .then((res) => res.json())
       .then((res) => {
         if (res.error) {
-          console.log(res.error);
+          toast.error("Une erreur est survenue");
+          console.error(res.error);
         } else {
+          toast.success("Notification lue");
           setNotifications(res.data.attributes);
         }
       })
@@ -69,7 +75,7 @@ function NotificationProvider({
               router.push("/auth/login");
             }
           });
-      }, 5000);
+      }, DEFAULT_POLLING_INTERVAL);
 
       return () => {
         clearInterval(poll);
