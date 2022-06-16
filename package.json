@@ -13,9 +13,6 @@
   "dependencies": {
     "@headlessui/react": "^1.4.1",
     "@heroicons/react": "^1.0.4",
-    "@types/leaflet": "^1.7.5",
-    "@types/react-leaflet": "^2.8.2",
-    "@types/react-lottie": "^1.2.6",
     "argon2": "^0.28.3",
     "chart.js": "^3.7.1",
     "cookie": "^0.4.1",
@@ -40,7 +37,7 @@
     "react-nice-dates": "^3.1.0",
     "react-paginate": "^8.0.0",
     "react-select": "^5.2.1",
-    "rerousel": "^0.1.9",
+    "react-swipeable": "^7.0.0",
     "slug": "^5.1.0",
     "socket.io": "^4.4.1",
     "socket.io-client": "^4.4.1",
@@ -50,21 +47,29 @@
   },
   "devDependencies": {
     "@playwright/test": "^1.22.2",
+    "@babel/core": "^7.17.10",
     "@tailwindcss/typography": "^0.5.2",
     "@types/formidable": "^2.0.3",
     "@types/jsonwebtoken": "^8.5.6",
+    "@types/leaflet": "^1.7.5",
     "@types/react": "^17.0.33",
+    "@types/react-leaflet": "^2.8.2",
+    "@types/react-lottie": "^1.2.6",
     "@types/react-paginate": "^7.1.1",
     "@types/slug": "^5.0.2",
     "@types/uuid": "^8.3.1",
     "@types/zxcvbn": "^4.4.1",
-    "autoprefixer": "^10.3.7",
+    "autoprefixer": "10.4.5",
     "codehawk-cli": "^8.3.1",
     "eslint": "8.0.0",
     "eslint-config-next": "11.1.2",
-    "faker": "^5.5.3",
     "postcss": "^8.3.9",
+    "prop-types": "^15.8.1",
     "tailwindcss": "^3.0.1",
     "typescript": "4.4.3"
+  },
+  "peerDependencies": {
+    "@babel/core": "^7.17.10",
+    "prop-types": "^15.8.1"
   }
 }

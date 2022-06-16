@@ -1,9 +1,9 @@
-import { ResourceCard } from "@components/card/Resource";
+import { ResourceCard } from "@components/Resource/Card";
 import { Resource } from "@definitions/Resource";
 import { Disclosure, Transition } from "@headlessui/react";
 import { ChevronUpIcon } from "@heroicons/react/outline";
 import { useAuth } from "@hooks/useAuth";
-import { classes } from "@utils/classes";
+import { classes } from "libs/classes";
 import Image from "next/image";
 import { useMemo } from "react";
 

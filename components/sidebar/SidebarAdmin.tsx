@@ -1,5 +1,4 @@
 import {
-  DocumentTextIcon,
   HomeIcon,
   UserIcon,
   ExclamationIcon,
@@ -17,7 +16,7 @@ import {
 } from "./SidebarIcon";
 import { useAuth } from "@hooks/useAuth";
 import { v4 as uuidv4 } from "uuid";
-import { Logo } from "@components/ui/Logo";
+import { Logo } from "@components/UI/Logo";
 
 const className = { className: "shrink-0 w-5 h-5" };
 

@@ -1,18 +1,18 @@
-import { AppLayout } from "@components/layouts/AppLayout";
-import { UserLikedResources } from "@components/user/UserLikedResources";
-import { UserResources } from "@components/user/UserResources";
+import { AppLayout } from "@components/Layout/AppLayout";
+import { UserLikedResources } from "@components/User/UserLikedResources";
+import { UserResources } from "@components/User/UserResources";
 import { Resource } from "@definitions/Resource";
 import { CogIcon, CollectionIcon } from "@heroicons/react/outline";
 import { useAuth } from "@hooks/useAuth";
-import { fetchRSR } from "@utils/fetchRSR";
+import { fetchRSR } from "libs/fetchRSR";
 import { NextPage } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { ChartSquareBarIcon } from "@heroicons/react/outline";
 
 import { useState } from "react";
-import { UserStatistics } from "@components/user/UserStatistics";
-import { UserSeenResources } from "@components/user/UserSeenResources";
+import { UserStatistics } from "@components/User/UserStatistics";
+import { UserSeenResources } from "@components/User/UserSeenResources";
 
 const UserIndexPage: NextPage<any> = ({
   resources,

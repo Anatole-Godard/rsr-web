@@ -1,4 +1,4 @@
-import { AppLayout } from "@components/layouts/AppLayout";
+import { AppLayout } from "@components/Layout/AppLayout";
 import { Resource } from "@definitions/Resource";
 import { Dialog, Tab, Transition } from "@headlessui/react";
 import {
@@ -8,8 +8,8 @@ import {
   XCircleIcon,
   XIcon,
 } from "@heroicons/react/solid";
-import { fetchXHR } from "@utils/fetchXHR";
-import { classes } from "@utils/classes";
+import { fetchXHR } from "libs/fetchXHR";
+import { classes } from "libs/classes";
 import { types, visibilities } from "constants/resourcesTypes";
 import type { GetServerSideProps, NextPage } from "next";
 import dynamic from "next/dynamic";
@@ -17,15 +17,19 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { Fragment, useEffect, useState } from "react";
-import { fetchRSR } from "@utils/fetchRSR";
+import { fetchRSR } from "libs/fetchRSR";
 import { useAuth } from "@hooks/useAuth";
 import { UserMinimum } from "@definitions/User";
 import { TrashIcon } from "@heroicons/react/outline";
 import useFetchRSR from "@hooks/useFetchRSR";
 import { TagDocument } from "@definitions/Resource/Tag";
 import {isAdmin} from "@utils/getCurrentUser";
+import { MediaUploader } from "@components/Resource/Helper/Media/Uploader";
+import { Input, WrapperModularInputs } from "@components/Resource/Helper/ModularInput";
+import { toModularInput } from "@utils/toModularInput";
+import { Media } from "@definitions/Resource/Media";
 
-const Map: any = dynamic(() => import("@components/map/Map") as any, {
+const Map: any = dynamic(() => import("@components/Map/Map") as any, {
   ssr: false,
 });
 
@@ -89,13 +93,14 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
   const [endDate, setEndDate] = useState<string | null>(
     props.data?.attributes.properties.endDate || null
   );
-  // const [locationType, setLocationType] = useState<
-  //   Event["location"]["type"] | null
-  // >(null);
 
-  // const [locationData, setlocationData] = useState<
-  //   Event["location"]["data"] | null
-  // >(null);
+  const [medias, setMedias] = useState<Media[]>(
+    // props.data?.attributes.properties.medias || []
+    []
+  );
+  const [inputs, setInputs] = useState<Input[]>(
+    toModularInput(props.data?.attributes.properties) || []
+  );
 
   const [validForm, setValidForm] = useState<boolean>(false);
   const [requestOk, setRequestOk] = useState<boolean | null>(null);
@@ -134,7 +139,7 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
 
   const formatResource = (): Resource => {
     let data: Resource["data"] = {
-      type: type.value,
+      type: type.value as Resource["data"]["type"],
       attributes: {},
     };
     if (type.value === "physical_item") {
@@ -152,7 +157,7 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
         type: "Feature",
         geometry: {
           type: "Point",
-          coordinates: position,
+          coordinates: [position.lat, position.lng],
         },
         properties: {
           name,
@@ -164,8 +169,7 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
         properties: {
           name,
           description,
-          externalLink,
-          image: null,
+          url: externalLink,
         },
       };
     } else if (type.value === "event") {
@@ -175,9 +179,23 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
           description,
           startDate,
           endDate,
+          participants: [],
         },
       };
+    } else if (type.value === "other") {
+      data.attributes = {
+        properties: {
+          name,
+          description,
+        },
+      };
+      inputs.map((input) => {
+        data.attributes.properties[input.slug] = input;
+      });
     }
+
+    // resetting to default data.attributes.properties.medias
+    if (type.hasMedia) data.attributes.properties.medias = [];
 
     return {
       description,
@@ -207,26 +225,28 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
         );
 
         const body = await response.json();
-        if (response.ok && pictureFile) {
-          const fd = new FormData();
-          fd.append("file", pictureFile);
-          fd.append("name", pictureFile.name);
-          fd.append("type", pictureFile.type);
-          fd.append("size", pictureFile.size.toString());
-          const responseFileUpload = await fetch(
-            `/api/resource/${body.data.attributes.slug}/upload`,
-            {
-              method: "POST",
-              body: fd,
-            }
-          );
-          if (!responseFileUpload.ok) {
-            setRequestOk(false);
-          } else {
+        if (response.ok && medias.length > 0) {
+          
+
+          const responses = [];
+          for (const media of medias) {
+            const formData = new FormData();
+            formData.append("file", media as any);
+            formData.append("name", media.name);
+            formData.append("type", media.type);
+            formData.append("size", media.size.toString());
+            responses.push(
+              await fetch(`/api/resource/${body.data.attributes.slug}/upload`, {
+                method: "POST",
+                body: formData,
+              })
+            );
+          }
+          if (responses.every((r) => r.ok)) {
             setRequestOk(true);
             router.push(`/resource/${body.data.attributes.slug}`);
-          }
-        } else if (response.ok && !pictureFile) {
+          } else setRequestOk(false);
+        } else if (response.ok && medias.length === 0) {
           setRequestOk(true);
           router.push(`/resource/${body.data.attributes.slug}`);
         }
@@ -262,12 +282,15 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
         if (name && description && startDate) setValidForm(true);
         break;
 
+      case "other":
+        if (name && description) setValidForm(true);
+        break;
+
       default:
         setValidForm(false);
         break;
     }
   }, [
-    pictureUrl,
     name,
     description,
     tags,
@@ -278,6 +301,8 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
     category,
     location,
     startDate,
+    inputs,
+    medias,
   ]);
 
   const {
@@ -424,7 +449,7 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
                       className={({ selected }) =>
                         classes(
                           "w-full py-2.5 text-xs leading-5 font-medium rounded-md",
-                          "focus:outline-none transition-all duration-300 focus:ring-2 ring-offset-2 ring-amber-500",
+                          "focus:outline-none transition-all duration-300 focus:ring-2 ring-offset-2 ring-amber-500 truncate inline-flex items-center justify-center",
                           selected
                             ? "bg-amber-700  text-amber-100 font-semibold shadow"
                             : "text-amber-700 bg-amber-100 hover:bg-amber-300 hover:text-amber-800",
@@ -433,6 +458,8 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
                         )
                       }
                     >
+                      {v.icon.outline({ className: "w-4 h-4 mr-1 shrink-0" })}
+
                       {v.label}
                     </Tab>
                   ))}
@@ -576,7 +603,7 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
                         className={({ selected }) =>
                           classes(
                             "w-full py-2.5 text-xs leading-5 font-medium rounded-md",
-                            "focus:outline-none transition-all duration-300 focus:ring-2 ring-offset-2 ring-amber-500",
+                            "focus:outline-none transition-all duration-300 focus:ring-2 ring-offset-2 ring-amber-500 truncate inline-flex items-center justify-center",
                             selected
                               ? "bg-amber-700  text-amber-100 font-semibold shadow"
                               : "text-amber-700 bg-amber-100 hover:bg-amber-300 hover:text-amber-800",
@@ -585,6 +612,10 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
                           )
                         }
                       >
+                        {type.icon.outline({
+                          className: "w-4 h-4 mr-1 shrink-0",
+                        })}
+
                         {type.label}
                       </Tab>
                     ))}
@@ -592,80 +623,21 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
                 </div>
               </Tab.Group>
 
-              {types.find((t) => t.value === type.value).hasImage && (
-                <label className="flex flex-col grow">
-                  <h4 className="mb-1 text-sm font-semibold text-gray-700 font-marianne">
-                    Image de la ressource
+              {types.find((t) => t.value === type.value).hasMedia && (
+                <div className="flex flex-col h-full overflow-hidden grow">
+                  <h4
+                    className={classes(
+                      "mb-1 text-sm font-semibold text-gray-700 font-marianne",
+                      type.value === "physical_item"
+                        ? "after:content-['*'] after:ml-0.5 after:text-red-500"
+                        : ""
+                    )}
+                  >
+                    Médias
                   </h4>
-                  {pictureUrl && (
-                    <div className="relative w-full grow">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
-                        src={pictureUrl}
-                        className="object-cover object-center w-full rounded-lg aspect-video"
-                        alt="Event picture"
-                      ></img>
-                      <div
-                        className="absolute top-0 right-0 flex items-center justify-center w-6 h-6 -mt-1 -mr-1 text-red-700 transition duration-300 bg-red-200 rounded-full cursor-pointer hover:bg-red-300"
-                        onClick={() => {
-                          setPictureUrl(null);
-                          setPictureFile(null);
-                        }}
-                      >
-                        <XIcon className="w-3 h-3 stroke-2"></XIcon>
-                      </div>
-                    </div>
-                  )}
-                  {!pictureUrl && (
-                    <div className="w-full grow">
-                      <input
-                        id="filePicture"
-                        type="file"
-                        accept="image/*"
-                        onChange={(e) => {
-                          let file =
-                            e.target.files instanceof FileList
-                              ? e.target.files[0]
-                              : null;
-                          if (file) {
-                            setPictureFile(file);
-                            setPictureUrl(URL.createObjectURL(file));
-                          }
-                        }}
-                        className="hidden"
-                      ></input>
-                      <label
-                        htmlFor="filePicture"
-                        className="relative flex flex-col items-center justify-center w-full h-full p-12 duration-300 border-2 border-gray-300 border-dashed rounded-lg hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                      >
-                        <svg
-                          className="w-12 h-12 mx-auto text-gray-400"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"
-                          />
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"
-                          />
-                        </svg>
 
-                        <span className="block mt-2 text-sm font-medium text-gray-900">
-                          Ajouter une image
-                        </span>
-                      </label>
-                    </div>
-                  )}
-                </label>
+                  <MediaUploader files={medias} setFiles={setMedias} />
+                </div>
               )}
               {type.value === "physical_item" && (
                 <>
@@ -775,6 +747,10 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
                     </div>
                   </div>
                 </>
+              )}
+
+              {type.value === "other" && (
+                <WrapperModularInputs data={inputs} setData={setInputs} />
               )}
             </div>
           </div>

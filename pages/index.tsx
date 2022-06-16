@@ -1,9 +1,9 @@
-import { HeroSection } from "@components/landing/HeroSection";
-import { ResourceSection } from "@components/landing/ResourceSection";
-import { SearchSection } from "@components/landing/SearchSection";
-import { CookieAlert } from "@components/ui/CookieAlert";
+import { HeroSection } from "@components/Sections/Landing/HeroSection";
+import { ResourceSection } from "@components/Sections/Landing/ResourceSection";
+import { SearchSection } from "@components/Sections/Landing/SearchSection";
+import { CookieAlert } from "@components/UI/CookieAlert";
 import { Resource } from "@definitions/Resource";
-import { AppLayout } from "components/layouts/AppLayout";
+import { AppLayout } from "@components/Layout/AppLayout";
 import type { GetServerSideProps, NextPage } from "next";
 
 const Home: NextPage<any> = ({ resources }: { resources: Resource[] }) => {

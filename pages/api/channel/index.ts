@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { handleError } from "@utils/handleError";
+import { handleError } from "libs/handleError";
 import withDatabase from "@middleware/mongoose";
 import Channel from "@models/Channel";
 import { withAuth } from "@middleware/auth";

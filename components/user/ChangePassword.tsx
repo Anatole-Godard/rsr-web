@@ -1,6 +1,6 @@
 import { CheckIcon } from "@heroicons/react/outline";
 import { useAuth } from "@hooks/useAuth";
-import { fetchRSR } from "@utils/fetchRSR";
+import { fetchRSR } from "libs/fetchRSR";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";

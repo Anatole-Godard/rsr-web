@@ -1,4 +1,4 @@
-import { GuestLayout } from "@components/layouts/GuestLayout";
+import { GuestLayout } from "@components/Layout/GuestLayout";
 import { useAuth } from "@hooks/useAuth";
 import Link from "next/link";
 import Image from "next/image";
@@ -8,7 +8,7 @@ import {
   ArrowRightIcon,
   UserAddIcon,
 } from "@heroicons/react/outline";
-import { Logo } from "@components/ui/Logo";
+import { Logo } from "@components/UI/Logo";
 
 import zxcvbn from "zxcvbn";
 

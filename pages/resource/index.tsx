@@ -1,5 +1,5 @@
-import { ResourceCard } from "@components/card/Resource";
-import { AppLayout } from "@components/layouts/AppLayout";
+import { ResourceCard } from "@components/Resource/Card";
+import { AppLayout } from "@components/Layout/AppLayout";
 import { Resource } from "@definitions/Resource";
 import { ChevronDownIcon, SearchIcon } from "@heroicons/react/outline";
 import { PlusIcon } from "@heroicons/react/solid";
@@ -100,7 +100,7 @@ const ResourceIndex: NextPage<any> = ({
               </label>
 
               <label className="relative text-gray-400 focus-within:text-gray-600">
-                {type === null ? (
+                {selectedType === null ? (
                   <SearchIcon className="absolute w-4 h-4 transform -translate-y-1/2 pointer-events-none top-1/2 left-3" />
                 ) : (
                   types

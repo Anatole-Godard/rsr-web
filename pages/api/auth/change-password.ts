@@ -2,7 +2,7 @@ import { withAuth } from "@middleware/auth";
 import withDatabase from "@middleware/mongoose";
 import SessionToken from "@models/SessionToken";
 import User from "@models/User";
-import { handleError } from "@utils/handleError";
+import { handleError } from "libs/handleError";
 import { NextApiRequest, NextApiResponse } from "next";
 
 const argon2 = require("argon2");

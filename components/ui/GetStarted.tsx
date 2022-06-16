@@ -2,7 +2,7 @@ import { Menu, Transition } from "@headlessui/react";
 import { AcademicCapIcon, ChevronDownIcon } from "@heroicons/react/outline";
 import { useAuth } from "@hooks/useAuth";
 import useFetchRSR from "@hooks/useFetchRSR";
-import { classes } from "@utils/classes";
+import { classes } from "libs/classes";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { Fragment, useEffect, useState } from "react";
@@ -155,7 +155,7 @@ export const GetStarted = () => {
                           href="/resource"
                         />
                         <Item
-                          label="Créer une playlist et y renseigner une ressources"
+                          label="Créer une playlist et y renseigner une ressource"
                           condition={getStarted?.create_playlist}
                           href="/resource"
                         />

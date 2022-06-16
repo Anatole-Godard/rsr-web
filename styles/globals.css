@@ -209,7 +209,7 @@
   }
 
   .btn {
-    @apply inline-flex items-center px-2 py-2 text-sm font-light transition-all duration-300 rounded-lg sm:px-4 font-spectral active:ring ring-offset-1 focus:outline-none;
+    @apply inline-flex items-center px-2 py-2 text-sm font-light transition-all duration-300 rounded-lg md:px-4 font-spectral active:ring ring-offset-1 focus:outline-none;
   }
 
   .btn-outline {
@@ -294,7 +294,7 @@
   z-index: 0 !important;
 }
 
-.form-checkbox:checked {
+/* .form-checkbox:checked {
   background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='M6 10l3 3l6-6'/%3e%3c/svg%3e");
 }
 
@@ -305,4 +305,24 @@
   background-size: 100% 100%;
   background-position: 50%;
   background-repeat: no-repeat;
+} */
+
+.nice-dates-week-header_day {
+  width: calc(1/7)!important;
+
+}
+
+.nice-dates-day {
+  font-family: "Spectral", sans-serif;
+  height: 3rem !important;
+}
+
+.nice-dates-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  height: 250px !important;
+}
+
+.nice-dates-navigation_previous, .nice-dates-navigation_next {
+  padding-bottom: 4rem !important;
 }

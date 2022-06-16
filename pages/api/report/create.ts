@@ -1,14 +1,14 @@
 import { withAuth } from "@middleware/auth";
 import withDatabase from "@middleware/mongoose";
 import Report from "@models/Report";
-import { getUser } from "@utils/getCurrentUser";
-import { handleError } from "@utils/handleError";
+import { getUser } from "libs/getCurrentUser";
+import { handleError } from "libs/handleError";
 import { NextApiRequest, NextApiResponse } from "next";
 import User from "@models/User";
 import Resource from "@models/Resource";
 import { ResourceMinimum } from "@definitions/Resource";
 import { UserMinimum } from "@definitions/User";
-import { toResourceMinimum } from "@utils/toMinimum";
+import { toResourceMinimum } from "libs/toMinimum";
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== "POST") {

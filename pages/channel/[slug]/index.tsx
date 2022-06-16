@@ -1,11 +1,9 @@
-import { Sidebar } from "@components/channel/Sidebar";
-import { AppLayout } from "@components/layouts/AppLayout";
+import { Sidebar } from "@components/Channel/Sidebar";
+import { AppLayout } from "@components/Layout/AppLayout";
 import {
   ChatIcon,
   CheckIcon,
-  PaperAirplaneIcon,
   PencilIcon,
-  PlusIcon,
   UserGroupIcon,
   XIcon,
 } from "@heroicons/react/outline";
@@ -16,9 +14,9 @@ import { useEffect, useRef, useState } from "react";
 import io from "socket.io-client";
 import { Message } from "@definitions/Message";
 import { useAuth } from "@hooks/useAuth";
-import { fetchRSR } from "@utils/fetchRSR";
+import { fetchRSR } from "libs/fetchRSR";
 import { Channel } from "@definitions/Channel";
-import { HistoryItem } from "@components/channel/HistoryItem";
+import { HistoryItem } from "@components/Channel/HistoryItem";
 import Image from "next/image";
 import { Activity } from "@definitions/Activity";
 

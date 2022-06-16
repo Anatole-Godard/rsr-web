@@ -1,5 +1,5 @@
 import {NextApiRequest, NextApiResponse} from "next";
-import {getUser} from "@utils/getCurrentUser";
+import {getUser} from "libs/getCurrentUser";
 import Resource from "@models/Resource";
 import {withAuth} from "@middleware/auth";
 import withDatabase from "@middleware/mongoose";

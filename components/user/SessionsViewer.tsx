@@ -6,7 +6,7 @@ import {
 import { XIcon } from "@heroicons/react/solid";
 import { useAuth } from "@hooks/useAuth";
 import useFetchRSR from "@hooks/useFetchRSR";
-import { fetchRSR } from "@utils/fetchRSR";
+import { fetchRSR } from "libs/fetchRSR";
 import { formatDistance } from "date-fns";
 import fr from "date-fns/locale/fr";
 import Image from "next/image";

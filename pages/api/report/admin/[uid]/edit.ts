@@ -2,7 +2,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import Report from '@models/Report';
 import User from '@models/User';
 import Resource from '@models/Resource';
-import { isAdmin } from '@utils/getCurrentUser';
+import { isAdmin } from 'libs/getCurrentUser';
 
 export default async function handler(
     req: NextApiRequest,

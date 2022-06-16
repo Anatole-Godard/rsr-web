@@ -1,4 +1,4 @@
-import { AppLayout } from "@components/layouts/AppLayout";
+import { AppLayout } from "@components/Layout/AppLayout";
 import { Channel } from "@definitions/Channel";
 import { UserMinimum } from "@definitions/User";
 import { Dialog, Transition } from "@headlessui/react";
@@ -10,8 +10,8 @@ import {
   XIcon,
 } from "@heroicons/react/solid";
 import { useAuth } from "@hooks/useAuth";
-import { classes } from "@utils/classes";
-import { fetchRSR } from "@utils/fetchRSR";
+import { classes } from "libs/classes";
+import { fetchRSR } from "libs/fetchRSR";
 import type { GetServerSideProps, NextPage } from "next";
 import dynamic from "next/dynamic";
 import Image from "next/image";

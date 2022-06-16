@@ -4,7 +4,7 @@ import {
   SparklesIcon,
   XIcon,
 } from "@heroicons/react/outline";
-import { classes } from "@utils/classes";
+import { classes } from "libs/classes";
 import { useRouter } from "next/router";
 import { Fragment, useEffect, useState } from "react";
 import { useCookies } from "react-cookie";

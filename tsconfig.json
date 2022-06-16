@@ -23,7 +23,7 @@
         "types/*"
       ],
       "@utils/*": [
-        "utils/*"
+        "libs/*"
       ],
       "@components/*": [
         "components/*"

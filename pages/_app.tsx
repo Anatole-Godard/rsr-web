@@ -2,12 +2,12 @@ import "leaflet/dist/leaflet.css";
 import "../styles/globals.css";
 import type { AppProps } from "next/app";
 import { ThemeProvider } from "next-themes";
-import { DarkModeToggler } from "@components/helpers/DarkMode";
+import { DarkModeToggler } from "@components/Helper/DarkModeToggler";
 import { AnimatePresence } from "framer-motion";
 import { AuthProvider } from "@hooks/useAuth";
 import { NotificationProvider } from "@hooks/useNotifications";
 import { Fragment } from "react";
-import { GetStarted } from "@components/ui/GetStarted";
+import { GetStarted } from "@components/UI/GetStarted";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (

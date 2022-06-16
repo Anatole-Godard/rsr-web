@@ -1,13 +1,13 @@
-import { SidebarDropdown } from "@components/dropdowns/SidebarDropdown";
-import { UserDropdown } from "@components/dropdowns/UserDropdown";
-import { Logo } from "@components/ui/Logo";
+import { SidebarDropdown } from "@components/Dropdown/SidebarDropdown";
+import { UserDropdown } from "@components/Dropdown/UserDropdown";
+import { Logo } from "@components/UI/Logo";
 import { SearchIcon as HISearchIcon } from "@heroicons/react/outline";
 import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { motion } from "framer-motion";
-import { NotificationsDropdown } from "@components/dropdowns/NotificationsDropdown";
+import { NotificationsDropdown } from "@components/Dropdown/NotificationsDropdown";
 import { useRouter } from "next/router";
-import { classes } from "@utils/classes";
+import { classes } from "libs/classes";
 
 export const Navbar: React.FC<any> = () => {
   const router = useRouter();
