@@ -7,7 +7,8 @@ import { AnimatePresence } from "framer-motion";
 import { AuthProvider } from "@hooks/useAuth";
 import { NotificationProvider } from "@hooks/useNotifications";
 import { Fragment } from "react";
-import { GetStarted } from "@components/UI/GetStarted";
+import { GetStarted } from "@components/Helper/GetStarted";
+import { Toaster } from "react-hot-toast";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
@@ -23,6 +24,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           </AnimatePresence>
         </NotificationProvider>
       </AuthProvider>
+      <Toaster position="top-right" />
     </ThemeProvider>
   );
 }
