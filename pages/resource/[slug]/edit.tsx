@@ -28,6 +28,7 @@ import { MediaUploader } from "@components/Resource/Helper/Media/Uploader";
 import { Input, WrapperModularInputs } from "@components/Resource/Helper/ModularInput";
 import { toModularInput } from "@utils/toModularInput";
 import { Media } from "@definitions/Resource/Media";
+import toast from "react-hot-toast";
 
 const Map: any = dynamic(() => import("@components/Map/Map") as any, {
   ssr: false,
@@ -244,14 +245,18 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
           }
           if (responses.every((r) => r.ok)) {
             setRequestOk(true);
+            toast.success("Ressource éditée avec succès");
+            
             router.push(`/resource/${body.data.attributes.slug}`);
           } else setRequestOk(false);
         } else if (response.ok && medias.length === 0) {
           setRequestOk(true);
+          toast.success("Ressource éditée avec succès");
           router.push(`/resource/${body.data.attributes.slug}`);
         }
       } catch (err) {
         console.log(err);
+        toast.error("Une erreur est survenue");
       }
       setLoading(false);
     }
