@@ -221,10 +221,6 @@ interface NotificationComponentProps extends Notification {
   remove: (id: string) => void;
 }
 
-interface ChannelDocument {
-  name: string;
-}
-
 const NotificationComponent = ({
   _id,
   user,
@@ -287,7 +283,7 @@ const NotificationComponent = ({
                     onClick={() => goTo(_id)}
                     className="ml-1 underline cursor-pointer text-bleuFrance-500 dark:text-bleuFrance-100"
                   >
-                    {(document as ChannelMinimum).name}
+                    {(document as ChannelMinimum)?.name}
                   </a>
                 </span>
               )}
@@ -299,7 +295,7 @@ const NotificationComponent = ({
                     className="underline cursor-pointer text-bleuFrance-500 dark:text-bleuFrance-100"
                   >
                     {
-                      (document as ResourceMinimum).data?.attributes.properties
+                      (document as ResourceMinimum)?.data?.attributes.properties
                         .name
                     }
                   </a>
