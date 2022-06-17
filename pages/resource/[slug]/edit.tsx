@@ -872,6 +872,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       };
     }
 
+    // @ts-ignore
     if (!(await isAdmin({headers: parsedUser.session})))
       if( resource.owner.uid !== parsedUser?.data.uid){
         return {

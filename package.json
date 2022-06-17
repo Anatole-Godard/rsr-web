@@ -8,10 +8,14 @@
     "start": "next start",
     "lint": "next lint",
     "codehawk": "codehawk .",
-    "test": "npx playwright test --project=chromium"
+    "test:e2e": "playwright test"
+  },
+  "resolutions": {
+    "@types/react": "17.0.2",
+    "@types/react-dom": "17.0.2"
   },
   "dependencies": {
-    "@headlessui/react": "^1.4.1",
+    "@headlessui/react": "^1.6.4",
     "@heroicons/react": "^1.0.4",
     "argon2": "^0.28.3",
     "chart.js": "^3.7.1",

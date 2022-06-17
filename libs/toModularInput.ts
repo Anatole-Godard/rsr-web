@@ -1,4 +1,4 @@
-import { Input } from "@components/Helper/ModularInput";
+import { Input } from "@components/Resource/Helper/ModularInput";
 import { Resource } from "@definitions/Resource";
 
 export const toModularInput = (
