@@ -15,7 +15,7 @@ jobs:
         run: yarn build
 
   deploy:
-  timeout-minutes: 60
+    timeout-minutes: 60
     runs-on: ubuntu-latest
     needs: [build]
     steps:
