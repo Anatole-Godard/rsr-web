@@ -52,6 +52,8 @@ jobs:
         run: yarn install --frozen-lockfile
       # - name: Build application
       #   run: yarn build
+      - name: Build stack
+        run: docker-compose -f docker-compose.dev.yml up -d
       - name: Install playwright browsers
         run: npx playwright install
       - name: Launch e2e tests
