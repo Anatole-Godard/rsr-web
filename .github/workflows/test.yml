@@ -50,7 +50,7 @@ jobs:
       - run: ssh admin@52.47.179.38 "ls"
       - name: Deploy with rsync
         run: rsync -avz ./ admin@52.47.179.38:next
-      - run: ssh admin@52.47.179.38 "cd next && sudo docker compose up"
+      - run: ssh admin@52.47.179.38 "cd next && sudo docker compose -f docker-compose.dev.yml up"
       - run: ssh admin@52.47.179.38 "pm2 startOrReload ecosystem.config.js"
 
   # e2e-tests:
