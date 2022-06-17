@@ -31,11 +31,13 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
-      - uses: actions/cache@v2
-        id: cache-build
-        with:
-          path: ./build-dep
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/yarn.lock') }}
+      # - uses: actions/cache@v2
+      #   id: cache-build
+      #   with:
+      #     path: ./build-dep
+      #     key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/yarn.lock') }}
+      - name: Build application
+        run: yarn build
       - uses: microsoft/playwright-github-action@v1
       - name: Launch e2e tests
         if: steps.cache-build.outputs.cache-hit != 'true'
