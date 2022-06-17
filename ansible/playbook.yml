@@ -1,0 +1,60 @@
+- hosts: webservers
+  become: true
+  become_method: sudo
+  vars:
+    container_count: 3
+    default_container_name: rsr-web
+    default_container_image: node:16
+
+  tasks:
+    - name: Install gnupg
+      apt:
+        update_cache: yes
+        name: gnupg
+        state: present
+      
+    - name: "Install nodejs"
+      apt:
+        update_cache: yes
+        name: nodejs
+        state: present
+
+    - name: Install "pm2" node.js package globally
+      community.general.npm:
+        name: pm2
+        global: yes
+
+    - name: Install aptitude
+      apt:
+        name: aptitude
+        state: latest
+        update_cache: true
+
+    - name: Install required system packages
+      apt:
+        pkg:
+          - apt-transport-https
+          - ca-certificates
+          - curl
+          - software-properties-common
+          - python3-pip
+          - virtualenv
+          - python3-setuptools
+        state: latest
+        update_cache: true
+    
+    - name: Add Docker GPG apt Key
+      apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
+
+    - name: Add Docker Repository
+      apt_repository:
+        repo: deb https://download.docker.com/linux/ubuntu focal stable
+        state: present
+
+    - name: Update apt and install docker-ce
+      apt:
+        name: docker-ce
+        state: latest
+        update_cache: true
