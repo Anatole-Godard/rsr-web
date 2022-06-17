@@ -47,10 +47,10 @@
     #     name: yarn
     #     global: yes
 
-    - name: Install yarn globally
-      community.general.npm:
-        name: yarn
-        global: yes
+    # - name: Install yarn globally
+    #   community.general.npm:
+    #     name: yarn
+    #     global: yes
 
     - name: Install aptitude
       apt:
