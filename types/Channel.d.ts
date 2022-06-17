@@ -24,11 +24,4 @@ export type ChannelMinimum = {
   image?: any;
   description?: string;
   visibility: "public" | "private";
-  data: {
-    attributes: {
-      properties: {
-        name: string;
-      };
-    };
-  };
 };
