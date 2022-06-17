@@ -1,6 +1,4 @@
 import { Resource, ResourceMinimum } from "@definitions/Resource";
-import {UserMinimum} from "@definitions/User";
-import {TagDocument} from "@definitions/Resource/Tag";
 
 /**
  * `toResourceMinimum` takes a `Resource` and returns a `ResourceMinimum`
