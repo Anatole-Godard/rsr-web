@@ -52,7 +52,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     resource.markModified("comments");
     await resource.save();
 
-    const resourceMinimum: ResourceMinimum
+    const resourceMinimum: ResourceMinimum = toResourceMinimum(resource);
 
     if (resource.owner.uid.toString() !== user._id.toString()) {
       const notification: Notification = {
