@@ -1,36 +1,44 @@
 name: 'Application'
 on: [push]
 jobs:
-#  build:
-#    timeout-minutes: 60
-#    runs-on: ubuntu-latest
-#    steps:
-#      - uses: actions/checkout@v2
-#      - uses: actions/setup-node@v2
-#        with:
-#          node-version: '14.x'
-#      - name: Install dependencies
-#        run: yarn install --frozen-lockfile
-#      - name: Build application
-#        run: yarn
+  build:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '14.x'
+      - name: Build cache
+        id: cache-build
+        uses: actions/cache@v2
+        with:
+          path: build-dep
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/yarn.lock') }}
+          restore_keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+      - name: Build application
+        run: yarn build
 
   e2e-tests:
     timeout-minutes: 60
     runs-on: ubuntu-latest
-#    needs: [build]
+    needs: [build]
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
-      - name: Install dependencies
-        run: yarn install --frozen-lockfile
-      - name: Install Playwright Browsers
-        run: npx playwright install --with-deps
-      - name: Build Next.js
-        run: yarn build
-      - name: Run Next.js
-        run: yarn start
+      - uses: actions/cache@v2
+        id: cache-build
+        with:
+          path: build-dep
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/yarn.lock') }}
+      - uses: microsoft/playwright-github-action@v1
       - name: Launch e2e tests
-        if: success()
+        if: steps.cache-build.outputs.cache-hit != 'true'
         run: yarn test:e2e
       - uses: actions/upload-artifact@v2
         if: always()
