@@ -31,7 +31,7 @@ jobs:
       - name: Deploy with rsync
         run: rsync -avz ./ admin@52.47.179.38:next
       - run: ssh admin@52.47.179.38 "cd next && yarn && yarn build"
-      #  - run: ssh admin@52.47.179.38 "pm2 startOrReload ecosystem.config.js"
+      - run: ssh admin@52.47.179.38 "pm2 startOrReload ecosystem.config.js"
 
   # e2e-tests:
   #   timeout-minutes: 60
