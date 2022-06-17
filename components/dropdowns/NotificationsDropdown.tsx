@@ -20,9 +20,10 @@ import { Notification } from "@definitions/Notification";
 import { useRouter } from "next/router";
 import { formatDistance } from "date-fns";
 import { fr } from "date-fns/locale";
-import { Channel } from "@definitions/Channel";
+import { Channel, ChannelMinimum } from "@definitions/Channel";
 import Link from "next/link";
 import useFetchRSR from "@hooks/useFetchRSR";
+import { ResourceMinimum } from "@definitions/Resource";
 
 export const NotificationsDropdown = () => {
   const { user } = useAuth();
@@ -211,10 +212,6 @@ interface NotificationComponentProps extends Notification {
   remove: (id: string) => void;
 }
 
-interface ChannelDocument {
-  name: string;
-}
-
 const NotificationComponent = ({
   _id,
   user,
@@ -228,9 +225,10 @@ const NotificationComponent = ({
   const goTo = (id: string) => {
     remove(id);
 
-    if ((document as ChannelDocument)?.name) router.push(`/channel/${document.slug}`);
+    if ((document as ChannelMinimum)?.name)
+      router.push(`/channel/${document.slug}`);
 
-    if (document?.data?.attributes.properties.name)
+    if ((document as ResourceMinimum)?.data?.attributes.properties.name)
       router.push(`/resource/${document.slug}`);
   };
 
@@ -269,24 +267,28 @@ const NotificationComponent = ({
             </h4>
             <div className="text-xs font-normal font-spectral">
               {notifications.find((e) => e.type === type).message}
-              {(document as ChannelDocument)?.name && (
+              {(document as ChannelMinimum)?.name && (
                 <span className="inline-flex items-center ml-1">
                   dans{" "}
                   <a
                     onClick={() => goTo(_id)}
                     className="ml-1 underline cursor-pointer text-bleuFrance-500 dark:text-bleuFrance-100"
                   >
-                    {(document as ChannelDocument).name}
+                    {(document as ChannelMinimum)?.name}
                   </a>
                 </span>
               )}
-              {document?.data?.attributes.properties.name && (
+              {(document as ResourceMinimum)?.data?.attributes.properties
+                .name && (
                 <span className="inline-flex items-center ml-1">
                   <a
                     onClick={() => goTo(_id)}
                     className="underline cursor-pointer text-bleuFrance-500 dark:text-bleuFrance-100"
                   >
-                    {document.data?.attributes.properties.name}
+                    {
+                      (document as ResourceMinimum)?.data?.attributes.properties
+                        .name
+                    }
                   </a>
                 </span>
               )}
