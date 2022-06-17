@@ -33,19 +33,19 @@ services:
       ME_CONFIG_MONGODB_ADMINPASSWORD: root
       ME_CONFIG_MONGODB_URL: mongodb://root:root@mongo:27017/
 
-  app:
-    build: "."
-    image: rsr/app
-    networks:
-        - rsr-network
-    restart: always
-    volumes:
-        - .:/usr/src/app
-        - /usr/src/app/node_modules
-        - /usr/src/app/.next
-    ports:
-        - "3000:3000"
-    env_file:
-      - ${ENV_FILE}
-    environment:
-      NEXT_PUBLIC_BACK_OFFICE_MAX_ENTITIES: 20
+  # app:
+  #   build: "."
+  #   image: rsr/app
+  #   networks:
+  #       - rsr-network
+  #   restart: always
+  #   volumes:
+  #       - .:/usr/src/app
+  #       - /usr/src/app/node_modules
+  #       - /usr/src/app/.next
+  #   ports:
+  #       - "3000:3000"
+  #   env_file:
+  #     - ${ENV_FILE}
+  #   environment:
+  #     NEXT_PUBLIC_BACK_OFFICE_MAX_ENTITIES: 20
