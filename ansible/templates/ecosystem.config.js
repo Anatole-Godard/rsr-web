@@ -1,11 +1,10 @@
 module.exports = {
   apps: [{
-    name: 'rsr',
-    exec_mode: 'cluster',
-    instances: 1,
-    script: ".node_modules/next/dist/bin/next",
+    name: 'next', // App name that shows in `pm2 ls`
+    exec_mode: 'cluster', // enables clustering
+    instances: 2, // or an integer
+    script: "./node_modules/next/dist/bin/next",
     args: "start",
-    merge_logs: true,
-    cwd: "/home/ophzl/app/"
+    cwd: "/home/admin/current/"
   }],
 };
