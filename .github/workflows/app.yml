@@ -1,33 +1,33 @@
 name: 'Application'
 on: [push]
 jobs:
-  build:
-    timeout-minutes: 60
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
-        with:
-          node-version: '14.x'
-      - name: Build cache
-        id: cache-build
-        uses: actions/cache@v2
-        with:
-          path: ./build-dep
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/yarn.lock') }}
-          restore_keys: |
-            ${{ runner.os }}-build-${{ env.cache-name }}-
-            ${{ runner.os }}-build-
-            ${{ runner.os }}-
-      - name: Install dependencies
-        run: yarn install --frozen-lockfile
-      - name: Build application
-        run: yarn build
+  # build:
+  #   timeout-minutes: 60
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #     - uses: actions/setup-node@v2
+  #       with:
+  #         node-version: '14.x'
+  #     - name: Build cache
+  #       id: cache-build
+  #       uses: actions/cache@v2
+  #       with:
+  #         path: ./build-dep
+  #         key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/yarn.lock') }}
+  #         restore_keys: |
+  #           ${{ runner.os }}-build-${{ env.cache-name }}-
+  #           ${{ runner.os }}-build-
+  #           ${{ runner.os }}-
+  #     - name: Install dependencies
+  #       run: yarn install --frozen-lockfile
+  #     - name: Build application
+  #       run: yarn build
 
   e2e-tests:
     timeout-minutes: 60
     runs-on: ubuntu-latest
-    needs: [build]
+    # needs: [build]
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
@@ -36,6 +36,8 @@ jobs:
       #   with:
       #     path: ./build-dep
       #     key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/yarn.lock') }}
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
       - name: Build application
         run: yarn build
       - uses: microsoft/playwright-github-action@v1
