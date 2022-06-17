@@ -19,7 +19,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponseServerIO) => {
     await channel.save();
 
     const channelMin: ChannelMinimum = {
-      data: {attributes: {properties: {name: ""}}}, visibility: undefined,
+      visibility: channel.visibility,
       owner: channel.owner,
       name: channel.name,
       slug: channel.slug,
