@@ -50,8 +50,8 @@ jobs:
       #   with:
       #     path: ./build-dep
       #     key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/yarn.lock') }}
-      # - name: Install dependencies
-      #   run: sudo yarn install --frozen-lockfile
+      - name: Install dependencies
+        run: sudo yarn install --frozen-lockfile
       # - name: Build application
       #   run: yarn build
       - name: Install playwright browsers
