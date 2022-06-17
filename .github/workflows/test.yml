@@ -22,6 +22,24 @@ jobs:
     needs: [build]
     steps:
       - uses: actions/checkout@v3
+      - uses: easingthemes/ssh-deploy@v2.2.11
+        with:
+        # Private Key
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_KEY }}
+        # Remote host
+          REMOTE_HOST: 52.47.179.38
+        # Remote user
+          REMOTE_USER: admin
+        # Remote port
+          # REMOTE_PORT: # optional, default is 22
+        # Source directory
+          # SOURCE: # optional, default is
+        # Target directory
+          TARGET: /home/admin/next # optional, default is /home/REMOTE_USER/
+        # Arguments to pass to rsync
+          # ARGS: # optional, default is -rltgoDzvO
+        # An array of folder to excludehh
+          EXCLUDE: node_modules
       - run: |
           mkdir -p ~/.ssh
           ssh-keyscan 52.47.179.38 >> ~/.ssh/known_hosts
@@ -32,7 +50,7 @@ jobs:
       - run: ssh admin@52.47.179.38 "ls"
       - name: Deploy with rsync
         run: rsync -avz ./ admin@52.47.179.38:next
-      - run: ssh admin@52.47.179.38 "cd next && yarn && yarn build"
+      - run: ssh admin@52.47.179.38 "cd next && sudo docker compose up -d --build"
       - run: ssh admin@52.47.179.38 "pm2 startOrReload ecosystem.config.js"
 
   # e2e-tests:
