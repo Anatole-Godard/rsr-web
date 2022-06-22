@@ -6,7 +6,6 @@ import { DarkModeToggler } from "@components/Helper/DarkModeToggler";
 import { AnimatePresence } from "framer-motion";
 import { AuthProvider } from "@hooks/useAuth";
 import { NotificationProvider } from "@hooks/useNotifications";
-import { Fragment } from "react";
 import { GetStarted } from "@components/Helper/GetStarted";
 import { Toaster } from "react-hot-toast";
 
@@ -16,12 +15,12 @@ function MyApp({ Component, pageProps }: AppProps) {
       <AuthProvider>
         <NotificationProvider>
           <AnimatePresence onExitComplete={() => window.scrollTo(0, 0)}>
-            <Fragment key={"app"}>
+            <div className="relative" key={"app"}>
               <Component {...pageProps} />
               <DarkModeToggler />
-            </Fragment>
+              <GetStarted />
+            </div>
           </AnimatePresence>
-          <GetStarted />
         </NotificationProvider>
       </AuthProvider>
       <Toaster position="top-right" />
