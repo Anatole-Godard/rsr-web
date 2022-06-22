@@ -16,9 +16,9 @@ export const DisableAccount = () => {
 
   return (
     <>
-      <div className="flex flex-col row-span-2 p-4 space-y-3 bg-white rounded-lg shadow">
+      <div className="flex flex-col row-span-2 p-4 space-y-3 bg-white rounded-lg shadow dark:bg-gray-800">
         <div className="inline-flex items-center justify-between w-full mb-3">
-          <h5 className="font-bold text-gray-900 font-marianne">
+          <h5 className="font-bold text-gray-900 dark:text-gray-200 font-marianne">
             Désactivation du compte
           </h5>
           <div className="w-6 h-6">
@@ -32,14 +32,14 @@ export const DisableAccount = () => {
           </div>
         </div>
         <div className="flex flex-col">
-          <p className="mb-2 text-gray-600 font-spectral">
+          <p className="mb-2 text-gray-600 dark:text-gray-300 font-spectral">
             Vous souhaitez désactiver votre compte ?
           </p>
-          <p className="mb-1 text-xs text-gray-600 font-spectral">
+          <p className="mb-1 text-xs text-gray-600 dark:text-gray-300 font-spectral">
             Vous pouvez désactiver votre compte pour le moment, mais vous ne
             pourrez plus vous connecter à votre compte.
           </p>
-          <p className="mb-3 text-xs text-gray-600 font-spectral">
+          <p className="mb-3 text-xs text-gray-600 dark:text-gray-300 font-spectral">
             Vos données seront anonymisées et ne seront pas récupérables.
           </p>
           <div className="ml-auto">
