@@ -24,11 +24,6 @@ const UserIndexPage: NextPage<any> = ({
   allResources: Resource[];
 }) => {
   const { user } = useAuth();
-  const [displayStats, setDisplayStats] = useState(false);
-
-  const statistics = () => {
-    setDisplayStats(!displayStats);
-  };
 
   return (
     <AppLayout>
@@ -50,10 +45,6 @@ const UserIndexPage: NextPage<any> = ({
             </h3>
           </div>
           <div className="inline-flex items-center space-x-2">
-            <button className="btn-gray h-fit w-fit" onClick={() => statistics()}>
-              <ChartSquareBarIcon className="w-4 h-4 mr-2" />
-              Statistiques
-            </button>
             <Link href="/user/playlists">
               <a className="btn-gray h-fit w-fit">
                 <CollectionIcon className="w-4 h-4 mr-2" />
@@ -72,15 +63,13 @@ const UserIndexPage: NextPage<any> = ({
         <div className="flex flex-col p-6 overflow-y-auto bg-gray-100 dark:bg-gray-900 grow xl:rounded-tl-xl">
           {user && (
             <>
-              {displayStats && (
-                <UserStatistics
-                  user={user}
-                  resources={resources}
-                  allResources={allResources.filter((r: Resource) =>
-                    r.seenBy.some((u) => u.uid === user.data.uid)
-                  )}
-                />
-              )}
+              <UserStatistics
+                user={user}
+                resources={resources}
+                allResources={allResources.filter((r: Resource) =>
+                  r.seenBy.some((u) => u.uid === user.data.uid)
+                )}
+              />
 
               <UserResources resources={resources} />
               <UserLikedResources resources={likes} />
