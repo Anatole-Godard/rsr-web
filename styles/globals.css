@@ -221,7 +221,7 @@
   }
 
   .btn-bleuFrance {
-    @apply text-bleuFrance-600 bg-bleuFrance-100 btn dark:bg-bleuFrance-800 dark:text-bleuFrance-200 hover:bg-bleuFrance-200 active:bg-bleuFrance-700 active:text-bleuFrance-100 ring-bleuFrance-500;
+    @apply text-bleuFrance-600 bg-bleuFrance-100 btn dark:bg-bleuFrance-800 dark:text-bleuFrance-200 hover:bg-bleuFrance-200 active:bg-bleuFrance-700 active:text-bleuFrance-100 ring-bleuFrance-500 dark:hover:bg-bleuFrance-700 dark:hover:text-bleuFrance-100;
   }
 
   .btn-green {
