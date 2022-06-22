@@ -4,6 +4,7 @@ import { useAuth } from "@hooks/useAuth";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 import Image from "next/image";
+import { useReport } from '@hooks/useReport';
 
 interface CommentViewProps {
   comment: Comment;
@@ -13,6 +14,7 @@ interface CommentViewProps {
 export const CommentView = ({ comment, slug }: CommentViewProps) => {
   const { owner, content, createdAt } = comment;
   const { user } = useAuth();
+  const { openReport } = useReport();
   return (
     <li className="relative mb-6 last:pb-6">
       <span className="absolute  flex items-center justify-center w-[2.25rem] h-[2.25rem] bg-blue-200 rounded-full ring-8 ring-white dark:ring-gray-800 dark:bg-blue-900">
@@ -36,6 +38,9 @@ export const CommentView = ({ comment, slug }: CommentViewProps) => {
           </time>
           <button
             // todo
+            onClick={() => {
+              openReport({type: "comment", label: 'Commentaire', documentId: slug, content});
+            }}
             className="inline-flex items-center text-xs text-yellow-600 duration-300 hover:text-yellow-800 font-spectral"
           >
             <ExclamationIcon className="w-3 h-3 mr-1 shrink-0" />
