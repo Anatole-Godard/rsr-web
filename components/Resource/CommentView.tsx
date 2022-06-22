@@ -15,7 +15,7 @@ export const CommentView = ({ comment, slug }: CommentViewProps) => {
   const { user } = useAuth();
   return (
     <li className="relative mb-6 last:pb-6">
-      <span className="absolute  flex items-center justify-center w-[2.25rem] h-[2.25rem] bg-blue-200 rounded-full ring-8 ring-white dark:ring-gray-800 dark:bg-blue-900">
+      <span className="absolute  flex items-center justify-center w-[2.25rem] h-[2.25rem] bg-blue-200 rounded-full ring-8 ring-white dark:ring-black dark:bg-blue-900">
         <Image
           className="z-10 rounded-full"
           src={owner.photoURL || "/uploads/user/default.png"}

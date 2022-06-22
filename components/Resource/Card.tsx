@@ -48,7 +48,7 @@ export const ResourceCard = (props: Resource) => {
               type === "event" &&
                 "bg-red-100 group-hover:bg-red-200 dark:bg-red-800 dark:group-hover:bg-red-900",
               type === "other" &&
-                "bg-gray-100 group-hover:bg-gray-200 dark:bg-gray-800 dark:group-hover:bg-gray-900"
+                "bg-gray-100 group-hover:bg-gray-200 dark:bg-gray-700 dark:group-hover:bg-gray-800"
             )}
           >
             <div

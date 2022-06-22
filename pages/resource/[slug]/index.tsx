@@ -129,7 +129,7 @@ const ResourceSlug: NextPage<any> = ({
               Retour
             </a>
           </Link>
-          <div className="flex flex-col space-y-3 lg:divide-x font-spectral lg:h-10 lg:items-center lg:flex-row lg:space-x-2 lg:space-y-0">
+          <div className="flex flex-col space-y-3 lg:divide-x dark:divide-gray-700 font-spectral lg:h-10 lg:items-center lg:flex-row lg:space-x-2 lg:space-y-0">
             <div className="inline-flex text-xs text-gray-500 transition duration-200 hover:text-gray-700 dark:text-gray-400">
               {types
                 .find((t) => t.value === data?.type)
