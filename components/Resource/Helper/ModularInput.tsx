@@ -47,7 +47,7 @@ export const WrapperModularInputs = ({
   };
 
   return (
-    <div className="flex flex-col justify-between h-full max-h-full p-2 space-y-1 bg-gray-200 rounded-lg">
+    <div className="flex flex-col justify-between h-full max-h-full p-2 space-y-1 bg-gray-200 rounded-lg dark:bg-gray-800">
       {data.length === 0 && (
         <div className="flex flex-col items-center justify-center p-4">
           <ExclamationIcon className="w-8 h-8" />
@@ -87,7 +87,7 @@ export const WrapperModularInputs = ({
         ))}
       </div>
       <div className="inline-flex justify-end w-full mt-4 ">
-        <button className="btn-gray" onClick={appendInput} type="button">
+        <button className="btn-gray dark:bg-gray-700" onClick={appendInput} type="button">
           <PlusCircleIcon className="w-4 h-4 mr-2" />
           Ajouter un champ
         </button>
@@ -122,7 +122,7 @@ const Input = ({
             <input
               value={label}
               onChange={(e) => onLabelChange(e.target.value)}
-              className="input hover:bg-gray-300 w-fit"
+              className="input hover:bg-gray-300 w-fit dark:bg-gray-700"
               placeholder="Nom du champ"
               onBlur={() => setIsEditingLabel(false)}
             />
@@ -171,7 +171,7 @@ const Input = ({
               }}
               required
               name="searchType"
-              className="input pr-8 py-2 appearance-none pl-[2.25rem] placeholder-gray-500 min-w-fit"
+              className="input pr-8 py-2 appearance-none pl-[2.25rem] placeholder-gray-500 min-w-fit dark:bg-gray-700"
             >
               <option value="string">Texte</option>
               <option value="number">Nombre</option>
@@ -183,7 +183,7 @@ const Input = ({
           <div className="inline-flex items-center w-full space-x-2">
             {type !== "boolean" ? (
               <input
-                className="input hover:bg-gray-300 grow"
+                className="input hover:bg-gray-300 dark:bg-gray-700 grow"
                 type={type}
                 // @ts-ignore
                 value={type === "number" ? value : value.toString()}
@@ -198,7 +198,7 @@ const Input = ({
               />
             ) : (
               <input
-                className="w-4 h-4 p-0 rounded-md appearance-none input active:bg-bleuFrance-600 checked:bg-bleuFrance-500 checked:ring-2 ring-bleuFrance-200"
+                className="w-4 h-4 p-0 rounded-md appearance-none input active:bg-bleuFrance-600 checked:bg-bleuFrance-500 checked:ring-2 ring-bleuFrance-200 dark:bg-gray-100 dark:checked:bg-bleuFrance-300 "
                 type="checkbox"
                 // @ts-ignore
                 checked={value}
