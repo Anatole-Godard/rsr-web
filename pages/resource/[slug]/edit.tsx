@@ -23,9 +23,12 @@ import { UserMinimum } from "@definitions/User";
 import { TrashIcon } from "@heroicons/react/outline";
 import useFetchRSR from "@hooks/useFetchRSR";
 import { TagDocument } from "@definitions/Resource/Tag";
-import {isAdmin} from "@utils/getCurrentUser";
+import { isAdmin } from "@utils/getCurrentUser";
 import { MediaUploader } from "@components/Resource/Helper/Media/Uploader";
-import { Input, WrapperModularInputs } from "@components/Resource/Helper/ModularInput";
+import {
+  Input,
+  WrapperModularInputs,
+} from "@components/Resource/Helper/ModularInput";
 import { toModularInput } from "@utils/toModularInput";
 import { Media } from "@definitions/Resource/Media";
 import toast from "react-hot-toast";
@@ -227,8 +230,6 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
 
         const body = await response.json();
         if (response.ok && medias.length > 0) {
-
-
           const responses = [];
           for (const media of medias) {
             const formData = new FormData();
@@ -246,7 +247,7 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
           if (responses.every((r) => r.ok)) {
             setRequestOk(true);
             toast.success("Ressource éditée avec succès");
-            
+
             router.push(`/resource/${body.data.attributes.slug}`);
           } else setRequestOk(false);
         } else if (response.ok && medias.length === 0) {
@@ -384,17 +385,17 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
                   </svg>
                 ) : requestOk ? (
                   <>
-                    <CheckIcon className="w-4 h-4 mr-1 text-green-700 duration-300 group-active:text-white" />{" "}
+                    <CheckIcon className="w-4 h-4 mr-1 duration-300 group-active:text-white" />{" "}
                     Envoyé
                   </>
                 ) : validForm ? (
                   <>
-                    <CloudUploadIcon className="w-4 h-4 mr-1 duration-300 text-amber-700 group-active:text-white" />
+                    <CloudUploadIcon className="w-4 h-4 mr-1 duration-300 group-active:text-white" />
                     Envoyer
                   </>
                 ) : (
                   <>
-                    <XCircleIcon className="w-4 h-4 mr-1 text-red-700 duration-300 group-active:text-white" />{" "}
+                    <XCircleIcon className="w-4 h-4 mr-1 duration-300 group-active:text-white" />{" "}
                     Non valide
                   </>
                 )}
@@ -402,10 +403,10 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
             </div>
           </div>
         </div>
-        <div className="flex flex-col flex-grow px-4 py-3 pb-6 bg-gray-100 rounded-tl-xl md:flex-row">
+        <div className="flex flex-col flex-grow px-4 py-3 pb-6 bg-gray-100 dark:bg-gray-900 rounded-tl-xl md:flex-row">
           <div className="flex flex-col w-full px-2 space-y-3 md:w-1/2">
             <label>
-              <h4 className="mb-1 text-sm font-semibold text-gray-700 font-marianne">
+              <h4 className="mb-1 text-sm font-semibold text-gray-700 dark:text-gray-300 font-marianne">
                 Titre de la ressource
               </h4>
               <input
@@ -417,7 +418,7 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
               ></input>
             </label>
             <label className="flex flex-col grow">
-              <h4 className="mb-1 text-sm font-semibold text-gray-700 font-marianne">
+              <h4 className="mb-1 text-sm font-semibold text-gray-700 dark:text-gray-300 font-marianne">
                 Description de la ressource
               </h4>
               <textarea
@@ -430,7 +431,7 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
             </label>
 
             <label>
-              <h4 className="-mb-2 text-sm after:content-['*'] after:ml-0.5 after:text-red-500 font-semibold text-gray-700 font-marianne">
+              <h4 className="-mb-2 text-sm after:content-['*'] after:ml-0.5 after:text-red-500 font-semibold text-gray-700 dark:text-gray-300 font-marianne">
                 Visibilité de la ressource
               </h4>
             </label>
@@ -447,7 +448,7 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
               }}
             >
               <div className="inline-flex items-center w-full">
-                <Tab.List className="flex space-x-2 bg-gray-100 grow rounded-xl">
+                <Tab.List className="flex space-x-2 bg-gray-100 dark:bg-gray-900 grow rounded-xl">
                   {visibilities.map((v, i) => (
                     <Tab
                       key={v.value}
@@ -456,8 +457,8 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
                           "w-full py-2.5 text-xs leading-5 font-medium rounded-md",
                           "focus:outline-none transition-all duration-300 focus:ring-2 ring-offset-2 ring-amber-500 truncate inline-flex items-center justify-center",
                           selected
-                            ? "bg-amber-700  text-amber-100 font-semibold shadow"
-                            : "text-amber-700 bg-amber-100 hover:bg-amber-300 hover:text-amber-800",
+                            ? "bg-amber-700 dark:bg-amber-200 dark:text-amber-800  text-amber-100 font-semibold shadow"
+                            : "text-amber-700 dark:bg-amber-900 dark:text-amber-200 bg-amber-100 hover:bg-amber-200 hover:text-amber-800 dark:hover:bg-amber-800 dark:hover:text-amber-200",
                           i === 0 ? "rounded-l-lg" : "",
                           i === visibilities.length - 1 ? "rounded-r-lg" : ""
                         )
@@ -473,7 +474,7 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
             </Tab.Group>
             {visibility.value === "unlisted" && (
               <label>
-                <h4 className="mb-1 after:content-['*'] after:ml-0.5 after:text-red-500 text-sm font-semibold text-gray-700 font-marianne">
+                <h4 className="mb-1 after:content-['*'] after:ml-0.5 after:text-red-500 text-sm font-semibold text-gray-700 dark:text-gray-300 font-marianne">
                   Membres
                 </h4>
                 <Select
@@ -505,7 +506,7 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
                         alt={member.label}
                         className="w-5 h-5 mr-2 rounded-full"
                       />
-                      <span className="text-xs font-marianne">
+                      <span className="text-xs text-gray-700 font-marianne">
                         {member.label}
                       </span>
                     </div>
@@ -529,7 +530,7 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
             )}
 
             <label>
-              <h4 className="mb-1 text-sm font-semibold text-gray-700 font-marianne">
+              <h4 className="mb-1 text-sm font-semibold text-gray-700 dark:text-gray-300 font-marianne">
                 Étiquettes
               </h4>
               <Select
@@ -558,7 +559,9 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
                 }
                 formatOptionLabel={(tag: { label: string; value: string }) => (
                   <div className="inline-flex items-center">
-                    <span className="text-xs font-spectral">{tag.label}</span>
+                    <span className="text-xs text-gray-700 font-spectral">
+                      {tag.label}
+                    </span>
                   </div>
                 )}
                 onKeyDown={(event: {
@@ -588,7 +591,7 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
           <div className="flex flex-col justify-between w-full px-2 mt-3 space-y-3 md:w-1/2 md:mt-0">
             <div className="flex flex-col w-full h-full space-y-3">
               <label>
-                <h4 className="-mb-2 text-sm font-semibold text-gray-700 font-marianne">
+                <h4 className="-mb-2 text-sm font-semibold text-gray-700 dark:text-gray-300 font-marianne">
                   Type de la ressource
                 </h4>
               </label>
@@ -601,7 +604,7 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
                 }}
               >
                 <div className="inline-flex items-center w-full">
-                  <Tab.List className="flex space-x-2 bg-gray-100 grow rounded-xl">
+                  <Tab.List className="flex space-x-2 bg-gray-100 dark:bg-gray-900 grow rounded-xl">
                     {types.map((type, i) => (
                       <Tab
                         key={type.value}
@@ -610,8 +613,8 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
                             "w-full py-2.5 text-xs leading-5 font-medium rounded-md",
                             "focus:outline-none transition-all duration-300 focus:ring-2 ring-offset-2 ring-amber-500 truncate inline-flex items-center justify-center",
                             selected
-                              ? "bg-amber-700  text-amber-100 font-semibold shadow"
-                              : "text-amber-700 bg-amber-100 hover:bg-amber-300 hover:text-amber-800",
+                              ? "bg-amber-700 dark:bg-amber-200 dark:text-amber-800  text-amber-100 font-semibold shadow"
+                              : "text-amber-700 dark:bg-amber-900 dark:text-amber-200 bg-amber-100 hover:bg-amber-200 hover:text-amber-800 dark:hover:bg-amber-800 dark:hover:text-amber-200",
                             i === 0 ? "rounded-l-lg" : "",
                             i === types.length - 1 ? "rounded-r-lg" : ""
                           )
@@ -632,7 +635,7 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
                 <div className="flex flex-col h-full overflow-hidden grow">
                   <h4
                     className={classes(
-                      "mb-1 text-sm font-semibold text-gray-700 font-marianne",
+                      "mb-1 text-sm font-semibold text-gray-700 dark:text-gray-300 font-marianne",
                       type.value === "physical_item"
                         ? "after:content-['*'] after:ml-0.5 after:text-red-500"
                         : ""
@@ -647,7 +650,7 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
               {type.value === "physical_item" && (
                 <>
                   <label>
-                    <h4 className="mb-1 text-sm font-semibold text-gray-700 font-marianne">
+                    <h4 className="mb-1 text-sm font-semibold text-gray-700 dark:text-gray-300 font-marianne">
                       Prix
                     </h4>
                     <input
@@ -658,7 +661,7 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
                     />
                   </label>
                   <label>
-                    <h4 className="mb-1 text-sm font-semibold text-gray-700 font-marianne">
+                    <h4 className="mb-1 text-sm font-semibold text-gray-700 dark:text-gray-300 font-marianne">
                       Catégorie
                     </h4>
                     <input
@@ -674,7 +677,7 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
               {type.value === "external_link" && (
                 <>
                   <label>
-                    <h4 className="mb-1 text-sm font-semibold text-gray-700 font-marianne">
+                    <h4 className="mb-1 text-sm font-semibold text-gray-700 dark:text-gray-300 font-marianne">
                       Lien externe
                     </h4>
                     <input
@@ -689,7 +692,7 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
 
               {type.value === "location" && (
                 <label className="flex flex-col grow">
-                  <h4 className="mb-1 text-sm font-semibold text-gray-700 font-marianne">
+                  <h4 className="mb-1 text-sm font-semibold text-gray-700 dark:text-gray-300 font-marianne">
                     Emplacement de la ressource
                   </h4>
                   <div className="w-full mb-3">
@@ -718,7 +721,7 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
                   <div className="flex flex-col">
                     <h4
                       className={classes(
-                        "mb-1 text-sm font-semibold text-gray-700 font-marianne"
+                        "mb-1 text-sm font-semibold text-gray-700 dark:text-gray-300 font-marianne"
                       )}
                     >
                       Dates et heures
@@ -873,8 +876,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     }
 
     // @ts-ignore
-    if (!(await isAdmin({headers: parsedUser.session})))
-      if( resource.owner.uid !== parsedUser?.data.uid){
+    if (!(await isAdmin({ headers: parsedUser.session })))
+      if (resource.owner.uid !== parsedUser?.data.uid) {
         return {
           redirect: {
             permanent: false,
@@ -882,7 +885,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
           },
         };
       }
-
 
     const users = await (await fetch("http://localhost:3000/api/user")).json();
 

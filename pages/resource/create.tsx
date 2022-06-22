@@ -419,7 +419,7 @@ const ResourceCreate: NextPage<any> = ({
                         alt={member.label}
                         className="w-5 h-5 mr-2 rounded-full"
                       />
-                      <span className="text-xs font-marianne">
+                      <span className="text-xs text-gray-700 font-marianne">
                         {member.label}
                       </span>
                     </div>
@@ -472,7 +472,7 @@ const ResourceCreate: NextPage<any> = ({
                 }
                 formatOptionLabel={(tag: { label: string; value: string }) => (
                   <div className="inline-flex items-center">
-                    <span className="text-xs font-spectral">{tag.label}</span>
+                    <span className="text-xs text-gray-700 font-spectral">{tag.label}</span>
                   </div>
                 )}
                 onKeyDown={(event: {
