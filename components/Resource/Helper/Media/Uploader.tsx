@@ -46,7 +46,7 @@ export const MediaUploader = ({
               Éditer la ressource réinitialisera vos médias.
             </small>
             <a
-              className="px-2 py-0.5 btn-text-bleuFrance"
+              className="px-2 py-0.5 btn-text-gray"
               href={router.asPath.replace("/edit", "")}
             >
               Annuler
