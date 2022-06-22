@@ -162,7 +162,7 @@ export const ResourceCard = (props: Resource) => {
             </div>
           )}
         </div>
-        {navigator.share && (
+        {/* {navigator.share && ( */}
           <button
             onClick={() => {
               if (navigator.share) {
@@ -184,7 +184,7 @@ export const ResourceCard = (props: Resource) => {
           >
             <ShareIcon className="w-4 h-4 select-none"></ShareIcon>
           </button>
-        )}
+        {/* )} */}
       </div>
     </div>
   );
