@@ -48,6 +48,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   return {
     props: {
       resources,
+      i18n: (await import(`../i18n/${context.locale}.json`)).default
     },
   };
 };

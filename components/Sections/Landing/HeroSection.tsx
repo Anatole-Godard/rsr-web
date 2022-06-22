@@ -7,8 +7,10 @@ import { useAuth } from "@hooks/useAuth";
 import { Animation } from "@components/Helper/Lottie";
 
 import animationData from "public/lottie/home.json";
+import {useTranslations} from 'next-intl';
 
 export const HeroSection = () => {
+  const t = useTranslations("HeroSection")
   const { user } = useAuth();
   return (
     <main>
@@ -63,7 +65,7 @@ export const HeroSection = () => {
                     <Link href="/resource/create">
                       <a className="btn-gray">
                         <PlusIcon className="w-4 h-4 mr-2" />
-                        Créer une ressource
+                        {t("resource-create")}
                       </a>
                     </Link>
                   ) : (
