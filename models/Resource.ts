@@ -66,6 +66,7 @@ const Resource =
 export default Resource;
 
 ResourceSchema.post("save", function (next) {
-  this.updatedAt = Date.now();
+  // workaround for passing builds
+  (this as { updatedAt: number }).updatedAt = Date.now();
   next();
 });
