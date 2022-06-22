@@ -22,7 +22,6 @@ export type Resource = {
   seenBy: UserMinimum[];
   visibility: "public" | "private" | "unlisted";
   members?: UserMinimum[];
-  createdAt: Date | string;
   updatedAt: Date | string;
 };
 
@@ -33,15 +32,12 @@ export type ResourceMinimum = {
   description?: string;
   tags?: TagDocument[]| string[];
   data: {
-    type: "location" | "physical_item" | "external_link" | "event" | string;
-    attributes: {
-      properties: {
-        name: string;
-      };
-    };
+    type: "location" | "physical_item" | "external_link" | "event" | "other";
+    attributes: GeoJSON_Point | PhysicalItem | ExternalLink | Event | any;
   };
   validated: boolean;
   visibility: "public" | "private" | "unlisted";
   members?: UserMinimum[];
   seenBy: UserMinimum[];
+  updatedAt: Date | string;
 };
