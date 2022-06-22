@@ -70,7 +70,7 @@ const UserPlaylist: NextPage = () => {
               <Disclosure key={index} defaultOpen={index === 0}>
                 {({ open }) => (
                   <>
-                    <Disclosure.Button className="flex justify-between w-full px-4 py-2 mb-2 text-sm font-medium text-left text-gray-700 duration-300 bg-gray-200 rounded-lg lg:w-1/3 hover:bg-gray-300 focus:outline-none focus-visible:ring focus-visible:ring-gray-500 active:bg-gray-50 focus-visible:ring-opacity-75">
+                    <Disclosure.Button className="flex justify-between w-full px-4 py-2 mb-2 text-sm font-medium text-left text-gray-700 duration-300 bg-gray-200 rounded-lg lg:w-1/3 hover:bg-gray-300 focus:outline-none focus-visible:ring focus-visible:ring-gray-500 active:bg-gray-50 focus-visible:ring-opacity-75 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700 dark:active:bg-gray-600">
                       <span className="inline-flex items-center space-x-2 font-bold font-marianne">
                         <CollectionIcon className="w-4 h-4 mr-2" />
                         {key}
@@ -78,7 +78,7 @@ const UserPlaylist: NextPage = () => {
                       <ChevronUpIcon
                         className={`duration-300 ${
                           open ? "transform rotate-180" : ""
-                        } w-5 h-5 text-gray-900`}
+                        } w-5 h-5`}
                       />
                     </Disclosure.Button>
 
