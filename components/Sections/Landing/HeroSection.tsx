@@ -1,10 +1,12 @@
 /* eslint-disable @next/next/no-img-element */
-import { ChevronRightIcon, StarIcon } from "@heroicons/react/solid";
 
 import Link from "next/link";
 import Image from "next/image";
 import { EyeIcon, PlusIcon, UserCircleIcon } from "@heroicons/react/outline";
 import { useAuth } from "@hooks/useAuth";
+
+import {useTranslations} from 'next-intl';
+
 
 const shimmer = (w, h) => `
 <svg width="${w}" height="${h}" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
@@ -26,6 +28,7 @@ const toBase64 = (str) =>
     : window.btoa(str);
 
 export const HeroSection = () => {
+  const t = useTranslations("HeroSection")
   const { user } = useAuth();
   return (
     <main>
@@ -77,7 +80,7 @@ export const HeroSection = () => {
                     <Link href="/resource/create">
                       <a className="btn-gray">
                         <PlusIcon className="w-4 h-4 mr-2" />
-                        Créer une ressource
+                        {t("resource-create")}
                       </a>
                     </Link>
                   ) : (
