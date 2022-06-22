@@ -68,6 +68,6 @@ export default Resource;
 // @ts-ignore
 ResourceSchema.post("save", function (next) {
   // workaround for passing builds
-  (this as { updatedAt: number }).updatedAt = Date.now();
+  (this as unknown as { updatedAt: number }).updatedAt = Date.now();
   next();
 });
