@@ -13,8 +13,8 @@
     "title": "Que recherchez-vous ?",
     "search-query": "Rechercher ...",
     "search-type": "Type de la ressource",
-    "type-all": "Tout type",
     "search-button": "Rechercher",
+    "type-all": "Tout type",
 
     "physical_item": "Objet",
     "location": "Lieu",
@@ -27,6 +27,60 @@
     "title2": "ressources",
     "see-all": "Voir toutes les ressources"
   },
+  "ResourceIndex": {
+    "title1": "Toutes les",
+    "title2": "ressources",
+    "search-placeholder": "Rechercher une ressource...",
+    "resource-create": "Créer une ressource",
+
+    "type-all": "Tout type",
+
+    "physical_item": "Objet",
+    "location": "Lieu",
+    "external_link": "Lien hypertexte",
+    "event": "Événement",
+    "other": "Autre"
+  },
+
+  "ResourceSlug": {
+    "back": "Retour",
+    "physical_item": "Objet",
+    "location": "Lieu",
+    "external_link": "Lien hypertexte",
+    "event": "Événement",
+    "other": "Autre",
+    "public": "Publique",
+    "private": "Privée",
+    "unlisted": "Non répertoriée",
+
+    "like": "J'aime",
+    "dislike": "Je n'aime plus",
+    "like-single": "Une personne aime",
+    "like-multiple": "{length} personnes aiment",
+    "like-none": "Personne n'aime pour l'instant",
+
+    "seenby-single": "1 vue",
+    "seenby-multiple": "{length} vues",
+    "seenby-none": "Personne n'a vu pour l'instant",
+
+    "validation-awaiting": "En attente de validation",
+    "report": "Signaler",
+    "edit": "Modifier",
+
+    "see-more": "Voir plus",
+    "see-less": "Voir moins",
+
+    "overview": "Aperçu de la ressource",
+    "comments": "Commentaires",
+
+    "comments-none": "Aucun commentaire pour l'instant",
+    "comments-placeholder": "Ajouter un commentaire..."
+  },
+  "CommentView": {
+    "report": "Signaler",
+    "delete": "Supprimer"
+  },
+
   "ResourceCard": {
     "physical_item": "Objet",
     "location": "Lieu",
@@ -42,6 +96,37 @@
     "unlisted-members": ": {length} membres y ont accès",
 
     "created-by": "de {name}"
+  },
+  "ResourceView": {
+    "physical_item": "Objet",
+    "location": "Lieu",
+    "external_link": "Lien hypertexte",
+    "event": "Événement",
+    "other": "Autre",
+
+    "no-media": "Aucun média n'est disponible pour cette ressource",
+
+    "physical_item-category": "Catégorie",
+    "physical_item-price": "Prix",
+
+    "event-from": "Du",
+    "event-to": "Au",
+    "event-participants-multiple": "{length} participants",
+    "event-participants-single": "{length} participant",
+    "event-participants-remove": "Retirer ma participation",
+    "event-participants-add": "Participer",
+    "login": "Se connecter",
+
+    "location-address": "Adresse",
+
+    "date": "Date",
+    "string": "Texte",
+    "number": "Nombre",
+    "boolean": "Oui/Non",
+    "boolean-true": "Oui",
+    "boolean-false": "Non",
+
+    "updatedAt": "mis à jour {relative}"
   },
   "Sidebar": {
     "home": "Accueil",

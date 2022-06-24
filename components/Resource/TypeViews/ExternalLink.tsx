@@ -1,6 +1,7 @@
 import { ExternalLink } from "@definitions/Resource/ExternalLink";
 import { LinkIcon } from "@heroicons/react/outline";
-import { MediaCarouselView } from "@components/Resource/Helper/Media/Carousel"
+import { MediaCarouselView } from "@components/Resource/Helper/Media/Carousel";
+import { useTranslations } from "next-intl";
 
 interface ExternalLinkViewProps {
   attributes: ExternalLink;
@@ -10,21 +11,25 @@ interface ExternalLinkViewProps {
 
 export const ExternalLinkView = ({
   attributes,
-  slug,
+
   updatedAt,
 }: ExternalLinkViewProps) => {
+  const t = useTranslations("ResourceView");
   return (
     <>
       <div className="relative h-full overflow-hidden rounded-lg xl:col-span-2">
         {attributes.properties.medias ? (
-          <MediaCarouselView medias={attributes.properties.medias} updatedAt={updatedAt} />
+          <MediaCarouselView
+            medias={attributes.properties.medias}
+            updatedAt={updatedAt}
+          />
         ) : (
           <div className="flex flex-col items-center justify-center h-full text-amber-800 bg-amber-200 dark:text-amber-200 dark:bg-amber-800">
             <LinkIcon className="w-12 h-12 mb-1" />
-            <p className="text-lg font-spectral">Lien externe</p>
+            <p className="text-lg font-spectral">{t("external_link")}</p>
             {!attributes.properties.medias && (
               <p className="pt-2 mx-12 mt-2 text-sm text-center border-t border-amber-500 text-amber-600 dark:text-amber-400 font-spectral">
-                {"Aucun média n'est disponible pour cette ressource"}
+                {t("no-media")}
               </p>
             )}
           </div>
@@ -33,7 +38,7 @@ export const ExternalLinkView = ({
       <div className="">
         <div className="flex flex-col pt-6">
           <h4 className="mb-3 text-3xl font-bold font-marianne">
-            Lien hypertexte
+            {t("external_link")}
           </h4>
           <div className="text-sm leading-5 prose text-gray-500 font-spectral dark:text-gray-400">
             <a
