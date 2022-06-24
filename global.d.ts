@@ -1,3 +1,3 @@
 // Use type safe message keys with `next-intl`
-type Messages = typeof import('./i18n/en.json');
+type Messages = typeof import('./i18n/fr.json');
 declare interface IntlMessages extends Messages {}
