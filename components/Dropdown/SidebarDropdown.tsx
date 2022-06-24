@@ -6,10 +6,12 @@ import { ChatIcon, HomeIcon, LibraryIcon } from "@heroicons/react/outline";
 
 import { classes } from "libs/classes";
 import { ChevronDownIcon } from "@heroicons/react/solid";
+import { useTranslations } from "next-intl";
 
 const className = { className: "shrink-0 w-6 h-6" };
 
 export const SidebarDropdown = () => {
+  const t = useTranslations("Sidebar");
   return (
     <Menu
       as="div"
@@ -57,25 +59,25 @@ export const SidebarDropdown = () => {
             >
               <>
                 <div className="block px-4 pt-3 text-xs text-gray-400 font-marianne">
-                  Raccourcis
+                  {t("shortcuts")}
                 </div>
                 <div className="inline-flex items-center w-full py-3 ">
                   <Shortcut
                     href="/"
                     icon={<HomeIcon {...className} />}
-                    name="Accueil"
+                    name={t("home")}
                   />
 
                   <Shortcut
                     href="/channel"
                     icon={<ChatIcon {...className} />}
-                    name="Salons"
+                    name={t("channels")}
                   />
 
                   <Shortcut
                     href="/resource"
                     icon={<LibraryIcon {...className} />}
-                    name="Bibliothèque"
+                    name={t("library")}
                   />
                 </div>
               </>

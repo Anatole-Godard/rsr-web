@@ -4,11 +4,11 @@ import { Logo } from "@components/UI/Logo";
 import { SearchIcon as HISearchIcon } from "@heroicons/react/outline";
 import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
-import { motion } from "framer-motion";
 import { NotificationsDropdown } from "@components/Dropdown/NotificationsDropdown";
 import { useRouter } from "next/router";
 import { classes } from "libs/classes";
 import { LocaleDropdown } from "@components/Dropdown/LocaleDropdown";
+import { useTranslations } from "next-intl";
 
 export const Navbar: React.FC<any> = () => {
   const router = useRouter();
@@ -48,6 +48,8 @@ const Search = ({ query, setQuery }) => {
     });
   };
 
+  const t = useTranslations("Navbar");
+
   return (
     <form className="w-full" onSubmit={(e) => post(e)}>
       <label className="relative w-full text-gray-400 focus-within:text-gray-600 md:w-3/5">
@@ -61,8 +63,7 @@ const Search = ({ query, setQuery }) => {
           onChange={(e) => setQuery(e.target.value)}
           required
           className="input px-5 py-2 h-9 pl-[2.25rem] placeholder-gray-500 w-full text-ellipsis"
-          // placeholder="Rechercher une ressource, un canal, un utilisateur..."
-          placeholder="Rechercher une ressource..."
+          placeholder={t("search-placeholder")}
         />
       </label>
     </form>
