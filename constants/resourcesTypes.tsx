@@ -18,7 +18,7 @@ import {
   CalendarIcon as CalendarIconSolid,
   QuestionMarkCircleIcon as QuestionMarkCircleIconSolid,
 } from "@heroicons/react/solid";
-import { ComponentProps } from "react";
+import { ComponentProps, SVGProps } from "react";
 
 type Props = ComponentProps<"svg">;
 
@@ -59,7 +59,14 @@ const LockClosedIconSolidFnc = (props: Props) => (
   <LockClosedIconSolid {...props} />
 );
 
-export const types = [
+export type ResourceType = {
+  label: string;
+  value: "physical_item" | "location" | "external_link" | "event" | "other";
+  hasMedia: boolean;
+  icon: Icon;
+};
+
+export const types: ResourceType[] = [
   {
     label: "Objet",
     value: "physical_item",
@@ -67,7 +74,7 @@ export const types = [
     icon: { outline: HandIconOutlineFnc, solid: HandIconSolidFnc },
   },
   {
-    label: "Position",
+    label: "Lieu",
     value: "location",
     hasMedia: false,
     icon: {
@@ -101,14 +108,13 @@ export const types = [
   },
 ];
 
-export type ResourceType = {
+export type ResourceVisibility = {
   label: string;
-  value: string;
-  hasMedia: boolean;
+  value: "public" | "private" | "unlisted";
   icon: Icon;
 };
 
-export const visibilities = [
+export const visibilities: ResourceVisibility[] = [
   {
     label: "Publique",
     value: "public",
@@ -125,12 +131,6 @@ export const visibilities = [
     icon: { outline: BanIconOutlineFnc, solid: BanIconSolidFnc },
   },
 ];
-
-export type ResourceVisibility = {
-  label: string;
-  value: string;
-  icon: Icon;
-};
 
 type Icon = {
   outline: (props: React.ComponentProps<"svg">) => JSX.Element;

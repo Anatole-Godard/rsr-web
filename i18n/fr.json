@@ -1,6 +1,47 @@
 {
   "HeroSection": {
-    "resource-create": "Créer une ressource"
+    "tagline": "Tissons des liens",
+    "buzz1": "ense",
+    "buzz2": "mble",
+    "paragraph1": "Entrez dans un salon de discussion, discutez, échangez, partagez vos idées, vos expériences, vos projets, vos réflexions.",
+    "paragraph2": "Tissez des liens entre vous et chaque citoyen grâce aux ressources que vous trouverez sur le site.",
+    "resource-create": "Créer une ressource",
+    "resource-see": "Consulter les ressources",
+    "login": "Se connecter"
+  },
+  "SearchSection": {
+    "title": "Que recherchez-vous ?",
+    "search-query": "Rechercher ...",
+    "search-type": "Type de la ressource",
+    "type-all": "Tout type",
+    "search-button": "Rechercher",
+
+    "physical_item": "Objet",
+    "location": "Lieu",
+    "external_link": "Lien hypertexte",
+    "event": "Événement",
+    "other": "Autre"
+  },
+  "ResourceSection": {
+    "title1": "Les dernières",
+    "title2": "ressources",
+    "see-all": "Voir toutes les ressources"
+  },
+  "ResourceCard": {
+    "physical_item": "Objet",
+    "location": "Lieu",
+    "external_link": "Lien hypertexte",
+    "event": "Événement",
+    "other": "Autre",
+
+    "public": "Publique",
+    "private": "Privée",
+    "unlisted": "Non répertoriée",
+
+    "unlisted-member": ": {length} membre y a accès",
+    "unlisted-members": ": {length} membres y ont accès",
+
+    "created-by": "de {name}"
   },
   "Sidebar": {
     "home": "Accueil",

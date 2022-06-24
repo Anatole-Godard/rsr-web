@@ -10,7 +10,7 @@ import animationData from "public/lottie/home.json";
 import {useTranslations} from 'next-intl';
 
 export const HeroSection = () => {
-  const t = useTranslations("HeroSection")
+  const t = useTranslations("HeroSection");
   const { user } = useAuth();
   return (
     <main>
@@ -40,25 +40,22 @@ export const HeroSection = () => {
 
               <div className="mt-6 sm:max-w-xl">
                 <h1 className="text-4xl font-extrabold tracking-tight text-gray-900 font-marianne dark:text-gray-100 sm:text-5xl">
-                  {"Tissons des liens "}
+                  {t("tagline")}
                   <span className="text-bleuFrance-500 dark:text-bleuFrance-400">
-                    ense
+                    {t("buzz1")}
                   </span>
-                  <span className="text-rougeMarianne-500">mble</span>
+                  <span className="text-rougeMarianne-500">{t("buzz2")}</span>
                 </h1>
                 <p className="mt-6 text-justify text-gray-500 text-md font-spectral dark:text-gray-400">
-                  Entrez dans un salon de discussion, discutez, échangez,
-                  partagez vos idées, vos expériences, vos projets, vos
-                  réflexions.
+                  {t("paragraph1")}
                   <br></br>
-                  Tissez des liens entre vous et chaque citoyen grâce aux
-                  ressources que vous trouverez sur le site.
+                  {t("paragraph2")}
                 </p>
                 <div className="flex items-center mt-6 space-x-3 sm:flex-row">
                   <Link href="/resource">
                     <a className="btn-bleuFrance" id="btn-resource-redirect">
                       <EyeIcon className="w-4 h-4 mr-2" />
-                      Consulter les ressources
+                      {t("resource-see")}
                     </a>
                   </Link>
                   {user ? (
@@ -72,7 +69,7 @@ export const HeroSection = () => {
                     <Link href="/auth/login">
                       <a className="btn-gray" id="btn-login-redirect">
                         <UserCircleIcon className="w-4 h-4 mr-2" />
-                        Se connecter
+                        {t("login")}
                       </a>
                     </Link>
                   )}
@@ -127,50 +124,6 @@ export const HeroSection = () => {
           </div>
         </div>
 
-        {/* <div className="bg-white">
-        <div className="px-4 py-16 mx-auto max-w-7xl sm:px-6 lg:px-8">
-          <p className="text-sm font-semibold tracking-wide text-center text-gray-500 uppercase">
-            Trusted by over 5 very average small businesses
-          </p>
-          <div className="grid grid-cols-2 gap-8 mt-6 md:grid-cols-6 lg:grid-cols-5">
-            <div className="flex justify-center col-span-1 md:col-span-2 lg:col-span-1">
-              <img
-                className="h-12"
-                src="https://tailwindui.com/img/logos/tuple-logo-gray-400.svg"
-                alt="Tuple"
-              />
-            </div>
-            <div className="flex justify-center col-span-1 md:col-span-2 lg:col-span-1">
-              <img
-                className="h-12"
-                src="https://tailwindui.com/img/logos/mirage-logo-gray-400.svg"
-                alt="Mirage"
-              />
-            </div>
-            <div className="flex justify-center col-span-1 md:col-span-2 lg:col-span-1">
-              <img
-                className="h-12"
-                src="https://tailwindui.com/img/logos/statickit-logo-gray-400.svg"
-                alt="StaticKit"
-              />
-            </div>
-            <div className="flex justify-center col-span-1 md:col-span-2 md:col-start-2 lg:col-span-1">
-              <img
-                className="h-12"
-                src="https://tailwindui.com/img/logos/transistor-logo-gray-400.svg"
-                alt="Transistor"
-              />
-            </div>
-            <div className="flex justify-center col-span-2 md:col-span-2 md:col-start-4 lg:col-span-1">
-              <img
-                className="h-12"
-                src="https://tailwindui.com/img/logos/workcation-logo-gray-400.svg"
-                alt="Workcation"
-              />
-            </div>
-          </div>
-        </div>
-      </div> */}
       </div>
     </main>
   );
