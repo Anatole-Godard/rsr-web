@@ -4,10 +4,10 @@ import { Logo } from "@components/UI/Logo";
 import { SearchIcon as HISearchIcon } from "@heroicons/react/outline";
 import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
-import { motion } from "framer-motion";
 import { NotificationsDropdown } from "@components/Dropdown/NotificationsDropdown";
 import { useRouter } from "next/router";
 import { classes } from "libs/classes";
+import { useTranslations } from "next-intl";
 
 export const Navbar: React.FC<any> = () => {
   const router = useRouter();
@@ -34,7 +34,6 @@ export const Navbar: React.FC<any> = () => {
 };
 
 const Search = ({ query, setQuery }) => {
-  const [iconIdx, setIconIdx] = useState(0);
   const router = useRouter();
 
   const post = (e) => {
@@ -44,6 +43,8 @@ const Search = ({ query, setQuery }) => {
       query: { q: query },
     });
   };
+
+  const t = useTranslations("Navbar");
 
   return (
     <form className="w-full" onSubmit={(e) => post(e)}>
@@ -58,77 +59,10 @@ const Search = ({ query, setQuery }) => {
           onChange={(e) => setQuery(e.target.value)}
           required
           className="input px-5 py-2 h-9 pl-[2.25rem] placeholder-gray-500 w-full text-ellipsis"
-          // placeholder="Rechercher une ressource, un canal, un utilisateur..."
-          placeholder="Rechercher une ressource..."
+          placeholder={t("search-placeholder")}
         />
       </label>
     </form>
   );
 };
 
-const SearchIcon = ({ className, setIconIdx }) => (
-  <motion.svg
-    xmlns="http://www.w3.org/2000/svg"
-    className={className}
-    fill="none"
-    viewBox="0 0 24 24"
-    stroke="currentColor"
-  >
-    <motion.path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeWidth="2"
-      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-      initial={{
-        opacity: 0,
-      }}
-      animate={{
-        opacity: 1,
-      }}
-      exit={{
-        opacity: 0,
-      }}
-      // onAnimationEnd={() => setIconIdx(1)}
-      onAnimationEndCapture={() => setIconIdx(1)}
-      transition={{
-        duration: 1.5,
-        ease: "easeInOut",
-        repeat: Infinity,
-        repeatType: "reverse",
-      }}
-    />
-  </motion.svg>
-);
-
-const UserIcon = ({ className, setIconIdx }) => (
-  <motion.svg
-    xmlns="http://www.w3.org/2000/svg"
-    className={className}
-    fill="none"
-    viewBox="0 0 24 24"
-    stroke="currentColor"
-  >
-    <motion.path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeWidth="2"
-      d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-      initial={{
-        opacity: 0,
-      }}
-      animate={{
-        opacity: 1,
-      }}
-      exit={{
-        opacity: 0,
-      }}
-      onAnimationEnd={() => setIconIdx(2)}
-      transition={{
-        duration: 1.5,
-        ease: "easeInOut",
-        repeat: Infinity,
-        repeatType: "reverse",
-      }}
-    />
-  </motion.svg>
-);

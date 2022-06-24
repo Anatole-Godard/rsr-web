@@ -22,10 +22,12 @@ import { classes } from "libs/classes";
 import Image from "next/image";
 import { formatDistance } from "date-fns";
 import { fr } from "date-fns/locale";
+import { useTranslations } from "next-intl";
 
 export const UserDropdown = () => {
   const { user, signOut } = useAuth();
   const { theme, setTheme } = useTheme();
+  const t = useTranslations("UserDropdown");
 
   return (
     <Menu
@@ -69,14 +71,15 @@ export const UserDropdown = () => {
                   className={classes(
                     "btn-bleuFrance rounded-full px-2",
                     open ? "bg-bleuFrance-50" : "bg-bleuFrance-100 "
-                  )} id="button-dropdown"
+                  )}
+                  id="button-dropdown"
                 >
                   <UserCircleIcon
                     key="user_dropdown-icon"
                     className="w-4 h-4 lg:mr-1"
                   />
                   <span className="hidden text-xs font-semibold lg:block">
-                    Se connecter
+                    {t("login")}
                   </span>
                 </span>
               )}
@@ -114,15 +117,16 @@ export const UserDropdown = () => {
                         </div>
                         <div className="flex flex-col px-1 space-y-1">
                           <span className="text-sm font-marianne font-medium overflow-ellipsis tracking-tight leading-[1.12rem] text-gray-800 dark:text-gray-200">
-                            {user.data.fullName || "Name not provided"}
+                            {user.data.fullName || t("not-provided")}
                           </span>
                           <span className="text-xs text-gray-600 font-spectral overflow-ellipsis dark:text-gray-200">
-                            inscrit il y a{" "}
-                            {formatDistance(
-                              new Date(user.data.createdAt),
-                              new Date(),
-                              { locale: fr }
-                            )}
+                            {t("since", {
+                              distance: formatDistance(
+                                new Date(user.data.createdAt),
+                                new Date(),
+                                { locale: fr }
+                              ),
+                            })}
                           </span>
                         </div>
                       </div>
@@ -132,14 +136,10 @@ export const UserDropdown = () => {
                     </a>
                   </Link>
 
-                  
                   <Link href="/user/playlists">
-                    <a
-                      className="inline-flex items-center w-full px-4 py-2 text-sm leading-5 text-gray-700 transition duration-150 ease-in-out cursor-pointer dark:text-gray-300 hover:text-bleuFrance-500 hover:bg-bleuFrance-50 font-marianne dark:hover:bg-bleuFrance-800"
-                      
-                    >
+                    <a className="inline-flex items-center w-full px-4 py-2 text-sm leading-5 text-gray-700 transition duration-150 ease-in-out cursor-pointer dark:text-gray-300 hover:text-bleuFrance-500 hover:bg-bleuFrance-50 font-marianne dark:hover:bg-bleuFrance-800">
                       <CollectionIcon className="w-6 h-6 pr-2 mr-2 text-center border-r border-gray-200 font-marianne dark:border-gray-800" />
-                      Mes playlists
+                      {t("playlists")}
                     </a>
                   </Link>
 
@@ -148,19 +148,19 @@ export const UserDropdown = () => {
                     onClick={signOut}
                   >
                     <LogoutIcon className="w-6 h-6 pr-2 mr-2 text-center border-r border-gray-200 font-marianne dark:border-gray-800" />
-                    Déconnexion
+                    {t("logout")}
                   </a>
 
                   {(user.session.role === "admin" ||
                     user.session.role === "superadmin") && (
                     <>
                       <div className="block px-4 py-2 text-xs text-gray-400 font-spectral">
-                        Administration de la plateforme
+                        {t("admin-title")}
                       </div>
                       <Link href="/admin">
                         <a className="inline-flex items-center w-full px-4 py-2 text-sm leading-5 text-gray-700 transition duration-150 ease-in-out dark:text-gray-300 hover:text-bleuFrance-500 hover:bg-bleuFrance-50 dark:hover:bg-bleuFrance-800 font-marianne">
                           <CogIcon className="w-6 h-6 pr-2 mr-2 text-center border-r border-gray-200 dark:border-gray-800 " />
-                          Administration
+                          {t("admin")}
                         </a>
                       </Link>
                     </>
@@ -169,29 +169,30 @@ export const UserDropdown = () => {
               ) : (
                 <>
                   <div className="block px-4 py-2 pt-4 text-xs text-gray-400 font-spectral">
-                    Connexion
+                    {t("login-title")}
                   </div>
                   <Link href="/auth/login">
-                    <a className="inline-flex items-center w-full px-4 py-2 text-sm leading-5 text-gray-700 transition duration-150 ease-in-out font-marianne dark:text-gray-300 hover:text-bleuFrance-500 hover:bg-bleuFrance-50 dark:hover:bg-bleuFrance-800" id="link-redirect-login">
+                    <a
+                      className="inline-flex items-center w-full px-4 py-2 text-sm leading-5 text-gray-700 transition duration-150 ease-in-out font-marianne dark:text-gray-300 hover:text-bleuFrance-500 hover:bg-bleuFrance-50 dark:hover:bg-bleuFrance-800"
+                      id="link-redirect-login"
+                    >
                       <LoginIcon className="w-6 h-6 pr-2 mr-2 text-center border-r border-gray-200 dark:border-gray-800 " />
-                      Connexion
+                      {t("login")}
                     </a>
                   </Link>
                   <Link href="/auth/register">
-                    <a className="inline-flex items-center w-full px-4 py-2 text-sm leading-5 text-gray-700 transition duration-150 ease-in-out font-marianne dark:text-gray-300 hover:text-bleuFrance-500 hover:bg-bleuFrance-50 dark:hover:bg-bleuFrance-800" id="link-redirect-register">
+                    <a
+                      className="inline-flex items-center w-full px-4 py-2 text-sm leading-5 text-gray-700 transition duration-150 ease-in-out font-marianne dark:text-gray-300 hover:text-bleuFrance-500 hover:bg-bleuFrance-50 dark:hover:bg-bleuFrance-800"
+                      id="link-redirect-register"
+                    >
                       <UserAddIcon className="w-6 h-6 pr-2 mr-2 text-center border-r border-gray-200 dark:border-gray-800" />
-                      Inscription
+                      {t("register")}
                     </a>
                   </Link>
-                  {/* <Link href="/auth">
-              <a className="block px-4 py-2 text-sm leading-5 text-gray-700 transition duration-150 ease-in-out dark:text-gray-300 hover:bg-bleuFrance-50 dark:hover:bg-bleuFrance-800">
-                Register
-              </a>
-            </Link> */}
                 </>
               )}
               <div className="block px-4 py-2 text-xs text-gray-400 font-spectral">
-                Thème de la plateforme
+                {t("theme-title")}
               </div>
               <button
                 onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
@@ -201,28 +202,25 @@ export const UserDropdown = () => {
                   {theme === "light" ? (
                     <>
                       <MoonIcon className="w-6 h-6 pr-2 mr-2 text-center border-r border-gray-200 dark:border-gray-800" />
-                      Thème sombre
+                      {t("theme-dark")}
                     </>
                   ) : (
                     <>
                       <SunIcon className="w-6 h-6 pr-2 mr-2 text-center border-r border-gray-200 dark:border-gray-800" />
-                      Thème clair
+                      {t("theme-light")}
                     </>
                   )}
                 </span>
                 <span
                   style={{ opacity: 1 }}
-                  className="hidden sm:block text-gray-400 text-sm leading-5 py-0.5 px-1.5 border border-gray-100 dark:border-gray-800 rounded-md bg-white select-none dark:bg-gray-900"
+                  className="hidden sm:block text-gray-400 text-xs leading-5 py-0.5 px-1.5 border border-gray-100 dark:border-gray-800 rounded-md bg-white select-none dark:bg-gray-900"
                 >
-                  <span className="sr-only">Appuyer sur </span>
                   <kbd className="font-sans">
                     <abbr className="no-underline">Ctrl</abbr>
                   </kbd>
-                  <span className="sr-only"> et </span>
                   <kbd className="font-sans"> + D</kbd>
                   <span className="sr-only">
-                    {" "}
-                    pour activer/désactiver le thème sombre
+                    {t("theme-sr", { key: "Ctrl+D" })}
                   </span>
                 </span>
               </button>

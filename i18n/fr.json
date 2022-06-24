@@ -1,6 +1,58 @@
 {
-    "HeroSection": {
-        "resource-create": "Créer une ressource"
-
-    }
+  "HeroSection": {
+    "resource-create": "Créer une ressource"
+  },
+  "Sidebar": {
+    "home": "Accueil",
+    "profile": "Profil",
+    "login": "Se connecter",
+    "register": "S'inscrire",
+    "resources": "Ressources",
+    "library": "Bibliothèque",
+    "playlists": "Playlists",
+    "settings": "Paramètres",
+    "resource-create": "Créer une ressource",
+    "channels": "Salons de discussion",
+    "channel-create": "Créer un salon",
+    "admin": "Administration",
+    "shortcuts": "Raccourcis"
+  },
+  "Navbar": {
+    "search-placeholder": "Rechercher une ressource..."
+  },
+  "NotificationsDropdown": {
+    "channel": "Salon de discussion",
+    "error": "Une erreur est survenue lors de la récupération des données",
+    "loading": "Chargement...",
+    "notifications": "Notifications",
+    "read-all": "Tout marquer comme lu",
+    "no-notifications": "Aucune notification à afficher",
+    "no-notifications-subtitle": "Vous êtes à jour !"
+  },
+  "NotificationComponent": {
+    "comment-message": "a commenté votre ressource",
+    "message-message": "a envoyé un message",
+    "like-message": "a aimé votre ressource",
+    "report-message": "Votre demande de signalement a été traitée",
+    "in-channel": "dans ",
+    "close": "Fermer",
+    "go-to": "Aller à "
+  },
+  "UserDropdown": {
+    "profile": "Profil",
+    "login-title": "Connexion",
+    "login": "Se connecter",
+    "register": "S'inscrire",
+    "logout": "Déconnexion",
+    "settings": "Paramètres",
+    "admin": "Administration",
+    "since": "inscrit il y a {distance}",
+    "not-provided": "Inconnu",
+    "playlists": "Mes playlists",
+    "admin-title": "Administration de la plateforme",
+    "theme-title": "Thème de la plateforme",
+    "theme-light": "Thème clair",
+    "theme-dark": "Thème sombre",
+    "theme-sr": "Appuyez sur la touche {key} pour changer le thème"
+  }
 }
