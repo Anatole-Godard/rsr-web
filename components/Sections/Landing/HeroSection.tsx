@@ -5,30 +5,10 @@ import Image from "next/image";
 import { EyeIcon, PlusIcon, UserCircleIcon } from "@heroicons/react/outline";
 import { useAuth } from "@hooks/useAuth";
 
-import {useTranslations} from 'next-intl';
-
-
-const shimmer = (w, h) => `
-<svg width="${w}" height="${h}" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-  <defs>
-    <linearGradient id="g">
-      <stop stop-color="#E8E8E8" offset="20%" />
-      <stop stop-color="#fff" offset="50%" />
-      <stop stop-color="#E8E8E8" offset="70%" />
-    </linearGradient>
-  </defs>
-  <rect width="${w}" height="${h}" fill="#E8E8E8" />
-  <rect id="r" width="${w}" height="${h}" fill="url(#g)" />
-  <animate xlink:href="#r" attributeName="x" from="-${w}" to="${w}" dur="1s" repeatCount="indefinite"  />
-</svg>`;
-
-const toBase64 = (str) =>
-  typeof window === "undefined"
-    ? Buffer.from(str).toString("base64")
-    : window.btoa(str);
+import { useTranslations } from "next-intl";
 
 export const HeroSection = () => {
-  const t = useTranslations("HeroSection")
+  const t = useTranslations("HeroSection");
   const { user } = useAuth();
   return (
     <main>
@@ -42,38 +22,25 @@ export const HeroSection = () => {
                 width={175 / 1.4}
                 height={150 / 1.4}
               />
-              {/* <div>
-                  <a className="inline-flex space-x-4 font-spectral">
-                    <span className="rounded bg-bleuFrance  px-2.5 py-1 text-xs font-semibold text-white tracking-wide uppercase">
-                      {"Quoi de neuf ?"}
-                    </span>
-                    <span className="inline-flex items-center space-x-1 text-sm font-medium text-bleuFrance-500 dark:text-bleuFrance-300">
-                      <span>Notre première release est disponible 🎉</span>
-                      
-                    </span>
-                  </a>
-              </div> */}
+
               <div className="mt-6 sm:max-w-xl">
                 <h1 className="text-4xl font-extrabold tracking-tight text-gray-900 font-marianne dark:text-gray-100 sm:text-5xl">
-                  {"Tissons des liens "}
+                  {t("tagline")}
                   <span className="text-bleuFrance-500 dark:text-bleuFrance-400">
-                    ense
+                    {t("buzz1")}
                   </span>
-                  <span className="text-rougeMarianne-500">mble</span>
+                  <span className="text-rougeMarianne-500">{t("buzz2")}</span>
                 </h1>
                 <p className="mt-6 text-justify text-gray-500 text-md font-spectral dark:text-gray-400">
-                  Entrez dans un salon de discussion, discutez, échangez,
-                  partagez vos idées, vos expériences, vos projets, vos
-                  réflexions.
+                  {t("paragraph1")}
                   <br></br>
-                  Tissez des liens entre vous et chaque citoyen grâce aux
-                  ressources que vous trouverez sur le site.
+                  {t("paragraph2")}
                 </p>
                 <div className="flex items-center mt-6 space-x-3 sm:flex-row">
                   <Link href="/resource">
                     <a className="btn-bleuFrance" id="btn-resource-redirect">
                       <EyeIcon className="w-4 h-4 mr-2" />
-                      Consulter les ressources
+                      {t("resource-see")}
                     </a>
                   </Link>
                   {user ? (
@@ -87,7 +54,7 @@ export const HeroSection = () => {
                     <Link href="/auth/login">
                       <a className="btn-gray" id="btn-login-redirect">
                         <UserCircleIcon className="w-4 h-4 mr-2" />
-                        Se connecter
+                        {t("login")}
                       </a>
                     </Link>
                   )}
@@ -151,50 +118,6 @@ export const HeroSection = () => {
           </div>
         </div>
 
-        {/* <div className="bg-white">
-        <div className="px-4 py-16 mx-auto max-w-7xl sm:px-6 lg:px-8">
-          <p className="text-sm font-semibold tracking-wide text-center text-gray-500 uppercase">
-            Trusted by over 5 very average small businesses
-          </p>
-          <div className="grid grid-cols-2 gap-8 mt-6 md:grid-cols-6 lg:grid-cols-5">
-            <div className="flex justify-center col-span-1 md:col-span-2 lg:col-span-1">
-              <img
-                className="h-12"
-                src="https://tailwindui.com/img/logos/tuple-logo-gray-400.svg"
-                alt="Tuple"
-              />
-            </div>
-            <div className="flex justify-center col-span-1 md:col-span-2 lg:col-span-1">
-              <img
-                className="h-12"
-                src="https://tailwindui.com/img/logos/mirage-logo-gray-400.svg"
-                alt="Mirage"
-              />
-            </div>
-            <div className="flex justify-center col-span-1 md:col-span-2 lg:col-span-1">
-              <img
-                className="h-12"
-                src="https://tailwindui.com/img/logos/statickit-logo-gray-400.svg"
-                alt="StaticKit"
-              />
-            </div>
-            <div className="flex justify-center col-span-1 md:col-span-2 md:col-start-2 lg:col-span-1">
-              <img
-                className="h-12"
-                src="https://tailwindui.com/img/logos/transistor-logo-gray-400.svg"
-                alt="Transistor"
-              />
-            </div>
-            <div className="flex justify-center col-span-2 md:col-span-2 md:col-start-4 lg:col-span-1">
-              <img
-                className="h-12"
-                src="https://tailwindui.com/img/logos/workcation-logo-gray-400.svg"
-                alt="Workcation"
-              />
-            </div>
-          </div>
-        </div>
-      </div> */}
       </div>
     </main>
   );
