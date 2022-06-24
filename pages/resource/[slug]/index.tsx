@@ -35,6 +35,8 @@ import { TagDocument } from "@definitions/Resource/Tag";
 import { CommentView } from "@components/Resource/CommentView";
 import { ResourceView } from "@components/Resource/ResourceView";
 import toast from "react-hot-toast";
+import { useTranslations } from "next-intl";
+import { useRouter } from "next/router";
 
 const ResourceSlug: NextPage<any> = ({
   slug,
@@ -53,6 +55,9 @@ const ResourceSlug: NextPage<any> = ({
   const [message, setMessage] = useState<string>("");
   const [newLikes, setNewLikes] = useState<UserMinimum[]>(likes || []);
   const [newComments, setNewComments] = useState<Comment[]>(comments || []);
+
+  const t = useTranslations("ResourceSlug");
+  const { locale } = useRouter();
 
   const { user } = useAuth();
   const report = async () => {
@@ -127,7 +132,7 @@ const ResourceSlug: NextPage<any> = ({
           <Link href="/resource">
             <a className="hidden mb-1 text-xs btn-gray w-max lg:flex">
               <ChevronLeftIcon className="w-4 h-4 mr-1" />
-              Retour
+              {t("back")}
             </a>
           </Link>
           <div className="flex flex-col space-y-3 lg:divide-x dark:divide-gray-700 font-spectral lg:h-10 lg:items-center lg:flex-row lg:space-x-2 lg:space-y-0">
@@ -135,55 +140,58 @@ const ResourceSlug: NextPage<any> = ({
               {types
                 .find((t) => t.value === data?.type)
                 ?.icon.outline({ className: "w-4 h-4 mx-1 shrink-0" })}
-              {types.find((t) => t.value === data?.type)?.label}
+              {t(types.find((t) => t.value === data?.type).value)}
             </div>
 
             <div className="inline-flex items-center text-xs text-gray-500 transition duration-200 hover:text-gray-700 dark:text-gray-400">
               <CalendarIcon className="w-4 h-4 mx-1 shrink-0" />
               {formatDistance(new Date(createdAt), new Date(), {
                 addSuffix: true,
-                locale: fr,
+                locale: locale === "fr" ? fr : undefined,
               })}
             </div>
-            {newLikes.length >= 1 ? (
+            {newLikes && newLikes.length >= 1 ? (
               <div className="inline-flex items-center text-xs text-gray-500 transition duration-200 hover:text-gray-700 dark:text-gray-400">
                 <span className="xl:ml-1">
                   <AvatarGroup users={newLikes} limit={5} />
                 </span>
                 <UsersIcon className="hidden lg:flex items-center shrink-0 ml-1.5 h-4 w-4 " />
                 <span className="ml-1.5">
-                  {newLikes?.length || 0}{" "}
-                  {newLikes?.length > 1 ? "personnes aiment" : "personne aime"}
+                  {newLikes.length > 1
+                    ? t("like-multiple", { length: newLikes.length })
+                    : t("like-single")}
                 </span>
               </div>
             ) : (
               <div className="inline-flex items-center text-xs text-gray-500 transition duration-200 hover:text-gray-700 dark:text-gray-400">
                 <UsersIcon className="flex items-center shrink-0 ml-1 mr-1.5 h-4 w-4 " />
 
-                {"Personne n'aime pour l'instant"}
+                {t("like-none")}
               </div>
             )}
             <div className="inline-flex items-center text-xs text-gray-500 transition duration-200 hover:text-gray-700 dark:text-gray-400">
               {visibilities
                 .find((v) => v.value === visibility)
                 ?.icon.outline({ className: "w-4 h-4 mx-1 shrink-0" })}
-              {visibilities.find((v) => v.value === visibility)?.label}
+              {t(visibilities.find((v) => v.value === visibility).value)}
             </div>
             {user?.data.uid === owner.uid && !validated && (
               <div className="inline-flex items-center pl-1 text-xs text-gray-500 transition duration-200 hover:text-gray-700 dark:text-gray-400">
-                En attente de validation
+                {t("validation-awaiting")}
               </div>
             )}
             {seenBy.length >= 1 ? (
               <div className="inline-flex items-center text-xs text-gray-500 transition duration-200 hover:text-gray-700 dark:text-gray-400">
                 <EyeIcon className="flex items-center shrink-0 ml-1 mr-1.5 h-4 w-4 " />
-                {seenBy?.length || 0} {seenBy?.length > 1 ? "vues" : "vue"}
+                {seenBy.length > 1
+                  ? t("seenby-multiple", { length: seenBy.length })
+                  : t("seenby-single")}
               </div>
             ) : (
               <div className="inline-flex items-center text-xs text-gray-500 transition duration-200 hover:text-gray-700 dark:text-gray-400">
                 <EyeIcon className="flex items-center shrink-0 ml-1 mr-1.5 h-4 w-4 " />
 
-                {"Personne n'a vu pour l'instant"}
+                {t("seenby-none")}
               </div>
             )}
           </div>
@@ -196,7 +204,7 @@ const ResourceSlug: NextPage<any> = ({
               <Link href="/resource">
                 <a className="flex text-xs btn-gray lg:hidden">
                   <ChevronLeftIcon className="w-4 h-4 mr-1" />
-                  Retour
+                  {t("back")}
                 </a>
               </Link>
 
@@ -226,7 +234,7 @@ const ResourceSlug: NextPage<any> = ({
                   />
                   <button onClick={report} className="btn-yellow">
                     <ExclamationIcon className="w-4 h-4 select-none md:mr-1 shrink-0" />
-                    <span className="hidden md:flex">Signaler</span>
+                    <span className="hidden md:flex">{t("report")}</span>
                   </button>
                 </>
               ) : (
@@ -241,7 +249,7 @@ const ResourceSlug: NextPage<any> = ({
                 <Link href={"/resource/" + slug + "/edit"} key="edit">
                   <a className="btn-gray">
                     <PencilIcon className="w-4 h-4 select-none md:mr-1 shrink-0" />
-                    <span className="hidden md:flex">Éditer</span>
+                    <span className="hidden md:flex">{t("edit")}</span>
                   </a>
                 </Link>
               )}
@@ -251,8 +259,8 @@ const ResourceSlug: NextPage<any> = ({
             <ShowMoreText
               /* Default options */
               lines={3}
-              more="Voir plus"
-              less="Voir moins"
+              more={t("see-more")}
+              less={t("see-less")}
               className="w-full text-sm prose text-justify text-gray-500 grow font-spectral dark:text-gray-400"
               anchorClass="text-bleuFrance-500 dark:text-bleuFrance-300 underline"
               expanded={false}
@@ -308,7 +316,7 @@ const ResourceSlug: NextPage<any> = ({
                   )
                 }
               >
-                Aperçu de la ressource
+                {t("overview")}
               </Tab>
               <Tab
                 className={({ selected }) =>
@@ -334,7 +342,7 @@ const ResourceSlug: NextPage<any> = ({
                   )
                 }
               >
-                Commentaires
+                {t("comments")}
               </Tab>
             </Tab.List>
             <Tab.Panels className="p-2 bg-white max-h-max dark:bg-black rounded-xl focus:outline-none">
@@ -354,16 +362,14 @@ const ResourceSlug: NextPage<any> = ({
                   </ul>
                 ) : (
                   <div className="flex items-center justify-center w-full h-full">
-                    <p className="font-spectral">
-                      Aucun commentaire pour le moment
-                    </p>
+                    <p className="font-spectral">{t("comments-none")}</p>
                   </div>
                 )}
                 {user?.data.uid && (
                   <form onSubmit={comment} className="inline-flex">
                     <input
                       value={message}
-                      placeholder="Écrire un commentaire"
+                      placeholder={t("comments-placeholder")}
                       className="input grow"
                       required
                       onChange={(e) => setMessage(e.target.value)}
@@ -414,6 +420,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const resource: Resource[] = body?.data?.attributes;
 
   return {
-    props: { ...resource },
+    props: {
+      ...resource,
+      i18n: (await import(`../../../i18n/${context.locale}.json`)).default,
+    },
   };
 };
