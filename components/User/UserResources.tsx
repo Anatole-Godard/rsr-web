@@ -4,6 +4,7 @@ import { Disclosure, Transition } from "@headlessui/react";
 import { ChevronUpIcon } from "@heroicons/react/outline";
 import { useAuth } from "@hooks/useAuth";
 import { classes } from "libs/classes";
+import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { useMemo } from "react";
 
@@ -17,6 +18,8 @@ export const UserResources = ({
     () => resources.find((r) => r.owner.uid === user?.data.uid) !== undefined,
     [resources, user?.data.uid]
   );
+
+  const t = useTranslations("UserResources");
 
   return (
     <Disclosure defaultOpen>
@@ -34,10 +37,9 @@ export const UserResources = ({
                 />
               </div>
               <h5 className="font-bold font-marianne">
-                Les ressources que{" "}
                 {isAuthentifiedUser
-                  ? "vous avez créés"
-                  : "l'utilisateur a créé"}
+                  ? t("you-have-created")
+                  : t("user-have-created")}
               </h5>
             </div>
             <ChevronUpIcon

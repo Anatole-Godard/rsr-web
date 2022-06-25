@@ -166,9 +166,26 @@
     "edit-delete-text2": "Les messages et les activités associés seront également supprimés."
   },
 
+  "UserIndex": {
+    "title1": "Mon",
+    "title2": "profil",
+
+    "statistics": "Statistiques",
+    "playlists": "Playlists",
+    "settings": "Paramètres"
+  },
+
   "UserSettings": {
     "title": "Paramètres",
     "back": "Retour"
+  },
+
+  "UserPlaylist": {
+    "title": "Mes playlists",
+    "back": "Retour",
+    "loading": "Chargement des playlists...",
+    "error": "Une erreur est survenue lors de la récupération des données",
+    "empty": "Aucune playlist n'a été crée pour l'instant."
   },
 
   "PictureChanger": {
@@ -223,6 +240,33 @@
     "title": "Réinitialisation de votre progression Premiers pas",
     "text": "Vous pouvez à tout moment réinitialiser votre progression Premiers pas pour vérifier si vous avez correctement effectué le tutoriel. Un rechargement complet de la page peut être nécessaire.",
     "button": "Réinitialiser"
+  },
+
+  "UserResources": {
+    "you-have-created": "Les ressource que vous avez créés",
+    "user-have-created": "Les ressource que l'utilisateur a créé"
+  },
+  "UserStatistics": {
+    "title": "Statistiques",
+    "created": "Ressources créées",
+    "created-per-month": "Ressources créées par mois",
+    "seen": "Ressources consultées",
+    "seen-yours": "Total des vues de vos ressources"
+  },
+
+  "UserLikedResources": {
+    "you-have-liked": "Les ressource que vous avez aimé",
+    "user-has-liked": "Les ressource que l'utilisateur a aimé",
+    "empty": "Aucune ressource n'a été aimée par cet utilisateur"
+  },
+
+  "UserSeenResources": {
+    "title": "Les ressources que vous avez vu",
+    "empty": "Aucune ressource n'a été vue par cet utilisateur"
+  },
+
+  "UserPlaylistResources": {
+    "empty": "Aucune ressource n'a été ajoutée à cette playlist"
   },
 
   "HistoryItem": {
