@@ -19,6 +19,7 @@ import { Channel } from "@definitions/Channel";
 import { HistoryItem } from "@components/Channel/HistoryItem";
 import Image from "next/image";
 import { Activity } from "@definitions/Activity";
+import { useTranslations } from "next-intl";
 
 const ChannelSlug: NextPage<any> = ({
   sideBarChannels,
@@ -30,6 +31,8 @@ const ChannelSlug: NextPage<any> = ({
   const router = useRouter();
   const slug = router.query.slug as string;
   const { user } = useAuth();
+  const t = useTranslations("ChannelSlug");
+
   const [message, setMessage] = useState<string>("");
   const [chat, setChat] = useState<Message[]>(channel.messages || []);
   const [history, setHistory] = useState<(Message | Activity)[]>([]);
@@ -169,9 +172,9 @@ const ChannelSlug: NextPage<any> = ({
                         key="channel_slug-edit-icon"
                       />
                       <span className="items-center hidden sm:inline-flex">
-                        Éditer{" "}
+                        {t("edit1")}
                         <span className="hidden ml-1 lg:inline-flex">
-                          le salon
+                          {t("edit2")}
                         </span>
                       </span>
                     </a>
@@ -187,30 +190,12 @@ const ChannelSlug: NextPage<any> = ({
                     key="channel_slug-quit_icon"
                   />
                   <span className="items-center hidden sm:inline-flex">
-                    Quitter{" "}
-                    <span className="hidden ml-1 lg:inline-flex">le salon</span>
+                    {t("quit1")}
+                    <span className="hidden ml-1 lg:inline-flex">
+                      {t("quit2")}
+                    </span>
                   </span>
                 </button>
-                {/* <Link
-                  href={"/resource/create" + `?channel=${slug}`}
-                  key="channel_slug-resource_link"
-                >
-                  <a
-                    className="btn-bleuFrance shrink-0"
-                    key="channel_slug-resource_btn"
-                  >
-                    <PlusIcon
-                      className="w-4 h-4 sm:mr-2 shrink-0"
-                      key="channel_slug-resource_icon"
-                    />
-                    <span className="items-center hidden sm:inline-flex">
-                      Poster
-                      <span className="hidden ml-1 lg:inline-flex">
-                        une ressource
-                      </span>
-                    </span>
-                  </a>
-                </Link> */}
               </div>
             </div>
 
@@ -240,12 +225,12 @@ const ChannelSlug: NextPage<any> = ({
                   onChange={(e) => setMessage(e.target.value)}
                   className="z-40 pl-[2.25rem] bg-white hover:bg-gray-200 dark:hover:bg-gray-700 dark:focus:bg-gray-700 input"
                   ref={inputRef}
-                  placeholder="Écrivez votre message..."
+                  placeholder={t("placeholder")}
                 />
               </label>
               <button type="submit" className=" btn-bleuFrance">
                 <CheckIcon className="w-4 h-4 mr-2" />
-                Envoyer
+                {t("send")}
               </button>
             </form>
           </div>
@@ -294,6 +279,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     props: {
       sideBarChannels: channels?.data?.attributes,
       channel,
+      i18n: (await import(`../../../i18n/${context.locale}.json`)).default,
     },
   };
 };

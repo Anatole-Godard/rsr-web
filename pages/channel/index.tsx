@@ -40,6 +40,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   return {
     props: {
       sideBarChannels: channels?.data?.attributes,
+      i18n: (await import(`../../i18n/${context.locale}.json`)).default,
     },
   };
 };
