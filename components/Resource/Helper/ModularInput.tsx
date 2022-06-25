@@ -9,6 +9,7 @@ import {
   XIcon,
 } from "@heroicons/react/outline";
 import { CursorClickIcon } from "@heroicons/react/solid";
+import { useTranslations } from "next-intl";
 import { Dispatch, useState } from "react";
 import slug from "slug";
 
@@ -18,10 +19,8 @@ export type Input = {
   value: string | number | boolean;
   type: "date" | "string" | "number" | "boolean";
 };
-
 const DEFAULT_INPUT_TYPE = "string";
-const DEFAULT_INPUT_LABEL = "Identifiant du champ";
-const DEFAULT_INPUT_SLUG = slug(DEFAULT_INPUT_LABEL);
+let DEFAULT_INPUT_LABEL = "Identifiant par défaut";
 
 export const WrapperModularInputs = ({
   data,
@@ -30,6 +29,10 @@ export const WrapperModularInputs = ({
   data: Input[];
   setData: Dispatch<Input[]>;
 }) => {
+  const t = useTranslations("WrapperModularInputs");
+  DEFAULT_INPUT_LABEL = t("default-input-label");
+  const DEFAULT_INPUT_SLUG = slug(DEFAULT_INPUT_LABEL);
+
   const appendInput = () => {
     setData([
       ...data,
@@ -51,9 +54,9 @@ export const WrapperModularInputs = ({
       {data.length === 0 && (
         <div className="flex flex-col items-center justify-center p-4">
           <ExclamationIcon className="w-8 h-8" />
-          <h4 className="text-lg font-marianne">Ajoutez un champ à remplir</h4>
+          <h4 className="text-lg font-marianne">{t("no-input-title")}</h4>
           <p className="text-sm text-center font-spectral">
-            {"Il semble que vous n'ayez pas encore ajouté de champs à remplir."}
+            {t("no-input-description")}
           </p>
         </div>
       )}
@@ -87,9 +90,13 @@ export const WrapperModularInputs = ({
         ))}
       </div>
       <div className="inline-flex justify-end w-full mt-4 ">
-        <button className="btn-gray dark:bg-gray-700" onClick={appendInput} type="button">
+        <button
+          className="btn-gray dark:bg-gray-700"
+          onClick={appendInput}
+          type="button"
+        >
           <PlusCircleIcon className="w-4 h-4 mr-2" />
-          Ajouter un champ
+          {t("add-input")}
         </button>
       </div>
     </div>
@@ -114,6 +121,7 @@ const Input = ({
   removeInput,
 }: IInputProps) => {
   const [isEditingLabel, setIsEditingLabel] = useState(false);
+  const t = useTranslations("WrapperModularInputs");
   return (
     <div className="flex flex-col space-y-1">
       <div className="text-sm font-spectral">
@@ -123,7 +131,7 @@ const Input = ({
               value={label}
               onChange={(e) => onLabelChange(e.target.value)}
               className="input hover:bg-gray-300 w-fit dark:bg-gray-700"
-              placeholder="Nom du champ"
+              placeholder={t("label-edit-placeholder")}
               onBlur={() => setIsEditingLabel(false)}
             />
             <button
@@ -173,10 +181,10 @@ const Input = ({
               name="searchType"
               className="input pr-8 py-2 appearance-none pl-[2.25rem] placeholder-gray-500 min-w-fit dark:bg-gray-700"
             >
-              <option value="string">Texte</option>
-              <option value="number">Nombre</option>
-              <option value="date">Date</option>
-              <option value="boolean">Oui/Non</option>
+              <option value="string">{t("string")}</option>
+              <option value="number">{t("number")}</option>
+              <option value="date">{t("date")}</option>
+              <option value="boolean">{t("boolean")}</option>
             </select>
             <ChevronDownIcon className="absolute w-4 h-4 transform -translate-y-1/2 pointer-events-none top-1/2 right-3" />
           </label>
@@ -194,7 +202,7 @@ const Input = ({
                       : e.target.value
                   )
                 }
-                placeholder={`Entrez ${label}`}
+                placeholder={t("placeholder", { label })}
               />
             ) : (
               <input
