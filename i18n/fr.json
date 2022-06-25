@@ -138,7 +138,7 @@
 
   "ChannelCreate": {
     "create-title": "Créer",
-    "edit-title": "Créer",
+    "edit-title": "Modifier",
     "create-title1": "un",
     "create-title2": "salon",
 
@@ -474,5 +474,10 @@
 
     "quit-button-done": "Ce fût un plaisir !",
     "quit-button-none": "Non, merci"
+  },
+  "PlaylistDropdown": {
+    "button": "Ajouter",
+    "create": "Créer une playlist",
+    "placeholder": "À regarder plus tard"
   }
 }
