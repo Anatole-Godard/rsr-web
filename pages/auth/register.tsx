@@ -42,7 +42,7 @@ export default function Register() {
   }, [password]);
 
   return (
-    <GuestLayout>
+    <GuestLayout title="Se créer un compte">
       <div className="w-full max-w-sm mx-auto lg:w-96">
         <div>
           <Logo className="flex flex-col text-5xl font-extrabold tracking-wider uppercase text-opacity-80" />

@@ -8,9 +8,7 @@ import { fetchRSR } from "libs/fetchRSR";
 import { NextPage } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { ChartSquareBarIcon } from "@heroicons/react/outline";
 
-import { useState } from "react";
 import { UserStatistics } from "@components/User/UserStatistics";
 import { UserSeenResources } from "@components/User/UserSeenResources";
 
@@ -26,7 +24,7 @@ const UserIndexPage: NextPage<any> = ({
   const { user } = useAuth();
 
   return (
-    <AppLayout>
+    <AppLayout title="Mon profil">
       <div className="flex flex-col w-full h-full bg-white dark:bg-black ">
         <div className="flex flex-col w-full px-6 py-6 space-y-3 bg-white lg:justify-between lg:items-end lg:flex-row shrink-0 lg:px-12 dark:bg-black dark:border-gray-800 lg:space-y-0">
           <div className="inline-flex items-center">
