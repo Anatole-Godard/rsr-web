@@ -24,10 +24,9 @@ const UserIndexPage: NextPage<any> = ({
 }) => {
   const { user } = useAuth();
   const t = useTranslations("UserIndex");
- 
 
   return (
-    <AppLayout title="Mon profil">
+    <AppLayout title={t("title")}>
       <div className="flex flex-col w-full h-full bg-white dark:bg-black ">
         <div className="flex flex-col w-full px-6 py-6 space-y-3 bg-white lg:justify-between lg:items-end lg:flex-row shrink-0 lg:px-12 dark:bg-black dark:border-gray-800 lg:space-y-0">
           <div className="inline-flex items-center">

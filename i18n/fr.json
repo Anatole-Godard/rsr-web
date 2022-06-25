@@ -1,4 +1,10 @@
 {
+  "Index": {
+    "title": "Accueil"
+  },
+  "UserUID": {
+    "title": "Profil de {name}"
+  },
   "HeroSection": {
     "tagline": "Tissons des liens ",
     "buzz1": "ense",
@@ -167,6 +173,7 @@
   },
 
   "UserIndex": {
+    "title":"Mon profil",
     "title1": "Mon",
     "title2": "profil",
 
