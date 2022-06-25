@@ -127,7 +127,7 @@ const ChannelCreate: NextPage<any> = (props) => {
   }, [user?.session]);
 
   return (
-    <AppLayout>
+    <AppLayout title={`Édition de ${name}`}>
       <form
         onSubmit={handleSubmit}
         className="flex flex-col w-full max-h-full bg-white dark:bg-gray-900 grow"

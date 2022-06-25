@@ -10,7 +10,7 @@ const Channel: NextPage<any> = ({
   sideBarChannels: Channel[];
 }) => {
   return (
-    <AppLayout>
+    <AppLayout title="Salons de discussion">
       <div className="flex flex-col w-full h-full max-h-[calc(100vh-4rem)] xl:flex-row">
         <Sidebar channels={sideBarChannels} />
       </div>

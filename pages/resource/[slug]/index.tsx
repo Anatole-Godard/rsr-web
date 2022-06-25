@@ -120,7 +120,7 @@ const ResourceSlug: NextPage<any> = ({
 
   // @ts-ignore
   return (
-    <AppLayout>
+    <AppLayout title={data.attributes.properties.name}>
       <section className="flex flex-col w-full bg-gray-100 h-fit dark:bg-gray-900">
         {/* 2xl:sticky 2xl:top-0 z-[47] */}
         <div className="flex flex-col w-full px-6 py-6 bg-white border-b border-gray-200 lg:px-24 dark:bg-black dark:border-gray-800">

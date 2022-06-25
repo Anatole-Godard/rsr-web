@@ -109,7 +109,7 @@ const ChannelSlug: NextPage<any> = ({
   };
 
   return (
-    <AppLayout>
+    <AppLayout title={channel.name}>
       <div className="flex flex-col w-full h-full md:flex-row">
         <Sidebar
           channels={sideBarChannels}
