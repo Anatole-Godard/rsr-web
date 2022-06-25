@@ -109,7 +109,7 @@ const ChannelCreate: NextPage<any> = ({
   }, [pictureUrl, name, description, members, privateGroup]);
 
   return (
-    <AppLayout title="Créer un salon">
+    <AppLayout title={t("head-title")}>
       <form
         onSubmit={handleSubmit}
         className="flex flex-col w-full max-h-full bg-white dark:bg-gray-900 grow"

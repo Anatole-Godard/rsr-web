@@ -34,6 +34,7 @@
     "see-all": "Voir toutes les ressources"
   },
   "ResourceIndex": {
+    "title": "Ressources",
     "title1": "Toutes les",
     "title2": "ressources",
     "search-placeholder": "Rechercher une ressource...",
@@ -96,6 +97,8 @@
     "private": "Privée",
     "unlisted": "Non répertoriée",
 
+    "head-title": "Créer une ressource",
+    "edit-title": "Édition de {name}",
     "title1": "Créer une",
     "title2": "ressource",
 
@@ -143,6 +146,9 @@
   },
 
   "ChannelCreate": {
+    "head-title": "Créer un salon",
+    "head-edit-title": "Édition de {name}",
+
     "create-title": "Créer",
     "edit-title": "Modifier",
     "create-title1": "un",
@@ -172,8 +178,12 @@
     "edit-delete-text2": "Les messages et les activités associés seront également supprimés."
   },
 
+  "ChannelIndex": {
+    "title": "Salons de discussion"
+  },
+
   "UserIndex": {
-    "title":"Mon profil",
+    "title": "Mon profil",
     "title1": "Mon",
     "title2": "profil",
 
@@ -188,6 +198,7 @@
   },
 
   "Login": {
+    "head-title": "Connexion",
     "title": "Connexion à RSR",
     "connect-with": "Connectez-vous avec",
     "or-with": "Ou continuez avec",
@@ -199,6 +210,7 @@
     "remember-me": "Se souvenir de moi"
   },
   "Register": {
+    "head-title": "Se créer un compte",
     "title": "Se créer un compte RSR",
     "connect-with": "Connectez-vous avec",
     "or-with": "Ou enregistrez-vous avec",

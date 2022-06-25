@@ -16,7 +16,7 @@ export default function Login() {
   const t = useTranslations("Login");
 
   return (
-    <GuestLayout title="Connexion">
+    <GuestLayout title={t("head-title")}>
       <div className="w-full max-w-sm mx-auto lg:w-96">
         <div>
           <Logo className="flex flex-col text-5xl font-extrabold tracking-wider uppercase text-opacity-80" />
