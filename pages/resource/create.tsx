@@ -1,6 +1,5 @@
 import { AppLayout } from "@components/Layout/AppLayout";
 import { Resource } from "@definitions/Resource";
-import { Event } from "@definitions/Resource/Event";
 import { UserMinimum } from "@definitions/User";
 import { Tab } from "@headlessui/react";
 import {
@@ -13,7 +12,7 @@ import { fetchXHR } from "libs/fetchXHR";
 import { classes } from "libs/classes";
 import { fetchRSR } from "libs/fetchRSR";
 import { types, visibilities } from "constants/resourcesTypes";
-import type { NextPage } from "next";
+import type { GetServerSideProps, NextPage } from "next";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import { useRouter } from "next/router";
@@ -27,6 +26,7 @@ import { TagDocument } from "@definitions/Resource/Tag";
 import useFetchRSR from "@hooks/useFetchRSR";
 import { Media } from "@definitions/Resource/Media";
 import toast from "react-hot-toast";
+import { useTranslations } from "next-intl";
 
 const Map: any = dynamic(() => import("@components/Map/Map") as any, {
   ssr: false,
@@ -43,6 +43,7 @@ const ResourceCreate: NextPage<any> = ({
 }) => {
   const router = useRouter();
   const { user } = useAuth();
+  const t = useTranslations("ResourceCreate");
 
   const [name, setName] = useState<string>("");
   const [description, setDescription] = useState<string | null>(null);
@@ -142,7 +143,6 @@ const ResourceCreate: NextPage<any> = ({
 
   useEffect(() => {
     const fetchLocation = async () => {
-      console.log(position);
       const response = await fetchXHR(
         "GET",
         `https://api-adresse.data.gouv.fr/reverse/?lat=${position.lat}&lon=${position.lng}`
@@ -194,7 +194,7 @@ const ResourceCreate: NextPage<any> = ({
         }
       } catch (err) {
         toast.error("Une erreur est survenue");
-        console.log(err);
+        // console.log(err);
       }
       setLoading(false);
     }
@@ -266,9 +266,9 @@ const ResourceCreate: NextPage<any> = ({
                 />
               </div>
               <h3 className="mb-2 text-2xl font-extrabold text-gray-800 font-marianne dark:text-gray-200">
-                Créer une
+                {t("title1")}
                 <span className="ml-1 text-bleuFrance-600 dark:text-bleuFrance-400">
-                  ressource
+                  {t("title2")}
                 </span>
               </h3>
             </div>
@@ -307,17 +307,17 @@ const ResourceCreate: NextPage<any> = ({
               ) : requestOk ? (
                 <>
                   <CheckIcon className="w-4 h-4 mr-1 text-green-700 duration-300 group-active:text-white" />{" "}
-                  Envoyé
+                  {t("sent")}
                 </>
               ) : validForm ? (
                 <>
                   <CloudUploadIcon className="w-4 h-4 mr-1 duration-300 text-bleuFrance-700 group-active:text-white" />
-                  Envoyer
+                  {t("send")}
                 </>
               ) : (
                 <>
-                  <XCircleIcon className="w-4 h-4 mr-1 text-red-700 duration-300 group-active:text-white" />{" "}
-                  Non valide
+                  <XCircleIcon className="w-4 h-4 mr-1 text-red-700 duration-300 group-active:text-white" />
+                  {t("invalid")}
                 </>
               )}
             </button>
@@ -326,32 +326,32 @@ const ResourceCreate: NextPage<any> = ({
         <div className="flex flex-col flex-grow px-4 py-3 pb-6 bg-gray-100 dark:bg-gray-900 rounded-tl-xl md:flex-row">
           <div className="flex flex-col w-full px-2 space-y-3 md:w-1/2">
             <label>
-              <h4 className="mb-1 text-sm font-semibold after:content-['*'] after:ml-0.5 after:text-red-500 text-gray-700 font-marianne dark:text-gray-300">
-                Titre de la ressource
+              <h4 className="mb-1 text-sm font-semibold after:content-['*'] after:ml-0.5 after:text-red-500 text-gray-700 font-mariann dark:text-gray-300e">
+                {t("title")}
               </h4>
               <input
                 type="text"
                 className="bg-gray-200 input"
-                placeholder="Titre"
+                placeholder={t("title")}
                 value={name}
                 onChange={(e) => setName(e.target.value)}
               ></input>
             </label>
             <label className="flex flex-col grow">
               <h4 className="mb-1 text-sm font-semibold after:content-['*'] after:ml-0.5 after:text-red-500 text-gray-700 font-marianne dark:text-gray-300">
-                Description de la ressource
+                {t("description")}
               </h4>
               <textarea
                 className="bg-gray-200 input grow"
                 onChange={(e) => setDescription(e.target.value)}
                 rows={10}
                 value={description}
-                placeholder="Description"
+                placeholder={t("description")}
               ></textarea>
             </label>
             <label>
               <h4 className="-mb-2 text-sm after:content-['*'] after:ml-0.5 after:text-red-500 font-semibold text-gray-700 font-marianne dark:text-gray-300">
-                Visibilité de la ressource
+                {t("visibility")}
               </h4>
             </label>
 
@@ -380,7 +380,7 @@ const ResourceCreate: NextPage<any> = ({
                       }
                     >
                       {v.icon.outline({ className: "w-4 h-4 mr-1 shrink-0" })}
-                      {v.label}
+                      {t(v.value)}
                     </Tab>
                   ))}
                 </Tab.List>
@@ -389,7 +389,7 @@ const ResourceCreate: NextPage<any> = ({
             {visibility.value === "unlisted" && (
               <label>
                 <h4 className="mb-1 after:content-['*'] after:ml-0.5 after:text-red-500 text-sm font-semibold text-gray-700 font-marianne dark:text-gray-300">
-                  Membres
+                  {t("members")}
                 </h4>
                 <Select
                   name="members"
@@ -397,7 +397,7 @@ const ResourceCreate: NextPage<any> = ({
                   isMulti
                   placeholder={
                     <div className="text-sm font-semibold font-spectral">
-                      Qui souhaitez-vous inviter ?
+                      {t("members-placeholder")}
                     </div>
                   }
                   options={membersOptions
@@ -444,7 +444,7 @@ const ResourceCreate: NextPage<any> = ({
 
             <label>
               <h4 className="mb-1 text-sm font-semibold text-gray-700 font-marianne dark:text-gray-300">
-                Étiquettes
+                {t("tags")}
               </h4>
               <Select
                 name="tags"
@@ -467,12 +467,14 @@ const ResourceCreate: NextPage<any> = ({
                 onChange={(e: any[]) => setTags(e?.map((e: any) => e.value))}
                 placeholder={
                   <div className="text-sm font-semibold font-spectral">
-                    Utilisez des étiquettes pour mieux identifier la ressource
+                    {t("tags-placeholder")}
                   </div>
                 }
                 formatOptionLabel={(tag: { label: string; value: string }) => (
                   <div className="inline-flex items-center">
-                    <span className="text-xs text-gray-700 font-spectral">{tag.label}</span>
+                    <span className="text-xs text-gray-700 font-spectral">
+                      {tag.label}
+                    </span>
                   </div>
                 )}
                 onKeyDown={(event: {
@@ -497,8 +499,8 @@ const ResourceCreate: NextPage<any> = ({
           <div className="flex flex-col justify-between w-full px-2 mt-3 space-y-3 md:w-1/2 md:mt-0">
             <div className="flex flex-col w-full h-full space-y-3">
               <label>
-                <h4 className="-mb-2 text-sm after:content-['*'] after:ml-0.5 after:text-red-500 dark:text-gray-300 font-semibold text-gray-700 font-marianne">
-                  Type de la ressource
+                <h4 className="-mb-2 text-sm after:content-['*'] after:ml-0.5 after:text-red-500 font-semibold text-gray-700 font-marianne dark:text-gray-300">
+                  {t("type")}
                 </h4>
               </label>
 
@@ -529,7 +531,7 @@ const ResourceCreate: NextPage<any> = ({
                           className: "w-4 h-4 mr-1 shrink-0",
                         })}
 
-                        {type.label}
+                        {t(type.value)}
                       </Tab>
                     ))}
                   </Tab.List>
@@ -546,7 +548,7 @@ const ResourceCreate: NextPage<any> = ({
                         : ""
                     )}
                   >
-                    Médias
+                    {t("medias")}
                   </h4>
 
                   <MediaUploader files={medias} setFiles={setMedias} />
@@ -556,24 +558,24 @@ const ResourceCreate: NextPage<any> = ({
                 <>
                   <label>
                     <h4 className="mb-1 text-sm font-semibold after:content-['*'] after:ml-0.5 after:text-red-500 text-gray-700 font-marianne dark:text-gray-300">
-                      Prix
-                    </h4>
-                    <input
-                      type="number"
-                      className="bg-gray-200 input"
-                      value={price}
-                      onChange={(e) => setPrice(e.target.value)}
-                    />
-                  </label>
-                  <label>
-                    <h4 className="mb-1 text-sm font-semibold after:content-['*'] after:ml-0.5 after:text-red-500 text-gray-700 font-marianne dark:text-gray-300">
-                      Catégorie
+                      {t("physical_item-category")}
                     </h4>
                     <input
                       type="text"
                       className="bg-gray-200 input"
                       value={category}
                       onChange={(e) => setCategory(e.target.value)}
+                    />
+                  </label>
+                  <label>
+                    <h4 className="mb-1 text-sm font-semibold after:content-['*'] after:ml-0.5 after:text-red-500 text-gray-700 font-marianne dark:text-gray-300">
+                      {t("physical_item-price")}
+                    </h4>
+                    <input
+                      type="number"
+                      className="bg-gray-200 input"
+                      value={price}
+                      onChange={(e) => setPrice(e.target.value)}
                     />
                   </label>
                 </>
@@ -583,7 +585,7 @@ const ResourceCreate: NextPage<any> = ({
                 <>
                   <label>
                     <h4 className="mb-1 after:content-['*'] after:ml-0.5 after:text-red-500 text-sm font-semibold text-gray-700 font-marianne dark:text-gray-300">
-                      Lien externe
+                      {t("external_link-url")}
                     </h4>
                     <input
                       type="text"
@@ -599,14 +601,14 @@ const ResourceCreate: NextPage<any> = ({
                 <div className="flex flex-col grow">
                   <label>
                     <h4 className="mb-1 text-sm after:content-['*'] after:ml-0.5 after:text-red-500 font-semibold text-gray-700 font-marianne dark:text-gray-300">
-                      Emplacement de la ressource
+                      {t("location-address")}
                     </h4>
                     <div className="w-full mb-3">
                       <input
                         type="text"
                         value={location}
                         className="bg-gray-200 input"
-                        placeholder="Emplacement"
+                        placeholder={t("location-address")}
                         onChange={(e) => setLocation(e.target.value)}
                       ></input>
                     </div>
@@ -630,16 +632,16 @@ const ResourceCreate: NextPage<any> = ({
                         "mb-1 text-sm font-semibold text-gray-700 font-marianne dark:text-gray-300"
                       )}
                     >
-                      Dates et heures
+                      {t("event-datetime")}
                     </h4>
 
                     <div className="grid gap-2 xl:grid-cols-2">
                       <label className="flex flex-col">
                         <p className="after:content-['*'] text-gray-500 after:ml-0.5 after:text-red-500 text-xs font-spectral">
-                          Date et heure de début
+                          {t("event-datetime-start")}
                         </p>
                         <input
-                          placeholder="Date et heure de début"
+                          placeholder={t("event-datetime-start")}
                           className="bg-gray-200 input "
                           type="datetime-local"
                           onChange={(e) => setStartDate(e.target.value)}
@@ -648,10 +650,10 @@ const ResourceCreate: NextPage<any> = ({
                       </label>
                       <label className="flex flex-col">
                         <p className="text-xs text-gray-500 font-spectral">
-                          Date et heure de fin
+                          {t("event-datetime-end")}
                         </p>
                         <input
-                          placeholder="Date et heure de fin"
+                          placeholder={t("event-datetime-end")}
                           className="bg-gray-200 input "
                           type="datetime-local"
                           onChange={(e) => setEndDate(e.target.value)}
@@ -676,7 +678,7 @@ const ResourceCreate: NextPage<any> = ({
 
 export default ResourceCreate;
 
-export const getServerSideProps = async (ctx) => {
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const {
     cookies: { user },
   } = ctx.req;
@@ -691,6 +693,7 @@ export const getServerSideProps = async (ctx) => {
   return {
     props: {
       membersOptions: body?.data?.attributes,
+      i18n: (await import(`../../i18n/${ctx.locale}.json`)).default,
     },
   };
 };

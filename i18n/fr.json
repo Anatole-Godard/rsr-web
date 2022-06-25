@@ -128,6 +128,80 @@
 
     "updatedAt": "mis à jour {relative}"
   },
+  "ResourceCreate": {
+    "back": "Retour",
+    "delete": "Supprimer",
+    "cancel": "Annuler",
+    "physical_item": "Objet",
+    "location": "Lieu",
+    "external_link": "Lien hypertexte",
+    "event": "Événement",
+    "other": "Autre",
+
+    "public": "Publique",
+    "private": "Privée",
+    "unlisted": "Non répertoriée",
+
+    "title1": "Créer une",
+    "title2": "ressource",
+
+    "edit-title1": "Éditer",
+    "edit-title2": "cette ressource",
+
+    "send": "Envoyer",
+    "sent": "Envoyé",
+    "invalid": "Non valide",
+
+    "title": "Titre",
+    "description": "Description",
+    "visibility": "Visibilité",
+    "members": "Membres",
+    "members-placeholder": "Qui souhaitez-vous inviter ?",
+    "tags": "Étiquettes",
+    "tags-placeholder": "Utilisez des étiquettes pour mieux identifier la ressource",
+    "type": "Type",
+    "medias": "Médias",
+
+    "physical_item-category": "Catégorie",
+    "physical_item-price": "Prix",
+
+    "external_link-url": "URL",
+
+    "location-address": "Adresse",
+
+    "event-datetime": "Dates et heures",
+    "event-datetime-start": "Date et heure de début",
+    "event-datetime-end": "Date et heure de fin",
+
+    "edit-delete-title": "Supprimer #{slug}",
+    "edit-delete-text": "Êtes-vous sûr de vouloir supprimer cette ressource ? Cette action est irréversible.",
+    "edit-delete-text2": "Les commentaires et les J'aime associés seront également supprimés."
+  },
+  "MediaUploader": {
+    "edit-warn": "Éditer la ressource réinitialisera vos documents.",
+    "cancel": "Annuler",
+    "add": "Ajouter un document",
+    "accepted-files-types": "Fichier audio, image, vidéo, PDF acceptés",
+    "limit-reached": "Vous avez atteint le nombre maximum de documents",
+    "limit-file-size": "Maximum 5 Mo par fichier jusqu'à 3 fichiers",
+    "limit-file-remaining": "{remaining} fichiers restants"
+  },
+  "WrapperModularInputs": {
+    "default-input-label": "Identifiant du champ",
+    "no-input-title": "Ajoutez un champ à remplir",
+    "no-input-description": "Il semble que vous n'ayez pas encore ajouté de champs à remplir.",
+    "add-input": "Ajouter un champ",
+
+    "label-edit-placeholder": "Entrez un nom pour le champ",
+    "placeholder": "Entrez {label}",
+
+    "date": "Date",
+    "string": "Texte",
+    "number": "Nombre",
+    "boolean": "Oui/Non",
+    "boolean-true": "Oui",
+    "boolean-false": "Non"
+  },
   "Sidebar": {
     "home": "Accueil",
     "profile": "Profil",
