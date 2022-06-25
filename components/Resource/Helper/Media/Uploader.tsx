@@ -6,14 +6,15 @@ import {
   PlusCircleIcon,
   VideoCameraIcon,
   VolumeUpIcon,
-  XIcon
-} from '@heroicons/react/outline';
-import { Dispatch, Fragment, useEffect, useState } from 'react';
-import { Dialog, Transition } from '@headlessui/react';
-import { formatBytes } from 'libs/formatBytes';
-import { useRouter } from 'next/router';
-import { useEventListener } from '@hooks/useEventListener';
-import { Media } from '@definitions/Resource/Media';
+  XIcon,
+} from "@heroicons/react/outline";
+import { Dispatch, Fragment, useEffect, useState } from "react";
+import { Dialog, Transition } from "@headlessui/react";
+import { formatBytes } from "libs/formatBytes";
+import { useRouter } from "next/router";
+import { useEventListener } from "@hooks/useEventListener";
+import { Media } from "@definitions/Resource/Media";
+import { useTranslations } from "next-intl";
 
 export const MediaUploader = ({
   files,
@@ -26,6 +27,8 @@ export const MediaUploader = ({
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [hasChanges, setHasChanges] = useState<boolean>(false);
 
+  const t = useTranslations("MediaUploader");
+
   useEventListener("keydown", (e: KeyboardEvent) => {
     if (e.code === "Escape") setIsOpen(false);
   });
@@ -34,8 +37,6 @@ export const MediaUploader = ({
     if (isOpen) setHasChanges(false);
   }, [isOpen]);
 
-  console.log({ isOpen, hasChanges });
-
   return (
     <>
       <div className="flex flex-col h-full max-h-full p-2 space-y-1 bg-gray-200 rounded-lg">
@@ -43,13 +44,13 @@ export const MediaUploader = ({
           <div className="inline-flex items-center">
             <small className="inline-flex items-center w-full text-sm font-spectral">
               <ExclamationIcon className="w-4 h-4 mr-1 " />
-              Éditer la ressource réinitialisera vos médias.
+              {t("edit-warn")}
             </small>
             <a
               className="px-2 py-0.5 btn-text-bleuFrance"
               href={router.asPath.replace("/edit", "")}
             >
-              Annuler
+              {t("cancel")}
             </a>
           </div>
         )}
@@ -80,7 +81,7 @@ export const MediaUploader = ({
               <button
                 id={"btn-" + media.name + i}
                 key={"btn-" + media.name + i}
-                onClick={(e) => {
+                onClick={() => {
                   setFiles([
                     ...files.filter((m: Media) => m.name !== media.name),
                   ]);
@@ -105,12 +106,12 @@ export const MediaUploader = ({
           {files.length < 3 ? (
             <>
               <PlusCircleIcon className="w-4 h-4 mr-2" />
-              Ajouter un média
+              {t("add")}
             </>
           ) : (
             <>
               <PlusCircleIcon className="w-4 h-4 mr-2" />
-              Vous avez atteint le nombre maximum de médias
+              {t("limit-reached")}
             </>
           )}
         </button>
@@ -151,7 +152,7 @@ export const MediaUploader = ({
                       className="inline-flex items-center justify-center w-full text-xl font-medium text-gray-900 font-marianne"
                     >
                       <CloudUploadIcon className="w-6 h-6 mt-1 mr-2 stroke-2" />
-                      Ajouter un média
+                      {t("add")}
                     </Dialog.Title>
                     <div className="mt-4">
                       <div className="w-full grow">
@@ -193,13 +194,15 @@ export const MediaUploader = ({
                             <DocumentIcon className="w-6 h-6 mx-2" />
                           </div>
                           <span className="text-sm text-gray-600 duration-300 group-hover:text-gray-700 font-spectral">
-                            Fichier audio, image, vidéo, pdf accepté
+                            {t("accepted-files-types")}
                           </span>
                           <span className="text-xs text-gray-500 duration-300 group-hover:text-gray-600 font-spectral">
-                            Maximum 5 Mo par fichier ({"jusqu'à 3 fichiers"})
+                            {t("limit-file-size")}
                           </span>
                           <span className="text-xs text-gray-500 duration-300 group-hover:text-gray-600 font-spectral">
-                            {3 - files.length} fichiers restants
+                            {t("limit-file-remaining", {
+                              remaining: 3 - files.length,
+                            })}
                           </span>
                         </label>
                       </div>
@@ -212,7 +215,7 @@ export const MediaUploader = ({
                         onClick={() => setIsOpen(false)}
                       >
                         <XIcon className="w-4 h-4 mr-2" />
-                        Annuler
+                        {t("cancel")}
                       </button>
                     </div>
                   </Dialog.Panel>
