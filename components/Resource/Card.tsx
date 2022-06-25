@@ -81,9 +81,13 @@ export const ResourceCard = (props: Resource) => {
                 {t(visibilities.find((v) => v.value === visibility).value)}
                 {members && (
                   <span className="hidden md:block">
-                    {visibility === "unlisted" && members.length > 1
-                      ? t("unlisted-members", { length: members.length })
-                      : t("unlisted-member", { length: members.length })}
+                    {visibility === "unlisted" && (
+                      <>
+                        {members.length > 1
+                          ? t("unlisted-members", { length: members.length })
+                          : t("unlisted-member", { length: members.length })}
+                      </>
+                    )}
                   </span>
                 )}
               </div>
