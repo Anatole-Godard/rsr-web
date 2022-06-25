@@ -8,7 +8,7 @@ import type { GetServerSideProps, NextPage } from "next";
 
 const Home: NextPage<any> = ({ resources }: { resources: Resource[] }) => {
   return (
-    <AppLayout>
+    <AppLayout title="Accueil">
       <HeroSection />
       <SearchSection />
       <section className="flex flex-col h-full px-6 pt-6 pb-6 space-y-6 bg-gray-100 dark:bg-gray-900 lg:px-24 2xl:px-32">

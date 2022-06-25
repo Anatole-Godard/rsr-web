@@ -4,7 +4,7 @@ import Link from "next/link";
 
 const Error404: NextPage = () => {
   return (
-    <AppLayout>
+    <AppLayout title="404">
       <div className="h-full px-4 py-16 bg-white dark:bg-black sm:px-6 sm:py-24 md:grid md:place-items-center lg:px-8">
         <div className="mx-auto max-w-max">
           <main className="sm:flex">
@@ -22,14 +22,9 @@ const Error404: NextPage = () => {
               </div>
               <div className="flex mt-10 space-x-3 sm:border-l sm:border-transparent sm:pl-6">
                 <Link href="/">
-                  <a className="btn-bleuFrance">
-                    {"Revenir à l'accueil"}
-                  </a>
+                  <a className="btn-bleuFrance">{"Revenir à l'accueil"}</a>
                 </Link>
-                <a
-                  href="mailto:support@rsr.gouv.fr"
-                  className="btn-text-gray"
-                >
+                <a href="mailto:support@rsr.gouv.fr" className="btn-text-gray">
                   Contacter le webmaster
                 </a>
               </div>
