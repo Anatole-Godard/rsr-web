@@ -1,10 +1,13 @@
 import { Dialog, Transition } from "@headlessui/react";
 import { BanIcon, XIcon } from "@heroicons/react/outline";
+import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { Fragment, useState } from "react";
 import toast from "react-hot-toast";
 
 export const DisableAccount = () => {
+  const t = useTranslations("DisableAccount");
+
   let [isOpen, setIsOpen] = useState<boolean>(false);
   const openModal = () => setIsOpen(true);
   const closeModal = () => setIsOpen(false);
@@ -32,20 +35,17 @@ export const DisableAccount = () => {
           </div>
         </div>
         <div className="flex flex-col">
-          <p className="mb-2 text-gray-600 font-spectral">
-            Vous souhaitez désactiver votre compte ?
-          </p>
+          <p className="mb-2 text-gray-600 font-spectral">{t("subtitle")}</p>
           <p className="mb-1 text-xs text-gray-600 font-spectral">
-            Vous pouvez désactiver votre compte pour le moment, mais vous ne
-            pourrez plus vous connecter à votre compte.
+            {t("text")}
           </p>
           <p className="mb-3 text-xs text-gray-600 font-spectral">
-            Vos données seront anonymisées et ne seront pas récupérables.
+            {t("text2")}
           </p>
           <div className="ml-auto">
             <button className="btn-red" onClick={openModal}>
               <BanIcon className="w-4 h-4 mr-2" />
-              Désactiver mon compte
+              {t("button")}
             </button>
           </div>
         </div>
@@ -90,20 +90,18 @@ export const DisableAccount = () => {
                   as="h3"
                   className="text-lg font-medium leading-6 text-gray-900 font-marianne"
                 >
-                  Désactivation du compte
+                  {t("title")}
                 </Dialog.Title>
                 <div className="mt-6">
                   <p className="text-sm text-gray-500 font-spectral">
-                    Voulez-vous vraiment désactiver votre compte ? Cette action
-                    est irréversible. Vous ne pourrez plus vous connecter à
-                    votre compte.
+                    {t("modal-text")}
                   </p>
                 </div>
 
                 <div className="inline-flex items-center justify-end w-full mt-4 space-x-3">
                   <button type="button" className="btn-red" onClick={disable}>
                     <BanIcon className="w-4 h-4 mr-2" />
-                    Désactiver
+                    {t("button")}
                   </button>
                   <button
                     type="button"
@@ -111,7 +109,7 @@ export const DisableAccount = () => {
                     onClick={closeModal}
                   >
                     <XIcon className="w-4 h-4 mr-2" />
-                    Fermer
+                    {t("cancel")}
                   </button>
                 </div>
               </div>

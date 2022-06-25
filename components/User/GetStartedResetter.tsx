@@ -1,30 +1,23 @@
 import { RefreshIcon } from "@heroicons/react/outline";
+import { useTranslations } from "next-intl";
 import Image from "next/image";
-import { useState } from "react";
 import { useCookies } from "react-cookie";
 import toast from "react-hot-toast";
 
 export const GetStartedResetter = () => {
-  const [cookie, setCookie] = useCookies(["rsr-get_started"]);
-  const [show, setShow] = useState<boolean>(
-    cookie["rsr-get_started"] !== "true"
-  );
+  const [_, setCookie] = useCookies(["rsr-get_started"]);
+  const t = useTranslations("GetStartedResetter");
 
   return (
     <div className="flex flex-col row-span-2 p-4 space-y-3 bg-white rounded-lg shadow">
       <div className="inline-flex items-center justify-between w-full">
-        <h5 className="font-bold text-gray-900 font-marianne">
-          {`Réinitialisation de votre progression "Premiers pas"`}
-        </h5>
+        <h5 className="font-bold text-gray-900 font-marianne">{t("title")}</h5>
         <div className="w-6 h-6">
           <Image alt="Locker" src="/img/locked.png" width={24} height={24} />
         </div>
       </div>
       <div className="flex flex-col">
-        <p className="mb-1 text-xs text-gray-600 font-spectral">
-          {`Vous pouvez à tout moment réinitialiser votre progression "Premiers pas"
-            pour vérifier si vous avez correctement effectué le tutoriel. Un rechargement complet de la page peut être nécessaire.`}
-        </p>
+        <p className="mb-1 text-xs text-gray-600 font-spectral">{t("text")}</p>
 
         <div className="mt-3 ml-auto">
           <button
@@ -39,7 +32,7 @@ export const GetStartedResetter = () => {
             className="btn-gray"
           >
             <RefreshIcon className="w-4 h-4 mr-2" />
-            Réactiver
+            {t("button")}
           </button>
         </div>
       </div>

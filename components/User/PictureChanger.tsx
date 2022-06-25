@@ -1,12 +1,14 @@
 import { CheckIcon } from "@heroicons/react/outline";
 import { XIcon } from "@heroicons/react/solid";
 import { useAuth } from "@hooks/useAuth";
+import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { useState } from "react";
 import toast from "react-hot-toast";
 
 export const PictureChanger = () => {
   const { user, changePicture } = useAuth();
+  const t = useTranslations("PictureChanger");
 
   const [pictureUrl, setPictureUrl] = useState(null);
   const [pictureFile, setPictureFile] = useState(null);
@@ -51,9 +53,7 @@ export const PictureChanger = () => {
   return (
     <div className="flex flex-col p-4 space-y-3 bg-white rounded-lg shadow">
       <div className="inline-flex items-center justify-between w-full mb-3">
-        <h5 className="font-bold text-gray-900 font-marianne">
-          Changement de photo de profil
-        </h5>
+        <h5 className="font-bold text-gray-900 font-marianne">{t("title")}</h5>
         <div className="w-6 h-6">
           <Image
             alt="Superhero"
@@ -67,21 +67,21 @@ export const PictureChanger = () => {
       <div className="inline-flex items-center justify-center w-full grow">
         <div className="flex flex-col grow">
           <h4 className="mb-1 text-xs font-medium text-gray-700 font-marianne">
-            Ancienne photo
+            {t("old")}
           </h4>
           <div className="relative w-auto h-24 lg:h-36 grow">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={user.data.photoURL}
               className="object-cover object-center h-24 rounded-lg lg:h-36 aspect-square"
-              alt="Photo de profil"
+              alt={t("profile")}
             ></img>
           </div>
         </div>
 
         <label className="flex flex-col grow">
           <h4 className="mb-1 text-xs font-medium text-gray-700 font-marianne">
-            Nouvelle photo
+            {t("new")}
           </h4>
           {pictureUrl && (
             <div className="relative w-full grow">
@@ -146,7 +146,7 @@ export const PictureChanger = () => {
                 </svg>
 
                 <span className="block text-xs font-medium text-center text-gray-900">
-                  Ajouter une image
+                  {t("add")}
                 </span>
               </label>
             </div>
@@ -156,7 +156,7 @@ export const PictureChanger = () => {
       <div className="inline-flex justify-end w-full pt-3 mt-3">
         <button className="btn-green" onClick={post} disabled={!pictureFile}>
           <CheckIcon className="w-4 h-4 mr-2" />
-          Envoyer
+          {t("send")}
         </button>
       </div>
     </div>

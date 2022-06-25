@@ -166,6 +166,65 @@
     "edit-delete-text2": "Les messages et les activités associés seront également supprimés."
   },
 
+  "UserSettings": {
+    "title": "Paramètres",
+    "back": "Retour"
+  },
+
+  "PictureChanger": {
+    "title": "Changement de photo de profil",
+    "old": "Photo actuelle",
+    "new": "Nouvelle photo",
+
+    "add": "Ajouter une image",
+    "profile": "Photo de profil",
+    "send": "Envoyer"
+  },
+
+  "ChangePassword": {
+    "title": "Changement de mot de passe",
+    "send": "Envoyer",
+
+    "old": "Ancien mot de passe",
+    "new": "Nouveau mot de passe",
+    "new-confirm": "Confirmer le nouveau mot de passe",
+
+    "security": "Sécurité et confidentialité",
+    "disconnect": "Déconnecter de tout les appareils"
+  },
+
+  "SessionsViewer": {
+    "title": "Appareils connectés",
+    "web": "Web",
+    "mobile": "Mobile",
+
+    "expired": "La session sera révoquée automatiquement à la reconnexion",
+    "revoke": "Révoquer",
+    "revoke-all": "Fermer toutes les sessions"
+  },
+
+  "DisableAccount": {
+    "title": "Désactivation du compte",
+    "subtitle": "Êtes-vous sûr de vouloir désactiver votre compte ?",
+    "text": "Vous pouvez désactiver votre compte pour le moment, mais vous ne pourrez plus vous connecter à votre compte.",
+    "text2": "Vos données seront anonymisées et ne seront pas récupérables.",
+    "button": "Désactiver mon compte",
+    "cancel": "Annuler",
+    "modal-text": "Voulez-vous vraiment désactiver votre compte ? Cette action est irréversible. Vous ne pourrez plus vous connecter à votre compte."
+  },
+
+  "RetrieveAccount": {
+    "title": "Récupération des données de votre compte",
+    "text": "Vous pouvez à tout moment récupérer les données liées à votre compte dans le cadre de la Réglementation Générale de la Protection des Données.",
+    "button": "Télécharger"
+  },
+
+  "GetStartedResetter": {
+    "title": "Réinitialisation de votre progression Premiers pas",
+    "text": "Vous pouvez à tout moment réinitialiser votre progression Premiers pas pour vérifier si vous avez correctement effectué le tutoriel. Un rechargement complet de la page peut être nécessaire.",
+    "button": "Réinitialiser"
+  },
+
   "HistoryItem": {
     "invite": "{name} a invité",
     "comment": "{name} a commenté",

@@ -1,15 +1,17 @@
 import { CheckIcon } from "@heroicons/react/outline";
 import { useAuth } from "@hooks/useAuth";
 import { fetchRSR } from "libs/fetchRSR";
+import { useTranslations } from "next-intl";
 import Image from "next/image";
-import { useRouter } from "next/router";
+// import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import zxcvbn from "zxcvbn";
 
 export const ChangePassword = () => {
   const { user, removeUser } = useAuth();
-  const router = useRouter();
+  // const router = useRouter();
+  const t = useTranslations("ChangePassword");
 
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
@@ -68,7 +70,7 @@ export const ChangePassword = () => {
     <div className="flex flex-col row-span-2 p-4 space-y-3 bg-white rounded-lg shadow">
       <div className="inline-flex items-center justify-between w-full mb-3">
         <h5 className="font-bold text-gray-900 font-marianne">
-          Changement de mot de passe
+          {t("title")}
         </h5>
         <div className="w-6 h-6">
           <Image
@@ -82,24 +84,24 @@ export const ChangePassword = () => {
       </div>
       <label>
         <h4 className="mb-1 after:content-['*'] after:ml-0.5 after:text-red-500 text-xs font-medium text-gray-700 font-marianne">
-          Ancien mot de passe
+          {t("old")}
         </h4>
         <input
           type="password"
           className="bg-gray-200 input"
-          placeholder="Ancien mot de passe"
+          placeholder={t("old")}
           value={oldPassword}
           onChange={(e) => setOldPassword(e.target.value)}
         ></input>
       </label>
       <label>
         <h4 className="mb-1 after:content-['*'] after:ml-0.5 after:text-red-500 text-xs font-medium text-gray-700 font-marianne">
-          Nouveau mot de passe
+          {t("new")}
         </h4>
         <input
           type="password"
           className="bg-gray-200 input"
-          placeholder="Nouveau mot de passe"
+          placeholder={t("new")}
           value={newPassword}
           onChange={(e) => setNewPassword(e.target.value)}
         ></input>
@@ -124,19 +126,19 @@ export const ChangePassword = () => {
       </div>
       <label>
         <h4 className="mb-1 after:content-['*'] after:ml-0.5 after:text-red-500 text-xs font-medium text-gray-700 font-marianne">
-          Confirmer le nouveau mot de passe
+          {t("new-confirm")}
         </h4>
         <input
           type="password"
           className="bg-gray-200 input"
-          placeholder="Confirmer le nouveau mot de passe"
+          placeholder={t("new-confirm")}
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}
         ></input>
       </label>
       <label className="flex flex-col">
         <h4 className="mb-1 text-sm font-semibold text-gray-700 font-marianne">
-          Sécurité
+          {t("security")}
         </h4>
         <div className="inline-flex items-center my-2 space-x-3">
           <input
@@ -146,7 +148,7 @@ export const ChangePassword = () => {
             className="w-4 h-4 duration-200 bg-green-200 border-0 rounded-md appearance-none form-checkbox hover:bg-green-400 dark:bg-green-800 dark:hover:bg-green-700 checked:bg-green-600 checked:border-transparent focus:outline-none focus:bg-green-400 dark:focus:bg-green-900 ring-green-500"
           />
           <span className="mb-0.5 text-xs font-normal text-gray-700 font-marianne dark:text-gray-300">
-            Déconnecter de tout les appareils
+            {t("disconnect")}
           </span>
         </div>
       </label>
@@ -180,7 +182,7 @@ export const ChangePassword = () => {
           ) : (
             <>
               <CheckIcon className="w-4 h-4 mr-2" />
-              Envoyer
+              {t("send")}
             </>
           )}
         </button>
