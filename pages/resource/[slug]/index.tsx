@@ -10,6 +10,7 @@ import {
   PencilIcon,
   UsersIcon,
   EyeIcon,
+  UserIcon,
 } from "@heroicons/react/outline";
 import { HeartIcon } from "@heroicons/react/solid";
 import { GetServerSideProps, NextPage } from "next";
@@ -198,20 +199,20 @@ const ResourceSlug: NextPage<any> = ({
                   Retour
                 </a>
               </Link>
-              {!newLikes.find((l) => l.uid === user?.data.uid) ? (
-                <button className="btn-red " key="likeBtn" onClick={like}>
-                  <HeartIconOutline className="w-4 h-4 select-none md:mr-1 shrink-0" />
-                  <span className="hidden md:flex">{"J'aime"}</span>
-                </button>
-              ) : (
-                <button className="btn-red" key="dislikeBtn" onClick={like}>
-                  <HeartIcon className="w-4 h-4 select-none md:mr-1 shrink-0" />
-                  <span className="hidden md:flex">{"Je n'aime plus"}</span>
-                </button>
-              )}
 
-              {user?.data && (
+              {user?.data ? (
                 <>
+                  {!newLikes.find((l) => l.uid === user?.data.uid) ? (
+                    <button className="btn-red " key="likeBtn" onClick={like}>
+                      <HeartIconOutline className="w-4 h-4 select-none md:mr-1 shrink-0" />
+                      <span className="hidden md:flex">{"J'aime"}</span>
+                    </button>
+                  ) : (
+                    <button className="btn-red" key="dislikeBtn" onClick={like}>
+                      <HeartIcon className="w-4 h-4 select-none md:mr-1 shrink-0" />
+                      <span className="hidden md:flex">{"Je n'aime plus"}</span>
+                    </button>
+                  )}
                   <PlaylistDropdown
                     resource={{
                       slug,
@@ -228,9 +229,16 @@ const ResourceSlug: NextPage<any> = ({
                     <span className="hidden md:flex">Signaler</span>
                   </button>
                 </>
+              ) : (
+                <Link href="/auth/login" key="login">
+                  <a className="btn-bleuFrance">
+                    <UserIcon className="w-4 h-4 select-none md:mr-2 shrink-0" />
+                    Se connecter
+                  </a>
+                </Link>
               )}
               {owner.uid === user?.data.uid && (
-                <Link href={"/resource/" + slug + "/edit"}>
+                <Link href={"/resource/" + slug + "/edit"} key="edit">
                   <a className="btn-gray">
                     <PencilIcon className="w-4 h-4 select-none md:mr-1 shrink-0" />
                     <span className="hidden md:flex">Éditer</span>
