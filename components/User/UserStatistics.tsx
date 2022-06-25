@@ -32,6 +32,7 @@ import { useEffect, useState } from "react";
 import moment from "moment";
 import { Disclosure, Transition } from "@headlessui/react";
 import { ChevronUpIcon } from "@heroicons/react/outline";
+import { useTranslations } from "next-intl";
 
 Chart.register(
   ArcElement,
@@ -60,29 +61,30 @@ Chart.register(
   SubTitle
 );
 
+const MONTHS = [
+  "Janvier",
+  "Février",
+  "Mars",
+  "Avril",
+  "Mai",
+  "Juin",
+  "Juillet",
+  "Août",
+  "Septembre",
+  "Octobre",
+  "Novembre",
+  "Décembre",
+];
 export const UserStatistics = ({
   resources,
-  user,
+  // user,
   allResources,
 }: {
   resources: Resource[];
   user: any;
   allResources: Resource[];
 }) => {
-  const MONTHS = [
-    "Janvier",
-    "Février",
-    "Mars",
-    "Avril",
-    "Mai",
-    "Juin",
-    "Juillet",
-    "Août",
-    "Septembre",
-    "Octobre",
-    "Novembre",
-    "Décembre",
-  ];
+  const t = useTranslations("UserStatistics");
   const [totalResourceViews, setTotalResourceViews] = useState(0);
 
   useEffect(() => {
@@ -177,7 +179,7 @@ export const UserStatistics = ({
               <div className="grid items-center w-full grid-cols-3 px-3 mb-3">
                 <div className="items-center">
                   <h6 className="font-bold text-gray-900 font-marianne">
-                    Ressources créées
+                    {t("created")}
                   </h6>
                   <p className="text-5xl text-gray-900 font-marianne">
                     {resources.length}
@@ -185,7 +187,7 @@ export const UserStatistics = ({
                 </div>
                 <div className="">
                   <h6 className="font-bold text-gray-900 font-marianne">
-                    Ressources consultées
+                    {t("seen")}
                   </h6>
                   {/* TODO: change resources props to not filter only user's resources */}
                   <p className="text-5xl text-gray-900 font-marianne">
@@ -194,7 +196,7 @@ export const UserStatistics = ({
                 </div>
                 <div className="">
                   <h6 className="font-bold text-gray-900 font-marianne">
-                    Total des vues de vos ressources
+                    {t("seen-yours")}
                   </h6>
                   <p className="text-5xl text-gray-900 font-marianne">
                     {totalResourceViews}
@@ -205,7 +207,7 @@ export const UserStatistics = ({
                 <div className="flex flex-col w-full px-3 mb-3">
                   <div>
                     <h6 className="font-bold text-gray-900 font-marianne">
-                      Ressources créées
+                      {t("created-per-month")}
                     </h6>
                   </div>
                   <div>
