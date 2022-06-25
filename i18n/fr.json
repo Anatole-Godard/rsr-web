@@ -180,6 +180,46 @@
     "back": "Retour"
   },
 
+  "Login": {
+    "title": "Connexion à RSR",
+    "connect-with": "Connectez-vous avec",
+    "or-with": "Ou continuez avec",
+    "email": "Adresse e-mail",
+    "password": "Mot de passe",
+    "forgot-password": "Mot de passe oublié ?",
+    "sign-up": "Créer un compte",
+    "sign-in": "Connexion",
+    "remember-me": "Se souvenir de moi"
+  },
+  "Register": {
+    "title": "Se créer un compte RSR",
+    "connect-with": "Connectez-vous avec",
+    "or-with": "Ou enregistrez-vous avec",
+    "back": "Retour",
+    "email": "Adresse e-mail",
+    "email-invalid": "Adresse e-mail non valide",
+
+    "password": "Mot de passe",
+    "password-length": "Le mot de passe doit contenir au moins 8 caractères",
+    "password-required": "Le mot de passe est obligatoire",
+    "password-strengh0": "Le mot de passe est trop faible",
+    "password-strengh1": "Le mot de passe est assez faible",
+    "password-strengh2": "Le mot de passe est assez fort",
+    "password-strengh3": "Le mot de passe est fort",
+    "password-strengh4": "Le mot de passe est très fort",
+
+    "fullname": "Nom complet",
+    "fullname-required": "Le nom complet n'est pas renseigné",
+
+    "birthdate": "Date de naissance",
+    "birthdate-required": "La date de naissance n'est pas renseignée",
+
+    "confirm-password": "Confirmer le mot de passe",
+    "sign-up": "Créer un compte",
+    "already-have-account": "J'ai déjà un compte",
+    "next": "Continuer"
+  },
+
   "UserPlaylist": {
     "title": "Mes playlists",
     "back": "Retour",
