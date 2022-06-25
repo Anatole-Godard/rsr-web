@@ -65,7 +65,10 @@ const Resource =
 
 export default Resource;
 
+// @ts-ignore
 ResourceSchema.post("save", function (next) {
+  // @ts-ignore
   this.updatedAt = Date.now();
+  // @ts-ignore
   next();
 });
