@@ -4,7 +4,7 @@ import Link from "next/link";
 
 const Error500: NextPage = () => {
   return (
-    <AppLayout>
+    <AppLayout title="500">
       <div className="h-full px-4 py-16 bg-white dark:bg-black sm:px-6 sm:py-24 md:grid md:place-items-center lg:px-8">
         <div className="mx-auto max-w-max">
           <main className="sm:flex">
