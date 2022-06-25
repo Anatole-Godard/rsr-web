@@ -249,7 +249,7 @@ const ResourceCreate: NextPage<any> = ({
   } = useFetchRSR("/api/resource/tags", user?.session);
 
   return (
-    <AppLayout>
+    <AppLayout title="Créer une ressource">
       <form
         onSubmit={handleSubmit}
         className="flex flex-col w-full max-h-full bg-white dark:bg-gray-900 grow"
