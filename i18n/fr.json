@@ -254,5 +254,21 @@
     "theme-light": "Thème clair",
     "theme-dark": "Thème sombre",
     "theme-sr": "Appuyez sur la touche {key} pour changer le thème"
+  },
+  "GetStarted": {
+    "button": "Premiers pas",
+    "title": "Premiers pas avec RSR",
+    "subtitle": "Réalisez ces actions pour être prêt à utiliser pleinement RSR.",
+    "todo": "Actions à réaliser",
+    "todo-none": "Toutes les actions ont été réalisées, bravo 🥳 !",
+    "loading": "Chargement...",
+    "create_account": "Se créer un compte sur la plateforme",
+    "create_resource": "Créer une ressource et se faire approuver",
+    "create_resource_comment": "Poster un commentaire sur une ressource",
+    "create_playlist": "Créer une playlist et y renseigner une resource",
+    "join_channel": "Rejoindre un salon de discussion",
+
+    "quit-button-done": "Ce fût un plaisir !",
+    "quit-button-none": "Non, merci"
   }
 }
