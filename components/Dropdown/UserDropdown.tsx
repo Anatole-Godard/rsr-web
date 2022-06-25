@@ -23,10 +23,12 @@ import Image from "next/image";
 import { formatDistance } from "date-fns";
 import { fr } from "date-fns/locale";
 import { useTranslations } from "next-intl";
+import { useRouter } from "next/router";
 
 export const UserDropdown = () => {
   const { user, signOut } = useAuth();
   const { theme, setTheme } = useTheme();
+  const { locale } = useRouter();
   const t = useTranslations("UserDropdown");
 
   return (
@@ -124,7 +126,7 @@ export const UserDropdown = () => {
                               distance: formatDistance(
                                 new Date(user.data.createdAt),
                                 new Date(),
-                                { locale: fr }
+                                { locale: locale === "fr" ? fr : undefined }
                               ),
                             })}
                           </span>
