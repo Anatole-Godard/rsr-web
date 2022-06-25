@@ -107,7 +107,7 @@ const ReportAdmin: NextPage<any> = (props) => {
 
   return (
     <>
-      <AdminLayout>
+      <AdminLayout title="Signalements - Admin.">
         <div className="flex flex-col w-full h-full bg-white dark:bg-black grow">
           <div className="flex flex-col w-full px-6 py-6 bg-white shrink-0 lg:px-12 dark:bg-black dark:border-gray-800">
             <div className="inline-flex items-end justify-between w-full mb-2">
