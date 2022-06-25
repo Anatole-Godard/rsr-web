@@ -1,9 +1,9 @@
 import { AppLayout } from "@components/Layout/AppLayout";
 import { UserResources } from "@components/User/UserResources";
-import { NextPage } from "next";
+import { NextPage, GetServerSideProps } from "next";
 import Image from "next/image";
 
-const UserUIDPage: NextPage<any> = ({ uid, photoURL, fullName, resources }) => {
+const UserUIDPage: NextPage<any> = ({ photoURL, fullName, resources }) => {
   return (
     <AppLayout>
       <div className="flex flex-col w-full max-h-full bg-white dark:bg-gray-900 ">
@@ -24,7 +24,7 @@ const UserUIDPage: NextPage<any> = ({ uid, photoURL, fullName, resources }) => {
           </div>
         </div>
         <div className="flex flex-col p-6 overflow-y-auto bg-gray-100 grow xl:rounded-tl-xl">
-          {/* <div className="grid gap-3 lg:grid-cols-2 xl:grid-cols-3 h-fit"></div> */}
+          
           <UserResources resources={resources} />
         </div>
       </div>
@@ -34,7 +34,7 @@ const UserUIDPage: NextPage<any> = ({ uid, photoURL, fullName, resources }) => {
 
 export default UserUIDPage;
 
-export async function getServerSideProps(context) {
+export const getServerSideProps: GetServerSideProps = async(context)=> {
   const { uid } = context.query;
 
   const {
@@ -58,6 +58,8 @@ export async function getServerSideProps(context) {
   return {
     props: {
       ...u,
+      i18n: (await import(`../../i18n/${context.locale}.json`)).default,
+
     },
   };
 }

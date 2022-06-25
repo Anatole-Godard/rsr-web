@@ -2,21 +2,16 @@ import { ResourceCard } from "@components/Resource/Card";
 import { Resource } from "@definitions/Resource";
 import { Disclosure, Transition } from "@headlessui/react";
 import { ChevronUpIcon } from "@heroicons/react/outline";
-import { useAuth } from "@hooks/useAuth";
 import { classes } from "libs/classes";
+import { useTranslations } from "next-intl";
 import Image from "next/image";
-import { useMemo } from "react";
 
 export const UserSeenResources = ({
   resources = [],
 }: {
   resources: Resource[];
 }) => {
-  const { user } = useAuth();
-  const isAuthentifiedUser = useMemo(
-    () => resources.find((r) => r.owner.uid === user?.data.uid) !== undefined,
-    [resources, user?.data.uid]
-  );
+  const t = useTranslations("UserSeenResources");
 
   return (
     <Disclosure defaultOpen>
@@ -34,7 +29,7 @@ export const UserSeenResources = ({
                 />
               </div>
               <h5 className="font-bold text-gray-900 font-marianne">
-                Les ressources que vous avez vues
+                {t("title")}
               </h5>
             </div>
             <ChevronUpIcon
@@ -69,7 +64,7 @@ export const UserSeenResources = ({
                 </div>
               ) : (
                 <div className="flex w-full p-3 font-spectral">
-                  Aucune ressource...
+                  {t("empty")}
                 </div>
               )}
             </Disclosure.Panel>

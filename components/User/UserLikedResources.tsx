@@ -4,6 +4,7 @@ import { Disclosure, Transition } from "@headlessui/react";
 import { ChevronUpIcon } from "@heroicons/react/outline";
 import { useAuth } from "@hooks/useAuth";
 import { classes } from "libs/classes";
+import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { useMemo } from "react";
 
@@ -13,6 +14,7 @@ export const UserLikedResources = ({
   resources: Resource[];
 }) => {
   const { user } = useAuth();
+  const t = useTranslations("UserLikedResources");
   const isAuthentifiedUser = useMemo(
     () => resources.find((r) => r.owner.uid === user?.data.uid) !== undefined,
     [resources, user?.data.uid]
@@ -34,10 +36,7 @@ export const UserLikedResources = ({
                 />
               </div>
               <h5 className="font-bold text-gray-900 font-marianne">
-                Les ressources que{" "}
-                {isAuthentifiedUser
-                  ? "vous avez aimé"
-                  : "l'utilisateur a aimé"}
+                {isAuthentifiedUser ? t("you-have-liked") : t("user-has-liked")}
               </h5>
             </div>
             <ChevronUpIcon
@@ -72,7 +71,7 @@ export const UserLikedResources = ({
                 </div>
               ) : (
                 <div className="flex w-full p-3 font-spectral">
-                  Aucune ressource...
+                  {t("empty")}
                 </div>
               )}
             </Disclosure.Panel>

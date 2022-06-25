@@ -13,6 +13,7 @@ import { ChartSquareBarIcon } from "@heroicons/react/outline";
 import { useState } from "react";
 import { UserStatistics } from "@components/User/UserStatistics";
 import { UserSeenResources } from "@components/User/UserSeenResources";
+import { useTranslations } from "next-intl";
 
 const UserIndexPage: NextPage<any> = ({
   resources,
@@ -24,6 +25,7 @@ const UserIndexPage: NextPage<any> = ({
   allResources: Resource[];
 }) => {
   const { user } = useAuth();
+  const t = useTranslations("UserIndex");
   const [displayStats, setDisplayStats] = useState(false);
 
   const statistics = () => {
@@ -43,28 +45,31 @@ const UserIndexPage: NextPage<any> = ({
               alt={user?.data.fullName}
             />
             <h3 className="ml-5 text-2xl font-extrabold text-gray-800 font-marianne dark:text-gray-200">
-              Mon
+              {t("title1")}
               <span className="ml-1 text-bleuFrance-600 dark:text-bleuFrance-300">
-                profil
+                {t("title2")}
               </span>
             </h3>
           </div>
           <div className="inline-flex items-center space-x-2">
-            <button className="btn-gray h-fit w-fit" onClick={() => statistics()}>
+            <button
+              className="btn-gray h-fit w-fit"
+              onClick={() => statistics()}
+            >
               <ChartSquareBarIcon className="w-4 h-4 mr-2" />
-              Statistiques
+              {t("statistics")}
             </button>
             <Link href="/user/playlists">
               <a className="btn-gray h-fit w-fit">
                 <CollectionIcon className="w-4 h-4 mr-2" />
-                Playlists
+                {t("playlists")}
               </a>
             </Link>
 
             <Link href="/user/settings">
               <a className="btn-gray h-fit w-fit">
                 <CogIcon className="w-4 h-4 mr-2" />
-                Paramètres
+                {t("settings")}
               </a>
             </Link>
           </div>
@@ -136,6 +141,7 @@ export const getServerSideProps = async (ctx) => {
       ...resources.data.attributes,
       likes: likes?.data?.attributes || [],
       allResources: allResources?.data?.attributes || [],
+      i18n: (await import(`../../i18n/${ctx.locale}.json`)).default,
     },
   };
 };

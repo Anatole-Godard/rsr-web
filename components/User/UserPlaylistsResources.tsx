@@ -1,12 +1,14 @@
 import { ResourceCard } from "@components/Resource/Card";
 import { Resource } from "@definitions/Resource";
 import { classes } from "libs/classes";
+import { useTranslations } from "next-intl";
 
 export const UserPlaylistResources = ({
   resources = [],
 }: {
   resources: Resource[];
 }) => {
+  const t = useTranslations("UserPlaylistResources");
   return (
     <div
       className={classes(
@@ -30,7 +32,7 @@ export const UserPlaylistResources = ({
         </div>
       ) : (
         <div className="flex items-center justify-center w-full h-32 font-spectral">
-          Aucune ressource...
+          {t("empty")}
         </div>
       )}
     </div>

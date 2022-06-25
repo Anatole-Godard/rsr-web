@@ -9,12 +9,14 @@ import {
 } from "@heroicons/react/outline";
 import { useAuth } from "@hooks/useAuth";
 import useFetchRSR from "@hooks/useFetchRSR";
-import { NextPage } from "next";
+import { GetServerSideProps, NextPage } from "next";
+import { useTranslations } from "next-intl";
 import Image from "next/image";
 import Link from "next/link";
 
 const UserPlaylist: NextPage = () => {
   const { user } = useAuth();
+  const t = useTranslations("UserPlaylist");
   const {
     data: playlists,
     error,
@@ -43,26 +45,26 @@ const UserPlaylist: NextPage = () => {
               alt={user?.data.fullName}
             />
             <h3 className="ml-5 text-2xl font-extrabold text-gray-800 font-marianne dark:text-gray-200">
-              Mes playlists
+              {t("title")}
             </h3>
           </div>
 
           <Link href="/user">
             <a className="btn-gray h-fit w-fit">
               <ArrowLeftIcon className="w-4 h-4 mr-2" />
-              Retour
+              {t("back")}
             </a>
           </Link>
         </div>
         <div className="flex flex-col p-6 overflow-y-auto bg-gray-100 dark:bg-gray-900 grow xl:rounded-tl-xl">
           {loading && (
             <p className="flex items-center justify-center w-full font-spectral h-72">
-              Chargement des playlists...
+              {t("loading")}
             </p>
           )}
           {error && (
             <p className="flex items-center justify-center w-full font-spectral h-72">
-              Une erreur est survenue
+              {t("error")}
             </p>
           )}
           {playlists && playlists.keys.length > 0 ? (
@@ -101,7 +103,7 @@ const UserPlaylist: NextPage = () => {
             ))
           ) : (
             <p className="flex items-center justify-center w-full font-spectral h-72">
-              Aucune playlist
+              {t("empty")}
             </p>
           )}
         </div>
@@ -110,7 +112,7 @@ const UserPlaylist: NextPage = () => {
   );
 };
 
-export const getServerSideProps = async (ctx) => {
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const {
     cookies: { user },
   } = ctx.req;
@@ -123,7 +125,9 @@ export const getServerSideProps = async (ctx) => {
     };
 
   return {
-    props: {},
+    props: {
+      i18n: (await import(`../../i18n/${ctx.locale}.json`)).default,
+    },
   };
 };
 export default UserPlaylist;
