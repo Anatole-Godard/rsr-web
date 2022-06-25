@@ -1,3 +1,4 @@
+import { NextSeo } from "next-seo";
 import { useState } from "react";
 
 const backgrounds = [
@@ -9,24 +10,34 @@ const backgrounds = [
   "https://images.unsplash.com/1/bag-and-hands.jpg?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1347&q=80",
 ];
 
-export const GuestLayout = ({ children }: { children: React.ReactNode }) => {
-  const [background, setBackground] = useState(
+export const GuestLayout = ({
+  title = "Chargement...",
+  children,
+}: {
+  title?: string;
+  children?: React.ReactNode;
+}) => {
+  const [background] = useState(
     backgrounds[Math.floor(Math.random() * backgrounds.length)]
   );
   return (
-    <div className="flex min-h-screen bg-white dark:bg-gray-900">
-      <div className="flex flex-col justify-center flex-1 px-4 py-12 shadow-lg sm:px-6 lg:flex-none dark:flex-auto lg:px-20 xl:px-24">
-        {children}
+    <>
+      <NextSeo title={`${title} - RSR`} />
+
+      <div className="flex min-h-screen bg-white dark:bg-gray-900">
+        <div className="flex flex-col justify-center flex-1 px-4 py-12 shadow-lg sm:px-6 lg:flex-none dark:flex-auto lg:px-20 xl:px-24">
+          {children}
+        </div>
+        <div className="relative flex-1 hidden w-0 lg:block dark:hidden">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            className="absolute inset-0 object-cover w-full h-full"
+            src={background}
+            alt="GuestBackground"
+          />
+          <div className="absolute inset-0 w-full h-full bg-black bg-opacity-80"></div>
+        </div>
       </div>
-      <div className="relative flex-1 hidden w-0 lg:block dark:hidden">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          className="absolute inset-0 object-cover w-full h-full"
-          src={background}
-          alt="GuestBackground"
-        />
-        <div className="absolute inset-0 w-full h-full bg-black bg-opacity-80"></div>
-      </div>
-    </div>
+    </>
   );
 };
