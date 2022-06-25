@@ -76,6 +76,104 @@
     "comments-none": "Aucun commentaire pour l'instant",
     "comments-placeholder": "Ajouter un commentaire..."
   },
+  "ResourceCreate": {
+    "back": "Retour",
+    "delete": "Supprimer",
+    "cancel": "Annuler",
+    "physical_item": "Objet",
+    "location": "Lieu",
+    "external_link": "Lien hypertexte",
+    "event": "Événement",
+    "other": "Autre",
+
+    "public": "Publique",
+    "private": "Privée",
+    "unlisted": "Non répertoriée",
+
+    "title1": "Créer une",
+    "title2": "ressource",
+
+    "edit-title1": "Éditer",
+    "edit-title2": "cette ressource",
+
+    "send": "Envoyer",
+    "sent": "Envoyé",
+    "invalid": "Non valide",
+
+    "title": "Titre",
+    "description": "Description",
+    "visibility": "Visibilité",
+    "members": "Membres",
+    "members-placeholder": "Qui souhaitez-vous inviter ?",
+    "tags": "Étiquettes",
+    "tags-placeholder": "Utilisez des étiquettes pour mieux identifier la ressource",
+    "type": "Type",
+    "medias": "Médias",
+
+    "physical_item-category": "Catégorie",
+    "physical_item-price": "Prix",
+
+    "external_link-url": "URL",
+
+    "location-address": "Adresse",
+
+    "event-datetime": "Dates et heures",
+    "event-datetime-start": "Date et heure de début",
+    "event-datetime-end": "Date et heure de fin",
+
+    "edit-delete-title": "Supprimer #{slug}",
+    "edit-delete-text": "Êtes-vous sûr de vouloir supprimer cette ressource ? Cette action est irréversible.",
+    "edit-delete-text2": "Les commentaires et les J'aime associés seront également supprimés."
+  },
+
+  "ChannelSlug": {
+    "edit1": "Éditer",
+    "edit2": "le salon",
+    "quit1": "Quitter",
+    "quit2": "le salon",
+
+    "placeholder": "Entrez votre message...",
+    "send": "Envoyer"
+  },
+
+  "ChannelCreate": {
+    "create-title": "Créer",
+    "edit-title": "Créer",
+    "create-title1": "un",
+    "create-title2": "salon",
+
+    "back": "Retour",
+    "delete": "Supprimer",
+    "cancel": "Annuler",
+
+    "send": "Envoyer",
+    "sent": "Envoyé",
+    "invalid": "Non valide",
+
+    "title": "Nom du salon",
+    "description": "Description",
+    "picture": "Image du salon",
+    "picture-add": "Ajouter une image",
+
+    "visibility": "Confidentialité",
+    "private": "Salon restreint",
+
+    "members": "Membres",
+    "members-placeholder": "Qui souhaitez-vous inviter ?",
+
+    "edit-delete-title": "Supprimer #{slug}",
+    "edit-delete-text": "Êtes-vous sûr de vouloir supprimer ce salon ? Cette action est irréversible.",
+    "edit-delete-text2": "Les messages et les activités associés seront également supprimés."
+  },
+
+  "HistoryItem": {
+    "invite": "{name} a invité",
+    "comment": "{name} a commenté",
+    "resource-created": "{name} a créé",
+    "in": "dans",
+    "mobile-disabled": "Aperçu désactivé sur mobile"
+  },
+
   "CommentView": {
     "report": "Signaler",
     "delete": "Supprimer"
@@ -128,55 +226,7 @@
 
     "updatedAt": "mis à jour {relative}"
   },
-  "ResourceCreate": {
-    "back": "Retour",
-    "delete": "Supprimer",
-    "cancel": "Annuler",
-    "physical_item": "Objet",
-    "location": "Lieu",
-    "external_link": "Lien hypertexte",
-    "event": "Événement",
-    "other": "Autre",
 
-    "public": "Publique",
-    "private": "Privée",
-    "unlisted": "Non répertoriée",
-
-    "title1": "Créer une",
-    "title2": "ressource",
-
-    "edit-title1": "Éditer",
-    "edit-title2": "cette ressource",
-
-    "send": "Envoyer",
-    "sent": "Envoyé",
-    "invalid": "Non valide",
-
-    "title": "Titre",
-    "description": "Description",
-    "visibility": "Visibilité",
-    "members": "Membres",
-    "members-placeholder": "Qui souhaitez-vous inviter ?",
-    "tags": "Étiquettes",
-    "tags-placeholder": "Utilisez des étiquettes pour mieux identifier la ressource",
-    "type": "Type",
-    "medias": "Médias",
-
-    "physical_item-category": "Catégorie",
-    "physical_item-price": "Prix",
-
-    "external_link-url": "URL",
-
-    "location-address": "Adresse",
-
-    "event-datetime": "Dates et heures",
-    "event-datetime-start": "Date et heure de début",
-    "event-datetime-end": "Date et heure de fin",
-
-    "edit-delete-title": "Supprimer #{slug}",
-    "edit-delete-text": "Êtes-vous sûr de vouloir supprimer cette ressource ? Cette action est irréversible.",
-    "edit-delete-text2": "Les commentaires et les J'aime associés seront également supprimés."
-  },
   "MediaUploader": {
     "edit-warn": "Éditer la ressource réinitialisera vos documents.",
     "cancel": "Annuler",
@@ -202,6 +252,17 @@
     "boolean-true": "Oui",
     "boolean-false": "Non"
   },
+
+  "ChannelSidebar": {
+    "back": "Retour",
+    "create": "Créer",
+    "search-placeholder": "Rechercher un salon...",
+
+    "public": "Groupe public",
+    "private-multiple": " Privé - {length} membres",
+    "private-single": " Privé - {length} membre"
+  },
+
   "Sidebar": {
     "home": "Accueil",
     "profile": "Profil",
