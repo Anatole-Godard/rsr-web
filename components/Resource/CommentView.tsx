@@ -54,22 +54,11 @@ export const CommentView = ({ comment }: CommentViewProps) => {
                   &bull;
                   <button
                     // todo
-                    className="inline-flex items-center text-xs text-yellow-600 duration-300 hover:text-yellow-800 font-spectral"
+                    className="inline-flex items-center text-xs text-red-600 duration-300 hover:text-red-800 font-spectral"
                   >
                     <TrashIcon className="w-3 h-3 mr-1 shrink-0" />
                     {t("delete")}
                   </button>
-                  {owner.uid === user?.data.uid && (
-                    <>
-                      <button
-                        // todo
-                        className="inline-flex items-center text-xs text-yellow-600 duration-300 hover:text-yellow-800 font-spectral"
-                      >
-                        <TrashIcon className="w-3 h-3 mr-1 shrink-0" />
-                        {t("delete")}
-                      </button>
-                    </>
-                  )}
                 </>
               )}
             </>

@@ -12,7 +12,7 @@ export const UserPlaylistResources = ({
   return (
     <div
       className={classes(
-        "flex flex-col shadow space-y-3 dark:bg-gray-900 min-h-[8rem] rounded-lg w-full overflow-hidden"
+        "flex flex-col space-y-3 dark:bg-gray-900 min-h-[8rem] rounded-lg w-full overflow-hidden"
       )}
     >
       {resources.length > 0 ? (
