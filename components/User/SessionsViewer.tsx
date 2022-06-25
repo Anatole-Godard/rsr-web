@@ -10,16 +10,19 @@ import { fetchRSR } from "libs/fetchRSR";
 import { formatDistance } from "date-fns";
 import fr from "date-fns/locale/fr";
 import Image from "next/image";
-import { useState } from "react";
 import toast from "react-hot-toast";
 import { classes } from "@utils/classes";
+import { useTranslations } from "next-intl";
+import { useRouter } from "next/router";
 
 export const SessionsViewer = () => {
   const { user } = useAuth();
+  const t = useTranslations("SessionsViewer");
+  const { locale } = useRouter();
   const {
     data: sessionsFetchedData,
-    error,
-    loading: isLoading,
+    // error,
+    // loading: isLoading,
     revalidate,
   }: {
     data?: any[];
@@ -51,7 +54,7 @@ export const SessionsViewer = () => {
     <div className="flex flex-col p-4 space-y-3 bg-white rounded-lg shadow dark:bg-gray-800">
       <div className="inline-flex items-center justify-between w-full mb-3">
         <h5 className="font-bold text-gray-900 dark:text-gray-200 font-marianne">
-          Appareils connectés
+          {t("title")}
         </h5>
         <div className="w-6 h-6">
           <Image
@@ -89,11 +92,11 @@ export const SessionsViewer = () => {
               <div className="inline-flex w-full ml-3 grow">
                 <div className="flex flex-col">
                   <p className="text-sm font-medium text-gray-700 dark:text-gray-300 font-marianne">
-                    {session.appSource === "web" ? "Web" : "Mobile"}
+                    {session.appSource === "web" ? t("web") : t("mobile")}
                   </p>
                   <small className="text-xs font-normal text-gray-400 font-spectral">
                     {formatDistance(new Date(session.issuedAt), new Date(), {
-                      locale: fr,
+                      locale: locale === "fr" ? fr : undefined,
                     })}
                   </small>
                 </div>
@@ -105,7 +108,7 @@ export const SessionsViewer = () => {
                 3600000 >
               3 ? (
                 <small className="text-xs font-normal text-right text-gray-400 font-spectral">
-                  La session sera révoquée automatiquement à la reconnexion
+                  {t("expired")}
                 </small>
               ) : (
                 <>
@@ -115,7 +118,7 @@ export const SessionsViewer = () => {
                       onClick={() => revoke(session)}
                     >
                       <XIcon className="w-4 h-4 mr-2" />
-                      Révoquer
+                      {t("revoke")}
                     </button>
                   )}
                 </>
@@ -127,7 +130,7 @@ export const SessionsViewer = () => {
       <div className="inline-flex justify-end w-full pt-3 mt-3">
         <button className="btn-red">
           <UserRemoveIcon className="w-4 h-4 mr-2" />
-          Fermer toutes les sessions
+          {t("revoke-all")}
         </button>
       </div>
     </div>
