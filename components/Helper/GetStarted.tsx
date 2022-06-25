@@ -93,13 +93,13 @@ export const GetStarted = () => {
               >
                 <Menu.Items
                   static
-                  className="absolute left-0 p-4 origin-top-right transform -translate-y-full bg-white divide-y divide-gray-100 rounded-md shadow min-w-[22rem] -top-2 ring-1 ring-black ring-opacity-5 focus:outline-none"
+                  className="absolute left-0 p-4 origin-top-right transform -translate-y-full bg-white divide-y divide-gray-100 rounded-md shadow min-w-[22rem] -top-2 ring-1 ring-black ring-opacity-5 focus:outline-none dark:bg-black dark:divide-gray-900"
                 >
                   <div className="flex flex-col w-full">
-                    <h3 className="font-semibold text-gray-800 font-marianne">
+                    <h3 className="font-semibold text-gray-800 dark:text-gray-200 font-marianne">
                       Premiers pas avec RSR
                     </h3>
-                    <p className="text-sm text-gray-500 font-spectral">
+                    <p className="text-sm text-gray-500 dark:text-gray-400 font-spectral">
                       Réalisez ces actions pour être prêt à utiliser RSR.
                     </p>
                     {getStarted && (
@@ -214,7 +214,7 @@ const Item = ({
 
   return (
     <Link href={href}>
-      <a className="inline-flex items-center w-full p-1 duration-300 bg-transparent rounded-lg hover:bg-gray-100 active:bg-gray-50">
+      <a className="inline-flex items-center w-full p-1 duration-300 bg-transparent rounded-lg hover:bg-gray-100 active:bg-gray-50 dark:hover:bg-gray-900 dark:active:bg-gray-800">
         <span className="w-6 h-6 mr-3">
           <CircularProgressbar
             strokeWidth={10}

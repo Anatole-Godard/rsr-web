@@ -65,9 +65,9 @@ export const ChangePassword = () => {
   };
 
   return (
-    <div className="flex flex-col row-span-2 p-4 space-y-3 bg-white rounded-lg shadow">
+    <div className="flex flex-col row-span-2 p-4 space-y-3 bg-white rounded-lg shadow dark:bg-gray-800">
       <div className="inline-flex items-center justify-between w-full mb-3">
-        <h5 className="font-bold text-gray-900 font-marianne">
+        <h5 className="font-bold text-gray-900 dark:text-gray-200 font-marianne">
           Changement de mot de passe
         </h5>
         <div className="w-6 h-6">
@@ -81,30 +81,30 @@ export const ChangePassword = () => {
         </div>
       </div>
       <label>
-        <h4 className="mb-1 after:content-['*'] after:ml-0.5 after:text-red-500 text-xs font-medium text-gray-700 font-marianne">
+        <h4 className="mb-1 after:content-['*'] after:ml-0.5 after:text-red-500 text-xs font-medium text-gray-700 dark:text-gray-300 font-marianne">
           Ancien mot de passe
         </h4>
         <input
           type="password"
-          className="bg-gray-200 input"
+          className="bg-gray-200 input dark:bg-gray-700"
           placeholder="Ancien mot de passe"
           value={oldPassword}
           onChange={(e) => setOldPassword(e.target.value)}
         ></input>
       </label>
       <label>
-        <h4 className="mb-1 after:content-['*'] after:ml-0.5 after:text-red-500 text-xs font-medium text-gray-700 font-marianne">
+        <h4 className="mb-1 after:content-['*'] after:ml-0.5 after:text-red-500 text-xs font-medium text-gray-700 dark:text-gray-300 font-marianne">
           Nouveau mot de passe
         </h4>
         <input
           type="password"
-          className="bg-gray-200 input"
+          className="bg-gray-200 input dark:bg-gray-700"
           placeholder="Nouveau mot de passe"
           value={newPassword}
           onChange={(e) => setNewPassword(e.target.value)}
         ></input>
       </label>
-      <div className="h-2 mt-2 bg-gray-200 rounded-full">
+      <div className="h-2 mt-2 bg-gray-200 rounded-full dark:bg-gray-700">
         <div
           className={[
             " h-2 rounded-l-full transition-all duration-500 ease-in-out",
@@ -123,19 +123,19 @@ export const ChangePassword = () => {
         ></div>
       </div>
       <label>
-        <h4 className="mb-1 after:content-['*'] after:ml-0.5 after:text-red-500 text-xs font-medium text-gray-700 font-marianne">
+        <h4 className="mb-1 after:content-['*'] after:ml-0.5 after:text-red-500 text-xs font-medium text-gray-700 dark:text-gray-300 font-marianne">
           Confirmer le nouveau mot de passe
         </h4>
         <input
           type="password"
-          className="bg-gray-200 input"
+          className="bg-gray-200 input dark:bg-gray-700"
           placeholder="Confirmer le nouveau mot de passe"
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}
         ></input>
       </label>
       <label className="flex flex-col">
-        <h4 className="mb-1 text-sm font-semibold text-gray-700 font-marianne">
+        <h4 className="mb-1 text-sm font-semibold text-gray-700 dark:text-gray-400 font-marianne">
           Sécurité
         </h4>
         <div className="inline-flex items-center my-2 space-x-3">

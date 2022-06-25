@@ -49,9 +49,9 @@ export const PictureChanger = () => {
   };
 
   return (
-    <div className="flex flex-col p-4 space-y-3 bg-white rounded-lg shadow">
+    <div className="flex flex-col p-4 space-y-3 bg-white rounded-lg shadow dark:bg-gray-800">
       <div className="inline-flex items-center justify-between w-full mb-3">
-        <h5 className="font-bold text-gray-900 font-marianne">
+        <h5 className="font-bold text-gray-900 dark:text-gray-200 font-marianne">
           Changement de photo de profil
         </h5>
         <div className="w-6 h-6">
@@ -66,7 +66,7 @@ export const PictureChanger = () => {
       </div>
       <div className="inline-flex items-center justify-center w-full grow">
         <div className="flex flex-col grow">
-          <h4 className="mb-1 text-xs font-medium text-gray-700 font-marianne">
+          <h4 className="mb-1 text-xs font-medium text-gray-700 dark:text-gray-300 font-marianne">
             Ancienne photo
           </h4>
           <div className="relative w-auto h-24 lg:h-36 grow">
@@ -80,7 +80,7 @@ export const PictureChanger = () => {
         </div>
 
         <label className="flex flex-col grow">
-          <h4 className="mb-1 text-xs font-medium text-gray-700 font-marianne">
+          <h4 className="mb-1 text-xs font-medium text-gray-700 dark:text-gray-300 font-marianne">
             Nouvelle photo
           </h4>
           {pictureUrl && (
@@ -122,7 +122,7 @@ export const PictureChanger = () => {
               ></input>
               <label
                 htmlFor="filePicture"
-                className="relative flex flex-col items-center justify-center w-24 h-24 p-3 duration-300 border-2 border-gray-300 border-dashed rounded-lg lg:h-36 lg:w-36 hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                className="relative flex flex-col items-center justify-center w-24 h-24 p-3 duration-300 border-2 border-gray-300 border-dashed rounded-lg dark:border-gray-600 lg:h-36 lg:w-36 hover:border-gray-400 dark:hover:border-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
               >
                 <svg
                   className="w-12 h-12 mx-auto text-gray-400"
@@ -145,7 +145,7 @@ export const PictureChanger = () => {
                   />
                 </svg>
 
-                <span className="block text-xs font-medium text-center text-gray-900">
+                <span className="block text-xs font-medium text-center text-gray-900 dark:text-gray-300">
                   Ajouter une image
                 </span>
               </label>

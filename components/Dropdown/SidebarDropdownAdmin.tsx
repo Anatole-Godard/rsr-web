@@ -19,7 +19,7 @@ export const SidebarDropdownAdmin = () => {
               <span
                 className={classes(
                   "inline-flex items-center justify-center w-8 h-8 text-sm duration-300  rounded-full hover:bg-gray-300 active:bg-gray-50",
-                  open ? "bg-gray-200" : "bg-gray-100"
+                  open ? "bg-gray-200 dark:bg-gray-800" : "bg-gray-100 dark:bg-gray-900"
                 )}
               >
                 <div className="flex items-center justify-center w-full h-full align-middle border-none rounded-full select-none ">
@@ -52,7 +52,7 @@ export const SidebarDropdownAdmin = () => {
                 <div className="block px-4 pt-4 text-xs text-gray-400">
                   Raccourcis
                 </div>
-                <div className="grid grid-cols-4 gap-4 p-4">
+                <div className="grid grid-cols-3 gap-4 p-4">
                   <Shortcut
                     href="/admin"
                     icon={<HomeIcon {...className} />}
@@ -80,8 +80,8 @@ export const SidebarDropdownAdmin = () => {
 
 const Shortcut = ({ href, icon, name }) => (
   <Link href={href}>
-    <a className="flex flex-col items-center w-full h-full text-sm text-gray-700 group ">
-      <div className="flex items-center justify-center w-12 h-12 p-4 duration-300 bg-gray-200 rounded-full group-hover:bg-gray-300 active:bg-gray-100">
+    <a className="flex flex-col items-center w-full h-full text-sm text-gray-700 dark:text-gray-300 group ">
+      <div className="flex items-center justify-center w-12 h-12 p-4 duration-300 bg-gray-200 rounded-full dark:bg-gray-800 group-hover:bg-gray-300 dark:group-hover:bg-gray-600 active:bg-gray-100">
         {icon}
       </div>
       <span className="mt-2 text-xs font-spectral">{name}</span>
