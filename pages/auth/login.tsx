@@ -5,11 +5,15 @@ import Image from "next/image";
 import { useState } from "react";
 import { Logo } from "@components/UI/Logo";
 import { UserCircleIcon } from "@heroicons/react/outline";
+import { GetStaticProps } from "next";
+import { useTranslations } from "next-intl";
 
 export default function Login() {
   const { signIn } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const t = useTranslations("Login");
 
   return (
     <GuestLayout>
@@ -18,7 +22,7 @@ export default function Login() {
           <Logo className="flex flex-col text-5xl font-extrabold tracking-wider uppercase text-opacity-80" />
 
           <h2 className="mt-6 text-3xl font-extrabold text-gray-900 font-marianne dark:text-gray-100">
-            Connexion à RSR
+            {t("title")}
           </h2>
         </div>
 
@@ -26,7 +30,7 @@ export default function Login() {
           <div>
             <div>
               <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                Connectez-vous avec
+                {t("connect-with")}
               </p>
 
               <div className="grid grid-cols-1 gap-3 mt-1">
@@ -55,7 +59,7 @@ export default function Login() {
               </div>
               <div className="relative flex justify-center text-sm">
                 <span className="px-2 text-gray-500 bg-white dark:bg-gray-900">
-                  Ou continuez avec
+                  {t("or-with")}
                 </span>
               </div>
             </div>
@@ -74,7 +78,7 @@ export default function Login() {
                   htmlFor="email"
                   className="block text-sm font-medium text-gray-700 dark:text-gray-300"
                 >
-                  Adresse email
+                  {t("email")}
                 </label>
                 <div className="">
                   <input
@@ -86,6 +90,7 @@ export default function Login() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     className="input-auth"
+                    placeholder={t("email")}
                   />
                 </div>
               </div>
@@ -95,7 +100,7 @@ export default function Login() {
                   htmlFor="password"
                   className="block text-sm font-medium text-gray-700 dark:text-gray-300"
                 >
-                  Mot de passe
+                  {t("password")}
                 </label>
                 <div className="">
                   <input
@@ -124,7 +129,7 @@ export default function Login() {
                     htmlFor="remember-me"
                     className="block ml-2 text-sm text-gray-900 dark:text-gray-300"
                   >
-                    Se souvenir de moi
+                    {t("remember-me")}
                   </label>
                 </div>
 
@@ -133,7 +138,7 @@ export default function Login() {
                     href="#"
                     className="font-medium duration-150 font-spectral text-bleuFrance-600 hover:text-bleuFrance-500"
                   >
-                    Mot de passe oublié ?
+                    {t("forgot-password")}
                   </a>
                 </div>
               </div>
@@ -144,21 +149,15 @@ export default function Login() {
                   className="justify-center w-full btn-bleuFrance"
                 >
                   <UserCircleIcon className="w-4 h-4 mr-2" />
-                  Se connecter
+                  {t("sign-in")}
                 </button>
               </div>
               <div className="inline-flex justify-between w-full my-1 text-sm">
                 <Link href="/auth/register">
                   <a className="font-medium duration-150 font-spectral text-bleuFrance-600 hover:text-bleuFrance-500">
-                    Se créer un compte
+                    {t("sign-up")}
                   </a>
                 </Link>
-                {/* <button
-                  onClick={() => signIn(process.env.NEXT_PUBLIC_DEV_USER, process.env.NEXT_PUBLIC_DEV_PASS)}
-                  className="font-medium duration-150 text-bleuFrance-600 hover:text-bleuFrance-500"
-                >
-                  Dev
-                </button> */}
               </div>
             </form>
           </div>
@@ -167,3 +166,11 @@ export default function Login() {
     </GuestLayout>
   );
 }
+
+export const getStaticProps: GetStaticProps = async (ctx) => {
+  return {
+    props: {
+      i18n: (await import(`../../i18n/${ctx.locale}.json`)).default,
+    },
+  };
+};
