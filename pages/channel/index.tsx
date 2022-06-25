@@ -3,14 +3,16 @@ import { AppLayout } from "@components/Layout/AppLayout";
 import { Channel } from "@definitions/Channel";
 import { fetchRSR } from "libs/fetchRSR";
 import { GetServerSideProps, NextPage } from "next";
+import { useTranslations } from "next-intl";
 
 const Channel: NextPage<any> = ({
   sideBarChannels,
 }: {
   sideBarChannels: Channel[];
 }) => {
+  const t = useTranslations("ChannelIndex");
   return (
-    <AppLayout title="Salons de discussion">
+    <AppLayout title={t("title")}>
       <div className="flex flex-col w-full h-full max-h-[calc(100vh-4rem)] xl:flex-row">
         <Sidebar channels={sideBarChannels} />
       </div>

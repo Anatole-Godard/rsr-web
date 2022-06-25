@@ -128,7 +128,7 @@ const ChannelEdit: NextPage<any> = (props) => {
   }, [user?.session]);
 
   return (
-    <AppLayout title={`Édition de ${name}`}>
+    <AppLayout title={t("head-edit-title", { name })}>
       <form
         onSubmit={handleSubmit}
         className="flex flex-col w-full max-h-full bg-white dark:bg-gray-900 grow"

@@ -78,7 +78,7 @@ const ResourceSlug: NextPage<any> = ({
     if (res.ok) {
       toast.success("Signalement envoyé");
       const body = await res.json();
-      console.log(body);
+      // console.log(body);
     } else {
       toast.error("Une erreur est survenue");
     }
