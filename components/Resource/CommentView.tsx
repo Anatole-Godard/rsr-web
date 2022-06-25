@@ -34,23 +34,27 @@ export const CommentView = ({ comment, slug }: CommentViewProps) => {
             {format(new Date(createdAt), "HH:mm, dd MMM yyyy", { locale: fr })}{" "}
             &bull;
           </time>
-          <button
-            // todo
-            className="inline-flex items-center text-xs text-yellow-600 duration-300 hover:text-yellow-800 font-spectral"
-          >
-            <ExclamationIcon className="w-3 h-3 mr-1 shrink-0" />
-            Signaler
-          </button>
-          {owner.uid === user?.data.uid && (
+          {user?.data && (
             <>
-              <span>&bull;</span>
               <button
                 // todo
-                className="inline-flex items-center text-xs text-red-600 duration-300 hover:text-red-800 font-spectral"
+                className="inline-flex items-center text-xs text-yellow-600 duration-300 hover:text-yellow-800 font-spectral"
               >
-                <TrashIcon className="w-3 h-3 mr-1 shrink-0" />
-                Supprimer
+                <ExclamationIcon className="w-3 h-3 mr-1 shrink-0" />
+                Signaler
               </button>
+              {owner.uid === user?.data.uid && (
+                <>
+                  <span>&bull;</span>
+                  <button
+                    // todo
+                    className="inline-flex items-center text-xs text-red-600 duration-300 hover:text-red-800 font-spectral"
+                  >
+                    <TrashIcon className="w-3 h-3 mr-1 shrink-0" />
+                    Supprimer
+                  </button>
+                </>
+              )}
             </>
           )}
         </div>
