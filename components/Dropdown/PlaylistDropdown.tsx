@@ -12,6 +12,7 @@ import { useAuth } from "@hooks/useAuth";
 import useFetchRSR from "@hooks/useFetchRSR";
 import { classes } from "libs/classes";
 import { fetchRSR } from "libs/fetchRSR";
+import { useTranslations } from "next-intl";
 import { Fragment, useState } from "react";
 import toast from "react-hot-toast";
 
@@ -21,6 +22,7 @@ export const PlaylistDropdown = ({
   resource: ResourceMinimum;
 }) => {
   const { user } = useAuth();
+  const t = useTranslations("PlaylistDropdown");
   const {
     data: playlists,
     error,
@@ -97,7 +99,7 @@ export const PlaylistDropdown = ({
               )}
             >
               <CollectionIcon className="w-4 h-4 md:mr-1 shrink-0 lg:mr-2" />
-              <span className="hidden md:block">Ajouter</span>
+              <span className="hidden md:block">{t("button")}</span>
               <ChevronDownIcon
                 className={classes(
                   "w-4 h-4 ml-1 lg:ml-2 duration-200 transition-all",
@@ -196,6 +198,7 @@ const PlaylistCreator = ({
   const [key, setKey] = useState<string>("");
 
   const { user } = useAuth();
+  const t = useTranslations("PlaylistDropdown");
 
   const create = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
@@ -246,7 +249,7 @@ const PlaylistCreator = ({
             onChange={(e) => setKey(e.target.value)}
             className="w-full px-10 py-2 placeholder-gray-400 input text-ellipsis"
             // placeholder="Rechercher une ressource, un canal, un utilisateur..."
-            placeholder="À regarder plus tard..."
+            placeholder={t("placeholder")}
           />
           <button
             type="submit"
@@ -258,7 +261,7 @@ const PlaylistCreator = ({
       ) : (
         <button onClick={() => setOpen(true)} className="w-full btn-green">
           <PlusCircleIcon className="w-4 h-4 mr-2" />
-          Créer une playlist
+          {t("create")}
         </button>
       )}
     </>
