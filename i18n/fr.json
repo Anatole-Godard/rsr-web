@@ -369,7 +369,6 @@
 
     "updatedAt": "mis à jour {relative}"
   },
-
   "MediaUploader": {
     "edit-warn": "Éditer la ressource réinitialisera vos documents.",
     "cancel": "Annuler",
