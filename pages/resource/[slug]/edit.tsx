@@ -384,7 +384,7 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
                   </svg>
                 ) : requestOk ? (
                   <>
-                    <CheckIcon className="w-4 h-4 mr-1 duration-300 group-active:text-white" />{" "}
+                    <CheckIcon className="w-4 h-4 mr-1 duration-300 group-active:text-white" />
                     {t("sent")}
                   </>
                 ) : validForm ? (
