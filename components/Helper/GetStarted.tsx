@@ -3,6 +3,7 @@ import { AcademicCapIcon, ChevronDownIcon } from "@heroicons/react/outline";
 import { useAuth } from "@hooks/useAuth";
 import useFetchRSR from "@hooks/useFetchRSR";
 import { classes } from "libs/classes";
+import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { Fragment, useEffect, useState } from "react";
@@ -12,6 +13,7 @@ export const GetStarted = () => {
   const [show, setShow] = useState<boolean>(
     cookie["rsr-get_started"] !== "true"
   );
+  const t = useTranslations("GetStarted");
 
   const { user } = useAuth();
   const {
@@ -67,7 +69,7 @@ export const GetStarted = () => {
                 <div className="relative">
                   <div className="space-x-2 border border-green-500 shadow-xl btn-green">
                     <AcademicCapIcon className="w-4 h-4 mr-1" />
-                    Premiers pas
+                    {t("button")}
                     <ChevronDownIcon
                       key="get_started_dropdown-icon"
                       className={classes(
@@ -97,18 +99,18 @@ export const GetStarted = () => {
                 >
                   <div className="flex flex-col w-full">
                     <h3 className="font-semibold text-gray-800 font-marianne">
-                      Premiers pas avec RSR
+                      {t("title")}
                     </h3>
                     <p className="text-sm text-gray-500 font-spectral">
-                      Réalisez ces actions pour être prêt à utiliser RSR.
+                      {t("subtitle")}
                     </p>
                     {getStarted && (
                       <>
                         <div className="flex justify-between mt-2 mb-1">
                           <span className="text-xs font-medium text-green-700 font-spectral dark:text-white">
                             {getStarted.done !== getStarted.total
-                              ? "Actions à réaliser"
-                              : "Toutes les actions ont été réalisées, bravo 🥳 !"}
+                              ? t("todo")
+                              : t("todo-none")}
                           </span>
                           <span className="text-xs font-medium text-green-700 font-marianne dark:text-white">
                             {(getStarted.done / getStarted.total) * 100}%
@@ -134,33 +136,33 @@ export const GetStarted = () => {
                     )}
                     {loading && (
                       <div className="flex items-center justify-center h-32 font-spectral">
-                        Chargement...
+                        {t("loading")}
                       </div>
                     )}
                     {getStarted && (
                       <div className="flex flex-col space-y-1">
                         <Item
-                          label="Se créer un compte sur la plateforme"
+                          label={t("create_account")}
                           condition={getStarted?.create_account}
                           href="/"
                         />
                         <Item
-                          label="Créer une ressource et se faire approuver"
+                          label={t("create_resource")}
                           condition={getStarted?.create_resource}
                           href="/resource/create"
                         />
                         <Item
-                          label="Poster un commentaire sur une ressource"
+                          label={t("create_resource_comment")}
                           condition={getStarted?.create_resource_comment}
                           href="/resource"
                         />
                         <Item
-                          label="Créer une playlist et y renseigner une ressource"
+                          label={t("create_playlist")}
                           condition={getStarted?.create_playlist}
                           href="/resource"
                         />
                         <Item
-                          label="Rejoindre un salon de discussion"
+                          label={t("join_channel")}
                           condition={getStarted?.join_channel}
                           href="/channel"
                         />
@@ -172,8 +174,8 @@ export const GetStarted = () => {
                         className="px-2 py-1 text-sm btn-text-gray"
                       >
                         {getStarted && getStarted.remaining === 0
-                          ? "Ce fût un plaisir !"
-                          : "Non, merci"}
+                          ? t("quit-button-done")
+                          : t("quit-button-none")}
                       </button>
                     </div>
                   </div>
