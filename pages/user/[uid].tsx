@@ -1,11 +1,13 @@
 import { AppLayout } from "@components/Layout/AppLayout";
 import { UserResources } from "@components/User/UserResources";
 import { NextPage, GetServerSideProps } from "next";
+import { useTranslations } from "next-intl";
 import Image from "next/image";
 
 const UserUIDPage: NextPage<any> = ({ photoURL, fullName, resources }) => {
+  const t = useTranslations("UserUID");
   return (
-    <AppLayout title={`Profil de ${fullName}`}>
+    <AppLayout title={t("title", { name: fullName })}>
       <div className="flex flex-col w-full max-h-full bg-white dark:bg-gray-900 ">
         <div className="flex flex-col w-full px-6 py-6 bg-white shrink-0 lg:px-12 dark:bg-black dark:border-gray-800">
           <div className="inline-flex items-end w-full">
@@ -24,7 +26,6 @@ const UserUIDPage: NextPage<any> = ({ photoURL, fullName, resources }) => {
           </div>
         </div>
         <div className="flex flex-col p-6 overflow-y-auto bg-gray-100 grow xl:rounded-tl-xl">
-          
           <UserResources resources={resources} />
         </div>
       </div>
@@ -34,7 +35,7 @@ const UserUIDPage: NextPage<any> = ({ photoURL, fullName, resources }) => {
 
 export default UserUIDPage;
 
-export const getServerSideProps: GetServerSideProps = async(context)=> {
+export const getServerSideProps: GetServerSideProps = async (context) => {
   const { uid } = context.query;
 
   const {
@@ -59,7 +60,6 @@ export const getServerSideProps: GetServerSideProps = async(context)=> {
     props: {
       ...u,
       i18n: (await import(`../../i18n/${context.locale}.json`)).default,
-
     },
   };
-}
+};

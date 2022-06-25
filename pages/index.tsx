@@ -5,10 +5,12 @@ import { CookieAlert } from "@components/UI/CookieAlert";
 import { Resource } from "@definitions/Resource";
 import { AppLayout } from "@components/Layout/AppLayout";
 import type { GetServerSideProps, NextPage } from "next";
+import { useTranslations } from "next-intl";
 
 const Home: NextPage<any> = ({ resources }: { resources: Resource[] }) => {
+  const t = useTranslations("Index");
   return (
-    <AppLayout title="Accueil">
+    <AppLayout title={t("title")}>
       <HeroSection />
       <SearchSection />
       <section className="flex flex-col h-full px-6 pt-6 pb-6 space-y-6 bg-gray-100 dark:bg-gray-900 lg:px-24 2xl:px-32">
@@ -48,7 +50,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   return {
     props: {
       resources,
-      i18n: (await import(`../i18n/${context.locale}.json`)).default
+      i18n: (await import(`../i18n/${context.locale}.json`)).default,
     },
   };
 };
