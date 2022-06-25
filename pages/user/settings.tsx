@@ -5,14 +5,16 @@ import { DisableAccount } from "@components/User/DisableAccount";
 import { SessionsViewer } from "@components/User/SessionsViewer";
 import { ArrowLeftIcon } from "@heroicons/react/outline";
 import { useAuth } from "@hooks/useAuth";
-import { NextPage } from "next";
+import { GetServerSideProps, NextPage } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { RetrieveAccount } from "@components/User/RetrieveAccount";
 import { GetStartedResetter } from "@components/User/GetStartedResetter";
+import { useTranslations } from "next-intl";
 
-const UserIndexPage: NextPage<any> = () => {
+const UserSettings: NextPage<any> = () => {
   const { user } = useAuth();
+  const t = useTranslations("UserSettings");
 
   return (
     <AppLayout title="Paramètres">
@@ -27,14 +29,14 @@ const UserIndexPage: NextPage<any> = () => {
               alt={user?.data.fullName}
             />
             <h3 className="ml-5 text-2xl font-extrabold text-gray-800 font-marianne dark:text-gray-200">
-              Paramètres
+              {t("title")}
             </h3>
           </div>
 
           <Link href="/user">
             <a className="btn-gray h-fit w-fit">
               <ArrowLeftIcon className="w-4 h-4 mr-2" />
-              Retour
+              {t("back")}
             </a>
           </Link>
         </div>
@@ -55,7 +57,7 @@ const UserIndexPage: NextPage<any> = () => {
   );
 };
 
-export const getServerSideProps = async (ctx) => {
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const {
     cookies: { user },
   } = ctx.req;
@@ -68,8 +70,10 @@ export const getServerSideProps = async (ctx) => {
     };
 
   return {
-    props: {},
+    props: {
+      i18n: (await import(`../../i18n/${ctx.locale}.json`)).default,
+    },
   };
 };
 
-export default UserIndexPage;
+export default UserSettings;
