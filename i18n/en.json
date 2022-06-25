@@ -1,4 +1,10 @@
 {
+  "Index": {
+    "title": "Accueil"
+  },
+  "UserUID": {
+    "title": "Profil de {name}"
+  },
   "HeroSection": {
     "tagline": "Let's build relationships ",
     "buzz1": "toge",
@@ -28,6 +34,7 @@
     "see-all": "See all"
   },
   "ResourceIndex": {
+    "title": "Resources",
     "title1": "All",
     "title2": "resources",
     "search-placeholder": "Search a resource ...",
@@ -90,6 +97,8 @@
     "private": "Private",
     "unlisted": "Unlisted",
 
+    "head-title": "Create a resource",
+    "edit-title": "Editing {name}",
     "title1": "Create a",
     "title2": "resource",
 
@@ -137,6 +146,9 @@
   },
 
   "ChannelCreate": {
+    "head-title": "Create a channel",
+    "head-edit-title": "Editing {name}",
+
     "create-title": "Create",
     "edit-title": "Edit",
     "create-title1": "a",
@@ -166,7 +178,12 @@
     "edit-delete-text2": "Related messages and activities will also be deleted."
   },
 
+  "ChannelIndex": {
+    "title": "Salons de discussion"
+  },
+
   "UserIndex": {
+    "title": "My profile",
     "title1": "My",
     "title2": "profile",
 
@@ -181,6 +198,7 @@
   },
 
   "Login": {
+    "head-title": "Log in",
     "title": "Connect to RSR",
     "connect-with": "Connect with",
     "or-with": "Or continue with",
@@ -192,6 +210,7 @@
     "remember-me": "Remember me"
   },
   "Register": {
+    "head-title": "Sign up",
     "title": "Sign up to RSR",
     "connect-with": "Connect with",
     "or-with": "Or sign up with",
