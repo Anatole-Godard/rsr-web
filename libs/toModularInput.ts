@@ -4,6 +4,10 @@ import { Resource } from "@definitions/Resource";
 export const toModularInput = (
   properties: Resource["data"]["attributes"]["properties"]
 ): Input[] => {
+  if (!properties) throw new Error("properties is required");
+  if (!(properties instanceof Object))
+    throw new Error("properties must be an object");
+
   const array: Input[] = Object.values(
     (properties as { [key: string]: any | Input }) || []
   ).filter(
