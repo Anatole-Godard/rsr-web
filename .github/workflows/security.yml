@@ -1,6 +1,6 @@
 name: "Security"
 on:
-  - pull-request
+  - pull_request
   
 jobs:
   security:
