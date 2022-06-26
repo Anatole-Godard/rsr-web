@@ -1,29 +1,12 @@
 /* eslint-disable @next/next/no-img-element */
-import { ChevronRightIcon, StarIcon } from "@heroicons/react/solid";
 
 import Link from "next/link";
 import Image from "next/image";
 import { EyeIcon, PlusIcon, UserCircleIcon } from "@heroicons/react/outline";
 import { useAuth } from "@hooks/useAuth";
+import { Animation } from "@components/Helper/Lottie";
 
-const shimmer = (w, h) => `
-<svg width="${w}" height="${h}" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-  <defs>
-    <linearGradient id="g">
-      <stop stop-color="#E8E8E8" offset="20%" />
-      <stop stop-color="#fff" offset="50%" />
-      <stop stop-color="#E8E8E8" offset="70%" />
-    </linearGradient>
-  </defs>
-  <rect width="${w}" height="${h}" fill="#E8E8E8" />
-  <rect id="r" width="${w}" height="${h}" fill="url(#g)" />
-  <animate xlink:href="#r" attributeName="x" from="-${w}" to="${w}" dur="1s" repeatCount="indefinite"  />
-</svg>`;
-
-const toBase64 = (str) =>
-  typeof window === "undefined"
-    ? Buffer.from(str).toString("base64")
-    : window.btoa(str);
+import animationData from "public/lottie/home.json";
 
 export const HeroSection = () => {
   const { user } = useAuth();
@@ -134,17 +117,8 @@ export const HeroSection = () => {
                 </svg>
               </div>
               <div className="relative pl-4 -mr-40 sm:mx-auto sm:max-w-3xl sm:px-0 lg:max-w-none lg:h-full lg:pl-12">
-                <div className="w-full rounded-md shadow bg-gray-50 ring-1 ring-black ring-opacity-5 lg:h-full lg:w-auto ">
-                  {/* <Image
-                    className="rounded-md lg:rounded-l-xl lg:rounded-r-none "
-                    src="/img/bg/hero.jpg"
-                    alt="Hero banner"
-                    layout="fill"
-                    placeholder="blur"
-                    blurDataURL={`data:image/svg+xml;base64,${toBase64(
-                      shimmer(700, 475)
-                    )}`}
-                  /> */}
+                <div className="w-full bg-opacity-50 rounded-l-xl rounded-r-xl lg:rounded-r-none bg-gray-50 dark:bg-gray-900 lg:h-full lg:w-auto ">
+                  <Animation data={animationData} />
                 </div>
               </div>
             </div>
