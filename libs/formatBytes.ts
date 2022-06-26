@@ -1,4 +1,5 @@
 export const formatBytes = (bytes: number, decimals?: number): string => {
+  if (bytes === undefined) throw new Error("bytes is required");
   if (bytes === 0) return "0 Bytes";
   const k = 1024,
     dm = decimals || 2,
