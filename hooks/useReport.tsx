@@ -1,8 +1,7 @@
 import React, { createContext, Fragment, useContext, useState } from 'react';
-import { useRouter } from 'next/router';
 import { useEventListener } from '@hooks/useEventListener';
 import { Dialog, Transition } from '@headlessui/react';
-import { CloudUploadIcon, XIcon } from '@heroicons/react/outline';
+import { CheckIcon, CloudUploadIcon, XIcon } from '@heroicons/react/outline';
 import toast from 'react-hot-toast';
 import { fetchRSR } from '@utils/fetchRSR';
 import { useAuth } from '@hooks/useAuth';
@@ -15,22 +14,18 @@ function ReportProvider({
   children: React.ReactNode;
 }): JSX.Element {
 
-  const router = useRouter();
   const { user } = useAuth();
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [type, setType] = useState<boolean>(false);
+  const [reportInfos, setReportInfos] = useState<{ type, label, uid, link, context }>(null);
+  const [message, setMessage] = useState<string>(null);
 
   useEventListener('keydown', (e: KeyboardEvent) => {
-    if (e.code === 'Escape') setIsOpen(false);
+    if (e.code === 'Escape') unsetValues();
   });
 
-  const openReport = (reportInfos: { type, label }) => {
-    setType(reportInfos.label);
+  const openReport = (reportInfos: { type, label, uid, link, context }) => {
+    setReportInfos(reportInfos);
     setIsOpen(true);
-  };
-
-  const closeReport = ({}) => {
-    setIsOpen(false);
   };
 
   const sendReport = async () => {
@@ -42,24 +37,34 @@ function ReportProvider({
         appsource: 'web'
       },
       body: JSON.stringify({
-        type: 'resource',
-        documentUid: slug,
-        context: slug
+        type: reportInfos.type,
+        documentUid: reportInfos.uid,
+        context: reportInfos.context,
+        message,
+        link: reportInfos.link
       })
     });
+    unsetValues();
     toast.dismiss(toastID);
-    if (res.ok) {
+    if (res?.ok) {
       toast.success('Signalement envoyé');
       const body = await res.json();
       console.log(body);
     } else {
+      console.log(res);
       toast.error('Une erreur est survenue');
     }
   };
 
+  const unsetValues = () => {
+    setIsOpen(false);
+    setReportInfos(null);
+    setMessage(null);
+  };
+
   return (
     <ReportContext.Provider
-      value={{ openReport, closeReport }}
+      value={{ openReport }}
     >
       {children}
 
@@ -68,7 +73,7 @@ function ReportProvider({
           <Dialog
             as='div'
             className='relative z-10'
-            onClose={() => setIsOpen(false)}
+            onClose={() => unsetValues()}
           >
             <Transition.Child
               as={Fragment}
@@ -100,69 +105,36 @@ function ReportProvider({
                       className='inline-flex items-center justify-center w-full text-xl font-medium text-gray-900 font-marianne'
                     >
                       <CloudUploadIcon className='w-6 h-6 mt-1 mr-2 stroke-2' />
-                      Signaler {type}
+                      Signaler {reportInfos.label}
                     </Dialog.Title>
                     <div className='mt-4'>
-                      {/*<div className='w-full grow'>*/}
-                      {/*  <input*/}
-                      {/*    id='file'*/}
-                      {/*    type='file'*/}
-                      {/*    accept='image/*,video/*,.pdf,audio/*'*/}
-                      {/*    onChange={(e) => {*/}
-                      {/*      let file =*/}
-                      {/*        e.target.files instanceof FileList*/}
-                      {/*          ? e.target.files[0]*/}
-                      {/*          : null;*/}
-                      {/*      if (*/}
-                      {/*        file &&*/}
-                      {/*        file.size <= 5_000_000 &&*/}
-                      {/*        files.length < 3*/}
-                      {/*      ) {*/}
-                      {/*        setFiles([...files, file as any]);*/}
-                      {/*        setHasChanges(true);*/}
-                      {/*      } else {*/}
-                      {/*        // alert("Votre fichier est trop lourd");*/}
-                      {/*        //TODO: react-hot-toast*/}
-                      {/*      }*/}
-                      {/*      setIsOpen(false);*/}
-                      {/*    }}*/}
-                      {/*    className='hidden'*/}
-                      {/*  ></input>*/}
-                      {/*  <label*/}
-                      {/*    htmlFor='file'*/}
-                      {/*    className='relative flex flex-col items-center justify-center w-full h-full p-12 duration-300 border-2 border-gray-300 border-dashed rounded-lg group hover:border-gray-500 focus:outline-none active:border-bleuFrance-500 active:ring-4 ring-opacity-60 ring-bleuFrance-300'*/}
-                      {/*  >*/}
-                      {/*    <div*/}
-                      {/*      className='inline-flex items-center justify-center w-full text-lg text-gray-500 duration-150 group-hover:text-gray-600'>*/}
-                      {/*      <VolumeUpIcon className='w-6 h-6 mx-2' />*/}
-                      {/*      <span>/</span>*/}
-                      {/*      <PhotographIcon className='w-6 h-6 mx-2' />*/}
-                      {/*      <span>/</span>*/}
-                      {/*      <VideoCameraIcon className='w-6 h-6 mx-2' />*/}
-                      {/*      <span>/</span>*/}
-                      {/*      <DocumentIcon className='w-6 h-6 mx-2' />*/}
-                      {/*    </div>*/}
-                      {/*    <span className='text-sm text-gray-600 duration-300 group-hover:text-gray-700 font-spectral'>*/}
-                      {/*      Fichier audio, image, vidéo, pdf accepté*/}
-                      {/*    </span>*/}
-                      {/*    <span className='text-xs text-gray-500 duration-300 group-hover:text-gray-600 font-spectral'>*/}
-                      {/*      Maximum 5 Mo par fichier ({'jusqu\'à 3 fichiers'})*/}
-                      {/*    </span>*/}
-                      {/*    <span className='text-xs text-gray-500 duration-300 group-hover:text-gray-600 font-spectral'>*/}
-                      {/*      {3 - files.length} fichiers restants*/}
-                      {/*    </span>*/}
-                      {/*  </label>*/}
-                      {/*</div>*/}
+                      <div className='flex items-center justify-center w-full resize-none'>
+                        <textarea className='resize w-full p-2 text-gray-700 border-2 rounded border-gray-300'
+                                  style={{ resize: 'none' }}
+                                  id='report-message' rows={4}
+                                  placeholder='Votre message'
+                                  onChange={(event) => {
+                                    setMessage(event.target.value);
+                                  }} />
+                      </div>
                     </div>
 
                     <div className='inline-flex justify-end w-full mt-4'>
                       <button
                         type='button'
                         className='btn-red'
-                        onClick={() => setIsOpen(false)}
+                        onClick={() => unsetValues()}
                       >
                         <XIcon className='w-4 h-4 mr-2' />
                         Annuler
+                      </button>
+                      <button
+                        type='button'
+                        className='btn-green ml-3'
+                        onClick={() => sendReport()}
+                      >
+                        <CheckIcon className='w-4 h-4 mr-2' />
+                        Valider
                       </button>
                     </div>
                   </Dialog.Panel>
@@ -177,7 +149,7 @@ function ReportProvider({
 }
 
 interface ReportContextType {
-  openReport: ({ type, label, documentId, content }) => void;
+  openReport: ({ type, label, uid, link, context }) => void;
 }
 
 /**
