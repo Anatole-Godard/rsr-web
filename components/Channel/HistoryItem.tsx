@@ -1,34 +1,20 @@
-import { Iframe } from "@components/Channel/Iframe";
-import { Activity } from "@definitions/Activity";
-import { Message } from "@definitions/Message";
-import { ChatAlt2Icon, ChatIcon, UserAddIcon, ExclamationIcon} from "@heroicons/react/outline";
-import { formatDistance } from "date-fns";
-import { fr } from "date-fns/locale";
-import Image from "next/image";
-import { fetchRSR } from 'libs/fetchRSR';
-import { useAuth } from '@hooks/useAuth';
+import { Iframe } from '@components/Channel/Iframe';
+import { Activity } from '@definitions/Activity';
+import { Message } from '@definitions/Message';
+import { ChatAlt2Icon, ChatIcon, ExclamationIcon, UserAddIcon } from '@heroicons/react/outline';
+import { formatDistance } from 'date-fns';
+import { fr } from 'date-fns/locale';
+import Image from 'next/image';
+import { useReport } from '@hooks/useReport';
+import { useRouter } from 'next/router';
 
 type History = (Message | Activity) & {
   context: { name: string };
 };
 
 export const HistoryItem = ({ user, data, createdAt, context }: History) => {
-    const  auth = useAuth();
-
-    const report = async (type, context) => {
-        const res = await fetchRSR(`/api/report/create`, auth.user?.session, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                appsource: "web",
-            },
-            body: JSON.stringify({ type, 'documentUid': user.uid, context }),
-        })
-        if (res.ok) {
-            const body = await res.json();
-            console.log(body)
-        }
-    };
+    const { pathname } = useRouter();
+    const { openReport } = useReport();
 
   return (
     <li className="mb-6 ml-6 last:pb-6">
@@ -72,8 +58,16 @@ export const HistoryItem = ({ user, data, createdAt, context }: History) => {
               {formatDistance(new Date(createdAt), new Date(), { locale: fr })}
             </time>
               <button
-                  onClick={()=>{report('user', user.fullName + (': ' + data?.text) || '' )}}
-                  className="order-last px-2 m-0 ml-1 text-gray-700 bg-gray-100 btn-text-yellow"
+                onClick={() => {
+                  openReport({
+                    type: 'user',
+                    label: 'un utilisateur',
+                    context: user.fullName + (': ' + data?.text) || '',
+                    uid: user.uid,
+                    link: pathname
+                  });
+                }}
+                className='order-last px-2 m-0 ml-1 text-gray-700 bg-gray-100 btn-text-yellow'
               >
                   <ExclamationIcon className="w-4 h-4" />
               </button>
@@ -104,7 +98,15 @@ export const HistoryItem = ({ user, data, createdAt, context }: History) => {
               {formatDistance(new Date(createdAt), new Date(), { locale: fr })}
             </time>
               <button
-                  onClick={()=>{report('user', user.fullName + (': ' + data?.text) || '' )}}
+                  onClick={()=>{
+                    openReport({
+                      type: 'user',
+                      label: 'un utilisateur',
+                      context: user.fullName + (': ' + data?.text) || '',
+                      uid: user.uid,
+                      link: pathname
+                    });
+                  }}
                   className="order-last px-2 m-0 ml-1 text-gray-700 bg-gray-100 btn-text-yellow"
               >
                   <ExclamationIcon className="w-4 h-4" />

@@ -1,39 +1,41 @@
 /* eslint-disable @next/next/no-img-element */
-import { AppLayout } from "@components/Layout/AppLayout";
-import { Resource } from "@definitions/Resource";
+import { AppLayout } from '@components/Layout/AppLayout';
+import { Resource } from '@definitions/Resource';
 import {
   CalendarIcon,
   CheckIcon,
   ChevronLeftIcon,
   ExclamationIcon,
+  EyeIcon,
   HeartIcon as HeartIconOutline,
   PencilIcon,
-  UsersIcon,
-  EyeIcon,
-} from "@heroicons/react/outline";
-import { HeartIcon } from "@heroicons/react/solid";
-import { GetServerSideProps, NextPage } from "next";
-import { FormEvent, useState } from "react";
+  UsersIcon
+} from '@heroicons/react/outline';
+import { HeartIcon } from '@heroicons/react/solid';
+import { GetServerSideProps, NextPage } from 'next';
+import { FormEvent, useState } from 'react';
 
-import Link from "next/link";
-import { ChipList } from "@components/UI/Chip/ChipList";
-import { fetchRSR } from "libs/fetchRSR";
-import { useAuth } from "@hooks/useAuth";
-import { UserMinimum } from "@definitions/User";
-import { Comment } from "@definitions/Resource/Comment";
-import { Tab } from "@headlessui/react";
-import { classes } from "libs/classes";
-import { formatDistance } from "date-fns";
-import { fr } from "date-fns/locale";
-import { types, visibilities } from "constants/resourcesTypes";
-import { AvatarGroup } from "@components/UI/Avatar/Group";
-import "react-nice-dates/build/style.css";
-import { ShowMoreText } from "@components/UI/ShowMore";
-import { PlaylistDropdown } from "@components/Dropdown/PlaylistDropdown";
-import { TagDocument } from "@definitions/Resource/Tag";
-import { CommentView } from "@components/Resource/CommentView";
-import { ResourceView } from "@components/Resource/ResourceView";
-import toast from "react-hot-toast";
+import Link from 'next/link';
+import { ChipList } from '@components/UI/Chip/ChipList';
+import { fetchRSR } from 'libs/fetchRSR';
+import { useAuth } from '@hooks/useAuth';
+import { useReport } from '@hooks/useReport';
+import { UserMinimum } from '@definitions/User';
+import { Comment } from '@definitions/Resource/Comment';
+import { Tab } from '@headlessui/react';
+import { classes } from 'libs/classes';
+import { formatDistance } from 'date-fns';
+import { fr } from 'date-fns/locale';
+import { types, visibilities } from 'constants/resourcesTypes';
+import { AvatarGroup } from '@components/UI/Avatar/Group';
+import 'react-nice-dates/build/style.css';
+import { ShowMoreText } from '@components/UI/ShowMore';
+import { PlaylistDropdown } from '@components/Dropdown/PlaylistDropdown';
+import { TagDocument } from '@definitions/Resource/Tag';
+import { CommentView } from '@components/Resource/CommentView';
+import { ResourceView } from '@components/Resource/ResourceView';
+import toast from 'react-hot-toast';
+import { useRouter } from 'next/router';
 
 const ResourceSlug: NextPage<any> = ({
   slug,
@@ -52,31 +54,9 @@ const ResourceSlug: NextPage<any> = ({
   const [message, setMessage] = useState<string>("");
   const [newLikes, setNewLikes] = useState<UserMinimum[]>(likes || []);
   const [newComments, setNewComments] = useState<Comment[]>(comments || []);
-
+  const { openReport } = useReport();
   const { user } = useAuth();
-  const report = async () => {
-    const toastID = toast.loading("Signalement en cours...");
-    const res = await fetchRSR(`/api/report/create`, user?.session, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        appsource: "web",
-      },
-      body: JSON.stringify({
-        type: "resource",
-        documentUid: slug,
-        context: slug,
-      }),
-    });
-    toast.dismiss(toastID);
-    if (res.ok) {
-      toast.success("Signalement envoyé");
-      const body = await res.json();
-      console.log(body);
-    } else {
-      toast.error("Une erreur est survenue");
-    }
-  };
+  const { pathname } = useRouter();
 
   const like = async () => {
     const toastID = toast.loading("Ajout du like en cours...");
@@ -223,9 +203,17 @@ const ResourceSlug: NextPage<any> = ({
                       seenBy,
                     }}
                   />
-                  <button onClick={report} className="btn-yellow">
-                    <ExclamationIcon className="w-4 h-4 select-none md:mr-1 shrink-0" />
-                    <span className="hidden md:flex">Signaler</span>
+                  <button onClick={() => {
+                    openReport({
+                      type: "resource",
+                      label: 'une ressource',
+                      context: slug,
+                      uid: slug,
+                      link: pathname,
+                    });
+                  }} className='btn-yellow'>
+                    <ExclamationIcon className='w-4 h-4 select-none md:mr-1 shrink-0' />
+                    <span className='hidden md:flex'>Signaler</span>
                   </button>
                 </>
               )}
