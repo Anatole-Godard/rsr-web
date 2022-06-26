@@ -33,23 +33,26 @@ export const HeroSection = () => {
         <div className="pt-3 overflow-hidden sm:pt-6 lg:relative lg:py-16">
           <div className="max-w-md px-4 mx-auto sm:max-w-3xl sm:px-6 lg:px-8 lg:max-w-7xl lg:grid lg:grid-cols-2 lg:gap-24">
             <div className="">
-              <Image
-                src="/img/ministere.png"
-                alt="Ministère de la santé et de la solidarité"
-                width={175 / 1.4}
-                height={150 / 1.4}
-              />
-              {/* <div>
-                  <a className="inline-flex space-x-4 font-spectral">
-                    <span className="rounded bg-bleuFrance  px-2.5 py-1 text-xs font-semibold text-white tracking-wide uppercase">
-                      {"Quoi de neuf ?"}
-                    </span>
-                    <span className="inline-flex items-center space-x-1 text-sm font-medium text-bleuFrance-500 dark:text-bleuFrance-300">
-                      <span>Notre première release est disponible 🎉</span>
-                      
-                    </span>
-                  </a>
-              </div> */}
+              <div className="flex flex-col text-black select-none dark:text-white">
+                <Image
+                  src="/img/marianne.webp"
+                  alt="Marianne"
+                  width={506 / 15}
+                  height={180 / 15}
+                  layout="fixed"
+                />
+                <div className="mt-0.5 flex flex-col uppercase font-marianne font-bold text-[0.775rem] leading-3">
+                  <span>Ministère</span>
+                  <span>des Solidarités</span>
+                  <span>et de la Santé</span>
+                </div>
+                <div className="mt-1.5 flex flex-col capitalize font-spectral font-medium italic text-[0.5rem] leading-[0.55rem]">
+                  <span>Liberté</span>
+                  <span>Égalité</span>
+                  <span>Fraternité</span>
+                </div>
+              </div>
+
               <div className="mt-6 sm:max-w-xl">
                 <h1 className="text-4xl font-extrabold tracking-tight text-gray-900 font-marianne dark:text-gray-100 sm:text-5xl">
                   {"Tissons des liens "}
