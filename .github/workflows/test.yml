@@ -1,7 +1,5 @@
 name: 'Test'
-on:
-  - pull-request
-
+on: [pull-request]
 jobs:
   unit-tests:
     timeout-minutes: 60
