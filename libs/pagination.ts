@@ -6,9 +6,12 @@
  * @returns The pagination object is being returned.
  */
 export function getPagination(
-  currentPage: string | number,
-  entitiesPerPage: string | number
+  currentPage: string | number = 0,
+  entitiesPerPage: string | number = 1000
 ) {
+  if (typeof currentPage === "string" && isNaN(parseInt(currentPage)))
+    throw new Error("currentPage must be a number or stringified number");
+
   const limit = entitiesPerPage
     ? parseInt(entitiesPerPage.toString(), 10)
     : 1000;
