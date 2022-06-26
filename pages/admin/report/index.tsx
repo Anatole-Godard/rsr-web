@@ -7,11 +7,11 @@ import { useAuth } from "@hooks/useAuth";
 import { fetchRSR } from "libs/fetchRSR";
 import { SearchIcon, UserIcon } from "@heroicons/react/outline";
 import toast from "react-hot-toast";
-
+//TODO : ANATOLE : Changer l'affichage du tableau (link, message) et changer le back ( prise en compte de unValidate user sur comment )
 const ReportAdmin: NextPage<any> = (props) => {
   const [reports, setReports] = useState<Report[]>(props?.data?.attributes);
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const [limitPerPage, setLimitPerPage] = useState<number>(
+  const [limitPerPage] = useState<number>(
     parseInt(process.env.NEXT_PUBLIC_BACK_OFFICE_MAX_ENTITIES)
   );
   const [totalPages, setTotalPages] = useState<number>(props?.data?.totalPages);
@@ -44,6 +44,8 @@ const ReportAdmin: NextPage<any> = (props) => {
     },
     { name: "type", label: "Type", width: 25 },
     { name: "context", label: "Contexte", width: 25 },
+    { name: "message", label: "Message", width: 25 },
+    { name: 'link', label: 'Lien vers le Context', type: 'isLink', width: 25 },
     {
       name: "validated",
       label: "Suspensions",
@@ -73,10 +75,11 @@ const ReportAdmin: NextPage<any> = (props) => {
           filter,
         user.session
       );
-
+      console.log(res);
       if (res.ok) {
         const body = await res.json();
         if (body.data?.attributes) {
+          console.log(body.data?.attributes);
           setTotalPages(body.data?.totalPages);
           setReports(body.data?.attributes);
           toast.success("Récupération des signalements réussie");

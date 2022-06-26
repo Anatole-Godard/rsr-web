@@ -56,7 +56,7 @@ const ResourceSlug: NextPage<any> = ({
   const [newComments, setNewComments] = useState<Comment[]>(comments || []);
   const { openReport } = useReport();
   const { user } = useAuth();
-  const { pathname } = useRouter();
+  const { asPath } = useRouter();
 
   const like = async () => {
     const toastID = toast.loading("Ajout du like en cours...");
@@ -209,7 +209,7 @@ const ResourceSlug: NextPage<any> = ({
                       label: 'une ressource',
                       context: slug,
                       uid: slug,
-                      link: pathname,
+                      link: asPath,
                     });
                   }} className='btn-yellow'>
                     <ExclamationIcon className='w-4 h-4 select-none md:mr-1 shrink-0' />

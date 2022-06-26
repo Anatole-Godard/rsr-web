@@ -13,7 +13,7 @@ type History = (Message | Activity) & {
 };
 
 export const HistoryItem = ({ user, data, createdAt, context }: History) => {
-    const { pathname } = useRouter();
+    const { asPath } = useRouter();
     const { openReport } = useReport();
 
   return (
@@ -64,7 +64,7 @@ export const HistoryItem = ({ user, data, createdAt, context }: History) => {
                     label: 'un utilisateur',
                     context: user.fullName + (': ' + data?.text) || '',
                     uid: user.uid,
-                    link: pathname
+                    link: asPath
                   });
                 }}
                 className='order-last px-2 m-0 ml-1 text-gray-700 bg-gray-100 btn-text-yellow'
@@ -104,7 +104,7 @@ export const HistoryItem = ({ user, data, createdAt, context }: History) => {
                       label: 'un utilisateur',
                       context: user.fullName + (': ' + data?.text) || '',
                       uid: user.uid,
-                      link: pathname
+                      link: asPath
                     });
                   }}
                   className="order-last px-2 m-0 ml-1 text-gray-700 bg-gray-100 btn-text-yellow"

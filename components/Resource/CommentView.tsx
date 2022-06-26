@@ -15,7 +15,7 @@ interface CommentViewProps {
 export const CommentView = ({ comment, slug }: CommentViewProps) => {
   const { owner, content, createdAt } = comment;
   const { user } = useAuth();
-  const { pathname } = useRouter();
+  const { asPath } = useRouter();
   const { openReport } = useReport();
   return (
     <li className='relative mb-6 last:pb-6'>
@@ -47,7 +47,7 @@ export const CommentView = ({ comment, slug }: CommentViewProps) => {
                 type: 'comment',
                 label: 'Commentaire',
                 uid: slug,
-                link: pathname,
+                link: asPath,
                 context: content
               });
             }}
