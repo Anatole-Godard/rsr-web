@@ -30,20 +30,24 @@ jobs:
   e2e-tests:
     timeout-minutes: 60
     runs-on: ubuntu-latest
+    # needs: [build]
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-node@v3
-        with:
-            node-version: '16.x'
-     
+      - name: Build stack
+        run: docker compose -f docker-compose.dev.yml up -d --build
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: npm install --force
       - name: Install playwright browsers
         run: npx playwright install
+      - name: Install playwright deps
+        run: npx playwright install-deps
       - name: Launch e2e tests
-        run: yarn test:e2e
+        run: npm run test:e2e
       - uses: actions/upload-artifact@v2
         if: always()
         with:
           name: test-artifacts
           path: test-results/
+      - name: Stop containers
+        if: always()
+        run: docker compose -f docker-compose.dev.yml down
