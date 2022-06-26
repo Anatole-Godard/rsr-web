@@ -1,20 +1,7 @@
-name: 'Application'
+name: 'Test'
 on: [push]
 jobs:
-  build:
-    timeout-minutes: 60
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v3
-        with:
-          node-version: '16.x'
-      - name: Install dependencies
-        run: yarn install --frozen-lockfile
-      - name: Build application
-        run: yarn build
-
-  unit-tests:
+unit-tests:
     timeout-minutes: 60
     runs-on: ubuntu-latest
     steps:
@@ -30,13 +17,12 @@ jobs:
   e2e-tests:
     timeout-minutes: 60
     runs-on: ubuntu-latest
-    # needs: [build]
     steps:
       - uses: actions/checkout@v2
       - name: Build stack
         run: docker compose -f docker-compose.dev.yml up -d --build
       - name: Install dependencies
-        run: sudo npm install --force
+        run: npm install --force
       - name: Install playwright browsers
         run: npx playwright install
       - name: Install playwright deps
