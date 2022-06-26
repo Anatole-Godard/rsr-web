@@ -99,17 +99,17 @@ function ReportProvider({
                   leaveTo='opacity-0 scale-95'
                 >
                   <Dialog.Panel
-                    className='w-full max-w-md p-6 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl'>
+                    className='w-full max-w-md p-6 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl dark:bg-gray-900 dark:text-white'>
                     <Dialog.Title
                       as='h3'
-                      className='inline-flex items-center justify-center w-full text-xl font-medium text-gray-900 font-marianne'
+                      className='inline-flex items-center justify-center w-full text-xl font-medium text-gray-900 font-marianne dark:text-white'
                     >
                       <CloudUploadIcon className='w-6 h-6 mt-1 mr-2 stroke-2' />
                       Signaler {reportInfos.label}
                     </Dialog.Title>
                     <div className='mt-4'>
                       <div className='flex items-center justify-center w-full resize-none'>
-                        <textarea className='resize w-full p-2 text-gray-700 border-2 rounded border-gray-300'
+                        <textarea className='resize w-full p-2 text-gray-700 border-2 rounded border-gray-300 input'
                                   style={{ resize: 'none' }}
                                   id='report-message' rows={4}
                                   placeholder='Votre message'
