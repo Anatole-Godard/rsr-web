@@ -36,7 +36,7 @@ jobs:
       - name: Build stack
         run: docker compose -f docker-compose.dev.yml up -d --build
       - name: Install dependencies
-        run: npm install --force
+        run: sudo npm install --force
       - name: Install playwright browsers
         run: npx playwright install
       - name: Install playwright deps
