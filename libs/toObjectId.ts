@@ -5,5 +5,7 @@ const ObjectId = require("mongoose").Types.ObjectId;
  * @returns A promise.
  */
 export const toObjectId = (str: string) => {
+  if (!str) throw new Error("str is required");
+
   return new ObjectId(str.toString());
 };
