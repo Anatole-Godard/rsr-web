@@ -6,14 +6,14 @@ import {
   PlusCircleIcon,
   VideoCameraIcon,
   VolumeUpIcon,
-  XIcon
-} from '@heroicons/react/outline';
-import { Dispatch, Fragment, useEffect, useState } from 'react';
-import { Dialog, Transition } from '@headlessui/react';
-import { formatBytes } from 'libs/formatBytes';
-import { useRouter } from 'next/router';
-import { useEventListener } from '@hooks/useEventListener';
-import { Media } from '@definitions/Resource/Media';
+  XIcon,
+} from "@heroicons/react/outline";
+import { Dispatch, Fragment, useEffect, useState } from "react";
+import { Dialog, Transition } from "@headlessui/react";
+import { formatBytes } from "libs/formatBytes";
+import { useRouter } from "next/router";
+import { useEventListener } from "@hooks/useEventListener";
+import { Media } from "@definitions/Resource/Media";
 
 export const MediaUploader = ({
   files,
@@ -38,7 +38,7 @@ export const MediaUploader = ({
 
   return (
     <>
-      <div className="flex flex-col h-full max-h-full p-2 space-y-1 bg-gray-200 rounded-lg">
+      <div className="flex flex-col h-full max-h-full p-2 space-y-1 bg-gray-200 rounded-lg dark:bg-gray-800">
         {router.pathname.includes("edit") && (
           <div className="inline-flex items-center">
             <small className="inline-flex items-center w-full text-sm font-spectral">
@@ -46,7 +46,7 @@ export const MediaUploader = ({
               Éditer la ressource réinitialisera vos médias.
             </small>
             <a
-              className="px-2 py-0.5 btn-text-bleuFrance"
+              className="px-2 py-0.5 btn-text-gray"
               href={router.asPath.replace("/edit", "")}
             >
               Annuler
@@ -56,7 +56,7 @@ export const MediaUploader = ({
         <div className="flex flex-col space-y-1 overflow-y-scroll grow">
           {files.map((media, i) => (
             <div
-              className="inline-flex items-center w-full p-2 text-sm rounded-md font-spectral h-fit bg-bleuFrance-100 text-bleuFrance-500"
+              className="inline-flex items-center w-full p-2 text-sm rounded-md font-spectral h-fit dark:bg-bleuFrance-800 dark:text-bleuFrance-100 bg-bleuFrance-100 text-bleuFrance-500"
               key={media.name + i}
             >
               {media.type.includes("audio") && (
@@ -92,28 +92,30 @@ export const MediaUploader = ({
             </div>
           ))}
         </div>
-        <button
-          key="add-media"
-          type="button"
-          onClick={(e) => {
-            e.preventDefault();
-            setIsOpen(true);
-          }}
-          className="rounded-md btn-gray w-fit"
-          disabled={files.length >= 3}
-        >
-          {files.length < 3 ? (
-            <>
-              <PlusCircleIcon className="w-4 h-4 mr-2" />
-              Ajouter un média
-            </>
-          ) : (
-            <>
-              <PlusCircleIcon className="w-4 h-4 mr-2" />
-              Vous avez atteint le nombre maximum de médias
-            </>
-          )}
-        </button>
+        <div className="inline-flex justify-end w-full">
+          <button
+            key="add-media"
+            type="button"
+            onClick={(e) => {
+              e.preventDefault();
+              setIsOpen(true);
+            }}
+            className="rounded-md btn-gray dark:bg-gray-700 w-fit"
+            disabled={files.length >= 3}
+          >
+            {files.length < 3 ? (
+              <>
+                <PlusCircleIcon className="w-4 h-4 mr-2" />
+                Ajouter un média
+              </>
+            ) : (
+              <>
+                <PlusCircleIcon className="w-4 h-4 mr-2" />
+                Vous avez atteint le nombre maximum de médias
+              </>
+            )}
+          </button>
+        </div>
       </div>
       {isOpen && !hasChanges && (
         <Transition appear show={true} as={Fragment}>
@@ -131,7 +133,7 @@ export const MediaUploader = ({
               leaveFrom="opacity-100"
               leaveTo="opacity-0"
             >
-              <div className="fixed inset-0 z-10 bg-black bg-opacity-25" />
+              <div className="fixed inset-0 z-10 bg-black bg-opacity-25 dark:bg-opacity-75" />
             </Transition.Child>
 
             <div className="fixed inset-0 z-20 overflow-y-auto">
@@ -145,10 +147,10 @@ export const MediaUploader = ({
                   leaveFrom="opacity-100 scale-100"
                   leaveTo="opacity-0 scale-95"
                 >
-                  <Dialog.Panel className="w-full max-w-md p-6 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl">
+                  <Dialog.Panel className="w-full max-w-md p-6 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl dark:bg-gray-900 rounded-2xl">
                     <Dialog.Title
                       as="h3"
-                      className="inline-flex items-center justify-center w-full text-xl font-medium text-gray-900 font-marianne"
+                      className="inline-flex items-center justify-center w-full text-xl font-medium text-gray-900 dark:text-gray-200 font-marianne"
                     >
                       <CloudUploadIcon className="w-6 h-6 mt-1 mr-2 stroke-2" />
                       Ajouter un média
@@ -181,9 +183,9 @@ export const MediaUploader = ({
                         ></input>
                         <label
                           htmlFor="file"
-                          className="relative flex flex-col items-center justify-center w-full h-full p-12 duration-300 border-2 border-gray-300 border-dashed rounded-lg group hover:border-gray-500 focus:outline-none active:border-bleuFrance-500 active:ring-4 ring-opacity-60 ring-bleuFrance-300"
+                          className="relative flex flex-col items-center justify-center w-full h-full p-12 duration-300 border-2 border-gray-300 border-dashed rounded-lg dark:border-gray-700 group hover:border-gray-500 focus:outline-none active:border-bleuFrance-500 active:ring-4 ring-opacity-60 ring-bleuFrance-300"
                         >
-                          <div className="inline-flex items-center justify-center w-full text-lg text-gray-500 duration-150 group-hover:text-gray-600">
+                          <div className="inline-flex items-center justify-center w-full text-lg text-gray-500 duration-150 group-hover:text-gray-600 dark:group-hover:text-gray-400">
                             <VolumeUpIcon className="w-6 h-6 mx-2" />
                             <span>/</span>
                             <PhotographIcon className="w-6 h-6 mx-2" />
@@ -192,13 +194,13 @@ export const MediaUploader = ({
                             <span>/</span>
                             <DocumentIcon className="w-6 h-6 mx-2" />
                           </div>
-                          <span className="text-sm text-gray-600 duration-300 group-hover:text-gray-700 font-spectral">
+                          <span className="text-sm text-gray-600 duration-300 group-hover:text-gray-700 dark:group-hover:text-gray-400 font-spectral">
                             Fichier audio, image, vidéo, pdf accepté
                           </span>
-                          <span className="text-xs text-gray-500 duration-300 group-hover:text-gray-600 font-spectral">
+                          <span className="text-xs text-gray-500 duration-300 group-hover:text-gray-600 dark:group-hover:text-gray-400 font-spectral">
                             Maximum 5 Mo par fichier ({"jusqu'à 3 fichiers"})
                           </span>
-                          <span className="text-xs text-gray-500 duration-300 group-hover:text-gray-600 font-spectral">
+                          <span className="text-xs text-gray-500 duration-300 group-hover:text-gray-600 dark:group-hover:text-gray-400 font-spectral">
                             {3 - files.length} fichiers restants
                           </span>
                         </label>

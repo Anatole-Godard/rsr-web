@@ -51,7 +51,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
     const user = await User.findOne({ email }).lean();
     if (await argon2.verify(user.password, password)) {
-      const token = genToken({ uid: user.id, role: user.role });
+      const token = genToken({ uid: user._id.toString(), role: user.role });
 
       if(!(user.validated)){
         return res.status(403).json({

@@ -9,7 +9,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 export const genToken = (userData: { uid: string; role: string }) => ({
   token: jwt.sign(
     {
-      userId: userData.uid,
+      uid: userData.uid,
       role: userData.role,
       refresh: false,
     },
@@ -20,7 +20,7 @@ export const genToken = (userData: { uid: string; role: string }) => ({
   ),
   refreshToken: jwt.sign(
     {
-      userId: userData.uid,
+      uid: userData.uid,
       roles: userData.role,
       refresh: true,
     },
@@ -31,7 +31,6 @@ export const genToken = (userData: { uid: string; role: string }) => ({
   ),
   issuedAt: new Date().getTime(),
 });
-
 
 /**
  * Given an authorization header, return the token
@@ -50,9 +49,9 @@ export const parseAuthorization = (
  * @returns A boolean value indicating if the token is valid or not.
  */
 export const isTokenValid = async (
-  authorization: string | undefined,
-  req: NextApiRequest,
-  res: NextApiResponse
+  authorization: string | undefined
+  // req: NextApiRequest,
+  // res: NextApiResponse
 ) => {
   const token = parseAuthorization(authorization);
   let result: { valid: boolean; code?: string } = { valid: false };
@@ -67,6 +66,7 @@ export const isTokenValid = async (
       });
     } else result = { valid: false, code: "TokenHeaderInexistantError" };
   } catch (err) {
+    // eslint-disable-next-line no-console
     console.error(err);
     result = { valid: false, code: err.name };
   }
@@ -82,7 +82,7 @@ export const isTokenValid = async (
 export const withAuth =
   (handler: Function) => async (req: NextApiRequest, res: NextApiResponse) => {
     const headerAuth = req.headers.authorization;
-    const validation = await isTokenValid(headerAuth, req, res);
+    const validation = await isTokenValid(headerAuth);
     if (validation.valid) {
       return handler(req, res);
     } else

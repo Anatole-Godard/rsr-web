@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import React from "react";
+import React, { ComponentProps } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import { classes } from "libs/classes";
 import {
@@ -188,7 +188,7 @@ const notifications = [
     message: "a commenté votre publication",
     icon: {
       className: "bg-green-100 text-green-700",
-      component: ChatIcon,
+      component: (props: ComponentProps<"svg">) => <ChatIcon {...props} />,
     },
   },
   {
@@ -196,7 +196,7 @@ const notifications = [
     message: "a envoyé un message",
     icon: {
       className: "bg-bleuFrance-100 text-bleuFrance-700",
-      component: ChatAlt2Icon,
+      component: (props: ComponentProps<"svg">) => <ChatAlt2Icon {...props} />,
     },
   },
   {
@@ -204,7 +204,7 @@ const notifications = [
     message: "a aimé votre publication",
     icon: {
       className: "bg-green-100 text-green-700",
-      component: ThumbUpIcon,
+      component: (props: ComponentProps<"svg">) => <ThumbUpIcon {...props} />,
     },
   },
   {
@@ -212,7 +212,7 @@ const notifications = [
     message: "Votre demande de signalement a été traitée",
     icon: {
       className: "bg-green-100 text-green-700",
-      component: ExclamationIcon,
+      component: (props: ComponentProps<"svg">) => <ExclamationIcon {...props} />,
     },
   },
 ];
@@ -265,7 +265,7 @@ const NotificationComponent = ({
                 >
                   {notifications
                     .find((e) => e.type === type)
-                    .icon.component({ className: "w-4 h-4" })}
+                    ?.icon?.component({ className: "w-4 h-4" })}
                 </span>
               </>
             )}

@@ -109,7 +109,7 @@ const ChannelSlug: NextPage<any> = ({
   };
 
   return (
-    <AppLayout>
+    <AppLayout title={channel.name}>
       <div className="flex flex-col w-full h-full md:flex-row">
         <Sidebar
           channels={sideBarChannels}
@@ -130,7 +130,7 @@ const ChannelSlug: NextPage<any> = ({
                     />
                   </div>
                 ) : (
-                  <span className="flex items-center justify-center w-6 h-6 rounded-full shrink-0 md:w-8 md:h-8 text-bleuFrance-500 bg-bleuFrance-50 ring-2 ring-offset-2 ring-bleuFrance-200 dark:bg-bleuFrance-700">
+                  <span className="flex items-center justify-center w-6 h-6 rounded-full shrink-0 md:w-8 md:h-8 text-bleuFrance-500 bg-bleuFrance-50 ring-2 ring-offset-2 ring-bleuFrance-200 dark:bg-bleuFrance-700 dark:text-bleuFrance-200">
                     <UserGroupIcon className="w-3 h-3 md:w-4 md:h-4 shrink-0" />
                   </span>
                 )}
@@ -161,7 +161,7 @@ const ChannelSlug: NextPage<any> = ({
                     key="channel_slug-edit_link"
                   >
                     <a
-                      className="bg-gray-300 btn-gray hover:bg-gray-400 hover:text-gray-900 shrink-0"
+                      className="bg-gray-300 btn-gray hover:bg-gray-400 hover:text-gray-900 dark:hover:text-gray-300 shrink-0"
                       key="channel_slug-edit-btn"
                     >
                       <PencilIcon

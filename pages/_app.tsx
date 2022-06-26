@@ -7,7 +7,6 @@ import { AnimatePresence } from 'framer-motion';
 import { AuthProvider } from '@hooks/useAuth';
 import { NotificationProvider } from '@hooks/useNotifications';
 import { ReportProvider } from '@hooks/useReport';
-import { Fragment } from 'react';
 import { GetStarted } from '@components/Helper/GetStarted';
 import { Toaster } from 'react-hot-toast';
 
@@ -17,17 +16,17 @@ function MyApp({ Component, pageProps }: AppProps) {
       <AuthProvider>
         <NotificationProvider>
           <ReportProvider>
-            <AnimatePresence onExitComplete={() => window.scrollTo(0, 0)}>
-              <Fragment key={'app'}>
-                <Component {...pageProps} />
-                <DarkModeToggler />
-              </Fragment>
-            </AnimatePresence>
-            <GetStarted />
+          <AnimatePresence onExitComplete={() => window.scrollTo(0, 0)}>
+            <div className="relative" key={"app"}>
+              <Component {...pageProps} />
+              <DarkModeToggler />
+              <GetStarted />
+            </div>
+          </AnimatePresence>
           </ReportProvider>
         </NotificationProvider>
       </AuthProvider>
-      <Toaster position='top-right' />
+      <Toaster position="bottom-right" />
     </ThemeProvider>
   );
 }

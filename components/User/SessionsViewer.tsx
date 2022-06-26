@@ -12,6 +12,7 @@ import fr from "date-fns/locale/fr";
 import Image from "next/image";
 import { useState } from "react";
 import toast from "react-hot-toast";
+import { classes } from "@utils/classes";
 
 export const SessionsViewer = () => {
   const { user } = useAuth();
@@ -47,9 +48,9 @@ export const SessionsViewer = () => {
   };
 
   return (
-    <div className="flex flex-col p-4 space-y-3 bg-white rounded-lg shadow">
+    <div className="flex flex-col p-4 space-y-3 bg-white rounded-lg shadow dark:bg-gray-800">
       <div className="inline-flex items-center justify-between w-full mb-3">
-        <h5 className="font-bold text-gray-900 font-marianne">
+        <h5 className="font-bold text-gray-900 dark:text-gray-200 font-marianne">
           Appareils connectés
         </h5>
         <div className="w-6 h-6">
@@ -67,21 +68,27 @@ export const SessionsViewer = () => {
         {sessionsFetchedData?.map((session, key) => {
           return (
             <div
-              className="inline-flex items-center w-full p-2 bg-gray-100 rounded-md"
+              className="inline-flex items-center w-full p-2 bg-gray-100 rounded-md dark:bg-gray-700"
               key={key}
             >
-              {session.appSource === "web" ? (
-                <div className="flex items-center justify-center w-12 h-12 bg-indigo-200 rounded-md shrink-0">
-                  <DesktopComputerIcon className="w-6 h-6 text-indigo-700" />
-                </div>
-              ) : (
-                <div className="flex items-center justify-center w-12 h-12 bg-purple-200 rounded-md shrink-0">
-                  <DeviceMobileIcon className="w-6 h-6 text-purple-700" />
-                </div>
-              )}
+              <div
+                className={classes(
+                  "flex items-center justify-center w-12 h-12  rounded-md shrink-0",
+                  session.appSource === "web"
+                    ? "bg-indigo-200 dark:bg-indigo-700"
+                    : "bg-purple-200 dark:bg-purple-700"
+                )}
+              >
+                {session.appSource === "web" ? (
+                  <DesktopComputerIcon className="w-6 h-6 text-indigo-700 dark:text-indigo-200" />
+                ) : (
+                  <DeviceMobileIcon className="w-6 h-6 text-purple-700 dark:text-purple-200" />
+                )}
+              </div>
+
               <div className="inline-flex w-full ml-3 grow">
                 <div className="flex flex-col">
-                  <p className="text-sm font-medium text-gray-700 font-marianne">
+                  <p className="text-sm font-medium text-gray-700 dark:text-gray-300 font-marianne">
                     {session.appSource === "web" ? "Web" : "Mobile"}
                   </p>
                   <small className="text-xs font-normal text-gray-400 font-spectral">

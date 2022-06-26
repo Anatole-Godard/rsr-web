@@ -8,9 +8,7 @@ import { fetchRSR } from "libs/fetchRSR";
 import { NextPage } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { ChartSquareBarIcon } from "@heroicons/react/outline";
 
-import { useState } from "react";
 import { UserStatistics } from "@components/User/UserStatistics";
 import { UserSeenResources } from "@components/User/UserSeenResources";
 
@@ -24,14 +22,9 @@ const UserIndexPage: NextPage<any> = ({
   allResources: Resource[];
 }) => {
   const { user } = useAuth();
-  const [displayStats, setDisplayStats] = useState(false);
-
-  const statistics = () => {
-    setDisplayStats(!displayStats);
-  };
 
   return (
-    <AppLayout>
+    <AppLayout title="Mon profil">
       <div className="flex flex-col w-full h-full bg-white dark:bg-black ">
         <div className="flex flex-col w-full px-6 py-6 space-y-3 bg-white lg:justify-between lg:items-end lg:flex-row shrink-0 lg:px-12 dark:bg-black dark:border-gray-800 lg:space-y-0">
           <div className="inline-flex items-center">
@@ -50,10 +43,6 @@ const UserIndexPage: NextPage<any> = ({
             </h3>
           </div>
           <div className="inline-flex items-center space-x-2">
-            <button className="btn-gray h-fit w-fit" onClick={() => statistics()}>
-              <ChartSquareBarIcon className="w-4 h-4 mr-2" />
-              Statistiques
-            </button>
             <Link href="/user/playlists">
               <a className="btn-gray h-fit w-fit">
                 <CollectionIcon className="w-4 h-4 mr-2" />
@@ -72,15 +61,13 @@ const UserIndexPage: NextPage<any> = ({
         <div className="flex flex-col p-6 overflow-y-auto bg-gray-100 dark:bg-gray-900 grow xl:rounded-tl-xl">
           {user && (
             <>
-              {displayStats && (
-                <UserStatistics
-                  user={user}
-                  resources={resources}
-                  allResources={allResources.filter((r: Resource) =>
-                    r.seenBy.some((u) => u.uid === user.data.uid)
-                  )}
-                />
-              )}
+              <UserStatistics
+                user={user}
+                resources={resources}
+                allResources={allResources.filter((r: Resource) =>
+                  r.seenBy.some((u) => u.uid === user.data.uid)
+                )}
+              />
 
               <UserResources resources={resources} />
               <UserLikedResources resources={likes} />

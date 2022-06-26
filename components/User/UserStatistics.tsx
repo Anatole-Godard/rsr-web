@@ -142,10 +142,10 @@ export const UserStatistics = ({
   };
 
   return (
-    <Disclosure defaultOpen>
+    <Disclosure >
       {({ open }) => (
         <>
-          <Disclosure.Button className="flex justify-between w-full px-4 py-2 mb-2 text-sm font-medium text-left text-gray-700 duration-300 bg-gray-200 rounded-lg lg:w-1/3 hover:bg-gray-300 focus:outline-none focus-visible:ring focus-visible:ring-gray-500 active:bg-gray-50 focus-visible:ring-opacity-75">
+          <Disclosure.Button className="flex justify-between w-full px-4 py-2 mb-2 text-sm font-medium text-left text-gray-700 duration-300 bg-gray-200 rounded-lg lg:w-1/3 hover:bg-gray-300 focus:outline-none focus-visible:ring focus-visible:ring-gray-500 active:bg-gray-50 focus-visible:ring-opacity-75 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700 dark:active:bg-gray-600">
             <div className="inline-flex items-center">
               <div className="w-6 h-6 mr-3">
                 <Image
@@ -155,9 +155,7 @@ export const UserStatistics = ({
                   height={24}
                 />
               </div>
-              <h5 className="font-bold text-gray-900 font-marianne">
-                Statistiques
-              </h5>
+              <h5 className="font-bold font-marianne">Statistiques</h5>
             </div>
             <ChevronUpIcon
               className={`duration-300 ${

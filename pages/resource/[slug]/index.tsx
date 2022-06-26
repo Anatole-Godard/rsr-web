@@ -6,14 +6,15 @@ import {
   CheckIcon,
   ChevronLeftIcon,
   ExclamationIcon,
-  EyeIcon,
   HeartIcon as HeartIconOutline,
   PencilIcon,
-  UsersIcon
-} from '@heroicons/react/outline';
-import { HeartIcon } from '@heroicons/react/solid';
-import { GetServerSideProps, NextPage } from 'next';
-import { FormEvent, useState } from 'react';
+  UsersIcon,
+  EyeIcon,
+  UserIcon,
+} from "@heroicons/react/outline";
+import { HeartIcon } from "@heroicons/react/solid";
+import { GetServerSideProps, NextPage } from "next";
+import { FormEvent, useState } from "react";
 
 import Link from 'next/link';
 import { ChipList } from '@components/UI/Chip/ChipList';
@@ -99,7 +100,7 @@ const ResourceSlug: NextPage<any> = ({
 
   // @ts-ignore
   return (
-    <AppLayout>
+    <AppLayout title={data.attributes.properties.name}>
       <section className="flex flex-col w-full bg-gray-100 h-fit dark:bg-gray-900">
         {/* 2xl:sticky 2xl:top-0 z-[47] */}
         <div className="flex flex-col w-full px-6 py-6 bg-white border-b border-gray-200 lg:px-24 dark:bg-black dark:border-gray-800">
@@ -109,7 +110,7 @@ const ResourceSlug: NextPage<any> = ({
               Retour
             </a>
           </Link>
-          <div className="flex flex-col space-y-3 lg:divide-x font-spectral lg:h-10 lg:items-center lg:flex-row lg:space-x-2 lg:space-y-0">
+          <div className="flex flex-col space-y-3 lg:divide-x dark:divide-gray-700 font-spectral lg:h-10 lg:items-center lg:flex-row lg:space-x-2 lg:space-y-0">
             <div className="inline-flex text-xs text-gray-500 transition duration-200 hover:text-gray-700 dark:text-gray-400">
               {types
                 .find((t) => t.value === data?.type)
@@ -178,20 +179,20 @@ const ResourceSlug: NextPage<any> = ({
                   Retour
                 </a>
               </Link>
-              {!newLikes.find((l) => l.uid === user?.data.uid) ? (
-                <button className="btn-red " key="likeBtn" onClick={like}>
-                  <HeartIconOutline className="w-4 h-4 select-none md:mr-1 shrink-0" />
-                  <span className="hidden md:flex">{"J'aime"}</span>
-                </button>
-              ) : (
-                <button className="btn-red" key="dislikeBtn" onClick={like}>
-                  <HeartIcon className="w-4 h-4 select-none md:mr-1 shrink-0" />
-                  <span className="hidden md:flex">{"Je n'aime plus"}</span>
-                </button>
-              )}
 
-              {user?.data && (
+              {user?.data ? (
                 <>
+                  {!newLikes.find((l) => l.uid === user?.data.uid) ? (
+                    <button className="btn-red " key="likeBtn" onClick={like}>
+                      <HeartIconOutline className="w-4 h-4 select-none md:mr-1 shrink-0" />
+                      <span className="hidden md:flex">{"J'aime"}</span>
+                    </button>
+                  ) : (
+                    <button className="btn-red" key="dislikeBtn" onClick={like}>
+                      <HeartIcon className="w-4 h-4 select-none md:mr-1 shrink-0" />
+                      <span className="hidden md:flex">{"Je n'aime plus"}</span>
+                    </button>
+                  )}
                   <PlaylistDropdown
                     resource={{
                       slug,
@@ -216,9 +217,16 @@ const ResourceSlug: NextPage<any> = ({
                     <span className='hidden md:flex'>Signaler</span>
                   </button>
                 </>
+              ) : (
+                <Link href="/auth/login" key="login">
+                  <a className="btn-bleuFrance">
+                    <UserIcon className="w-4 h-4 select-none md:mr-2 shrink-0" />
+                    Se connecter
+                  </a>
+                </Link>
               )}
               {owner.uid === user?.data.uid && (
-                <Link href={"/resource/" + slug + "/edit"}>
+                <Link href={"/resource/" + slug + "/edit"} key="edit">
                   <a className="btn-gray">
                     <PencilIcon className="w-4 h-4 select-none md:mr-1 shrink-0" />
                     <span className="hidden md:flex">Éditer</span>

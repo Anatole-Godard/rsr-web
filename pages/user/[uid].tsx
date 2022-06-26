@@ -3,9 +3,9 @@ import { UserResources } from "@components/User/UserResources";
 import { NextPage } from "next";
 import Image from "next/image";
 
-const UserUIDPage: NextPage<any> = ({ uid, photoURL, fullName, resources }) => {
+const UserUIDPage: NextPage<any> = ({ photoURL, fullName, resources }) => {
   return (
-    <AppLayout>
+    <AppLayout title={`Profil de ${fullName}`}>
       <div className="flex flex-col w-full max-h-full bg-white dark:bg-gray-900 ">
         <div className="flex flex-col w-full px-6 py-6 bg-white shrink-0 lg:px-12 dark:bg-black dark:border-gray-800">
           <div className="inline-flex items-end w-full">

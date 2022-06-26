@@ -164,7 +164,7 @@ const ChatOverview = ({
     <a
       href={`/channel/${slug}`}
       className={classes(
-        "py-1 px-2 md:px-3 md:py-3 inline-flex items-center rounded-md w-max min-w-[5rem] md:w-full h-full md:h-16",
+        "py-1 px-2 md:px-3 md:py-3 inline-flex items-center rounded-md w-max  md:w-full h-full md:h-16",
         active
           ? "bg-blue-50 dark:bg-blue-900 border-bleuFrance-300 md:border"
           : "bg-white dark:bg-gray-800",
@@ -181,11 +181,11 @@ const ChatOverview = ({
           <Image src={image.url} alt={slug} width={24} height={24} />
         </div>
       ) : (
-        <span className="flex items-center justify-center w-6 h-6 rounded-full shrink-0 md:w-8 md:h-8 text-bleuFrance-500 bg-bleuFrance-50 ring-2 ring-offset-2 ring-bleuFrance-200 dark:bg-bleuFrance-700">
+        <span className="flex items-center justify-center w-6 h-6 rounded-full shrink-0 md:w-8 md:h-8 text-bleuFrance-500 bg-bleuFrance-50 ring-2 ring-offset-2 ring-bleuFrance-200 dark:bg-bleuFrance-700 dark:text-bleuFrance-200">
           <UserGroupIcon className="w-3 h-3 md:w-4 md:h-4 shrink-0" />
         </span>
       )}
-      <div className="flex flex-col ml-3 grow">
+      <span className="flex flex-col w-4/5 ml-3">
         <h3 className="text-sm text-gray-700 truncate select-none font-marianne dark:text-gray-300">
           {name}
         </h3>
@@ -198,7 +198,7 @@ const ChatOverview = ({
             Privé - {members.length} {members.length < 1 ? "membre" : "membres"}
           </h4>
         )}
-      </div>
+      </span>
     </a>
   );
 };

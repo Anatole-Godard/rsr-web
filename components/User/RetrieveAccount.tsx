@@ -31,9 +31,9 @@ export const RetrieveAccount = () => {
     }
   };
   return (
-    <div className="flex flex-col row-span-2 p-4 space-y-3 bg-white rounded-lg shadow">
+    <div className="flex flex-col row-span-2 p-4 space-y-3 bg-white rounded-lg shadow dark:bg-gray-800">
       <div className="inline-flex items-center justify-between w-full mb-3">
-        <h5 className="font-bold text-gray-900 font-marianne">
+        <h5 className="font-bold text-gray-900 dark:text-gray-200 font-marianne">
           Récupération des données de votre compte
         </h5>
         <div className="w-6 h-6">
@@ -47,14 +47,14 @@ export const RetrieveAccount = () => {
         </div>
       </div>
       <div className="flex flex-col">
-        <p className="mb-1 text-xs text-gray-600 font-spectral">
+        <p className="mb-1 text-xs text-gray-700 dark:text-gray-300 font-spectral">
           Vous pouvez à tout moment récupérer les données liées à votre compte
           dans le cadre de la Réglementation Générale de la Protection des
           Données.
         </p>
 
         <div className="ml-auto">
-          <button onClick={fetchExport} className="btn-gray">
+          <button onClick={fetchExport} className="btn-gray dark:bg-gray-700">
             <DownloadIcon className="w-4 h-4 mr-2" />
             Télécharger
           </button>

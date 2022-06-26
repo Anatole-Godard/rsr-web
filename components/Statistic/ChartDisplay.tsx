@@ -118,7 +118,7 @@ export const ChartDisplay = ({label, resources, minPeriod, maxPeriod}:{label: St
     return (
         <div>
             <div>
-                <h6 className="font-bold text-gray-900 font-marianne">
+                <h6 className="font-bold text-gray-700 dark:text-gray-300 font-marianne">
                     {label}
                 </h6>
             </div>

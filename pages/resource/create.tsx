@@ -19,7 +19,10 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { MediaUploader } from "@components/Resource/Helper/Media/Uploader";
-import { Input, WrapperModularInputs } from "@components/Resource/Helper/ModularInput";
+import {
+  Input,
+  WrapperModularInputs,
+} from "@components/Resource/Helper/ModularInput";
 import { TagDocument } from "@definitions/Resource/Tag";
 import useFetchRSR from "@hooks/useFetchRSR";
 import { Media } from "@definitions/Resource/Media";
@@ -246,7 +249,7 @@ const ResourceCreate: NextPage<any> = ({
   } = useFetchRSR("/api/resource/tags", user?.session);
 
   return (
-    <AppLayout>
+    <AppLayout title="Créer une ressource">
       <form
         onSubmit={handleSubmit}
         className="flex flex-col w-full max-h-full bg-white dark:bg-gray-900 grow"
@@ -320,10 +323,10 @@ const ResourceCreate: NextPage<any> = ({
             </button>
           </div>
         </div>
-        <div className="flex flex-col flex-grow px-4 py-3 pb-6 bg-gray-100 rounded-tl-xl md:flex-row">
+        <div className="flex flex-col flex-grow px-4 py-3 pb-6 bg-gray-100 dark:bg-gray-900 rounded-tl-xl md:flex-row">
           <div className="flex flex-col w-full px-2 space-y-3 md:w-1/2">
             <label>
-              <h4 className="mb-1 text-sm font-semibold after:content-['*'] after:ml-0.5 after:text-red-500 text-gray-700 font-marianne">
+              <h4 className="mb-1 text-sm font-semibold after:content-['*'] after:ml-0.5 after:text-red-500 text-gray-700 font-marianne dark:text-gray-300">
                 Titre de la ressource
               </h4>
               <input
@@ -335,7 +338,7 @@ const ResourceCreate: NextPage<any> = ({
               ></input>
             </label>
             <label className="flex flex-col grow">
-              <h4 className="mb-1 text-sm font-semibold after:content-['*'] after:ml-0.5 after:text-red-500 text-gray-700 font-marianne">
+              <h4 className="mb-1 text-sm font-semibold after:content-['*'] after:ml-0.5 after:text-red-500 text-gray-700 font-marianne dark:text-gray-300">
                 Description de la ressource
               </h4>
               <textarea
@@ -347,7 +350,7 @@ const ResourceCreate: NextPage<any> = ({
               ></textarea>
             </label>
             <label>
-              <h4 className="-mb-2 text-sm after:content-['*'] after:ml-0.5 after:text-red-500 font-semibold text-gray-700 font-marianne">
+              <h4 className="-mb-2 text-sm after:content-['*'] after:ml-0.5 after:text-red-500 font-semibold text-gray-700 font-marianne dark:text-gray-300">
                 Visibilité de la ressource
               </h4>
             </label>
@@ -360,7 +363,7 @@ const ResourceCreate: NextPage<any> = ({
               }}
             >
               <div className="inline-flex items-center w-full">
-                <Tab.List className="flex space-x-2 bg-gray-100 grow rounded-xl">
+                <Tab.List className="flex space-x-2 bg-gray-100 dark:bg-gray-900 grow rounded-xl">
                   {visibilities.map((v, i) => (
                     <Tab
                       key={v.value}
@@ -369,8 +372,8 @@ const ResourceCreate: NextPage<any> = ({
                           "w-full py-2.5 text-xs inline-flex items-center justify-center  leading-5 font-medium rounded-md",
                           "focus:outline-none transition-all duration-300 focus:ring-2 ring-offset-2 ring-bleuFrance-500 truncate",
                           selected
-                            ? "bg-bleuFrance-700  text-bleuFrance-100 font-semibold shadow"
-                            : "text-bleuFrance-700 bg-bleuFrance-100 hover:bg-bleuFrance-200 hover:text-bleuFrance-800",
+                            ? "bg-bleuFrance-700 dark:bg-bleuFrance-200 dark:text-bleuFrance-800  text-bleuFrance-100 font-semibold shadow"
+                            : "text-bleuFrance-700 dark:bg-bleuFrance-900 dark:text-bleuFrance-200 bg-bleuFrance-100 hover:bg-bleuFrance-200 hover:text-bleuFrance-800 dark:hover:bg-bleuFrance-800 dark:hover:text-bleuFrance-200",
                           i === 0 ? "rounded-l-lg" : "",
                           i === visibilities.length - 1 ? "rounded-r-lg" : ""
                         )
@@ -385,7 +388,7 @@ const ResourceCreate: NextPage<any> = ({
             </Tab.Group>
             {visibility.value === "unlisted" && (
               <label>
-                <h4 className="mb-1 after:content-['*'] after:ml-0.5 after:text-red-500 text-sm font-semibold text-gray-700 font-marianne">
+                <h4 className="mb-1 after:content-['*'] after:ml-0.5 after:text-red-500 text-sm font-semibold text-gray-700 font-marianne dark:text-gray-300">
                   Membres
                 </h4>
                 <Select
@@ -416,7 +419,7 @@ const ResourceCreate: NextPage<any> = ({
                         alt={member.label}
                         className="w-5 h-5 mr-2 rounded-full"
                       />
-                      <span className="text-xs font-marianne">
+                      <span className="text-xs text-gray-700 font-marianne">
                         {member.label}
                       </span>
                     </div>
@@ -440,7 +443,7 @@ const ResourceCreate: NextPage<any> = ({
             )}
 
             <label>
-              <h4 className="mb-1 text-sm font-semibold text-gray-700 font-marianne">
+              <h4 className="mb-1 text-sm font-semibold text-gray-700 font-marianne dark:text-gray-300">
                 Étiquettes
               </h4>
               <Select
@@ -469,7 +472,7 @@ const ResourceCreate: NextPage<any> = ({
                 }
                 formatOptionLabel={(tag: { label: string; value: string }) => (
                   <div className="inline-flex items-center">
-                    <span className="text-xs font-spectral">{tag.label}</span>
+                    <span className="text-xs text-gray-700 font-spectral">{tag.label}</span>
                   </div>
                 )}
                 onKeyDown={(event: {
@@ -494,7 +497,7 @@ const ResourceCreate: NextPage<any> = ({
           <div className="flex flex-col justify-between w-full px-2 mt-3 space-y-3 md:w-1/2 md:mt-0">
             <div className="flex flex-col w-full h-full space-y-3">
               <label>
-                <h4 className="-mb-2 text-sm after:content-['*'] after:ml-0.5 after:text-red-500 font-semibold text-gray-700 font-marianne">
+                <h4 className="-mb-2 text-sm after:content-['*'] after:ml-0.5 after:text-red-500 dark:text-gray-300 font-semibold text-gray-700 font-marianne">
                   Type de la ressource
                 </h4>
               </label>
@@ -506,7 +509,7 @@ const ResourceCreate: NextPage<any> = ({
                 }}
               >
                 <div className="inline-flex items-center w-full">
-                  <Tab.List className="flex space-x-2 bg-gray-100 grow rounded-xl">
+                  <Tab.List className="flex space-x-2 bg-gray-100 dark:bg-gray-900 grow rounded-xl">
                     {types.map((type, i) => (
                       <Tab
                         key={type.value}
@@ -515,8 +518,8 @@ const ResourceCreate: NextPage<any> = ({
                             "w-full inline-flex items-center justify-center py-2.5 text-xs leading-5 font-medium rounded-md",
                             "focus:outline-none transition-all duration-300 focus:ring-2 ring-offset-2 ring-bleuFrance-500 truncate",
                             selected
-                              ? "bg-bleuFrance-700  text-bleuFrance-100 font-semibold shadow"
-                              : "text-bleuFrance-700 bg-bleuFrance-100 hover:bg-bleuFrance-200 hover:text-bleuFrance-800",
+                              ? "bg-bleuFrance-700 dark:bg-bleuFrance-200 dark:text-bleuFrance-800  text-bleuFrance-100 font-semibold shadow"
+                              : "text-bleuFrance-700 dark:bg-bleuFrance-900 dark:text-bleuFrance-200 bg-bleuFrance-100 hover:bg-bleuFrance-200 hover:text-bleuFrance-800 dark:hover:bg-bleuFrance-800 dark:hover:text-bleuFrance-200",
                             i === 0 ? "rounded-l-lg" : "",
                             i === types.length - 1 ? "rounded-r-lg" : ""
                           )
@@ -537,7 +540,7 @@ const ResourceCreate: NextPage<any> = ({
                 <div className="flex flex-col h-full overflow-hidden grow">
                   <h4
                     className={classes(
-                      "mb-1 text-sm font-semibold text-gray-700 font-marianne",
+                      "mb-1 text-sm font-semibold text-gray-700 font-marianne dark:text-gray-300",
                       type.value === "physical_item"
                         ? "after:content-['*'] after:ml-0.5 after:text-red-500"
                         : ""
@@ -552,7 +555,7 @@ const ResourceCreate: NextPage<any> = ({
               {type.value === "physical_item" && (
                 <>
                   <label>
-                    <h4 className="mb-1 text-sm font-semibold after:content-['*'] after:ml-0.5 after:text-red-500 text-gray-700 font-marianne">
+                    <h4 className="mb-1 text-sm font-semibold after:content-['*'] after:ml-0.5 after:text-red-500 text-gray-700 font-marianne dark:text-gray-300">
                       Prix
                     </h4>
                     <input
@@ -563,7 +566,7 @@ const ResourceCreate: NextPage<any> = ({
                     />
                   </label>
                   <label>
-                    <h4 className="mb-1 text-sm font-semibold after:content-['*'] after:ml-0.5 after:text-red-500 text-gray-700 font-marianne">
+                    <h4 className="mb-1 text-sm font-semibold after:content-['*'] after:ml-0.5 after:text-red-500 text-gray-700 font-marianne dark:text-gray-300">
                       Catégorie
                     </h4>
                     <input
@@ -579,7 +582,7 @@ const ResourceCreate: NextPage<any> = ({
               {type.value === "external_link" && (
                 <>
                   <label>
-                    <h4 className="mb-1 after:content-['*'] after:ml-0.5 after:text-red-500 text-sm font-semibold text-gray-700 font-marianne">
+                    <h4 className="mb-1 after:content-['*'] after:ml-0.5 after:text-red-500 text-sm font-semibold text-gray-700 font-marianne dark:text-gray-300">
                       Lien externe
                     </h4>
                     <input
@@ -595,7 +598,7 @@ const ResourceCreate: NextPage<any> = ({
               {type.value === "location" && (
                 <div className="flex flex-col grow">
                   <label>
-                    <h4 className="mb-1 text-sm after:content-['*'] after:ml-0.5 after:text-red-500 font-semibold text-gray-700 font-marianne">
+                    <h4 className="mb-1 text-sm after:content-['*'] after:ml-0.5 after:text-red-500 font-semibold text-gray-700 font-marianne dark:text-gray-300">
                       Emplacement de la ressource
                     </h4>
                     <div className="w-full mb-3">
@@ -624,7 +627,7 @@ const ResourceCreate: NextPage<any> = ({
                   <div className="flex flex-col">
                     <h4
                       className={classes(
-                        "mb-1 text-sm font-semibold text-gray-700 font-marianne"
+                        "mb-1 text-sm font-semibold text-gray-700 font-marianne dark:text-gray-300"
                       )}
                     >
                       Dates et heures

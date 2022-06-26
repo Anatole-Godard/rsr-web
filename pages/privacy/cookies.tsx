@@ -3,7 +3,7 @@ import { NextPage } from "next";
 
 const CookiePage: NextPage = () => {
   return (
-    <AppLayout>
+    <AppLayout title="Privacy Policy">
       <div className="relative py-16 bg-white dark:bg-black">
         <div className="hidden lg:block lg:absolute lg:inset-y-0 lg:h-full lg:w-full">
           <div
@@ -65,7 +65,8 @@ const CookiePage: NextPage = () => {
             <p>For the purposes of this Cookies Policy:</p>
             <ul>
               <li>
-                <strong>Company</strong> {`(referred to as either "the Company",
+                <strong>Company</strong>{" "}
+                {`(referred to as either "the Company",
                 "We", "Us" or "Our" in this Cookies Policy) refers to RSR.`}
               </li>
               <li>
@@ -208,9 +209,11 @@ const CookiePage: NextPage = () => {
               </li>
             </ul>
             <p>
-              {"For any other web browser, please visit your web browser's official web pages."}
+              {
+                "For any other web browser, please visit your web browser's official web pages."
+              }
             </p>
-            
+
             <h2>Contact Us</h2>
             <p>
               If you have any questions about this Cookies Policy, You can

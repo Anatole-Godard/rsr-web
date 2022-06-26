@@ -107,7 +107,7 @@ const ChannelCreate: NextPage<any> = ({
   }, [pictureUrl, name, description, members, privateGroup]);
 
   return (
-    <AppLayout>
+    <AppLayout title="Créer un salon">
       <form
         onSubmit={handleSubmit}
         className="flex flex-col w-full max-h-full bg-white dark:bg-gray-900 grow"
@@ -187,10 +187,10 @@ const ChannelCreate: NextPage<any> = ({
             </button>
           </div>
         </div>
-        <div className="flex flex-col flex-grow px-4 py-3 pb-6 bg-gray-100 rounded-tl-xl md:flex-row">
+        <div className="flex flex-col flex-grow px-4 py-3 pb-6 bg-gray-100 dark:bg-gray-900 rounded-tl-xl md:flex-row">
           <div className="flex flex-col w-full px-2 space-y-3 md:w-1/2">
             <label>
-              <h4 className="mb-1 after:content-['*'] after:ml-0.5 after:text-red-500 text-sm font-semibold text-gray-700 font-marianne">
+              <h4 className="mb-1 after:content-['*'] after:ml-0.5 after:text-red-500 text-sm font-semibold text-gray-700 dark:text-gray-300 font-marianne">
                 Nom du salon
               </h4>
               <input
@@ -203,7 +203,7 @@ const ChannelCreate: NextPage<any> = ({
             </label>
 
             <label className="flex flex-col grow">
-              <h4 className="mb-1 text-sm font-semibold text-gray-700 font-marianne">
+              <h4 className="mb-1 text-sm font-semibold text-gray-700 dark:text-gray-300 font-marianne">
                 Image du salon
               </h4>
               {pictureUrl && (
@@ -278,7 +278,7 @@ const ChannelCreate: NextPage<any> = ({
           </div>
           <div className="flex flex-col w-full px-2 space-y-3 md:w-1/2">
             <label className="flex flex-col">
-              <h4 className="mb-1 text-sm font-semibold text-gray-700 font-marianne">
+              <h4 className="mb-1 text-sm font-semibold text-gray-700 dark:text-gray-300 font-marianne">
                 Confidentialité du salon
               </h4>
               <div className="inline-flex items-center my-2 space-x-3">
@@ -289,16 +289,16 @@ const ChannelCreate: NextPage<any> = ({
                     setPrivateGroup(e.target.checked);
                     setMembers([]);
                   }}
-                  className="w-4 h-4 duration-200 bg-green-200 border-0 rounded-md appearance-none form-checkbox hover:bg-green-400 dark:bg-green-800 dark:hover:bg-green-700 checked:bg-green-600 checked:border-transparent focus:outline-none focus:bg-green-400 dark:focus:bg-green-900 ring-green-500"
+                  className="w-4 h-4 duration-200 bg-green-200 border-0 rounded-md appearance-none form-checkbox hover:bg-green-400 dark:bg-green-800 dark:hover:bg-green-700 checked:bg-green-600 checked:border-transparent focus:outline-none focus:bg-green-400 dark:focus:bg-green-900 dark:focus:checked:bg-green-300 ring-green-500 dark:checked:bg-green-300"
                 />
-                <span className="text-sm font-semibold text-gray-700 font-spectral dark:text-gray-300">
+                <span className="text-sm font-semibold text-gray-700 dark:text-gray-300 font-spectral">
                   Salon restreint
                 </span>
               </div>
             </label>
             {privateGroup && (
               <label>
-                <h4 className="mb-1 after:content-['*'] after:ml-0.5 after:text-red-500 text-sm font-semibold text-gray-700 font-marianne">
+                <h4 className="mb-1 after:content-['*'] after:ml-0.5 after:text-red-500 text-sm font-semibold text-gray-700 dark:text-gray-300 font-marianne">
                   Membres
                 </h4>
                 <Select
@@ -330,7 +330,7 @@ const ChannelCreate: NextPage<any> = ({
                         alt={member.label}
                         className="w-5 h-5 mr-2 rounded-full"
                       />
-                      <span className="text-xs font-marianne">
+                      <span className="text-xs text-gray-700 font-marianne">
                         {member.label}
                       </span>
                     </div>
@@ -340,7 +340,7 @@ const ChannelCreate: NextPage<any> = ({
               </label>
             )}
             <label className="flex flex-col grow">
-              <h4 className="mb-1 text-sm font-semibold after:content-['*'] after:ml-0.5 after:text-red-500 text-gray-700 font-marianne">
+              <h4 className="mb-1 text-sm font-semibold after:content-['*'] after:ml-0.5 after:text-red-500 text-gray-700 dark:text-gray-300 font-marianne">
                 Description du salon
               </h4>
               <textarea
