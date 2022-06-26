@@ -27,33 +27,23 @@ jobs:
       - name: Launch unit tests
         run: yarn test
 
-  # e2e-tests:
-  #   timeout-minutes: 60
-  #   runs-on: ubuntu-latest
-  #   # needs: [build]
-  #   steps:
-  #     - uses: actions/checkout@v2
-  #     - name: Build stack
-  #       run: docker-compose -f docker-compose.dev.yml up -d --build
-  #     - uses: actions/setup-node@v2
-  #     # - uses: actions/cache@v2
-  #     #   id: cache-build
-  #     #   with:
-  #     #     path: ./build-dep
-  #     #     key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/yarn.lock') }}
-  #     - name: Install dependencies
-  #       run: sudo yarn install --frozen-lockfile
-  #     # - name: Build application
-  #     #   run: yarn build
-  #     - name: Install playwright browsers
-  #       run: npx playwright install
-  #     - name: Launch e2e tests
-  #       run: yarn test:e2e
-  #     - uses: actions/upload-artifact@v2
-  #       if: always()
-  #       with:
-  #         name: test-artifacts
-  #         path: test-results/
-  #     - name: Stop containers
-  #       if: always()
-  #       run: docker-compose -f docker-compose.dev.yml down
+  e2e-tests:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v3
+        with:
+            node-version: '16.x'
+     
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+      - name: Install playwright browsers
+        run: npx playwright install
+      - name: Launch e2e tests
+        run: yarn test:e2e
+      - uses: actions/upload-artifact@v2
+        if: always()
+        with:
+          name: test-artifacts
+          path: test-results/
