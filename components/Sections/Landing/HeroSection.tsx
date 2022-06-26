@@ -1,29 +1,12 @@
 /* eslint-disable @next/next/no-img-element */
-import { ChevronRightIcon, StarIcon } from "@heroicons/react/solid";
 
 import Link from "next/link";
 import Image from "next/image";
 import { EyeIcon, PlusIcon, UserCircleIcon } from "@heroicons/react/outline";
 import { useAuth } from "@hooks/useAuth";
+import { Animation } from "@components/Helper/Lottie";
 
-const shimmer = (w, h) => `
-<svg width="${w}" height="${h}" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-  <defs>
-    <linearGradient id="g">
-      <stop stop-color="#E8E8E8" offset="20%" />
-      <stop stop-color="#fff" offset="50%" />
-      <stop stop-color="#E8E8E8" offset="70%" />
-    </linearGradient>
-  </defs>
-  <rect width="${w}" height="${h}" fill="#E8E8E8" />
-  <rect id="r" width="${w}" height="${h}" fill="url(#g)" />
-  <animate xlink:href="#r" attributeName="x" from="-${w}" to="${w}" dur="1s" repeatCount="indefinite"  />
-</svg>`;
-
-const toBase64 = (str) =>
-  typeof window === "undefined"
-    ? Buffer.from(str).toString("base64")
-    : window.btoa(str);
+import animationData from "public/lottie/home.json";
 
 export const HeroSection = () => {
   const { user } = useAuth();
@@ -33,23 +16,26 @@ export const HeroSection = () => {
         <div className="pt-3 overflow-hidden sm:pt-6 lg:relative lg:py-16">
           <div className="max-w-md px-4 mx-auto sm:max-w-3xl sm:px-6 lg:px-8 lg:max-w-7xl lg:grid lg:grid-cols-2 lg:gap-24">
             <div className="">
-              <Image
-                src="/img/ministere.png"
-                alt="Ministère de la santé et de la solidarité"
-                width={175 / 1.4}
-                height={150 / 1.4}
-              />
-              {/* <div>
-                  <a className="inline-flex space-x-4 font-spectral">
-                    <span className="rounded bg-bleuFrance  px-2.5 py-1 text-xs font-semibold text-white tracking-wide uppercase">
-                      {"Quoi de neuf ?"}
-                    </span>
-                    <span className="inline-flex items-center space-x-1 text-sm font-medium text-bleuFrance-500 dark:text-bleuFrance-300">
-                      <span>Notre première release est disponible 🎉</span>
-                      
-                    </span>
-                  </a>
-              </div> */}
+              <div className="flex flex-col text-black select-none dark:text-white">
+                <Image
+                  src="/img/marianne.webp"
+                  alt="Marianne"
+                  width={506 / 15}
+                  height={180 / 15}
+                  layout="fixed"
+                />
+                <div className="mt-0.5 flex flex-col uppercase font-marianne font-bold text-[0.775rem] leading-3">
+                  <span>Ministère</span>
+                  <span>des Solidarités</span>
+                  <span>et de la Santé</span>
+                </div>
+                <div className="mt-1.5 flex flex-col capitalize font-spectral font-medium italic text-[0.5rem] leading-[0.55rem]">
+                  <span>Liberté</span>
+                  <span>Égalité</span>
+                  <span>Fraternité</span>
+                </div>
+              </div>
+
               <div className="mt-6 sm:max-w-xl">
                 <h1 className="text-4xl font-extrabold tracking-tight text-gray-900 font-marianne dark:text-gray-100 sm:text-5xl">
                   {"Tissons des liens "}
@@ -131,17 +117,8 @@ export const HeroSection = () => {
                 </svg>
               </div>
               <div className="relative pl-4 -mr-40 sm:mx-auto sm:max-w-3xl sm:px-0 lg:max-w-none lg:h-full lg:pl-12">
-                <div className="w-full rounded-md shadow bg-gray-50 ring-1 ring-black ring-opacity-5 lg:h-full lg:w-auto ">
-                  {/* <Image
-                    className="rounded-md lg:rounded-l-xl lg:rounded-r-none "
-                    src="/img/bg/hero.jpg"
-                    alt="Hero banner"
-                    layout="fill"
-                    placeholder="blur"
-                    blurDataURL={`data:image/svg+xml;base64,${toBase64(
-                      shimmer(700, 475)
-                    )}`}
-                  /> */}
+                <div className="w-full bg-opacity-50 rounded-l-xl rounded-r-xl lg:rounded-r-none bg-gray-50 dark:bg-gray-900 lg:h-full lg:w-auto ">
+                  <Animation data={animationData} />
                 </div>
               </div>
             </div>
