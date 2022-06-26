@@ -326,7 +326,7 @@ const ResourceCreate: NextPage<any> = ({
         <div className="flex flex-col flex-grow px-4 py-3 pb-6 bg-gray-100 dark:bg-gray-900 rounded-tl-xl md:flex-row">
           <div className="flex flex-col w-full px-2 space-y-3 md:w-1/2">
             <label>
-              <h4 className="mb-1 text-sm font-semibold after:content-['*'] after:ml-0.5 after:text-red-500 text-gray-700 font-mariann dark:text-gray-300e">
+              <h4 className="mb-1 text-sm font-semibold after:content-['*'] after:ml-0.5 after:text-red-500 text-gray-700 font-mariann dark:text-gray-300">
                 {t("title")}
               </h4>
               <input
