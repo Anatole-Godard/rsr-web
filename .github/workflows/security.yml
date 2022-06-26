@@ -1,5 +1,5 @@
 name: "Security"
-on: [push]
+on: [pull-request]
 jobs:
   security:
     timeout-minutes: 60

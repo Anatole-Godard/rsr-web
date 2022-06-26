@@ -1,5 +1,5 @@
 name: 'Test'
-on: [push]
+on: [pull-request]
 jobs:
   unit-tests:
     timeout-minutes: 60
