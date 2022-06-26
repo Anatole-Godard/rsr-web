@@ -1,7 +1,7 @@
 name: 'Test'
 on: [push]
 jobs:
-unit-tests:
+  unit-tests:
     timeout-minutes: 60
     runs-on: ubuntu-latest
     steps:
