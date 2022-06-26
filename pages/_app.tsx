@@ -23,7 +23,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           </AnimatePresence>
         </NotificationProvider>
       </AuthProvider>
-      <Toaster position="top-right" />
+      <Toaster position="bottom-right" />
     </ThemeProvider>
   );
 }
