@@ -61,7 +61,7 @@ const ResourceSlug: NextPage<any> = ({
 
   const { user } = useAuth();
   const report = async () => {
-    const toastID = toast.loading("Signalement en cours...");
+    const toastID = toast.loading(t("toast-report-loading"));
     const res = await fetchRSR(`/api/report/create`, user?.session, {
       method: "POST",
       headers: {
@@ -76,16 +76,14 @@ const ResourceSlug: NextPage<any> = ({
     });
     toast.dismiss(toastID);
     if (res.ok) {
-      toast.success("Signalement envoyé");
-      const body = await res.json();
-      // console.log(body);
+      toast.success(t("toast-report-success"));
     } else {
-      toast.error("Une erreur est survenue");
+      toast.error(t("toast-report-error"));
     }
   };
 
   const like = async () => {
-    const toastID = toast.loading("Ajout du like en cours...");
+    const toastID = toast.loading(t("toast-like-loading"));
     const res = await fetchRSR(`/api/resource/${slug}/like`, user?.session);
     toast.dismiss(toastID);
     if (res.ok) {
@@ -95,17 +93,17 @@ const ResourceSlug: NextPage<any> = ({
         body?.data.attributes.likes.findIndex(
           (l: UserMinimum) => l.uid === user?.data.uid
         ) !== -1
-          ? "Like ajouté"
-          : "Like supprimé"
+          ? t("toast-like-success")
+          : t("toast-dislike-success")
       );
     } else {
-      toast.error("Une erreur est survenue");
+      toast.error(t("toast-like-error"));
     }
   };
 
   const comment = async (e: FormEvent) => {
     e.preventDefault();
-    const toastID = toast.loading("Ajout du commentaire en cours...");
+    const toastID = toast.loading(t("toast-comment-loading"));
     const res = await fetchRSR(`/api/resource/${slug}/comment`, user?.session, {
       method: "POST",
       body: JSON.stringify({
@@ -114,12 +112,12 @@ const ResourceSlug: NextPage<any> = ({
     });
     toast.dismiss(toastID);
     if (res.ok) {
-      toast.success("Commentaire ajouté");
+      toast.success(t("toast-comment-success"));
       const body = await res.json();
       setNewComments(body?.data.attributes.comments);
       setMessage("");
     } else {
-      toast.error("Une erreur est survenue");
+      toast.error(t("toast-comment-error"));
     }
   };
 

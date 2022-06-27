@@ -244,18 +244,18 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
           }
           if (responses.every((r) => r.ok)) {
             setRequestOk(true);
-            toast.success("Ressource éditée avec succès");
+            toast.success(t("toast-edit-success"));
 
             router.push(`/resource/${body.data.attributes.slug}`);
           } else setRequestOk(false);
         } else if (response.ok && medias.length === 0) {
           setRequestOk(true);
-          toast.success("Ressource éditée avec succès");
+          toast.success(t("toast-edit-success"));
           router.push(`/resource/${body.data.attributes.slug}`);
         }
       } catch (err) {
         // console.log(err);
-        toast.error("Une erreur est survenue");
+        toast.error(t("toast-edit-error"));
       }
       setLoading(false);
     }

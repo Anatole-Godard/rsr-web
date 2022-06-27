@@ -54,7 +54,7 @@ const ChannelEdit: NextPage<any> = (props) => {
   const [deleteModalOpen, setDeleteModalOpen] = useState<boolean>(false);
 
   const deleteChannel = async () => {
-    const toastID = toast.loading("Suppression en cours...");
+    const toastID = toast.loading(t("toast-delete-loading"));
     const res = await fetchRSR(
       `/api/channel/${props.slug}/delete`,
       user?.session,
@@ -65,8 +65,8 @@ const ChannelEdit: NextPage<any> = (props) => {
     toast.dismiss(toastID);
     if (res.ok) {
       router.push("/channel");
-      toast.success("Suppression réussie");
-    } else toast.error("Suppression échouée");
+      toast.success(t("toast-delete-success"));
+    } else toast.error(t("toast-delete-error"));
   };
 
   const handleSubmit = async (e: { preventDefault: () => void }) => {
@@ -74,7 +74,7 @@ const ChannelEdit: NextPage<any> = (props) => {
     if (validForm) {
       setLoading(true);
       try {
-        const toastID = toast.loading("Envoi en cours...");
+        const toastID = toast.loading(t("toast-edit-loading"));
         const response = await fetchRSR(
           "/api/channel/" + props.slug + "/edit",
           user?.session,
@@ -94,8 +94,8 @@ const ChannelEdit: NextPage<any> = (props) => {
           }
         );
         toast.dismiss(toastID);
-        if (response.ok) toast.success("Modification réussie");
-        else toast.error("Modification échouée");
+        if (response.ok) toast.success(t("toast-edit-success"));
+        else toast.error(t("toast-edit-error"));
 
         setRequestOk(response.ok);
       } catch (err) {

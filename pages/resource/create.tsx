@@ -184,16 +184,16 @@ const ResourceCreate: NextPage<any> = ({
           }
           if (responses.every((r) => r.ok)) {
             setRequestOk(true);
-            toast.success("Ressource créée avec succès");
+            toast.success(t("toast-create-success"));
             router.push(`/resource/${body.data.attributes.slug}`);
           } else setRequestOk(false);
         } else if (response.ok && medias.length === 0) {
           setRequestOk(true);
-          toast.success("Ressource créée avec succès");
+          toast.success(t("toast-create-success"));
           router.push(`/resource/${body.data.attributes.slug}`);
         }
       } catch (err) {
-        toast.error("Une erreur est survenue");
+        toast.error(t("toast-create-error"));
         // console.log(err);
       }
       setLoading(false);

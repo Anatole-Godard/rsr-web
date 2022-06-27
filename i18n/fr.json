@@ -81,7 +81,18 @@
     "comments": "Commentaires",
 
     "comments-none": "Aucun commentaire pour l'instant",
-    "comments-placeholder": "Ajouter un commentaire..."
+    "comments-placeholder": "Ajouter un commentaire...",
+
+    "toast-report-loading": "Envoi du signalement...",
+    "toast-report-success": "Signalement envoyé",
+    "toast-report-error": "Erreur lors de l'envoi du signalement",
+    "toast-like-loading": "Mise à jour du like...",
+    "toast-like-success": "Like ajouté",
+    "toast-dislike-success": "Like supprimé",
+    "toast-like-error": "Erreur lors de la mise à jour du like",
+    "toast-comment-loading": "Envoi du commentaire...",
+    "toast-comment-success": "Commentaire ajouté",
+    "toast-comment-error": "Erreur lors de l'envoi du commentaire"
   },
   "ResourceCreate": {
     "back": "Retour",
@@ -132,7 +143,12 @@
 
     "edit-delete-title": "Supprimer #{slug}",
     "edit-delete-text": "Êtes-vous sûr de vouloir supprimer cette ressource ? Cette action est irréversible.",
-    "edit-delete-text2": "Les commentaires et les J'aime associés seront également supprimés."
+    "edit-delete-text2": "Les commentaires et les J'aime associés seront également supprimés.",
+
+    "toast-create-success": "Ressource créée",
+    "toast-create-error": "Erreur lors de la création de la ressource",
+    "toast-edit-success": "Ressource éditée",
+    "toast-edit-error": "Erreur lors de l'édition de la ressource"
   },
 
   "ChannelSlug": {
@@ -175,7 +191,18 @@
 
     "edit-delete-title": "Supprimer #{slug}",
     "edit-delete-text": "Êtes-vous sûr de vouloir supprimer ce salon ? Cette action est irréversible.",
-    "edit-delete-text2": "Les messages et les activités associés seront également supprimés."
+    "edit-delete-text2": "Les messages et les activités associés seront également supprimés.",
+
+    "toast-create-loading": "Création du salon...",
+    "toast-create-success": "Salon créé avec succès",
+    "toast-create-error": "Erreur lors de la création du salon",
+    "toast-edit-loading": "Modification du salon...",
+    "toast-edit-success": "Salon modifié avec succès",
+    "toast-edit-error": "Erreur lors de la modification du salon",
+    "toast-upload-error": "Erreur lors de l'envoi de l'image",
+    "toast-delete-loading": "Suppression du salon...",
+    "toast-delete-success": "Salon supprimé avec succès",
+    "toast-delete-error": "Erreur lors de la suppression du salon"
   },
 
   "ChannelIndex": {
@@ -254,7 +281,11 @@
 
     "add": "Ajouter une image",
     "profile": "Photo de profil",
-    "send": "Envoyer"
+    "send": "Envoyer",
+
+    "toast-loading": "Envoi de la photo...",
+    "toast-success": "Votre photo de profil a été mise à jour",
+    "toast-error": "Une erreur est survenue lors de la mise à jour de votre photo de profil"
   },
 
   "ChangePassword": {
@@ -266,7 +297,11 @@
     "new-confirm": "Confirmer le nouveau mot de passe",
 
     "security": "Sécurité et confidentialité",
-    "disconnect": "Déconnecter de tout les appareils"
+    "disconnect": "Déconnecter de tout les appareils",
+
+    "toast-loading": "Modification du mot de passe...",
+    "toast-success": "Mot de passe modifié avec succès",
+    "toast-error": "Une erreur est survenue lors de la modification du mot de passe"
   },
 
   "SessionsViewer": {
@@ -276,7 +311,11 @@
 
     "expired": "La session sera révoquée automatiquement à la reconnexion",
     "revoke": "Révoquer",
-    "revoke-all": "Fermer toutes les sessions"
+    "revoke-all": "Fermer toutes les sessions",
+
+    "toast-loading": "Suppression de la session...",
+    "toast-success": "Session révoquée avec succès",
+    "toast-error": "Une erreur est survenue lors de la révocation de la session"
   },
 
   "DisableAccount": {
@@ -286,19 +325,31 @@
     "text2": "Vos données seront anonymisées et ne seront pas récupérables.",
     "button": "Désactiver mon compte",
     "cancel": "Annuler",
-    "modal-text": "Voulez-vous vraiment désactiver votre compte ? Cette action est irréversible. Vous ne pourrez plus vous connecter à votre compte."
+    "modal-text": "Voulez-vous vraiment désactiver votre compte ? Cette action est irréversible. Vous ne pourrez plus vous connecter à votre compte.",
+
+    "toast-loading": "Désactivation du compte...",
+    "toast-success": "Compte désactivé à la déconnexion",
+    "toast-error": "Une erreur est survenue lors de la désactivation du compte"
   },
 
   "RetrieveAccount": {
     "title": "Récupération des données de votre compte",
     "text": "Vous pouvez à tout moment récupérer les données liées à votre compte dans le cadre de la Réglementation Générale de la Protection des Données.",
-    "button": "Télécharger"
+    "button": "Télécharger",
+
+    "toast-loading": "Récupération des données de votre compte...",
+    "toast-success": "Votre compte a été récupéré avec succès",
+    "toast-error": "Une erreur est survenue lors de la récupération de votre compte"
   },
 
   "GetStartedResetter": {
     "title": "Réinitialisation de votre progression Premiers pas",
     "text": "Vous pouvez à tout moment réinitialiser votre progression Premiers pas pour vérifier si vous avez correctement effectué le tutoriel. Un rechargement complet de la page peut être nécessaire.",
-    "button": "Réinitialiser"
+    "button": "Réinitialiser",
+
+    "toast-loading": "Réinitialisation de votre progression...",
+    "toast-success": "Votre progression a été réinitialisée avec succès",
+    "toast-error": "Une erreur est survenue lors de la réinitialisation de votre progression"
   },
 
   "UserResources": {
@@ -496,11 +547,27 @@
   "PlaylistDropdown": {
     "button": "Ajouter",
     "create": "Créer une playlist",
-    "placeholder": "À regarder plus tard"
+    "placeholder": "À regarder plus tard",
+    "toast-add-loading": "Ajout de la ressource dans la playlist...",
+    "toast-remove-loading": "Retrait la ressource dans la playlist...",
+    "toast-add-success": "Ajout de la ressource dans la playlist effectué",
+    "toast-remove-success": "Retrait de la ressource dans la playlist effectué",
+    "toast-error": "Une erreur est survenue lors de l'opération",
+    "toast-delete-loading": "Suppression de la playlist en cours...",
+    "toast-delete-success": "Playlist supprimée",
+    "toast-create-loading": "Création de la playlist ...",
+    "toast-create-success": "Playlist créée",
+    "toast-create-error": "Une erreur est survenue lors de la création de la playlist"
   },
   "LocaleDropdown": {
     "button": "Langue",
     "fr": "Français",
     "en": "Anglais"
+  },
+  "useAuth": {
+    "signout-toast-success": "Vous êtes déconnecté"
+  },
+  "useNotifications": {
+    "toast-read": "Notification lue"
   }
 }

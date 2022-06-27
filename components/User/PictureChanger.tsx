@@ -24,7 +24,7 @@ export const PictureChanger = () => {
       fd.append("type", pictureFile.type);
       fd.append("size", pictureFile.size.toString());
 
-      const toastID = toast.loading("Envoi de la photo...");
+      const toastID = toast.loading(t("toast-loading"));
 
       const responseFileUpload = await fetch(
         `/api/user/${user.data.uid}/picture`,
@@ -36,16 +36,15 @@ export const PictureChanger = () => {
       toast.dismiss(toastID);
 
       if (responseFileUpload.ok) {
-        toast.success("Photo envoyée avec succès");
+        toast.success(t("toast-success"));
         const body = await responseFileUpload.json();
         if (body?.data.attributes.photoURL) {
           changePicture(body.data.attributes.photoURL);
           setPictureUrl(null);
           setPictureFile(null);
         }
-      } else {
-        toast.error("Une erreur est survenue lors de l'envoi de la photo");
-      }
+      } else toast.error(t("toast-error"));
+
       setLoading(false);
     }
   };

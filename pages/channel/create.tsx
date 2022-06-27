@@ -49,7 +49,7 @@ const ChannelCreate: NextPage<any> = ({
     if (validForm) {
       setLoading(true);
       try {
-        const toastID = toast.loading("Création du salon en cours...");
+        const toastID = toast.loading(t("toast-create-loading"));
         const response = await fetchRSR("/api/channel/create", user?.session, {
           method: "POST",
           body: JSON.stringify({
@@ -81,20 +81,20 @@ const ChannelCreate: NextPage<any> = ({
             }
           );
           if (!responseFileUpload.ok) {
-            toast.error("Erreur lors de l'envoi du fichier");
+            toast.error(t("toast-upload-error"));
             setRequestOk(false);
           } else {
-            toast.success("Salon créé avec succès");
+            toast.success(t("toast-create-success"));
             router.push(`/channel/${body.data.attributes.slug}`);
             setRequestOk(true);
           }
         } else if (response.ok && !pictureFile) {
-          toast.success("Salon créé avec succès");
+          toast.success(t("toast-create-success"));
           router.push(`/channel/${body.data.attributes.slug}`);
           setRequestOk(true);
         }
       } catch (err) {
-        toast.error("Erreur lors de la création du salon");
+        toast.error(t("toast-create-error"));
         // console.log(err);
       }
       setLoading(false);

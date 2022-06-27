@@ -40,7 +40,7 @@ export const ChangePassword = () => {
     ) {
       setLoading(true);
 
-      const toastID = toast.loading("Modification du mot de passe...");
+      const toastID = toast.loading(t("toast-loading"));
 
       const res = await fetchRSR("/api/auth/change-password", user.session, {
         method: "POST",
@@ -54,14 +54,9 @@ export const ChangePassword = () => {
       toast.dismiss(toastID);
 
       if (res.ok) {
-        toast.success("Votre mot de passe a été modifié avec succès");
+        toast.success(t("toast-success"));
         if (disconnectAll) removeUser("/");
-      } else {
-        toast.error(
-          "Une erreur est survenue lors de la modification du mot de passe"
-        );
-        // alert(JSON.stringify(await res.json()));
-      }
+      } else toast.error(t("toast-error"));
       setLoading(false);
     }
   };

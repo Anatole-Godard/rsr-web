@@ -13,7 +13,7 @@ export const DisableAccount = () => {
   const closeModal = () => setIsOpen(false);
 
   const disable = async () => {
-    toast.success("Compte désactivé à la déconnexion");
+    toast.success(t("toast-success"));
     closeModal();
   };
 
@@ -35,7 +35,9 @@ export const DisableAccount = () => {
           </div>
         </div>
         <div className="flex flex-col">
-          <p className="mb-2 text-gray-600 dark:text-gray-300 font-spectral">{t("subtitle")}</p>
+          <p className="mb-2 text-gray-600 dark:text-gray-300 font-spectral">
+            {t("subtitle")}
+          </p>
           <p className="mb-1 text-xs text-gray-600 dark:text-gray-300 font-spectral">
             {t("text")}
           </p>

@@ -32,7 +32,7 @@ export const SessionsViewer = () => {
   } = useFetchRSR(`/api/user/${user?.session.uid}/sessions`, user?.session);
 
   const revoke = async (session: { token: any }) => {
-    const toastID = toast.loading("Suppression de la session...");
+    const toastID = toast.loading(t("toast-loading"));
     const res = await fetchRSR(`/api/auth/revoke`, user?.session, {
       method: "POST",
       headers: {
@@ -42,11 +42,9 @@ export const SessionsViewer = () => {
     toast.dismiss(toastID);
     revalidate();
     if (res.ok) {
-      toast.success("La session a été révoquée avec succès");
+      toast.success(t("toast-success"));
     } else {
-      toast.error(
-        "Une erreur est survenue lors de la révocation de la session"
-      );
+      toast.error(t("toast-error"));
     }
   };
 

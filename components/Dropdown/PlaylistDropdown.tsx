@@ -40,9 +40,7 @@ export const PlaylistDropdown = ({
 
   const manage = async (playlistKey: string, action: "add" | "remove") => {
     const toastID = toast.loading(
-      action === "add"
-        ? "Ajout de la ressource dans la playlist..."
-        : "Retrait de la ressource dans la playlist"
+      action === "add" ? t("toast-add-loading") : t("toast-remove-loading")
     );
     const res = await fetchRSR(
       `/api/user/${user.data.uid}/resources/playlists/manage`,
@@ -59,15 +57,13 @@ export const PlaylistDropdown = ({
     if (res.ok) {
       revalidate();
       toast.success(
-        action === "add"
-          ? "Ajout de la ressource dans la playlist effectué"
-          : "Retrait de la ressource dans la playlist effectué"
+        action === "add" ? t("toast-add-success") : t("toast-remove-success")
       );
-    } else toast.error("Une erreur est survenue lors de l'opération");
+    } else toast.error(t("toast-error"));
   };
 
   const deletePlaylist = async (key: string) => {
-    const toastID = toast.loading("Suppression de la playlist en cours...");
+    const toastID = toast.loading(t("toast-delete-loading"));
     const res = await fetchRSR(
       `/api/user/${user.data.uid}/resources/playlists/delete`,
       user.session,
@@ -81,9 +77,9 @@ export const PlaylistDropdown = ({
     toast.dismiss(toastID);
     if (res.ok) {
       revalidate();
-      toast.success("Playlist supprimée");
+      toast.success(t("toast-delete-success"));
     } else {
-      toast.error("Une erreur est survenue");
+      toast.error(t("toast-error"));
     }
   };
 
@@ -203,7 +199,7 @@ const PlaylistCreator = ({
   const create = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
     if (key) {
-      const toastID = toast.loading("Création de la playlist...");
+      const toastID = toast.loading(t("toast-create-loading"));
       const res = await fetchRSR(
         `${
           process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000/api"
@@ -217,15 +213,15 @@ const PlaylistCreator = ({
         }
       );
       toast.dismiss(toastID);
-      const body = await res.json();
-      console.log(body);
+      // const body = await res.json();
+      // console.log(body);
       if (res.ok) {
-        toast.success("Playlist créée");
+        toast.success(t("toast-create-success"));
         setOpen(false);
         setKey("");
         revalidate();
       } else {
-        toast.error("Une erreur est survenue");
+        toast.error(t("toast-create-error"));
       }
     }
   };

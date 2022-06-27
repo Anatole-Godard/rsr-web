@@ -11,13 +11,17 @@ export const GetStartedResetter = () => {
   return (
     <div className="flex flex-col row-span-2 p-4 space-y-3 bg-white rounded-lg shadow dark:bg-gray-800">
       <div className="inline-flex items-center justify-between w-full">
-        <h5 className="font-bold text-gray-900 dark:text-gray-200 font-marianne">{t("title")}</h5>
+        <h5 className="font-bold text-gray-900 dark:text-gray-200 font-marianne">
+          {t("title")}
+        </h5>
         <div className="w-6 h-6">
           <Image alt="Locker" src="/img/superhero.png" width={24} height={24} />
         </div>
       </div>
       <div className="flex flex-col">
-        <p className="mb-1 text-xs text-gray-600 dark:text-gray-300 font-spectral">{t("text")}</p>
+        <p className="mb-1 text-xs text-gray-600 dark:text-gray-300 font-spectral">
+          {t("text")}
+        </p>
 
         <div className="mt-3 ml-auto">
           <button
@@ -27,7 +31,7 @@ export const GetStartedResetter = () => {
                 maxAge: 3600 * 24, // Expires after 1day
                 sameSite: true,
               });
-              toast.success("Premiers pas réinitialisés");
+              toast.success(t("toast-success"));
             }}
             className="btn-gray dark:bg-gray-700"
           >
