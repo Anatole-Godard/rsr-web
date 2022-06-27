@@ -22,7 +22,7 @@ export const DisableAccount = () => {
       <div className="flex flex-col row-span-2 p-4 space-y-3 bg-white rounded-lg shadow dark:bg-gray-800">
         <div className="inline-flex items-center justify-between w-full mb-3">
           <h5 className="font-bold text-gray-900 dark:text-gray-200 font-marianne">
-            Désactivation du compte
+            {t("title")}
           </h5>
           <div className="w-6 h-6">
             <Image

@@ -157,7 +157,7 @@ export const UserStatistics = ({
                   height={24}
                 />
               </div>
-              <h5 className="font-bold font-marianne">Statistiques</h5>
+              <h5 className="font-bold font-marianne">{t("title")}</h5>
             </div>
             <ChevronUpIcon
               className={`duration-300 ${

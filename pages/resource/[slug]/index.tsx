@@ -213,12 +213,12 @@ const ResourceSlug: NextPage<any> = ({
                   {!newLikes.find((l) => l.uid === user?.data.uid) ? (
                     <button className="btn-red " key="likeBtn" onClick={like}>
                       <HeartIconOutline className="w-4 h-4 select-none md:mr-1 shrink-0" />
-                      <span className="hidden md:flex">{"J'aime"}</span>
+                      <span className="hidden md:flex">{t("like")}</span>
                     </button>
                   ) : (
                     <button className="btn-red" key="dislikeBtn" onClick={like}>
                       <HeartIcon className="w-4 h-4 select-none md:mr-1 shrink-0" />
-                      <span className="hidden md:flex">{"Je n'aime plus"}</span>
+                      <span className="hidden md:flex">{t("dislike")}</span>
                     </button>
                   )}
                   <PlaylistDropdown

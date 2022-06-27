@@ -282,7 +282,7 @@
   "DisableAccount": {
     "title": "Disable your account",
     "subtitle": "Are you sure you want to disable your account?",
-    "text": "Vous pouvez désactiver votre compte pour le moment, mais vous ne pourrez plus vous connecter à votre compte.",
+    "text": "",
     "text2": "You can deactivate your account at this time, but you will no longer be able to log into your account.",
     "button": "Disable my account",
     "cancel": "Cancel",
