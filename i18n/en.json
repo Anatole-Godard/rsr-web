@@ -498,5 +498,10 @@
     "button": "Add",
     "create": "Create a playlist",
     "placeholder": "Watch later"
+  },
+  "LocaleDropdown": {
+    "button": "Language",
+    "fr": "French",
+    "en": "English"
   }
 }
