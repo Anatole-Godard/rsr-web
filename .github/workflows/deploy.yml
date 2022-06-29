@@ -4,7 +4,6 @@ jobs:
   deploy-dev:
     timeout-minutes: 60
     runs-on: ubuntu-latest
-    needs: [ build ]
     steps:
       - uses: actions/checkout@v3
       - uses: easingthemes/ssh-deploy@v2.2.11
