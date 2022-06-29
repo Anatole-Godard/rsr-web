@@ -13,9 +13,9 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponseServerIO
 ) {
-  const slug = req.query.slug as string;
+  // const slug = req.query.slug as string;
   if (!res.socket.server.io) {
-    console.log("Starting socket.io");
+    // console.log("Starting socket.io");
 
     const httpServer: NetServer = res.socket.server as any;
     const io = new ServerIO(httpServer, { path: `/api/channel/[slug]/socket` });

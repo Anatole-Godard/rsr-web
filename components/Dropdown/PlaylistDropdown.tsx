@@ -12,6 +12,7 @@ import { useAuth } from "@hooks/useAuth";
 import useFetchRSR from "@hooks/useFetchRSR";
 import { classes } from "libs/classes";
 import { fetchRSR } from "libs/fetchRSR";
+import { useTranslations } from "next-intl";
 import { Fragment, useState } from "react";
 import toast from "react-hot-toast";
 
@@ -21,6 +22,7 @@ export const PlaylistDropdown = ({
   resource: ResourceMinimum;
 }) => {
   const { user } = useAuth();
+  const t = useTranslations("PlaylistDropdown");
   const {
     data: playlists,
     error,
@@ -38,9 +40,7 @@ export const PlaylistDropdown = ({
 
   const manage = async (playlistKey: string, action: "add" | "remove") => {
     const toastID = toast.loading(
-      action === "add"
-        ? "Ajout de la ressource dans la playlist..."
-        : "Retrait de la ressource dans la playlist"
+      action === "add" ? t("toast-add-loading") : t("toast-remove-loading")
     );
     const res = await fetchRSR(
       `/api/user/${user.data.uid}/resources/playlists/manage`,
@@ -57,15 +57,13 @@ export const PlaylistDropdown = ({
     if (res.ok) {
       revalidate();
       toast.success(
-        action === "add"
-          ? "Ajout de la ressource dans la playlist effectué"
-          : "Retrait de la ressource dans la playlist effectué"
+        action === "add" ? t("toast-add-success") : t("toast-remove-success")
       );
-    } else toast.error("Une erreur est survenue lors de l'opération");
+    } else toast.error(t("toast-error"));
   };
 
   const deletePlaylist = async (key: string) => {
-    const toastID = toast.loading("Suppression de la playlist en cours...");
+    const toastID = toast.loading(t("toast-delete-loading"));
     const res = await fetchRSR(
       `/api/user/${user.data.uid}/resources/playlists/delete`,
       user.session,
@@ -79,9 +77,9 @@ export const PlaylistDropdown = ({
     toast.dismiss(toastID);
     if (res.ok) {
       revalidate();
-      toast.success("Playlist supprimée");
+      toast.success(t("toast-delete-success"));
     } else {
-      toast.error("Une erreur est survenue");
+      toast.error(t("toast-error"));
     }
   };
 
@@ -97,7 +95,7 @@ export const PlaylistDropdown = ({
               )}
             >
               <CollectionIcon className="w-4 h-4 md:mr-1 shrink-0 lg:mr-2" />
-              <span className="hidden md:block">Ajouter</span>
+              <span className="hidden md:block">{t("button")}</span>
               <ChevronDownIcon
                 className={classes(
                   "w-4 h-4 ml-1 lg:ml-2 duration-200 transition-all",
@@ -162,10 +160,12 @@ const PlaylistCheckbox = ({
 }: {
   name: string;
   inPlaylist: boolean;
+  // eslint-disable-next-line no-unused-vars
   onCheck: (e: any) => void;
+  // eslint-disable-next-line no-unused-vars
   onDelete: (key: string) => void;
 }) => {
-  const [checked, setChecked] = useState(inPlaylist);
+  const [checked] = useState(inPlaylist);
 
   return (
     <div className="inline-flex items-center w-full mb-2 space-x-2">
@@ -186,7 +186,7 @@ const PlaylistCheckbox = ({
 };
 
 const PlaylistCreator = ({
-  resource,
+  // resource,
   revalidate,
 }: {
   resource: ResourceMinimum;
@@ -196,11 +196,12 @@ const PlaylistCreator = ({
   const [key, setKey] = useState<string>("");
 
   const { user } = useAuth();
+  const t = useTranslations("PlaylistDropdown");
 
   const create = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
     if (key) {
-      const toastID = toast.loading("Création de la playlist...");
+      const toastID = toast.loading(t("toast-create-loading"));
       const res = await fetchRSR(
         `${
           process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000/api"
@@ -214,15 +215,15 @@ const PlaylistCreator = ({
         }
       );
       toast.dismiss(toastID);
-      const body = await res.json();
-      console.log(body);
+      // const body = await res.json();
+      // console.log(body);
       if (res.ok) {
-        toast.success("Playlist créée");
+        toast.success(t("toast-create-success"));
         setOpen(false);
         setKey("");
         revalidate();
       } else {
-        toast.error("Une erreur est survenue");
+        toast.error(t("toast-create-error"));
       }
     }
   };
@@ -246,7 +247,7 @@ const PlaylistCreator = ({
             onChange={(e) => setKey(e.target.value)}
             className="w-full px-10 py-2 placeholder-gray-400 input text-ellipsis"
             // placeholder="Rechercher une ressource, un canal, un utilisateur..."
-            placeholder="À regarder plus tard..."
+            placeholder={t("placeholder")}
           />
           <button
             type="submit"
@@ -258,7 +259,7 @@ const PlaylistCreator = ({
       ) : (
         <button onClick={() => setOpen(true)} className="w-full btn-green">
           <PlusCircleIcon className="w-4 h-4 mr-2" />
-          Créer une playlist
+          {t("create")}
         </button>
       )}
     </>

@@ -1,0 +1,574 @@
+{
+  "Index": {
+    "title": "Accueil"
+  },
+  "UserUID": {
+    "title": "Profil de {name}"
+  },
+  "HeroSection": {
+    "tagline": "Let's build relationships ",
+    "buzz1": "toge",
+    "buzz2": "ther",
+    "paragraph1": "Enter a chat room, discuss, exchange, share your ideas, your experiences, your projects, your thoughts.",
+    "paragraph2": "Forge links between you and each citizen thanks to the resources you will find on the site.",
+    "resource-create": "Create a resource",
+    "resource-see": "View resources",
+    "login": "Sign in"
+  },
+  "SearchSection": {
+    "title": "What are you looking for ?",
+    "search-query": "Search ...",
+    "search-type": "Resource type",
+    "search-button": "Search",
+    "type-all": "All types",
+
+    "physical_item": "Physical item",
+    "location": "Location",
+    "external_link": "External link",
+    "event": "Event",
+    "other": "Other"
+  },
+  "ResourceSection": {
+    "title1": "Last",
+    "title2": "resources",
+    "see-all": "See all"
+  },
+  "ResourceIndex": {
+    "title": "Resources",
+    "title1": "All",
+    "title2": "resources",
+    "search-placeholder": "Search a resource ...",
+    "resource-create": "Create a resource",
+
+    "type-all": "All types",
+
+    "physical_item": "Physical item",
+    "location": "Location",
+    "external_link": "External link",
+    "event": "Event",
+    "other": "Other"
+  },
+
+  "ResourceSlug": {
+    "back": "Back",
+    "physical_item": "Physical item",
+    "location": "Location",
+    "external_link": "External link",
+    "event": "Event",
+    "other": "Other",
+    "public": "Public",
+    "private": "Private",
+    "unlisted": "Unlisted",
+
+    "like": "Like",
+    "dislike": "Dislike",
+    "like-single": "One person likes this",
+    "like-multiple": "{length} people like this",
+    "like-none": "No one likes this yet",
+
+    "seenby-single": "One person has seen this",
+    "seenby-multiple": "{length} people have seen this",
+    "seenby-none": "No one has seen this yet",
+
+    "validation-awaiting": "Awaiting validation",
+    "report": "Report",
+    "edit": "Edit",
+
+    "see-more": "See more",
+    "see-less": "See less",
+
+    "overview": "Overview",
+    "comments": "Comments",
+
+    "comments-none": "No comments yet",
+    "comments-placeholder": "Write a comment ...",
+
+    "toast-report-loading": "Reporting ...",
+    "toast-report-success": "Reported",
+    "toast-report-error": "Error while reporting",
+    "toast-like-loading": "Updating likes ...",
+    "toast-like-success": "Liked",
+    "toast-dislike-success": "Disliked",
+    "toast-like-error": "Error while updating likes",
+    "toast-comment-loading": "Commenting ...",
+    "toast-comment-success": "Commented",
+    "toast-comment-error": "Error while commenting"
+  },
+  "ResourceCreate": {
+    "back": "Back",
+    "delete": "Delete",
+    "cancel": "Cancel",
+    "physical_item": "Physical item",
+    "location": "Location",
+    "external_link": "External link",
+    "event": "Event",
+    "other": "Other",
+
+    "public": "Public",
+    "private": "Private",
+    "unlisted": "Unlisted",
+
+    "head-title": "Create a resource",
+    "edit-title": "Editing {name}",
+    "title1": "Create a",
+    "title2": "resource",
+
+    "edit-title1": "Edit",
+    "edit-title2": "this resource",
+
+    "send": "Send",
+    "sent": "Sent",
+    "invalid": "Invalid",
+
+    "title": "Title",
+    "description": "Description",
+    "visibility": "Visibility",
+    "members": "Members",
+    "members-placeholder": "Who can see this resource ?",
+    "tags": "Tags",
+    "tags-placeholder": "Use tags to describe this resource",
+    "type": "Type",
+    "medias": "Medias",
+
+    "physical_item-category": "Category",
+    "physical_item-price": "Price",
+
+    "external_link-url": "URL",
+
+    "location-address": "Address",
+
+    "event-datetime": "Date and time",
+    "event-datetime-start": "Start",
+    "event-datetime-end": "End",
+
+    "edit-delete-title": "Delete #{slug}",
+    "edit-delete-text": "Are you sure you want to delete this resource? This action can't be undone.",
+    "edit-delete-text2": "Associated comments and likes will also be deleted.",
+
+    "toast-create-success": "Resource created",
+    "toast-create-error": "Error while creating resource",
+    "toast-edit-success": "Resource edited",
+    "toast-edit-error": "Error while editing resource"
+  },
+
+  "ChannelSlug": {
+    "edit1": "Edit",
+    "edit2": "this channel",
+    "quit1": "Quit",
+    "quit2": "this channel",
+
+    "placeholder": "Write a message ...",
+    "send": "Send"
+  },
+
+  "ChannelCreate": {
+    "head-title": "Create a channel",
+    "head-edit-title": "Editing {name}",
+
+    "create-title": "Create",
+    "edit-title": "Edit",
+    "create-title1": "a",
+    "create-title2": "channel",
+
+    "back": "Back",
+    "delete": "Delete",
+    "cancel": "Cancel",
+
+    "send": "Send",
+    "sent": "Sent",
+    "invalid": "Invalid",
+
+    "title": "Title",
+    "description": "Description",
+    "picture": "Picture",
+    "picture-add": "Add a picture",
+
+    "visibility": "Visibility",
+    "private": "Private",
+
+    "members": "Members",
+    "members-placeholder": "Who can see this channel ?",
+
+    "edit-delete-title": "Delete #{slug}",
+    "edit-delete-text": "Are you sure you want to delete this channel? This action can't be undone.",
+    "edit-delete-text2": "Related messages and activities will also be deleted.",
+
+    "toast-create-loading": "Creating ...",
+    "toast-create-success": "Created",
+    "toast-create-error": "Error while creating",
+    "toast-edit-loading": "Editing ...",
+    "toast-edit-success": "Edited",
+    "toast-edit-error": "Error while editing",
+    "toast-upload-error": "Error while uploading image",
+    "toast-delete-loading": "Deleting ...",
+    "toast-delete-success": "Deleted",
+    "toast-delete-error": "Error while deleting"
+  },
+
+  "ChannelIndex": {
+    "title": "Salons de discussion"
+  },
+
+  "UserIndex": {
+    "title": "My profile",
+    "title1": "My",
+    "title2": "profile",
+
+    "statistics": "Statistics",
+    "playlists": "Playlists",
+    "settings": "Settings"
+  },
+
+  "UserSettings": {
+    "title": "Settings",
+    "back": "Back"
+  },
+
+  "Login": {
+    "head-title": "Log in",
+    "title": "Connect to RSR",
+    "connect-with": "Connect with",
+    "or-with": "Or continue with",
+    "email": "Email",
+    "password": "Password",
+    "forgot-password": "Forgot your password ?",
+    "sign-up": "Sign up",
+    "sign-in": "Sign in",
+    "remember-me": "Remember me"
+  },
+  "Register": {
+    "head-title": "Sign up",
+    "title": "Sign up to RSR",
+    "connect-with": "Connect with",
+    "or-with": "Or sign up with",
+    "back": "Back",
+    "email": "Email",
+    "email-invalid": "Invalid email",
+
+    "password": "Password",
+    "password-length": "Password must be at least 8 characters",
+    "password-required": "Password is required",
+    "password-strengh0": "Password is too weak",
+    "password-strengh1": "Password is weak",
+    "password-strengh2": "Password is good",
+    "password-strengh3": "Password is strong",
+    "password-strengh4": "Password is very strong",
+
+    "fullname": "Full name",
+    "fullname-required": "Full name is required",
+
+    "birthdate": "Birthdate",
+    "birthdate-required": "Birthdate is required",
+
+    "confirm-password": "Confirm password",
+    "sign-up": "Sign up",
+    "already-have-account": "Already have an account ?",
+    "next": "Next"
+  },
+
+  "UserPlaylist": {
+    "title": "My playlists",
+    "back": "Back",
+    "loading": "Loading your playlists ...",
+    "error": "An error occured while loading your playlists",
+    "empty": "You don't have any playlist yet"
+  },
+
+  "PictureChanger": {
+    "title": "Change your picture",
+    "old": "Current picture",
+    "new": "New picture",
+
+    "add": "Add a picture",
+    "profile": "Profile picture",
+    "send": "Send",
+
+    "toast-loading": "Loading your picture ...",
+    "toast-success": "Picture updated",
+    "toast-error": "An error occured while updating your picture"
+  },
+
+  "ChangePassword": {
+    "title": "Change your password",
+    "send": "Send",
+
+    "old": "Current password",
+    "new": "New password",
+    "new-confirm": "Confirm new password",
+
+    "security": "Security",
+    "disconnect": "Disconnect from everywhere",
+
+    "toast-loading": "Updating your password ...",
+    "toast-success": "Password updated",
+    "toast-error": "An error occured while updating your password"
+  },
+
+  "SessionsViewer": {
+    "title": "Devices connected to your account",
+    "web": "Web",
+    "mobile": "Mobile",
+
+    "expired": "The session has expired, you'll be disconnected next time you open the app.",
+    "revoke": "Revoke",
+    "revoke-all": "Revoke all",
+
+    "toast-loading": "Loading your sessions ...",
+    "toast-success": "Session revoked",
+    "toast-error": "An error occured while revoking your session"
+  },
+
+  "DisableAccount": {
+    "title": "Disable your account",
+    "subtitle": "Are you sure you want to disable your account?",
+    "text": "",
+    "text2": "You can deactivate your account at this time, but you will no longer be able to log into your account.",
+    "button": "Disable my account",
+    "cancel": "Cancel",
+    "modal-text": "Are you sure you want to deactivate your account? This action is irreversible. You will no longer be able to log in to your account.",
+
+    "toast-loading": "Disabling your account ...",
+    "toast-success": "Account disabled on logout",
+    "toast-error": "An error occured while disabling your account"
+  },
+
+  "RetrieveAccount": {
+    "title": "Retrieve your account",
+    "text": "You can at any time recover the data linked to your account within the General Data Protection Regulations.",
+    "button": "Download my data",
+
+    "toast-loading": "Récupération des données de votre compte...",
+    "toast-success": "Votre compte a été récupéré avec succès",
+    "toast-error": "Une erreur est survenue lors de la récupération de votre compte"
+  },
+
+  "GetStartedResetter": {
+    "title": "Resetting your Get Started progress",
+    "text": "You can reset your Get Started progress at any time to check if you completed the tutorial correctly. A full page reload may be required.",
+    "button": "Reset",
+
+    "toast-loading": "Resetting your Get Started progress ...",
+    "toast-success": "Get Started progress resetted",
+    "toast-error": "An error occured while resetting your Get Started progress"
+  },
+
+  "UserResources": {
+    "you-have-created": "Resources you have created",
+    "user-have-created": "Resources created by the user"
+  },
+  "UserStatistics": {
+    "title": "Statistics",
+    "created": "Resources created",
+    "created-per-month": "Resources created per month",
+    "seen": "Resources seen",
+    "seen-yours": "Total views on your resources"
+  },
+
+  "UserLikedResources": {
+    "you-have-liked": "Resources you have liked",
+    "user-has-liked": "Resources liked by the user",
+    "empty": "You haven't liked any resource yet"
+  },
+
+  "UserSeenResources": {
+    "title": "Resources seen",
+    "empty": "You haven't seen any resource yet"
+  },
+
+  "UserPlaylistResources": {
+    "empty": "You haven't added any resource to this playlist yet"
+  },
+
+  "HistoryItem": {
+    "invite": "{name} invited",
+    "comment": "{name} commented",
+    "resource-created": "{name} created",
+    "in": "in",
+    "mobile-disabled": "Overview disabled on mobile"
+  },
+
+  "CommentView": {
+    "report": "Report",
+    "delete": "Delete"
+  },
+
+  "ResourceCard": {
+    "physical_item": "Physical item",
+    "location": "Location",
+    "external_link": "External link",
+    "event": "Event",
+    "other": "Other",
+
+    "public": "Public",
+    "private": "Private",
+    "unlisted": "Unlisted",
+
+    "unlisted-member": ": {length} member have access",
+    "unlisted-members": ": {length} members have access",
+
+    "created-by": "of {name}"
+  },
+  "ResourceView": {
+    "physical_item": "Physical item",
+    "location": "Location",
+    "external_link": "External link",
+    "event": "Event",
+    "other": "Other",
+
+    "no-media": "No media",
+
+    "physical_item-category": "Category",
+    "physical_item-price": "Price",
+
+    "event-from": "From",
+    "event-to": "To",
+    "event-participants-multiple": "{length} participants",
+    "event-participants-single": "{length} participant",
+    "event-participants-remove": "Remove",
+    "event-participants-add": "Participate",
+    "login": "Sign in to participate",
+
+    "location-address": "Address",
+
+    "date": "Date",
+    "string": "Text",
+    "number": "number",
+    "boolean": "Yes/No",
+    "boolean-true": "Yes",
+    "boolean-false": "Non",
+
+    "updatedAt": "updated {relative}"
+  },
+
+  "MediaUploader": {
+    "edit-warn": "Editing the resource will reset your documents.",
+    "cancel": "Cancel",
+    "add": "Add a document",
+    "accepted-files-types": "Audio file, image, video, PDF accepted",
+    "limit-reached": "You have reached the limit of 3 documents",
+    "limit-file-size": "File size limit is 5MB",
+    "limit-file-remaining": "{remaining} remaining files"
+  },
+  "WrapperModularInputs": {
+    "default-input-label": "Label",
+    "no-input-title": "Add an input",
+    "no-input-description": "It looks like you haven't added any fields yet.",
+    "add-input": "Add an input",
+
+    "label-edit-placeholder": "Enter a label",
+    "placeholder": "Enter {label}",
+
+    "date": "Date",
+    "string": "Text",
+    "number": "Number",
+    "boolean": "Yes/No",
+    "boolean-true": "Yes",
+    "boolean-false": "No"
+  },
+
+  "ChannelSidebar": {
+    "back": "Back",
+    "create": "Create",
+    "search-placeholder": "Search a channel...",
+
+    "public": "Public group",
+    "private-multiple": " Private - {length} members",
+    "private-single": " Private - {length} member"
+  },
+
+  "Sidebar": {
+    "home": "Home",
+    "profile": "Profile",
+    "login": "Login",
+    "register": "Register",
+    "resources": "Resources",
+    "library": "Library",
+    "playlists": "Playlists",
+    "settings": "Settings",
+    "resource-create": "Create a resource",
+    "channels": "Channels",
+    "channel-create": "Create a channel",
+    "admin": "Admin",
+    "shortcuts": "Shortcuts"
+  },
+  "Navbar": {
+    "search-placeholder": "Search a resource..."
+  },
+  "NotificationsDropdown": {
+    "channel": "Channel",
+    "error": "An error occured while loading the notifications",
+    "loading": "Loading notifications...",
+    "notifications": "Notifications",
+    "read-all": "Read all",
+    "no-notifications": "You have no notifications",
+    "no-notifications-subtitle": "You're up-to-date !"
+  },
+  "NotificationComponent": {
+    "comment-message": "commented your resource",
+    "message-message": "send a message",
+    "like-message": "liked your resource",
+    "report-message": "Your report request has been processed",
+    "in-channel": "in",
+    "close": "Close",
+    "go-to": "Go to"
+  },
+  "UserDropdown": {
+    "profile": "Profile",
+    "login-title": "Authentication",
+    "login": "Login",
+    "register": "Register",
+    "logout": "Logout",
+    "settings": "Settings",
+    "admin": "Admin",
+    "since": "registered since {distance}",
+    "not-provided": "Unknown",
+    "playlists": "My playlists",
+    "admin-title": "Platform admin",
+    "theme-title": "Theme",
+    "theme-light": "Light theme",
+    "theme-dark": "Dark theme",
+    "theme-sr": "Press {key} to switch theme"
+  },
+  "GetStarted": {
+    "button": "Get Started",
+    "title": "Get started with RSR",
+    "subtitle": "Perform these actions to be ready to fully use RSR.",
+    "todo": "Todo things",
+    "todo-none": "All the actions have been carried out, well done 🥳!",
+    "loading": "Loading...",
+    "create_account": "Create an account on the platform",
+    "create_resource": "Create a resource and be validated",
+    "create_resource_comment": "Post a comment on a resource",
+    "create_playlist": "Create a playlist and put some resources in it",
+    "join_channel": "Join a channel",
+
+    "quit-button-done": "It was a pleasure !",
+    "quit-button-none": "No, thanks"
+  },
+  "PlaylistDropdown": {
+    "button": "Add",
+    "create": "Create a playlist",
+    "placeholder": "Watch later",
+    "toast-add-loading": "Adding to playlist...",
+    "toast-remove-loading": "Removing from playlist...",
+    "toast-add-success": "Added to playlist",
+    "toast-remove-success": "Removed from playlist",
+    "toast-error": "An error occured while managing the playlist",
+    "toast-delete-loading": "Deleting playlist...",
+    "toast-delete-success": "Playlist deleted",
+    "toast-create-loading": "Creating playlist...",
+    "toast-create-success": "Playlist created",
+    "toast-create-error": "An error occured while creating the playlist"
+  },
+  "LocaleDropdown": {
+    "button": "Language",
+    "fr": "French",
+    "en": "English"
+  },
+  "useAuth": {
+    "signout-toast-success": "You have been signed out"
+  },
+  "useNotifications": {
+    "toast-read": "Marked as read"
+  }
+}

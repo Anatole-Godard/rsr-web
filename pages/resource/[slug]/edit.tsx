@@ -32,6 +32,7 @@ import {
 import { toModularInput } from "@utils/toModularInput";
 import { Media } from "@definitions/Resource/Media";
 import toast from "react-hot-toast";
+import { useTranslations } from "next-intl";
 
 const Map: any = dynamic(() => import("@components/Map/Map") as any, {
   ssr: false,
@@ -48,11 +49,8 @@ interface Props extends Resource {
 const ResourceEdit: NextPage<any> = (props: Props) => {
   const router = useRouter();
   const { user } = useAuth();
+  const t = useTranslations("ResourceCreate");
 
-  const [pictureUrl, setPictureUrl] = useState(
-    props.data?.attributes.properties?.image?.url || null
-  );
-  const [pictureFile, setPictureFile] = useState(null);
   const [name, setName] = useState<string>(
     props.data?.attributes.properties.name
   );
@@ -246,18 +244,18 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
           }
           if (responses.every((r) => r.ok)) {
             setRequestOk(true);
-            toast.success("Ressource éditée avec succès");
+            toast.success(t("toast-edit-success"));
 
             router.push(`/resource/${body.data.attributes.slug}`);
           } else setRequestOk(false);
         } else if (response.ok && medias.length === 0) {
           setRequestOk(true);
-          toast.success("Ressource éditée avec succès");
+          toast.success(t("toast-edit-success"));
           router.push(`/resource/${body.data.attributes.slug}`);
         }
       } catch (err) {
-        console.log(err);
-        toast.error("Une erreur est survenue");
+        // console.log(err);
+        toast.error(t("toast-edit-error"));
       }
       setLoading(false);
     }
@@ -318,7 +316,7 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
   } = useFetchRSR("/api/resource/tags", user?.session);
 
   return (
-    <AppLayout title={`Édition de ${name}`}>
+    <AppLayout title={t("edit-title", { name })}>
       <form
         onSubmit={handleSubmit}
         className="flex flex-col w-full max-h-full bg-white dark:bg-gray-900 grow"
@@ -335,16 +333,17 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
                 />
               </div>
               <h3 className="mb-2 text-2xl font-extrabold text-gray-800 font-marianne dark:text-gray-200">
-                Éditer
+                {t("edit-title1")}
                 <span className="ml-2 text-amber-600 dark:text-amber-400">
-                  {name || "cette ressource"}
+                  {name || t("edit-title2")}
                 </span>
               </h3>
             </div>
             <div className="inline-flex items-center space-x-2">
               <Link href={`/resource/${props.slug}`}>
                 <a className="btn-gray">
-                  <ChevronLeftIcon className="w-4 h-4 mr-2" /> Retour
+                  <ChevronLeftIcon className="w-4 h-4 mr-2" />
+                  {t("back")}
                 </a>
               </Link>
               <button
@@ -353,7 +352,7 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
                 className="btn-red"
               >
                 <TrashIcon className="w-4 h-4 mr-1" />
-                Supprimer
+                {t("delete")}
               </button>
               <button
                 type="submit"
@@ -385,18 +384,18 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
                   </svg>
                 ) : requestOk ? (
                   <>
-                    <CheckIcon className="w-4 h-4 mr-1 duration-300 group-active:text-white" />{" "}
-                    Envoyé
+                    <CheckIcon className="w-4 h-4 mr-1 duration-300 group-active:text-white" />
+                    {t("sent")}
                   </>
                 ) : validForm ? (
                   <>
                     <CloudUploadIcon className="w-4 h-4 mr-1 duration-300 group-active:text-white" />
-                    Envoyer
+                    {t("send")}
                   </>
                 ) : (
                   <>
-                    <XCircleIcon className="w-4 h-4 mr-1 duration-300 group-active:text-white" />{" "}
-                    Non valide
+                    <XCircleIcon className="w-4 h-4 mr-1 duration-300 group-active:text-white" />
+                    {t("invalid")}
                   </>
                 )}
               </button>
@@ -407,32 +406,32 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
           <div className="flex flex-col w-full px-2 space-y-3 md:w-1/2">
             <label>
               <h4 className="mb-1 text-sm font-semibold text-gray-700 dark:text-gray-300 font-marianne">
-                Titre de la ressource
+                {t("title")}
               </h4>
               <input
                 type="text"
                 className="bg-gray-200 input"
-                placeholder="Titre"
+                placeholder={t("title")}
                 value={name}
                 onChange={(e) => setName(e.target.value)}
               ></input>
             </label>
             <label className="flex flex-col grow">
-              <h4 className="mb-1 text-sm font-semibold text-gray-700 dark:text-gray-300 font-marianne">
-                Description de la ressource
+              <h4 className="mb-1 text-sm font-semibold text-gray-700 font-marianne dark:text-gray-300">
+                {t("description")}
               </h4>
               <textarea
                 className="bg-gray-200 input grow"
                 onChange={(e) => setDescription(e.target.value)}
                 rows={10}
                 value={description}
-                placeholder="Description"
+                placeholder={t("description")}
               ></textarea>
             </label>
 
             <label>
-              <h4 className="-mb-2 text-sm after:content-['*'] after:ml-0.5 after:text-red-500 font-semibold text-gray-700 dark:text-gray-300 font-marianne">
-                Visibilité de la ressource
+              <h4 className="-mb-2 text-sm after:content-['*'] after:ml-0.5 after:text-red-500 font-semibold text-gray-700 font-marianne dark:text-gray-300">
+                {t("visibility")}
               </h4>
             </label>
 
@@ -466,7 +465,7 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
                     >
                       {v.icon.outline({ className: "w-4 h-4 mr-1 shrink-0" })}
 
-                      {v.label}
+                      {t(v.value)}
                     </Tab>
                   ))}
                 </Tab.List>
@@ -474,8 +473,8 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
             </Tab.Group>
             {visibility.value === "unlisted" && (
               <label>
-                <h4 className="mb-1 after:content-['*'] after:ml-0.5 after:text-red-500 text-sm font-semibold text-gray-700 dark:text-gray-300 font-marianne">
-                  Membres
+                <h4 className="mb-1 after:content-['*'] after:ml-0.5 after:text-red-500 text-sm font-semibold text-gray-700 font-marianne dark:text-gray-300">
+                  {t("members")}
                 </h4>
                 <Select
                   name="members"
@@ -484,7 +483,7 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
                   isMulti
                   placeholder={
                     <div className="text-sm font-semibold font-spectral">
-                      Qui souhaitez-vous inviter ?
+                      {t("members-placeholder")}
                     </div>
                   }
                   options={props.membersOptions
@@ -530,8 +529,8 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
             )}
 
             <label>
-              <h4 className="mb-1 text-sm font-semibold text-gray-700 dark:text-gray-300 font-marianne">
-                Étiquettes
+              <h4 className="mb-1 text-sm font-semibold text-gray-700 font-marianne dark:text-gray-300">
+                {t("tags")}
               </h4>
               <Select
                 name="tags"
@@ -554,7 +553,7 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
                 onChange={(e: any[]) => setTags(e)}
                 placeholder={
                   <div className="text-sm font-semibold font-spectral">
-                    Utilisez des étiquettes pour mieux identifier la ressource
+                    {t("tags-placeholder")}
                   </div>
                 }
                 formatOptionLabel={(tag: { label: string; value: string }) => (
@@ -579,9 +578,9 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
                         { value: tagInputValue, label: tagInputValue },
                       ]);
                       setTagInputValue("");
-                      console.group("Value Added");
-                      console.log(tags);
-                      console.groupEnd();
+                      // console.group("Value Added");
+                      // console.log(tags);
+                      // console.groupEnd();
                       event.preventDefault();
                   }
                 }}
@@ -591,8 +590,8 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
           <div className="flex flex-col justify-between w-full px-2 mt-3 space-y-3 md:w-1/2 md:mt-0">
             <div className="flex flex-col w-full h-full space-y-3">
               <label>
-                <h4 className="-mb-2 text-sm font-semibold text-gray-700 dark:text-gray-300 font-marianne">
-                  Type de la ressource
+                <h4 className="-mb-2 text-sm font-semibold text-gray-700 font-marianne dark:text-gray-300">
+                  {t("type")}
                 </h4>
               </label>
 
@@ -624,7 +623,7 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
                           className: "w-4 h-4 mr-1 shrink-0",
                         })}
 
-                        {type.label}
+                        {t(type.value)}
                       </Tab>
                     ))}
                   </Tab.List>
@@ -641,7 +640,7 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
                         : ""
                     )}
                   >
-                    Médias
+                    {t("medias")}
                   </h4>
 
                   <MediaUploader files={medias} setFiles={setMedias} />
@@ -650,19 +649,8 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
               {type.value === "physical_item" && (
                 <>
                   <label>
-                    <h4 className="mb-1 text-sm font-semibold text-gray-700 dark:text-gray-300 font-marianne">
-                      Prix
-                    </h4>
-                    <input
-                      type="number"
-                      className="bg-gray-200 input"
-                      value={price}
-                      onChange={(e) => setPrice(e.target.value)}
-                    />
-                  </label>
-                  <label>
-                    <h4 className="mb-1 text-sm font-semibold text-gray-700 dark:text-gray-300 font-marianne">
-                      Catégorie
+                    <h4 className="mb-1 text-sm font-semibold text-gray-700 font-marianne dark:text-gray-300">
+                      {t("physical_item-category")}
                     </h4>
                     <input
                       type="text"
@@ -671,14 +659,25 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
                       onChange={(e) => setCategory(e.target.value)}
                     />
                   </label>
+                  <label>
+                    <h4 className="mb-1 text-sm font-semibold text-gray-700 font-marianne dark:text-gray-300">
+                      {t("physical_item-price")}
+                    </h4>
+                    <input
+                      type="number"
+                      className="bg-gray-200 input"
+                      value={price}
+                      onChange={(e) => setPrice(e.target.value)}
+                    />
+                  </label>
                 </>
               )}
 
               {type.value === "external_link" && (
                 <>
                   <label>
-                    <h4 className="mb-1 text-sm font-semibold text-gray-700 dark:text-gray-300 font-marianne">
-                      Lien externe
+                    <h4 className="mb-1 text-sm font-semibold text-gray-700 font-marianne dark:text-gray-300">
+                      {t("external_link-url")}
                     </h4>
                     <input
                       type="text"
@@ -692,15 +691,15 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
 
               {type.value === "location" && (
                 <label className="flex flex-col grow">
-                  <h4 className="mb-1 text-sm font-semibold text-gray-700 dark:text-gray-300 font-marianne">
-                    Emplacement de la ressource
+                  <h4 className="mb-1 text-sm font-semibold text-gray-700 font-marianne dark:text-gray-300">
+                    {t("location-address")}
                   </h4>
                   <div className="w-full mb-3">
                     <input
                       type="text"
                       value={location}
                       className="bg-gray-200 input"
-                      placeholder="Emplacement"
+                      placeholder={t("location-address")}
                       onChange={(e) => setLocation(e.target.value)}
                     ></input>
                   </div>
@@ -724,16 +723,16 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
                         "mb-1 text-sm font-semibold text-gray-700 dark:text-gray-300 font-marianne"
                       )}
                     >
-                      Dates et heures
+                      {t("event-datetime")}
                     </h4>
 
                     <div className="grid gap-2 xl:grid-cols-2">
                       <label className="flex flex-col">
                         <p className="after:content-['*'] text-gray-500 after:ml-0.5 after:text-red-500 text-xs font-spectral">
-                          Date et heure de début
+                          {t("event-datetime-start")}
                         </p>
                         <input
-                          placeholder="Date et heure de début"
+                          placeholder={t("event-datetime-start")}
                           className="bg-gray-200 input "
                           type="datetime-local"
                           onChange={(e) => setStartDate(e.target.value)}
@@ -742,10 +741,10 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
                       </label>
                       <label className="flex flex-col">
                         <p className="text-xs text-gray-500 font-spectral">
-                          Date et heure de fin
+                          {t("event-datetime-end")}
                         </p>
                         <input
-                          placeholder="Date et heure de fin"
+                          placeholder={t("event-datetime-end")}
                           className="bg-gray-200 input "
                           type="datetime-local"
                           onChange={(e) => setEndDate(e.target.value)}
@@ -804,14 +803,13 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
                   as="h3"
                   className="text-lg font-medium leading-6 text-gray-900 font-marianne"
                 >
-                  Supprimer #{props.slug}
+                  {t("edit-delete-title", { slug: props.slug })}
                 </Dialog.Title>
                 <div className="mt-6">
                   <p className="text-sm text-gray-500 font-spectral">
-                    Voulez-vous vraiment supprimer cette ressource ? Cette
-                    action est <strong>irréversible</strong>.
+                    {t("edit-delete-text")}
                     <br />
-                    {`Les commentaires et les "J'aime" associés seront également supprimés.`}
+                    {t("edit-delete-text2")}
                   </p>
                 </div>
 
@@ -822,7 +820,7 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
                     onClick={deleteResource}
                   >
                     <TrashIcon className="w-4 h-4 mr-2" />
-                    Supprimer
+                    {t("delete")}
                   </button>
                   <button
                     type="button"
@@ -830,7 +828,7 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
                     onClick={() => setDeleteModalOpen(false)}
                   >
                     <XIcon className="w-4 h-4 mr-2" />
-                    Fermer
+                    {t("cancel")}
                   </button>
                 </div>
               </div>
@@ -889,7 +887,11 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     const users = await (await fetch("http://localhost:3000/api/user")).json();
 
     return {
-      props: { ...resource, membersOptions: users.data.attributes },
+      props: {
+        ...resource,
+        membersOptions: users.data.attributes,
+        i18n: (await import(`../../../i18n/${context.locale}.json`)).default,
+      },
     };
   } catch (e) {
     return {

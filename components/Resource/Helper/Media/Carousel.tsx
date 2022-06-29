@@ -3,6 +3,8 @@ import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/outline";
 import { useCarousel } from "@hooks/useCarousel";
 import { formatRelative } from "date-fns";
 import { fr } from "date-fns/locale";
+import { useTranslations } from "next-intl";
+import { useRouter } from "next/router";
 import { useState } from "react";
 import { MediaModal } from "./Modal";
 import { MediaView } from "./View";
@@ -16,6 +18,8 @@ export const MediaCarouselView = ({ medias, updatedAt }) => {
     undefined
   );
 
+  const t = useTranslations("ResourceView");
+  const { locale } = useRouter();
   return (
     medias.length > 0 && (
       <>
@@ -34,8 +38,11 @@ export const MediaCarouselView = ({ medias, updatedAt }) => {
               {(active as Media).name}
             </p>
             <p className="text-xs text-gray-400 font-spectral">
-              mis à jour{" "}
-              {formatRelative(new Date(updatedAt), new Date(), { locale: fr })}
+              {t("updatedAt", {
+                relative: formatRelative(new Date(updatedAt), new Date(), {
+                  locale: locale === "fr" ? fr : undefined,
+                }),
+              })}
             </p>
           </div>
 

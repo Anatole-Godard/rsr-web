@@ -11,8 +11,8 @@ import toast from "react-hot-toast";
 const UserAdmin: NextPage<any> = (props) => {
   const [users, setUsers] = useState<User[]>(props?.data?.attributes);
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const [limitPerPage, setLimitPerPage] = useState<number>(
-    parseInt(process.env.NEXT_PUBLIC_BACK_OFFICE_MAX_ENTITIES)
+  const limitPerPage = parseInt(
+    process.env.NEXT_PUBLIC_BACK_OFFICE_MAX_ENTITIES
   );
   const [totalPages, setTotalPages] = useState<number>(props?.data?.totalPages);
   const { user } = useAuth();
@@ -196,6 +196,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   );
   const body = await res.json();
   return {
-    props: body,
+    props: {
+      ...body,
+      i18n: (await import(`../../../i18n/${context.locale}.json`)).default,
+    },
   };
 };

@@ -9,8 +9,6 @@ import { getUser } from "libs/getCurrentUser";
 import { handleError } from "libs/handleError";
 import { toResourceMinimum } from "libs/toMinimum";
 import { NextApiRequest, NextApiResponse } from "next";
-import {UserMinimum} from "@definitions/User";
-import {TagDocument} from "@definitions/Resource/Tag";
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   const slug = req.query.slug as string;

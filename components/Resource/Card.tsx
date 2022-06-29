@@ -15,6 +15,8 @@ import { types, visibilities } from "constants/resourcesTypes";
 import { formatDistance } from "date-fns";
 import { fr } from "date-fns/locale";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
+import { useRouter } from "next/router";
 
 export const ResourceCard = (props: Resource) => {
   const { user } = useAuth();
@@ -25,6 +27,8 @@ export const ResourceCard = (props: Resource) => {
     type,
   } = data;
   const { name } = properties;
+
+  const t = useTranslations("ResourceCard");
 
   return (
     <div
@@ -66,7 +70,7 @@ export const ResourceCard = (props: Resource) => {
               {types
                 .find((t) => t.value === type)
                 ?.icon.outline({ className: "w-6 h-6" })}
-              {types.find((t) => t.value === type)?.label}
+              {t(types.find((t) => t.value === type).value)}
             </div>
 
             <div className="absolute truncate top-2 left-2">
@@ -74,15 +78,16 @@ export const ResourceCard = (props: Resource) => {
                 {visibilities
                   .find((v) => v.value === visibility)
                   ?.icon.outline({ className: "w-3 h-3 mr-1" })}
-                {visibilities.find((v) => v.value === visibility).label}
+                {t(visibilities.find((v) => v.value === visibility).value)}
                 {members && (
                   <span className="hidden md:block">
-                    {visibility === "unlisted" &&
-                      `: ${members?.length} ${
-                        members.length > 1
-                          ? "membres y ont accès"
-                          : "membre y a accès"
-                      }`}
+                    {visibility === "unlisted" && (
+                      <>
+                        {members.length > 1
+                          ? t("unlisted-members", { length: members.length })
+                          : t("unlisted-member", { length: members.length })}
+                      </>
+                    )}
                   </span>
                 )}
               </div>
@@ -95,7 +100,7 @@ export const ResourceCard = (props: Resource) => {
                 {name}
               </h3>
               <h4 className="text-xs font-semibold font-spectral">
-                de {owner.fullName}
+                {t("created-by", { name: owner.fullName })}
               </h4>
             </div>
 
@@ -163,27 +168,27 @@ export const ResourceCard = (props: Resource) => {
           )}
         </div>
         {/* {navigator.share && ( */}
-          <button
-            onClick={() => {
-              if (navigator.share) {
-                navigator
-                  .share({
-                    title: `${name} - RSR`,
-                    url:
-                      document.location.protocol +
-                      "//" +
-                      document.location.host +
-                      "/resource/" +
-                      slug,
-                  })
-                  .then(() => console.log("Successful share"))
-                  .catch((error) => console.log("Error sharing", error));
-              }
-            }}
-            className="px-2 btn-gray shrink-0"
-          >
-            <ShareIcon className="w-4 h-4 select-none"></ShareIcon>
-          </button>
+        <button
+          onClick={() => {
+            if (navigator.share) {
+              navigator
+                .share({
+                  title: `${name} - RSR`,
+                  url:
+                    document.location.protocol +
+                    "//" +
+                    document.location.host +
+                    "/resource/" +
+                    slug,
+                })
+                // .then(() => console.log("Successful share"))
+                // .catch((error) => console.log("Error sharing", error));
+            }
+          }}
+          className="px-2 btn-gray shrink-0"
+        >
+          <ShareIcon className="w-4 h-4 select-none"></ShareIcon>
+        </button>
         {/* )} */}
       </div>
     </div>
@@ -197,6 +202,9 @@ export const ResourceCardSmall = (props: Resource) => {
     type,
   } = data;
   const { name } = properties;
+
+  const t = useTranslations("ResourceCard");
+  const { locale } = useRouter();
   return (
     <Link href={`/resource/${slug}`}>
       <a
@@ -250,7 +258,7 @@ export const ResourceCardSmall = (props: Resource) => {
               type === "external_link" && "text-amber-600"
             )}
           >
-            {types.find((t) => t.value === type)?.label}
+            {t(types.find((t) => t.value === type).value)}
           </p>
           <p
             className={classes(
@@ -260,7 +268,9 @@ export const ResourceCardSmall = (props: Resource) => {
               type === "external_link" && "text-amber-600"
             )}
           >
-            {formatDistance(new Date(createdAt), new Date(), { locale: fr })}
+            {formatDistance(new Date(createdAt), new Date(), {
+              locale: locale === "fr" ? fr : undefined,
+            })}
           </p>
         </div>
       </a>

@@ -3,7 +3,6 @@ import { withAuth } from "@middleware/auth";
 import withDatabase from "@middleware/mongoose";
 import ResourceModel from "@models/Resource";
 import { handleError } from "libs/handleError";
-import { toResourceMinimum } from "libs/toMinimum";
 import { NextApiRequest, NextApiResponse } from "next";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
