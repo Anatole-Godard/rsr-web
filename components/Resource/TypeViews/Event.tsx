@@ -33,11 +33,10 @@ export const EventView = ({ attributes, slug, updatedAt }: EventViewProps) => {
       user?.session
     );
     const body = await res.json();
-    res.ok
-      ? setParticipants(
-          body.data.attributes.data.attributes.properties.participants
-        )
-      : console.error(body);
+    if (res?.ok)
+      setParticipants(
+        body.data.attributes.data.attributes.properties.participants
+      );
   };
   const [participants, setParticipants] = useState<UserMinimum[]>(
     attributes.properties.participants || []

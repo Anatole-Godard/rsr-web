@@ -13,7 +13,7 @@ export const PictureChanger = () => {
   const [pictureUrl, setPictureUrl] = useState(null);
   const [pictureFile, setPictureFile] = useState(null);
 
-  const [loading, setLoading] = useState(false);
+  const [, setLoading] = useState(false);
 
   const post = async () => {
     if (pictureFile) {

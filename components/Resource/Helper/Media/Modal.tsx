@@ -11,7 +11,7 @@ import { Fragment } from "react";
 
 export const MediaModal = ({
   onClose,
-  media: { name, url, type, size },
+  media: { name, url, type },
   updatedAt,
 }: {
   onClose: () => void;

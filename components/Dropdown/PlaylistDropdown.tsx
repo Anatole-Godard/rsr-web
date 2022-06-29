@@ -160,10 +160,12 @@ const PlaylistCheckbox = ({
 }: {
   name: string;
   inPlaylist: boolean;
+  // eslint-disable-next-line no-unused-vars
   onCheck: (e: any) => void;
+  // eslint-disable-next-line no-unused-vars
   onDelete: (key: string) => void;
 }) => {
-  const [checked, setChecked] = useState(inPlaylist);
+  const [checked] = useState(inPlaylist);
 
   return (
     <div className="inline-flex items-center w-full mb-2 space-x-2">
@@ -184,7 +186,7 @@ const PlaylistCheckbox = ({
 };
 
 const PlaylistCreator = ({
-  resource,
+  // resource,
   revalidate,
 }: {
   resource: ResourceMinimum;

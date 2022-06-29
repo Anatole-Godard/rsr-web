@@ -5,7 +5,7 @@ import { useCookies } from "react-cookie";
 import toast from "react-hot-toast";
 
 export const GetStartedResetter = () => {
-  const [_, setCookie] = useCookies(["rsr-get_started"]);
+  const [, setCookie] = useCookies(["rsr-get_started"]);
   const t = useTranslations("GetStartedResetter");
 
   return (

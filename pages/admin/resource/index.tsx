@@ -13,8 +13,8 @@ const Resources: NextPage<any> = (props) => {
     props?.data?.attributes
   );
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const [limitPerPage, setLimitPerPage] = useState<number>(
-    parseInt(process.env.NEXT_PUBLIC_BACK_OFFICE_MAX_ENTITIES)
+  const limitPerPage = parseInt(
+    process.env.NEXT_PUBLIC_BACK_OFFICE_MAX_ENTITIES
   );
   const [totalPages, setTotalPages] = useState<number>(props?.data?.totalPages);
   const { user } = useAuth();

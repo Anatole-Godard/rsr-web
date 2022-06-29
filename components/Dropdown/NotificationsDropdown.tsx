@@ -187,6 +187,7 @@ const notifications: {
   type: "comment" | "message" | "like" | "report";
   icon: {
     className: string;
+    // eslint-disable-next-line no-unused-vars
     component: (props: ComponentProps<"svg">) => JSX.Element;
   };
 }[] = [
@@ -223,6 +224,7 @@ const notifications: {
 ];
 
 interface NotificationComponentProps extends Notification {
+  // eslint-disable-next-line no-unused-vars
   remove: (id: string) => void;
 }
 

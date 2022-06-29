@@ -11,7 +11,7 @@ interface PhysicalItemViewProps {
 
 export const PhysicalItemView = ({
   attributes,
-  slug,
+  // slug,
   updatedAt,
 }: PhysicalItemViewProps) => {
   const t = useTranslations("ResourceView");

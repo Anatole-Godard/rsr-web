@@ -11,7 +11,7 @@ import { HeartIcon as HeartIconSolid } from "@heroicons/react/solid";
 import { ChatAlt2Icon, ShareIcon } from "@heroicons/react/solid";
 import { useAuth } from "@hooks/useAuth";
 import { classes } from "libs/classes";
-import { ResourceType, types, visibilities } from "constants/resourcesTypes";
+import { types, visibilities } from "constants/resourcesTypes";
 import { formatDistance } from "date-fns";
 import { fr } from "date-fns/locale";
 import Link from "next/link";
@@ -181,8 +181,8 @@ export const ResourceCard = (props: Resource) => {
                     "/resource/" +
                     slug,
                 })
-                .then(() => console.log("Successful share"))
-                .catch((error) => console.log("Error sharing", error));
+                // .then(() => console.log("Successful share"))
+                // .catch((error) => console.log("Error sharing", error));
             }
           }}
           className="px-2 btn-gray shrink-0"

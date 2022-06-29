@@ -23,7 +23,7 @@ const Map: React.FC<any> = ({
    * @returns {JSX.Element}
    */
   const MapEventHandler = () => {
-    const map = useMapEvents({
+    useMapEvents({
       click: (e) => {
         mapEventHandler.click(e);
         // if (previousSelected !== null) {

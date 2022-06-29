@@ -104,9 +104,13 @@ export const WrapperModularInputs = ({
 };
 
 interface IInputProps extends Input {
+  // eslint-disable-next-line no-unused-vars
   onValueChange: (value: string | number | boolean) => void;
+  // eslint-disable-next-line no-unused-vars
   onTypeChange: (type: string) => void;
+  // eslint-disable-next-line no-unused-vars
   onLabelChange: (label: string) => void;
+  // eslint-disable-next-line no-unused-vars
   removeInput: (slug: string) => void;
 }
 

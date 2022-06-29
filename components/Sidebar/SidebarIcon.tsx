@@ -60,7 +60,7 @@ export const SidebarIconXL = ({
   text = "tooltip 💡",
   active = false,
   href,
-  id,
+  // id,
 }: {
   icon: JSX.Element | any;
   text?: string;
