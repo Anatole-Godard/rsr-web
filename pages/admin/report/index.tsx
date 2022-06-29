@@ -20,7 +20,9 @@ const ReportAdmin: NextPage<any> = (props) => {
   const validReport = async (id: number, validated: Boolean) => {
     const body = JSON.stringify({ validated });
     const toastID = toast.loading(
-      validated ? "Validation de la ressource en cours..." : "Suspension de la ressource en cours..."
+      validated
+        ? "Validation de la ressource en cours..."
+        : "Suspension de la ressource en cours..."
     );
     const res = await fetchRSR(`/api/report/admin/${id}/edit`, user.session, {
       method: "PUT",
@@ -243,6 +245,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   );
   const body = await res.json();
   return {
-    props: body,
+    props: {
+      ...body,
+      i18n: (await import(`../../../i18n/${context.locale}.json`)).default,
+    },
   };
 };
