@@ -113,7 +113,7 @@ export const PlaylistDropdown = ({
             leaveFrom="transform opacity-100 scale-100"
             leaveTo="transform opacity-0 scale-95"
           >
-            <Menu.Items className="absolute left-0 min-w-[16rem] w-full p-3 mt-2 origin-top-right bg-white rounded-md shadow lg:left-auto lg:right-0 ring-1 ring-black ring-opacity-5 focus:outline-none">
+            <Menu.Items className="absolute left-0 min-w-[16rem] z-10 w-full p-3 mt-2 origin-top-right bg-white dark:bg-gray-800 rounded-md shadow lg:left-auto lg:right-0 ring-1 ring-black ring-opacity-5 focus:outline-none">
               {!error && !loading ? (
                 <>
                   {playlists?.keys.map((key: string, index: number) => (
@@ -169,7 +169,7 @@ const PlaylistCheckbox = ({
 
   return (
     <div className="inline-flex items-center w-full mb-2 space-x-2">
-      <label className="flex items-center px-1 py-1 space-x-2 text-sm font-medium duration-300 rounded-lg grow hover:bg-gray-100 dark:hover:bg-gray-800 text-slate-600">
+      <label className="flex items-center px-2 py-1 space-x-2 text-sm font-medium text-gray-600 duration-300 rounded-lg grow hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-gray-300">
         <input
           type="checkbox"
           className="duration-300 accent-green-600"
@@ -245,7 +245,7 @@ const PlaylistCreator = ({
             autoComplete="off"
             value={key}
             onChange={(e) => setKey(e.target.value)}
-            className="w-full px-10 py-2 placeholder-gray-400 input text-ellipsis"
+            className="w-full px-10 py-2 placeholder-gray-400 dark:bg-gray-900 input text-ellipsis"
             // placeholder="Rechercher une ressource, un canal, un utilisateur..."
             placeholder={t("placeholder")}
           />
