@@ -12,30 +12,103 @@ jobs:
       - uses: easingthemes/ssh-deploy@v2.2.11
         with:
           # Private Key
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_KEY }}
+          SSH_PRIVATE_KEY: "-----BEGIN OPENSSH PRIVATE KEY-----
+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
+-----END OPENSSH PRIVATE KEY-----"
           # Remote host
-          REMOTE_HOST: 52.47.179.38
+          REMOTE_HOST: 35.189.195.156
           # Remote user
-          REMOTE_USER: admin
+          REMOTE_USER: ophzl
           # Remote port
           # REMOTE_PORT: # optional, default is 22
           # Source directory
           # SOURCE: # optional, default is
           # Target directory
-          TARGET: /home/admin/next # optional, default is /home/REMOTE_USER/
+          TARGET: /home/ophzl/app # optional, default is /home/REMOTE_USER/
           # Arguments to pass to rsync
           # ARGS: # optional, default is -rltgoDzvO
           # An array of folder to excludehh
           EXCLUDE: node_modules
       - run: |
           mkdir -p ~/.ssh
-          ssh-keyscan 52.47.179.38 >> ~/.ssh/known_hosts
+          ssh-keyscan 35.189.195.156 >> ~/.ssh/known_hosts
           chmod 644 ~/.ssh/known_hosts
       - uses: webfactory/ssh-agent@v0.5.4
         with:
-          ssh-private-key: ${{ secrets.SSH_KEY }}
-      - run: ssh admin@52.47.179.38 "ls"
+          ssh-private-key: "-----BEGIN OPENSSH PRIVATE KEY-----
+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
+-----END OPENSSH PRIVATE KEY-----"
       - name: Deploy with rsync
         run: rsync -avz ./ admin@52.47.179.38:next
-      - run: ssh admin@52.47.179.38 "cd next && sudo docker compose -f docker-compose.dev.yml up -d"
-      - run: ssh admin@52.47.179.38 "pm2 startOrReload ecosystem.config.js"
+      - run: ssh ophzl@35.189.195.156 "cd next && sudo docker compose -f docker-compose.dev.yml up -d"
+      - run: ssh ophzl@35.189.195.156 "pm2 startOrReload ecosystem.config.js"
