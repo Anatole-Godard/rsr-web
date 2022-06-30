@@ -178,27 +178,27 @@ export const UserStatistics = ({
             <Disclosure.Panel static className="mb-2 ">
               <div className="grid items-center w-full grid-cols-3 px-3 mb-3">
                 <div className="items-center">
-                  <h6 className="font-bold text-gray-900 font-marianne">
+                  <h6 className="font-bold text-gray-900 dark:text-white font-marianne">
                     {t("created")}
                   </h6>
-                  <p className="text-5xl text-gray-900 font-marianne">
+                  <p className="text-5xl text-gray-900 dark:text-white font-marianne">
                     {resources.length}
                   </p>
                 </div>
                 <div className="">
-                  <h6 className="font-bold text-gray-900 font-marianne">
+                  <h6 className="font-bold text-gray-900 dark:text-white font-marianne">
                     {t("seen")}
                   </h6>
                   {/* TODO: change resources props to not filter only user's resources */}
-                  <p className="text-5xl text-gray-900 font-marianne">
+                  <p className="text-5xl text-gray-900 dark:text-white font-marianne">
                     {allResources.length}
                   </p>
                 </div>
                 <div className="">
-                  <h6 className="font-bold text-gray-900 font-marianne">
+                  <h6 className="font-bold text-gray-900 dark:text-white font-marianne">
                     {t("seen-yours")}
                   </h6>
-                  <p className="text-5xl text-gray-900 font-marianne">
+                  <p className="text-5xl text-gray-900 dark:text-white font-marianne">
                     {totalResourceViews}
                   </p>
                 </div>
@@ -206,7 +206,7 @@ export const UserStatistics = ({
               <div className="inline-flex items-center w-full pt-5 mb-3">
                 <div className="flex flex-col w-full px-3 mb-3">
                   <div>
-                    <h6 className="font-bold text-gray-900 font-marianne">
+                    <h6 className="font-bold text-gray-900 dark:text-white font-marianne">
                       {t("created-per-month")}
                     </h6>
                   </div>
