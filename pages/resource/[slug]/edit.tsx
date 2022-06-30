@@ -125,7 +125,7 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
     const fetchLocation = async () => {
       const response = await fetchXHR(
         "GET",
-        `https://api-adresse.data.gouv.fr/reverse/?lat=${position.lat}&lon=${position.lng}`
+        `https://api-adresse.data.gouv.fr/reverse/?lat=${position[0]}&lon=${position[1]}`
       );
       //   const body = await response.json();
       let json = JSON.parse(response as string);
@@ -135,8 +135,7 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
         setLocation("");
       }
     };
-    if (position && position.lat != null && position.lng != null)
-      fetchLocation();
+    if (position && position[0] && position[1]) fetchLocation();
   }, [position]);
 
   const formatResource = (): Resource => {
@@ -159,7 +158,7 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
         type: "Feature",
         geometry: {
           type: "Point",
-          coordinates: [position.lat, position.lng],
+          coordinates: position,
         },
         properties: {
           name,
@@ -314,6 +313,7 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
   }: {
     data?: TagDocument[];
   } = useFetchRSR("/api/resource/tags", user?.session);
+
 
   return (
     <AppLayout title={t("edit-title", { name })}>
@@ -705,11 +705,12 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
                   </div>
                   <div className="flex-grow rounded-lg">
                     <Map
+                      zoom={4.5}
                       className="relative inset-0 w-full h-64 rounded-lg md:h-full"
-                      center={[46.227638, 2.213749]}
-                      zoom="4.5"
-                      onClick={(e) => setPosition(e.latlng)}
-                      point={position as number[]}
+                      mapEventHandler={{
+                        click: (e) => setPosition([e.latlng.lat, e.latlng.lng]),
+                      }}
+                      point={(position as number[]) || [46.227638, 2.213749]}
                     ></Map>
                   </div>
                 </label>
