@@ -4,6 +4,7 @@ import { MapContainer, Marker, TileLayer, useMapEvents } from "react-leaflet";
 const ICON = icon({
   iconUrl: "/img/marker.png",
   iconSize: [32, 32],
+  iconAnchor: [16, 32],
 });
 
 const Map: React.FC<any> = ({
