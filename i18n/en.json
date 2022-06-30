@@ -26,7 +26,7 @@
     "location": "Location",
     "external_link": "External link",
     "event": "Event",
-    "other": "Other"
+    "other": "Custom"
   },
   "ResourceSection": {
     "title1": "Last",
@@ -46,7 +46,7 @@
     "location": "Location",
     "external_link": "External link",
     "event": "Event",
-    "other": "Other"
+    "other": "Custom"
   },
 
   "ResourceSlug": {
@@ -55,7 +55,7 @@
     "location": "Location",
     "external_link": "External link",
     "event": "Event",
-    "other": "Other",
+    "other": "Custom",
     "public": "Public",
     "private": "Private",
     "unlisted": "Unlisted",
@@ -102,7 +102,7 @@
     "location": "Location",
     "external_link": "External link",
     "event": "Event",
-    "other": "Other",
+    "other": "Custom",
 
     "public": "Public",
     "private": "Private",
@@ -397,7 +397,7 @@
     "location": "Location",
     "external_link": "External link",
     "event": "Event",
-    "other": "Other",
+    "other": "Custom",
 
     "public": "Public",
     "private": "Private",
@@ -413,7 +413,7 @@
     "location": "Location",
     "external_link": "External link",
     "event": "Event",
-    "other": "Other",
+    "other": "Custom",
 
     "no-media": "No media",
 

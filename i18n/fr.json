@@ -26,7 +26,7 @@
     "location": "Lieu",
     "external_link": "Lien hypertexte",
     "event": "Événement",
-    "other": "Autre"
+    "other": "Personnalisé"
   },
   "ResourceSection": {
     "title1": "Les dernières",
@@ -46,7 +46,7 @@
     "location": "Lieu",
     "external_link": "Lien hypertexte",
     "event": "Événement",
-    "other": "Autre"
+    "other": "Personnalisé"
   },
 
   "ResourceSlug": {
@@ -55,7 +55,7 @@
     "location": "Lieu",
     "external_link": "Lien hypertexte",
     "event": "Événement",
-    "other": "Autre",
+    "other": "Personnalisé",
     "public": "Publique",
     "private": "Privée",
     "unlisted": "Non répertoriée",
@@ -102,7 +102,7 @@
     "location": "Lieu",
     "external_link": "Lien hypertexte",
     "event": "Événement",
-    "other": "Autre",
+    "other": "Personnalisé",
 
     "public": "Publique",
     "private": "Privée",
@@ -397,7 +397,7 @@
     "location": "Lieu",
     "external_link": "Lien hypertexte",
     "event": "Événement",
-    "other": "Autre",
+    "other": "Personnalisé",
 
     "public": "Publique",
     "private": "Privée",
@@ -413,7 +413,7 @@
     "location": "Lieu",
     "external_link": "Lien hypertexte",
     "event": "Événement",
-    "other": "Autre",
+    "other": "Personnalisé",
 
     "no-media": "Aucun média n'est disponible pour cette ressource",
 
