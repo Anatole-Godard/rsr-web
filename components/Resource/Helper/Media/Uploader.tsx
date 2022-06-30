@@ -100,7 +100,7 @@ export const MediaUploader = ({
             e.preventDefault();
             setIsOpen(true);
           }}
-          className="rounded-md btn-gray dark:bg-gray-700 w-fit"
+          className="ml-auto rounded-md btn-gray dark:bg-gray-700 w-fit"
           disabled={files.length >= 3}
         >
           {files.length < 3 ? (
