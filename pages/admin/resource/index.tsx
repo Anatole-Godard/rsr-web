@@ -69,6 +69,10 @@ const Resources: NextPage<any> = (props) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const getRessources = useCallback(
     async (search?) => {
+      if (!user?.session) {
+        await router.push('/');
+        return;
+      }
       let filter = '';
       if (search) {
         filter = search;
