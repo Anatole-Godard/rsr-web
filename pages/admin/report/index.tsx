@@ -7,7 +7,8 @@ import { useAuth } from '@hooks/useAuth';
 import { fetchRSR } from 'libs/fetchRSR';
 import { SearchIcon, UserIcon } from '@heroicons/react/outline';
 import toast from 'react-hot-toast';
-//TODO : ANATOLE : Changer l'affichage du tableau (link, message) et changer le back ( prise en compte de unValidate user sur comment )
+import { useRouter } from 'next/router';
+
 const ReportAdmin: NextPage<any> = (props) => {
   const [reports, setReports] = useState<Report[]>(props?.data?.attributes);
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -16,6 +17,7 @@ const ReportAdmin: NextPage<any> = (props) => {
   );
   const [totalPages, setTotalPages] = useState<number>(props?.data?.totalPages);
   const { user } = useAuth();
+  const router = useRouter();
 
   const validReport = async (id: number, validated: Boolean) => {
     const body = JSON.stringify({ validated });
@@ -64,10 +66,16 @@ const ReportAdmin: NextPage<any> = (props) => {
 
   const getReports = useCallback(
     async (search?) => {
+      if (!user?.session) {
+        await router.push('/');
+        return;
+      }
+
       let filter = '';
       if (search) {
         filter = search;
       }
+
       const res = await fetchRSR(
         '/api/report/admin?limit=' +
         limitPerPage +

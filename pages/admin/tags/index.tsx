@@ -7,6 +7,7 @@ import { useAuth } from '@hooks/useAuth';
 import { SearchIcon, TagIcon } from '@heroicons/react/outline';
 import { TagDocument } from '@definitions/Resource/Tag';
 import toast from 'react-hot-toast';
+import { useRouter } from 'next/router';
 
 const TagManager: NextPage<any> = (props) => {
   const [tags, setTags] = useState<TagDocument[]>(props?.data?.attributes);
@@ -14,6 +15,7 @@ const TagManager: NextPage<any> = (props) => {
   const limitPerPage = parseInt(process.env.NEXT_PUBLIC_BACK_OFFICE_MAX_ENTITIES);
   const [totalPages, setTotalPages] = useState<number>(props?.data?.totalPages);
   const { user } = useAuth();
+  const router = useRouter();
 
   const validate = async (_id: string, validated: Boolean) => {
     const body = JSON.stringify({ action: 'validate', validated, _id });
@@ -70,12 +72,16 @@ const TagManager: NextPage<any> = (props) => {
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const getTags = useCallback(
+
     async (search?) => {
+      if (!user?.session) {
+        await router.push('/');
+        return;
+      }
       let filter = '';
       if (search) {
         filter = search;
       }
-
       const res = await fetchRSR(
         '/api/resource/admin/tags?limit=' +
         limitPerPage +

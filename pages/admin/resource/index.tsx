@@ -7,6 +7,7 @@ import { useAuth } from '@hooks/useAuth';
 import { Resource } from '@definitions/Resource';
 import { LibraryIcon, SearchIcon } from '@heroicons/react/outline';
 import toast from 'react-hot-toast';
+import { useRouter } from 'next/router';
 
 const Resources: NextPage<any> = (props) => {
   const [resources, setResources] = useState<Resource[]>(
@@ -16,8 +17,14 @@ const Resources: NextPage<any> = (props) => {
   const limitPerPage = parseInt(process.env.NEXT_PUBLIC_BACK_OFFICE_MAX_ENTITIES);
   const [totalPages, setTotalPages] = useState<number>(props?.data?.totalPages);
   const { user } = useAuth();
+  const router = useRouter();
 
   const validResource = async (id: number, validated: Boolean) => {
+    if (!user?.session) {
+      await router.push('/');
+      return;
+    }
+
     const body = JSON.stringify({ action: 'validate', validated });
     const toastID = toast.loading(
       validated ? 'Validation en cours...' : 'Suspension en cours...'

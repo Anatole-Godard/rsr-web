@@ -7,6 +7,7 @@ import { useAuth } from '@hooks/useAuth';
 import { fetchRSR } from 'libs/fetchRSR';
 import { SearchIcon, UserIcon } from '@heroicons/react/outline';
 import toast from 'react-hot-toast';
+import { useRouter } from 'next/router';
 
 const UserAdmin: NextPage<any> = (props) => {
   const [users, setUsers] = useState<User[]>(props?.data?.attributes);
@@ -14,12 +15,23 @@ const UserAdmin: NextPage<any> = (props) => {
   const limitPerPage = parseInt(process.env.NEXT_PUBLIC_BACK_OFFICE_MAX_ENTITIES);
   const [totalPages, setTotalPages] = useState<number>(props?.data?.totalPages);
   const { user } = useAuth();
+  const router = useRouter();
 
   const beforeSetUsers = () => {
     getUsers();
   };
 
   const validUser = async (id: number, validated: Boolean) => {
+    if (!user?.session) {
+      await router.push('/');
+      return;
+    }
+
+    if (id === user.session.uid) {
+      toast.error('Vous ne pouvez pas suspendre votre propre compte');
+      return;
+    }
+
     const body = JSON.stringify({ action: 'validate', validated });
     const toastID = toast.loading(
       validated ? 'Validation en cours...' : 'Suspension en cours...'
@@ -30,7 +42,7 @@ const UserAdmin: NextPage<any> = (props) => {
     });
     toast.dismiss(toastID);
 
-    if (res.ok)
+    if (res?.ok)
       toast.success(validated ? 'Validation réussie' : 'Suspension réussie');
     else toast.error('Une erreur est survenue');
 
@@ -67,6 +79,12 @@ const UserAdmin: NextPage<any> = (props) => {
       if (search) {
         filter = search;
       }
+
+      if (!user?.session) {
+        await router.push('/');
+        return;
+      }
+
 
       const res = await fetchRSR(
         '/api/user/admin?limit=' +
