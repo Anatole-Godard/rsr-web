@@ -24,10 +24,12 @@ import { Channel, ChannelMinimum } from "@definitions/Channel";
 import Link from "next/link";
 import useFetchRSR from "@hooks/useFetchRSR";
 import { ResourceMinimum } from "@definitions/Resource";
+import { useTranslations } from "next-intl";
 
 export const NotificationsDropdown = () => {
   const { user } = useAuth();
   const { notifications, removeNotification } = useNotifications();
+  const t = useTranslations("NotificationsDropdown");
 
   const {
     data: channels,
@@ -98,7 +100,7 @@ export const NotificationsDropdown = () => {
               }
             >
               <div className="inline-flex items-center justify-between w-full px-4 py-2 text-xs text-gray-400 font-marianne">
-                Salons
+                {t("channel")}
               </div>
 
               {!loading ? (
@@ -117,21 +119,18 @@ export const NotificationsDropdown = () => {
                   </div>
                 ) : (
                   <div className="flex items-center justify-center w-full h-24">
-                    <p className="font-spectral">
-                      Une erreur est survenue lors de la récupération des
-                      données
-                    </p>
+                    <p className="font-spectral">{t("error")}</p>
                   </div>
                 )
               ) : (
                 <div className="flex items-center justify-center w-full h-24">
-                  <p className="font-spectral">Chargement...</p>
+                  <p className="font-spectral">{t("loading")}</p>
                 </div>
               )}
 
               <div className="inline-flex items-center justify-between w-full px-4 py-2 text-xs text-gray-400 font-marianne">
                 <span className="inline-flex items-center">
-                  Notifications
+                  {t("notifications")}
                   <span className="bg-gray-100 h-4 w-4 flex justify-center items-center text-gray-800 text-[0.55rem] font-semibold ml-2 rounded-full dark:bg-gray-700 dark:text-gray-300">
                     {notifications.length}
                   </span>
@@ -142,7 +141,7 @@ export const NotificationsDropdown = () => {
                     className="px-2 py-1 text-xs rounded-full btn-bleuFrance"
                   >
                     <CheckIcon className="w-4 h-4 mr-1 " />
-                    Tout lire
+                    {t("read-all")}
                   </button>
                 )}
               </div>
@@ -169,9 +168,11 @@ export const NotificationsDropdown = () => {
               ) : (
                 <div className="flex flex-col items-center justify-center w-full h-24">
                   <p className="font-semibold font-marianne">
-                    Aucune notification à afficher
+                    {t("no-notifications")}
                   </p>
-                  <p className="text-sm font-spectral">Vous êtes à jour !</p>
+                  <p className="text-sm font-spectral">
+                    {t("no-notifications-subtitle")}
+                  </p>
                 </div>
               )}
             </Menu.Items>
@@ -182,10 +183,16 @@ export const NotificationsDropdown = () => {
   ) : null;
 };
 
-const notifications = [
+const notifications: {
+  type: "comment" | "message" | "like" | "report";
+  icon: {
+    className: string;
+    // eslint-disable-next-line no-unused-vars
+    component: (props: ComponentProps<"svg">) => JSX.Element;
+  };
+}[] = [
   {
     type: "comment",
-    message: "a commenté votre publication",
     icon: {
       className: "bg-green-100 text-green-700",
       component: (props: ComponentProps<"svg">) => <ChatIcon {...props} />,
@@ -193,7 +200,6 @@ const notifications = [
   },
   {
     type: "message",
-    message: "a envoyé un message",
     icon: {
       className: "bg-bleuFrance-100 text-bleuFrance-700",
       component: (props: ComponentProps<"svg">) => <ChatAlt2Icon {...props} />,
@@ -201,7 +207,6 @@ const notifications = [
   },
   {
     type: "like",
-    message: "a aimé votre publication",
     icon: {
       className: "bg-green-100 text-green-700",
       component: (props: ComponentProps<"svg">) => <ThumbUpIcon {...props} />,
@@ -209,27 +214,31 @@ const notifications = [
   },
   {
     type: "report",
-    message: "Votre demande de signalement a été traitée",
     icon: {
       className: "bg-green-100 text-green-700",
-      component: (props: ComponentProps<"svg">) => <ExclamationIcon {...props} />,
+      component: (props: ComponentProps<"svg">) => (
+        <ExclamationIcon {...props} />
+      ),
     },
   },
 ];
 
 interface NotificationComponentProps extends Notification {
+  // eslint-disable-next-line no-unused-vars
   remove: (id: string) => void;
 }
 
 const NotificationComponent = ({
   _id,
-  user,
+  // user,
   document,
   type,
   createdAt,
   emitter,
   remove,
 }: NotificationComponentProps) => {
+  const t = useTranslations("NotificationComponent");
+
   const router = useRouter();
   const goTo = (id: string) => {
     remove(id);
@@ -275,10 +284,10 @@ const NotificationComponent = ({
               {emitter?.fullName || "Administrateur"}
             </h4>
             <div className="text-xs font-normal font-spectral">
-              {notifications.find((e) => e.type === type).message}
+              {t(`${notifications.find((e) => e.type === type).type}-message`)}
               {(document as ChannelMinimum)?.name && (
                 <span className="inline-flex items-center ml-1">
-                  dans{" "}
+                  {t("in-channel")}
                   <a
                     onClick={() => goTo(_id)}
                     className="ml-1 underline cursor-pointer text-bleuFrance-500 dark:text-bleuFrance-100"
@@ -313,9 +322,9 @@ const NotificationComponent = ({
             type="button"
             className="px-1 py-1 text-xs btn-gray"
             data-collapse-toggle="toast-notification"
-            aria-label="Fermer"
+            aria-label={t("close")}
           >
-            <span className="sr-only">Fermer</span>
+            <span className="sr-only">{t("close")}</span>
             <XIcon className="w-4 h-4" />
           </button>
           {type !== "report" && (
@@ -324,9 +333,9 @@ const NotificationComponent = ({
               onClick={() => goTo(_id)}
               className="px-1 py-1 text-xs btn-gray"
               data-collapse-toggle="toast-notification"
-              aria-label="Aller vers"
+              aria-label={t("go-to")}
             >
-              <span className="sr-only">Aller vers</span>
+              <span className="sr-only">{t("go-to")}</span>
               <ExternalLinkIcon className="w-4 h-4" />
             </button>
           )}
@@ -339,6 +348,7 @@ const NotificationComponent = ({
 interface ChannelComponentProps extends Channel {}
 
 const ChannelComponent = (props: ChannelComponentProps) => {
+  const { locale } = useRouter();
   return (
     <Link href={"/channel/" + props.slug}>
       <a className="flex h-full flex-col items-center min-h-[6rem] w-24 p-2 duration-300 rounded-xl hover:bg-bleuFrance-50 dark:hover:bg-bleuFrance-900">
@@ -371,7 +381,7 @@ const ChannelComponent = (props: ChannelComponentProps) => {
                 ),
                 new Date(),
                 {
-                  locale: fr,
+                  locale: locale === "fr" ? fr : undefined,
                   addSuffix: true,
                 }
               )}

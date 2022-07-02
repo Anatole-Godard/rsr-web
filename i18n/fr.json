@@ -1,0 +1,573 @@
+{
+  "Index": {
+    "title": "Accueil"
+  },
+  "UserUID": {
+    "title": "Profil de {name}"
+  },
+  "HeroSection": {
+    "tagline": "Tissons des liens ",
+    "buzz1": "ense",
+    "buzz2": "mble",
+    "paragraph1": "Entrez dans un salon de discussion, discutez, échangez, partagez vos idées, vos expériences, vos projets, vos réflexions.",
+    "paragraph2": "Tissez des liens entre vous et chaque citoyen grâce aux ressources que vous trouverez sur le site.",
+    "resource-create": "Créer une ressource",
+    "resource-see": "Consulter les ressources",
+    "login": "Se connecter"
+  },
+  "SearchSection": {
+    "title": "Que recherchez-vous ?",
+    "search-query": "Rechercher ...",
+    "search-type": "Type de la ressource",
+    "search-button": "Rechercher",
+    "type-all": "Tout type",
+
+    "physical_item": "Objet",
+    "location": "Lieu",
+    "external_link": "Lien hypertexte",
+    "event": "Événement",
+    "other": "Personnalisé"
+  },
+  "ResourceSection": {
+    "title1": "Les dernières",
+    "title2": "ressources",
+    "see-all": "Voir toutes les ressources"
+  },
+  "ResourceIndex": {
+    "title": "Ressources",
+    "title1": "Toutes les",
+    "title2": "ressources",
+    "search-placeholder": "Rechercher une ressource...",
+    "resource-create": "Créer une ressource",
+
+    "type-all": "Tout type",
+
+    "physical_item": "Objet",
+    "location": "Lieu",
+    "external_link": "Lien hypertexte",
+    "event": "Événement",
+    "other": "Personnalisé"
+  },
+
+  "ResourceSlug": {
+    "back": "Retour",
+    "physical_item": "Objet",
+    "location": "Lieu",
+    "external_link": "Lien hypertexte",
+    "event": "Événement",
+    "other": "Personnalisé",
+    "public": "Publique",
+    "private": "Privée",
+    "unlisted": "Non répertoriée",
+
+    "like": "J'aime",
+    "dislike": "Je n'aime plus",
+    "like-single": "Une personne aime",
+    "like-multiple": "{length} personnes aiment",
+    "like-none": "Personne n'aime pour l'instant",
+
+    "seenby-single": "1 vue",
+    "seenby-multiple": "{length} vues",
+    "seenby-none": "Personne n'a vu pour l'instant",
+
+    "validation-awaiting": "En attente de validation",
+    "report": "Signaler",
+    "edit": "Modifier",
+
+    "see-more": "Voir plus",
+    "see-less": "Voir moins",
+
+    "overview": "Aperçu de la ressource",
+    "comments": "Commentaires",
+
+    "comments-none": "Aucun commentaire pour l'instant",
+    "comments-placeholder": "Ajouter un commentaire...",
+
+    "toast-report-loading": "Envoi du signalement...",
+    "toast-report-success": "Signalement envoyé",
+    "toast-report-error": "Erreur lors de l'envoi du signalement",
+    "toast-like-loading": "Mise à jour du like...",
+    "toast-like-success": "Like ajouté",
+    "toast-dislike-success": "Like supprimé",
+    "toast-like-error": "Erreur lors de la mise à jour du like",
+    "toast-comment-loading": "Envoi du commentaire...",
+    "toast-comment-success": "Commentaire ajouté",
+    "toast-comment-error": "Erreur lors de l'envoi du commentaire"
+  },
+  "ResourceCreate": {
+    "back": "Retour",
+    "delete": "Supprimer",
+    "cancel": "Annuler",
+    "physical_item": "Objet",
+    "location": "Lieu",
+    "external_link": "Lien hypertexte",
+    "event": "Événement",
+    "other": "Personnalisé",
+
+    "public": "Publique",
+    "private": "Privée",
+    "unlisted": "Non répertoriée",
+
+    "head-title": "Créer une ressource",
+    "edit-title": "Édition de {name}",
+    "title1": "Créer une",
+    "title2": "ressource",
+
+    "edit-title1": "Éditer",
+    "edit-title2": "cette ressource",
+
+    "send": "Envoyer",
+    "sent": "Envoyé",
+    "invalid": "Non valide",
+
+    "title": "Titre",
+    "description": "Description",
+    "visibility": "Visibilité",
+    "members": "Membres",
+    "members-placeholder": "Qui souhaitez-vous inviter ?",
+    "tags": "Étiquettes",
+    "tags-placeholder": "Utilisez des étiquettes pour mieux identifier la ressource",
+    "type": "Type",
+    "medias": "Médias",
+
+    "physical_item-category": "Catégorie",
+    "physical_item-price": "Prix",
+
+    "external_link-url": "URL",
+
+    "location-address": "Adresse",
+
+    "event-datetime": "Dates et heures",
+    "event-datetime-start": "Date et heure de début",
+    "event-datetime-end": "Date et heure de fin",
+
+    "edit-delete-title": "Supprimer #{slug}",
+    "edit-delete-text": "Êtes-vous sûr de vouloir supprimer cette ressource ? Cette action est irréversible.",
+    "edit-delete-text2": "Les commentaires et les J'aime associés seront également supprimés.",
+
+    "toast-create-success": "Ressource créée",
+    "toast-create-error": "Erreur lors de la création de la ressource",
+    "toast-edit-success": "Ressource éditée",
+    "toast-edit-error": "Erreur lors de l'édition de la ressource"
+  },
+
+  "ChannelSlug": {
+    "edit1": "Éditer",
+    "edit2": "le salon",
+    "quit1": "Quitter",
+    "quit2": "le salon",
+
+    "placeholder": "Entrez votre message...",
+    "send": "Envoyer"
+  },
+
+  "ChannelCreate": {
+    "head-title": "Créer un salon",
+    "head-edit-title": "Édition de {name}",
+
+    "create-title": "Créer",
+    "edit-title": "Modifier",
+    "create-title1": "un",
+    "create-title2": "salon",
+
+    "back": "Retour",
+    "delete": "Supprimer",
+    "cancel": "Annuler",
+
+    "send": "Envoyer",
+    "sent": "Envoyé",
+    "invalid": "Non valide",
+
+    "title": "Nom du salon",
+    "description": "Description",
+    "picture": "Image du salon",
+    "picture-add": "Ajouter une image",
+
+    "visibility": "Confidentialité",
+    "private": "Salon restreint",
+
+    "members": "Membres",
+    "members-placeholder": "Qui souhaitez-vous inviter ?",
+
+    "edit-delete-title": "Supprimer #{slug}",
+    "edit-delete-text": "Êtes-vous sûr de vouloir supprimer ce salon ? Cette action est irréversible.",
+    "edit-delete-text2": "Les messages et les activités associés seront également supprimés.",
+
+    "toast-create-loading": "Création du salon...",
+    "toast-create-success": "Salon créé avec succès",
+    "toast-create-error": "Erreur lors de la création du salon",
+    "toast-edit-loading": "Modification du salon...",
+    "toast-edit-success": "Salon modifié avec succès",
+    "toast-edit-error": "Erreur lors de la modification du salon",
+    "toast-upload-error": "Erreur lors de l'envoi de l'image",
+    "toast-delete-loading": "Suppression du salon...",
+    "toast-delete-success": "Salon supprimé avec succès",
+    "toast-delete-error": "Erreur lors de la suppression du salon"
+  },
+
+  "ChannelIndex": {
+    "title": "Salons de discussion"
+  },
+
+  "UserIndex": {
+    "title": "Mon profil",
+    "title1": "Mon",
+    "title2": "profil",
+
+    "statistics": "Statistiques",
+    "playlists": "Playlists",
+    "settings": "Paramètres"
+  },
+
+  "UserSettings": {
+    "title": "Paramètres",
+    "back": "Retour"
+  },
+
+  "Login": {
+    "head-title": "Connexion",
+    "title": "Connexion à RSR",
+    "connect-with": "Connectez-vous avec",
+    "or-with": "Ou continuez avec",
+    "email": "Adresse e-mail",
+    "password": "Mot de passe",
+    "forgot-password": "Mot de passe oublié ?",
+    "sign-up": "Créer un compte",
+    "sign-in": "Connexion",
+    "remember-me": "Se souvenir de moi"
+  },
+  "Register": {
+    "head-title": "Se créer un compte",
+    "title": "Se créer un compte RSR",
+    "connect-with": "Connectez-vous avec",
+    "or-with": "Ou enregistrez-vous avec",
+    "back": "Retour",
+    "email": "Adresse e-mail",
+    "email-invalid": "Adresse e-mail non valide",
+
+    "password": "Mot de passe",
+    "password-length": "Le mot de passe doit contenir au moins 8 caractères",
+    "password-required": "Le mot de passe est obligatoire",
+    "password-strengh0": "Le mot de passe est trop faible",
+    "password-strengh1": "Le mot de passe est assez faible",
+    "password-strengh2": "Le mot de passe est assez fort",
+    "password-strengh3": "Le mot de passe est fort",
+    "password-strengh4": "Le mot de passe est très fort",
+
+    "fullname": "Nom complet",
+    "fullname-required": "Le nom complet n'est pas renseigné",
+
+    "birthdate": "Date de naissance",
+    "birthdate-required": "La date de naissance n'est pas renseignée",
+
+    "confirm-password": "Confirmer le mot de passe",
+    "sign-up": "Créer un compte",
+    "already-have-account": "J'ai déjà un compte",
+    "next": "Continuer"
+  },
+
+  "UserPlaylist": {
+    "title": "Mes playlists",
+    "back": "Retour",
+    "loading": "Chargement des playlists...",
+    "error": "Une erreur est survenue lors de la récupération des données",
+    "empty": "Aucune playlist n'a été crée pour l'instant."
+  },
+
+  "PictureChanger": {
+    "title": "Changement de photo de profil",
+    "old": "Photo actuelle",
+    "new": "Nouvelle photo",
+
+    "add": "Ajouter une image",
+    "profile": "Photo de profil",
+    "send": "Envoyer",
+
+    "toast-loading": "Envoi de la photo...",
+    "toast-success": "Votre photo de profil a été mise à jour",
+    "toast-error": "Une erreur est survenue lors de la mise à jour de votre photo de profil"
+  },
+
+  "ChangePassword": {
+    "title": "Changement de mot de passe",
+    "send": "Envoyer",
+
+    "old": "Ancien mot de passe",
+    "new": "Nouveau mot de passe",
+    "new-confirm": "Confirmer le nouveau mot de passe",
+
+    "security": "Sécurité et confidentialité",
+    "disconnect": "Déconnecter de tout les appareils",
+
+    "toast-loading": "Modification du mot de passe...",
+    "toast-success": "Mot de passe modifié avec succès",
+    "toast-error": "Une erreur est survenue lors de la modification du mot de passe"
+  },
+
+  "SessionsViewer": {
+    "title": "Appareils connectés",
+    "web": "Web",
+    "mobile": "Mobile",
+
+    "expired": "La session sera révoquée automatiquement à la reconnexion",
+    "revoke": "Révoquer",
+    "revoke-all": "Fermer toutes les sessions",
+
+    "toast-loading": "Suppression de la session...",
+    "toast-success": "Session révoquée avec succès",
+    "toast-error": "Une erreur est survenue lors de la révocation de la session"
+  },
+
+  "DisableAccount": {
+    "title": "Désactivation du compte",
+    "subtitle": "Êtes-vous sûr de vouloir désactiver votre compte ?",
+    "text": "Vous pouvez désactiver votre compte pour le moment, mais vous ne pourrez plus vous connecter à votre compte.",
+    "text2": "Vos données seront anonymisées et ne seront pas récupérables.",
+    "button": "Désactiver mon compte",
+    "cancel": "Annuler",
+    "modal-text": "Voulez-vous vraiment désactiver votre compte ? Cette action est irréversible. Vous ne pourrez plus vous connecter à votre compte.",
+
+    "toast-loading": "Désactivation du compte...",
+    "toast-success": "Compte désactivé à la déconnexion",
+    "toast-error": "Une erreur est survenue lors de la désactivation du compte"
+  },
+
+  "RetrieveAccount": {
+    "title": "Récupération des données de votre compte",
+    "text": "Vous pouvez à tout moment récupérer les données liées à votre compte dans le cadre de la Réglementation Générale de la Protection des Données.",
+    "button": "Télécharger",
+
+    "toast-loading": "Récupération des données de votre compte...",
+    "toast-success": "Votre compte a été récupéré avec succès",
+    "toast-error": "Une erreur est survenue lors de la récupération de votre compte"
+  },
+
+  "GetStartedResetter": {
+    "title": "Réinitialisation de votre progression Premiers pas",
+    "text": "Vous pouvez à tout moment réinitialiser votre progression Premiers pas pour vérifier si vous avez correctement effectué le tutoriel. Un rechargement complet de la page peut être nécessaire.",
+    "button": "Réinitialiser",
+
+    "toast-loading": "Réinitialisation de votre progression...",
+    "toast-success": "Votre progression a été réinitialisée avec succès",
+    "toast-error": "Une erreur est survenue lors de la réinitialisation de votre progression"
+  },
+
+  "UserResources": {
+    "you-have-created": "Les ressource que vous avez créés",
+    "user-have-created": "Les ressource que l'utilisateur a créé"
+  },
+  "UserStatistics": {
+    "title": "Statistiques",
+    "created": "Ressources créées",
+    "created-per-month": "Ressources créées par mois",
+    "seen": "Ressources consultées",
+    "seen-yours": "Total des vues de vos ressources"
+  },
+
+  "UserLikedResources": {
+    "you-have-liked": "Les ressource que vous avez aimé",
+    "user-has-liked": "Les ressource que l'utilisateur a aimé",
+    "empty": "Aucune ressource n'a été aimée par cet utilisateur"
+  },
+
+  "UserSeenResources": {
+    "title": "Les ressources que vous avez vu",
+    "empty": "Aucune ressource n'a été vue par cet utilisateur"
+  },
+
+  "UserPlaylistResources": {
+    "empty": "Aucune ressource n'a été ajoutée à cette playlist"
+  },
+
+  "HistoryItem": {
+    "invite": "{name} a invité",
+    "comment": "{name} a commenté",
+    "resource-created": "{name} a créé",
+    "in": "dans",
+    "mobile-disabled": "Aperçu désactivé sur mobile"
+  },
+
+  "CommentView": {
+    "report": "Signaler",
+    "delete": "Supprimer"
+  },
+
+  "ResourceCard": {
+    "physical_item": "Objet",
+    "location": "Lieu",
+    "external_link": "Lien hypertexte",
+    "event": "Événement",
+    "other": "Personnalisé",
+
+    "public": "Publique",
+    "private": "Privée",
+    "unlisted": "Non répertoriée",
+
+    "unlisted-member": ": {length} membre y a accès",
+    "unlisted-members": ": {length} membres y ont accès",
+
+    "created-by": "de {name}"
+  },
+  "ResourceView": {
+    "physical_item": "Objet",
+    "location": "Lieu",
+    "external_link": "Lien hypertexte",
+    "event": "Événement",
+    "other": "Personnalisé",
+
+    "no-media": "Aucun média n'est disponible pour cette ressource",
+
+    "physical_item-category": "Catégorie",
+    "physical_item-price": "Prix",
+
+    "event-from": "Du",
+    "event-to": "Au",
+    "event-participants-multiple": "{length} participants",
+    "event-participants-single": "{length} participant",
+    "event-participants-remove": "Retirer ma participation",
+    "event-participants-add": "Participer",
+    "login": "Se connecter",
+
+    "location-address": "Adresse",
+
+    "date": "Date",
+    "string": "Texte",
+    "number": "Nombre",
+    "boolean": "Oui/Non",
+    "boolean-true": "Oui",
+    "boolean-false": "Non",
+
+    "updatedAt": "mis à jour {relative}"
+  },
+  "MediaUploader": {
+    "edit-warn": "Éditer la ressource réinitialisera vos documents.",
+    "cancel": "Annuler",
+    "add": "Ajouter un document",
+    "accepted-files-types": "Fichier audio, image, vidéo, PDF acceptés",
+    "limit-reached": "Vous avez atteint le nombre maximum de documents",
+    "limit-file-size": "Maximum 5 Mo par fichier jusqu'à 3 fichiers",
+    "limit-file-remaining": "{remaining} fichiers restants"
+  },
+  "WrapperModularInputs": {
+    "default-input-label": "Identifiant du champ",
+    "no-input-title": "Ajoutez un champ à remplir",
+    "no-input-description": "Il semble que vous n'ayez pas encore ajouté de champs à remplir.",
+    "add-input": "Ajouter un champ",
+
+    "label-edit-placeholder": "Entrez un nom pour le champ",
+    "placeholder": "Entrez {label}",
+
+    "date": "Date",
+    "string": "Texte",
+    "number": "Nombre",
+    "boolean": "Oui/Non",
+    "boolean-true": "Oui",
+    "boolean-false": "Non"
+  },
+
+  "ChannelSidebar": {
+    "back": "Retour",
+    "create": "Créer",
+    "search-placeholder": "Rechercher un salon...",
+
+    "public": "Groupe public",
+    "private-multiple": " Privé - {length} membres",
+    "private-single": " Privé - {length} membre"
+  },
+
+  "Sidebar": {
+    "home": "Accueil",
+    "profile": "Profil",
+    "login": "Se connecter",
+    "register": "S'inscrire",
+    "resources": "Ressources",
+    "library": "Bibliothèque",
+    "playlists": "Playlists",
+    "settings": "Paramètres",
+    "resource-create": "Créer une ressource",
+    "channels": "Salons de discussion",
+    "channel-create": "Créer un salon",
+    "admin": "Administration",
+    "shortcuts": "Raccourcis"
+  },
+  "Navbar": {
+    "search-placeholder": "Rechercher une ressource..."
+  },
+  "NotificationsDropdown": {
+    "channel": "Salon de discussion",
+    "error": "Une erreur est survenue lors de la récupération des données",
+    "loading": "Chargement...",
+    "notifications": "Notifications",
+    "read-all": "Tout marquer comme lu",
+    "no-notifications": "Aucune notification à afficher",
+    "no-notifications-subtitle": "Vous êtes à jour !"
+  },
+  "NotificationComponent": {
+    "comment-message": "a commenté votre ressource",
+    "message-message": "a envoyé un message",
+    "like-message": "a aimé votre ressource",
+    "report-message": "Votre demande de signalement a été traitée",
+    "in-channel": "dans ",
+    "close": "Fermer",
+    "go-to": "Aller à "
+  },
+  "UserDropdown": {
+    "profile": "Profil",
+    "login-title": "Connexion",
+    "login": "Se connecter",
+    "register": "S'inscrire",
+    "logout": "Déconnexion",
+    "settings": "Paramètres",
+    "admin": "Administration",
+    "since": "inscrit il y a {distance}",
+    "not-provided": "Inconnu",
+    "playlists": "Mes playlists",
+    "admin-title": "Administration de la plateforme",
+    "theme-title": "Thème de la plateforme",
+    "theme-light": "Thème clair",
+    "theme-dark": "Thème sombre",
+    "theme-sr": "Appuyez sur la touche {key} pour changer le thème"
+  },
+  "GetStarted": {
+    "button": "Premiers pas",
+    "title": "Premiers pas avec RSR",
+    "subtitle": "Réalisez ces actions pour être prêt à utiliser pleinement RSR.",
+    "todo": "Actions à réaliser",
+    "todo-none": "Toutes les actions ont été réalisées, bravo 🥳 !",
+    "loading": "Chargement...",
+    "create_account": "Se créer un compte sur la plateforme",
+    "create_resource": "Créer une ressource et se faire approuver",
+    "create_resource_comment": "Poster un commentaire sur une ressource",
+    "create_playlist": "Créer une playlist et y renseigner une resource",
+    "join_channel": "Rejoindre un salon de discussion",
+
+    "quit-button-done": "Ce fût un plaisir !",
+    "quit-button-none": "Non, merci"
+  },
+  "PlaylistDropdown": {
+    "button": "Ajouter",
+    "create": "Créer une playlist",
+    "placeholder": "À regarder plus tard",
+    "toast-add-loading": "Ajout de la ressource dans la playlist...",
+    "toast-remove-loading": "Retrait la ressource dans la playlist...",
+    "toast-add-success": "Ajout de la ressource dans la playlist effectué",
+    "toast-remove-success": "Retrait de la ressource dans la playlist effectué",
+    "toast-error": "Une erreur est survenue lors de l'opération",
+    "toast-delete-loading": "Suppression de la playlist en cours...",
+    "toast-delete-success": "Playlist supprimée",
+    "toast-create-loading": "Création de la playlist ...",
+    "toast-create-success": "Playlist créée",
+    "toast-create-error": "Une erreur est survenue lors de la création de la playlist"
+  },
+  "LocaleDropdown": {
+    "button": "Langue",
+    "fr": "Français",
+    "en": "Anglais"
+  },
+  "useAuth": {
+    "signout-toast-success": "Vous êtes déconnecté"
+  },
+  "useNotifications": {
+    "toast-read": "Notification lue"
+  }
+}

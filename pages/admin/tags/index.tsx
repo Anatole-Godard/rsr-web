@@ -196,7 +196,10 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     );
     const body = await res.json();
     return {
-      props: body
+      props: {
+        ...body,
+        i18n: (await import(`../../../i18n/${context.locale}.json`)).default
+      }
     };
   } catch (e) {
     return {

@@ -11,8 +11,8 @@ import toast from 'react-hot-toast';
 const ReportAdmin: NextPage<any> = (props) => {
   const [reports, setReports] = useState<Report[]>(props?.data?.attributes);
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const [limitPerPage] = useState<number>(
-    parseInt(process.env.NEXT_PUBLIC_BACK_OFFICE_MAX_ENTITIES)
+  const limitPerPage = parseInt(
+    process.env.NEXT_PUBLIC_BACK_OFFICE_MAX_ENTITIES
   );
   const [totalPages, setTotalPages] = useState<number>(props?.data?.totalPages);
   const { user } = useAuth();
@@ -20,7 +20,9 @@ const ReportAdmin: NextPage<any> = (props) => {
   const validReport = async (id: number, validated: Boolean) => {
     const body = JSON.stringify({ validated });
     const toastID = toast.loading(
-      validated ? 'Validation de la ressource en cours...' : 'Suspension de la ressource en cours...'
+      validated
+        ? 'Validation de la ressource en cours...'
+        : 'Suspension de la ressource en cours...'
     );
     const res = await fetchRSR(`/api/report/admin/${id}/edit`, user.session, {
       method: 'PUT',
@@ -245,9 +247,11 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     );
     const body = await res.json();
     return {
-      props: body
+      props: {
+        ...body,
+        i18n: (await import(`../../../i18n/${context.locale}.json`)).default
+      }
     };
-
   } catch (e) {
     return {
       redirect: {

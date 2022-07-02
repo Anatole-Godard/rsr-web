@@ -13,6 +13,7 @@ import { classes } from "libs/classes";
 import { UserMinimum } from "@definitions/User";
 import Image from "next/image";
 import { useSearch } from "@hooks/useSearch";
+import { useTranslations } from "next-intl";
 
 export const Sidebar = ({
   channels,
@@ -22,7 +23,7 @@ export const Sidebar = ({
   selectedChannelSlug?: string;
 }) => {
   const { search, filtered, onChange } = useSearch<Channel>("name", channels);
-
+  const t = useTranslations("ChannelSidebar");
   return (
     <>
       <div
@@ -42,7 +43,7 @@ export const Sidebar = ({
                 )}
               >
                 <ArrowSmLeftIcon className="w-4 h-4 mr-1 shrink-0" />
-                Retour
+                {t("back")}
               </a>
             </Link>
           )}
@@ -56,7 +57,7 @@ export const Sidebar = ({
               )}
             >
               <PlusIcon className="w-4 h-4 mr-2 shrink-0" />
-              Créer
+              {t("create")}
             </a>
           </Link>
         </div>
@@ -72,7 +73,7 @@ export const Sidebar = ({
               onChange={onChange}
               required
               className="input px-5 py-2 pl-[2.25rem] text-ellipsis bg-white placeholder-gray-500"
-              placeholder="Rechercher un salon"
+              placeholder={t("search-placeholder")}
             />
           </label>
         </div>
@@ -105,7 +106,7 @@ export const Sidebar = ({
                 )}
               >
                 <ArrowSmLeftIcon className="w-3 h-3 mr-0.5" />
-                Retour
+                {t("back")}
               </a>
             </Link>
           )}
@@ -117,7 +118,7 @@ export const Sidebar = ({
               )}
             >
               <PlusIcon className="w-3 h-3 mr-0.5" />
-              Créer
+              {t("create")}
             </a>
           </Link>
         </div>
@@ -142,6 +143,7 @@ export const Sidebar = ({
   );
 };
 
+//TODO: replace a by Link but still doing getServerSideProps even if already on channel/[slug]
 const ChatOverview = ({
   slug,
   name,
@@ -149,7 +151,7 @@ const ChatOverview = ({
   active = false,
   members = [],
   position = null,
-  visibility
+  visibility,
 }: {
   slug: string;
   name: string;
@@ -159,7 +161,7 @@ const ChatOverview = ({
   position?: "first" | "last";
   visibility: "public" | "private";
 }) => {
-  //TODO: replace a by Link but still doing getServerSideProps even if already on channel/[slug]
+  const t = useTranslations("ChannelSidebar");
   return (
     <a
       href={`/channel/${slug}`}
@@ -191,11 +193,13 @@ const ChatOverview = ({
         </h3>
         {visibility === "public" ? (
           <h4 className="hidden mt-1 text-xs text-gray-500 truncate select-none md:block font-spectral">
-            Groupe public
+            {t("public")}
           </h4>
         ) : (
           <h4 className="hidden mt-1 text-xs text-gray-500 truncate select-none md:block font-spectral">
-            Privé - {members.length} {members.length < 1 ? "membre" : "membres"}
+            {members.length < 1
+              ? t("private-single", { length: members.length })
+              : t("private-multiple", { length: members.length })}
           </h4>
         )}
       </span>

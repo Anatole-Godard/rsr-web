@@ -1,6 +1,6 @@
 import { NavbarAdmin } from "@components/Navbar/AdminNavbar";
 import { SidebarAdmin } from "@components/Sidebar/SidebarAdmin";
-import React, { ReactNode } from "react";
+import { FC, ReactNode } from "react";
 
 import { motion } from "framer-motion";
 import { NextSeo } from "next-seo";
@@ -11,12 +11,12 @@ const variants = {
   exit: { opacity: 0, x: 0, y: -100 },
 };
 
-export const AdminLayout: React.FC<any> = ({
+export const AdminLayout: FC<any> = ({
   title = "Chargement...",
   children,
 }: {
   title?: string;
-  children?: React.ReactNode;
+  children?: ReactNode;
 }) => {
   return (
     <>

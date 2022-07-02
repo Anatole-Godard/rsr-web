@@ -32,6 +32,7 @@ import { useEffect, useState } from "react";
 import moment from "moment";
 import { Disclosure, Transition } from "@headlessui/react";
 import { ChevronUpIcon } from "@heroicons/react/outline";
+import { useTranslations } from "next-intl";
 
 Chart.register(
   ArcElement,
@@ -60,29 +61,30 @@ Chart.register(
   SubTitle
 );
 
+const MONTHS = [
+  "Janvier",
+  "Février",
+  "Mars",
+  "Avril",
+  "Mai",
+  "Juin",
+  "Juillet",
+  "Août",
+  "Septembre",
+  "Octobre",
+  "Novembre",
+  "Décembre",
+];
 export const UserStatistics = ({
   resources,
-  user,
+  // user,
   allResources,
 }: {
   resources: Resource[];
   user: any;
   allResources: Resource[];
 }) => {
-  const MONTHS = [
-    "Janvier",
-    "Février",
-    "Mars",
-    "Avril",
-    "Mai",
-    "Juin",
-    "Juillet",
-    "Août",
-    "Septembre",
-    "Octobre",
-    "Novembre",
-    "Décembre",
-  ];
+  const t = useTranslations("UserStatistics");
   const [totalResourceViews, setTotalResourceViews] = useState(0);
 
   useEffect(() => {
@@ -155,7 +157,7 @@ export const UserStatistics = ({
                   height={24}
                 />
               </div>
-              <h5 className="font-bold font-marianne">Statistiques</h5>
+              <h5 className="font-bold font-marianne">{t("title")}</h5>
             </div>
             <ChevronUpIcon
               className={`duration-300 ${
@@ -176,27 +178,27 @@ export const UserStatistics = ({
             <Disclosure.Panel static className="mb-2 ">
               <div className="grid items-center w-full grid-cols-3 px-3 mb-3">
                 <div className="items-center">
-                  <h6 className="font-bold text-gray-900 font-marianne">
-                    Ressources créées
+                  <h6 className="font-bold text-gray-900 dark:text-white font-marianne">
+                    {t("created")}
                   </h6>
-                  <p className="text-5xl text-gray-900 font-marianne">
+                  <p className="text-5xl text-gray-900 dark:text-white font-marianne">
                     {resources.length}
                   </p>
                 </div>
                 <div className="">
-                  <h6 className="font-bold text-gray-900 font-marianne">
-                    Ressources consultées
+                  <h6 className="font-bold text-gray-900 dark:text-white font-marianne">
+                    {t("seen")}
                   </h6>
                   {/* TODO: change resources props to not filter only user's resources */}
-                  <p className="text-5xl text-gray-900 font-marianne">
+                  <p className="text-5xl text-gray-900 dark:text-white font-marianne">
                     {allResources.length}
                   </p>
                 </div>
                 <div className="">
-                  <h6 className="font-bold text-gray-900 font-marianne">
-                    Total des vues de vos ressources
+                  <h6 className="font-bold text-gray-900 dark:text-white font-marianne">
+                    {t("seen-yours")}
                   </h6>
-                  <p className="text-5xl text-gray-900 font-marianne">
+                  <p className="text-5xl text-gray-900 dark:text-white font-marianne">
                     {totalResourceViews}
                   </p>
                 </div>
@@ -204,8 +206,8 @@ export const UserStatistics = ({
               <div className="inline-flex items-center w-full pt-5 mb-3">
                 <div className="flex flex-col w-full px-3 mb-3">
                   <div>
-                    <h6 className="font-bold text-gray-900 font-marianne">
-                      Ressources créées
+                    <h6 className="font-bold text-gray-900 dark:text-white font-marianne">
+                      {t("created-per-month")}
                     </h6>
                   </div>
                   <div>

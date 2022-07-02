@@ -1,7 +1,7 @@
 import { AdminLayout } from '@components/Layout/AdminLayout';
 import type { NextPage } from 'next';
 import { GetServerSideProps } from 'next';
-import { Fragment, useState } from 'react';
+import { useState, Fragment } from 'react';
 import {
   CalculatorIcon,
   CalendarIcon,
@@ -331,7 +331,7 @@ const Home: NextPage<any> = ({ resources = [] }: { resources: Resource[] }) => {
                         )}
                       </Menu.Item>
                       <Menu.Item disabled>
-                        {() => (
+                        {({}) => (
                           <span className='flex items-center w-full px-2 py-2 text-sm text-gray-500 rounded-md group'>
                             <CalculatorIcon
                               className='w-5 h-5 mr-2'
@@ -411,7 +411,11 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     const body = await response?.json();
 
     return {
-      props: { parseUser, resources: body.data.attributes }
+      props: {
+        parseUser,
+        resources: body.data.attributes,
+        i18n: (await import(`../../i18n/${context.locale}.json`)).default
+      }
     };
   } catch (e) {
     return {

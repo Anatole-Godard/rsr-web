@@ -1,4 +1,3 @@
-import { withAuth } from "@middleware/auth";
 import withDatabase from "@middleware/mongoose";
 import User from "@models/User";
 import { handleError } from "libs/handleError";
