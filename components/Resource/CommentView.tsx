@@ -13,7 +13,7 @@ interface CommentViewProps {
   slug: string;
 }
 
-export const CommentView = ({ comment }: CommentViewProps) => {
+export const CommentView = ({ comment, slug }: CommentViewProps) => {
   const { owner, content, createdAt } = comment;
   const { user } = useAuth();
   const { locale, asPath } = useRouter();
@@ -65,7 +65,6 @@ export const CommentView = ({ comment }: CommentViewProps) => {
               {owner.uid === user?.data.uid && (
                 <>
                   <button
-                    // todo
                     className='inline-flex items-center text-xs text-red-600 duration-300 hover:text-red-800 font-spectral'
                   >
                     <TrashIcon className='w-3 h-3 mr-1 shrink-0' />
