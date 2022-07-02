@@ -215,7 +215,8 @@ const ResourceSlug: NextPage<any> = ({
                       data,
                       validated,
                       visibility,
-                      seenBy
+                      seenBy,
+                      updatedAt
                     }}
                   />
                   <button onClick={() => {
