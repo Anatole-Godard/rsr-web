@@ -331,7 +331,7 @@ const Home: NextPage<any> = ({ resources = [] }: { resources: Resource[] }) => {
                         )}
                       </Menu.Item>
                       <Menu.Item disabled>
-                        {({ active }) => (
+                        {() => (
                           <span className='flex items-center w-full px-2 py-2 text-sm text-gray-500 rounded-md group'>
                             <CalculatorIcon
                               className='w-5 h-5 mr-2'
@@ -373,20 +373,47 @@ const Home: NextPage<any> = ({ resources = [] }: { resources: Resource[] }) => {
 export default Home;
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const {
-    cookies: { user }
-  } = context.req;
+  try {
+    const {
+      cookies: { user }
+    } = context.req;
+    let parseUser = JSON.parse(user);
 
-  let parseUser = JSON.parse(user);
+    if (!user) {
+      return {
+        redirect: {
+          permanent: false,
+          destination: '/auth/login'
+        }
+      };
+    } else if (parseUser?.session?.role === 'user') {
+      return {
+        redirect: {
+          permanent: false,
+          destination: '/'
+        }
+      };
+    }
 
-  if (!user) {
+    const response = await fetchRSR(
+      `http://localhost:3000/api/resource/admin?limit=0`,
+      parseUser?.session
+    );
+
+    if (!response) {
+      return {
+        redirect: {
+          permanent: false,
+          destination: '/'
+        }
+      };
+    }
+    const body = await response?.json();
+
     return {
-      redirect: {
-        permanent: false,
-        destination: '/auth/login'
-      }
+      props: { parseUser, resources: body.data.attributes }
     };
-  } else if (parseUser?.session?.role === 'user') {
+  } catch (e) {
     return {
       redirect: {
         permanent: false,
@@ -394,23 +421,4 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       }
     };
   }
-
-  const response = await fetchRSR(
-    `http://localhost:3000/api/resource/admin?limit=0`,
-    parseUser?.session
-  );
-
-  if (!response) {
-    return {
-      redirect: {
-        permanent: false,
-        destination: '/'
-      }
-    };
-  }
-  const body = await response?.json();
-
-  return {
-    props: { parseUser, resources: body.data.attributes }
-  };
 };
