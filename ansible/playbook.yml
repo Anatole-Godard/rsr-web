@@ -88,3 +88,9 @@
         name: docker-compose-plugin
         state: latest
         update_cache: true
+
+    - name: Install nginx
+      apt:
+        name: nginx
+        state: latest
+        update-cache: true
