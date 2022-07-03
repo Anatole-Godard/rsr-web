@@ -1,10 +1,10 @@
 version: '3.7'
 
 networks:
-    rsr-network:
+  rsr-network:
 
 volumes:
-    database-data:
+  database-data:
 
 services:
   mongo:
@@ -18,7 +18,7 @@ services:
       - database-data:/data/db
     ports:
       - "27017:27017"
-    command: mongod --quiet --logpath /dev/null 
+    command: mongod --quiet --logpath /dev/null
 
   mongoex:
     image: mongo-express
@@ -37,13 +37,30 @@ services:
     build: "."
     image: rsr/app
     networks:
-        - rsr-network
+      - rsr-network
     restart: always
     volumes:
-        - .:/usr/src/app
-        - /usr/src/app/node_modules
-        - /usr/src/app/.next
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+      - /usr/src/app/.next
     ports:
-        - "3000:3000"
+      - "3000:3000"
+    env_file:
+      - .env.local
     environment:
       NEXT_PUBLIC_BACK_OFFICE_MAX_ENTITIES: 20
+    labels:
+      traefik.http.services.nextjs.loadbalancer.server.port: 3000
+    depends_on:
+      - traefik
+
+  reverse-proxy:
+    image: traefik:v2.7
+    command:
+      - --api.insecure=true
+      - --providers.docker.defaultRule=Host(`{{ normalize .Name }}.rsr.hopto.org`)
+    ports:
+      - "80:80"
+      - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
