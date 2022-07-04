@@ -207,7 +207,14 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
           value: "public" | "private" | "unlisted";
         }
       ).value,
-      members,
+      members: [
+        ...members,
+        {
+          uid: user?.data.uid,
+          fullName: user?.data.fullName,
+          photoURL: user?.data.photoURL,
+        },
+      ],
     } as Resource;
   };
 
@@ -313,7 +320,6 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
   }: {
     data?: TagDocument[];
   } = useFetchRSR("/api/resource/tags", user?.session);
-
 
   return (
     <AppLayout title={t("edit-title", { name })}>
@@ -890,7 +896,12 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     return {
       props: {
         ...resource,
-        membersOptions: users.data.attributes,
+        members: resource.members.filter(
+          (m: UserMinimum) => parsedUser?.data.uid !== m.uid
+        ),
+        membersOptions: users.data.attributes.filter(
+          (m: UserMinimum) => parsedUser?.data.uid !== m.uid
+        ),
         i18n: (await import(`../../../i18n/${context.locale}.json`)).default,
       },
     };
