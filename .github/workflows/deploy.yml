@@ -28,7 +28,6 @@ jobs:
           # An array of folder to excludehh
           EXCLUDE: node_modules
       - run: |
-          cat /home/runner/.ssh/deploy_key
           mkdir -p ~/.ssh
           ssh-keyscan 35.189.195.156 >> ~/.ssh/known_hosts
           chmod 644 ~/.ssh/known_hosts
