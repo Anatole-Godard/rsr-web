@@ -10,5 +10,6 @@ RUN yarn add pm2 -g
 COPY . .
 
 RUN yarn build
+RUN echo "test================================================="
 
 CMD ["pm2-runtime", "../ecosystem.config.js"]
