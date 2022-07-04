@@ -25,6 +25,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       tags,
       data: { type, attributes },
       visibility,
+      members,
     } = req.body;
     const {
       properties: { name },
@@ -83,6 +84,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         uid: user._id.toString(),
       },
       visibility,
+      members,
     });
 
     res.status(201).json({

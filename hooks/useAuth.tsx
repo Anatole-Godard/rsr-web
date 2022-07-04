@@ -1,4 +1,5 @@
 import { fetchRSR } from "libs/fetchRSR";
+import { useTranslations } from "next-intl";
 import { useRouter } from "next/router";
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { useCookies } from "react-cookie";
@@ -19,6 +20,8 @@ function AuthProvider({
   const [user, setUser] = useState<any | null>(cookie.user || null);
   const [history, setHistory] = useState([]);
   const router = useRouter();
+
+  const t = useTranslations("useAuth");
 
   const getLastUrl = (): string => {
     const lastUrl: string =
@@ -63,7 +66,7 @@ function AuthProvider({
     }
 
     if (response.ok) {
-      toast.success("Vous êtes déconnecté");
+      toast.success(t("signout-toast-success"));
       removeCookie("user", { path: "/" });
       setUser(null);
       router.push("/");

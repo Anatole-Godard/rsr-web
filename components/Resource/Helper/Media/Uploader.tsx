@@ -14,6 +14,7 @@ import { formatBytes } from "libs/formatBytes";
 import { useRouter } from "next/router";
 import { useEventListener } from "@hooks/useEventListener";
 import { Media } from "@definitions/Resource/Media";
+import { useTranslations } from "next-intl";
 
 export const MediaUploader = ({
   files,
@@ -26,6 +27,8 @@ export const MediaUploader = ({
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [hasChanges, setHasChanges] = useState<boolean>(false);
 
+  const t = useTranslations("MediaUploader");
+
   useEventListener("keydown", (e: KeyboardEvent) => {
     if (e.code === "Escape") setIsOpen(false);
   });
@@ -34,8 +37,6 @@ export const MediaUploader = ({
     if (isOpen) setHasChanges(false);
   }, [isOpen]);
 
-  console.log({ isOpen, hasChanges });
-
   return (
     <>
       <div className="flex flex-col h-full max-h-full p-2 space-y-1 bg-gray-200 rounded-lg dark:bg-gray-800">
@@ -43,13 +44,13 @@ export const MediaUploader = ({
           <div className="inline-flex items-center">
             <small className="inline-flex items-center w-full text-sm font-spectral">
               <ExclamationIcon className="w-4 h-4 mr-1 " />
-              Éditer la ressource réinitialisera vos médias.
+              {t("edit-warn")}
             </small>
             <a
               className="px-2 py-0.5 btn-text-gray"
               href={router.asPath.replace("/edit", "")}
             >
-              Annuler
+              {t("cancel")}
             </a>
           </div>
         )}
@@ -80,7 +81,7 @@ export const MediaUploader = ({
               <button
                 id={"btn-" + media.name + i}
                 key={"btn-" + media.name + i}
-                onClick={(e) => {
+                onClick={() => {
                   setFiles([
                     ...files.filter((m: Media) => m.name !== media.name),
                   ]);
@@ -92,30 +93,28 @@ export const MediaUploader = ({
             </div>
           ))}
         </div>
-        <div className="inline-flex justify-end w-full">
-          <button
-            key="add-media"
-            type="button"
-            onClick={(e) => {
-              e.preventDefault();
-              setIsOpen(true);
-            }}
-            className="rounded-md btn-gray dark:bg-gray-700 w-fit"
-            disabled={files.length >= 3}
-          >
-            {files.length < 3 ? (
-              <>
-                <PlusCircleIcon className="w-4 h-4 mr-2" />
-                Ajouter un média
-              </>
-            ) : (
-              <>
-                <PlusCircleIcon className="w-4 h-4 mr-2" />
-                Vous avez atteint le nombre maximum de médias
-              </>
-            )}
-          </button>
-        </div>
+        <button
+          key="add-media"
+          type="button"
+          onClick={(e) => {
+            e.preventDefault();
+            setIsOpen(true);
+          }}
+          className="ml-auto rounded-md btn-gray dark:bg-gray-700 w-fit"
+          disabled={files.length >= 3}
+        >
+          {files.length < 3 ? (
+            <>
+              <PlusCircleIcon className="w-4 h-4 mr-2" />
+              {t("add")}
+            </>
+          ) : (
+            <>
+              <PlusCircleIcon className="w-4 h-4 mr-2" />
+              {t("limit-reached")}
+            </>
+          )}
+        </button>
       </div>
       {isOpen && !hasChanges && (
         <Transition appear show={true} as={Fragment}>
@@ -153,7 +152,7 @@ export const MediaUploader = ({
                       className="inline-flex items-center justify-center w-full text-xl font-medium text-gray-900 dark:text-gray-200 font-marianne"
                     >
                       <CloudUploadIcon className="w-6 h-6 mt-1 mr-2 stroke-2" />
-                      Ajouter un média
+                      {t("add")}
                     </Dialog.Title>
                     <div className="mt-4">
                       <div className="w-full grow">
@@ -194,14 +193,16 @@ export const MediaUploader = ({
                             <span>/</span>
                             <DocumentIcon className="w-6 h-6 mx-2" />
                           </div>
-                          <span className="text-sm text-gray-600 duration-300 group-hover:text-gray-700 dark:group-hover:text-gray-400 font-spectral">
-                            Fichier audio, image, vidéo, pdf accepté
+                          <span className="text-sm text-gray-600 duration-300 dark:group-hover:text-gray-400 group-hover:text-gray-700 font-spectral">
+                            {t("accepted-files-types")}
                           </span>
-                          <span className="text-xs text-gray-500 duration-300 group-hover:text-gray-600 dark:group-hover:text-gray-400 font-spectral">
-                            Maximum 5 Mo par fichier ({"jusqu'à 3 fichiers"})
+                          <span className="text-xs text-gray-500 duration-300 dark:group-hover:text-gray-400 group-hover:text-gray-600 font-spectral">
+                            {t("limit-file-size")}
                           </span>
-                          <span className="text-xs text-gray-500 duration-300 group-hover:text-gray-600 dark:group-hover:text-gray-400 font-spectral">
-                            {3 - files.length} fichiers restants
+                          <span className="text-xs text-gray-500 duration-300 dark:group-hover:text-gray-400 group-hover:text-gray-600 font-spectral">
+                            {t("limit-file-remaining", {
+                              remaining: 3 - files.length,
+                            })}
                           </span>
                         </label>
                       </div>
@@ -214,7 +215,7 @@ export const MediaUploader = ({
                         onClick={() => setIsOpen(false)}
                       >
                         <XIcon className="w-4 h-4 mr-2" />
-                        Annuler
+                        {t("cancel")}
                       </button>
                     </div>
                   </Dialog.Panel>

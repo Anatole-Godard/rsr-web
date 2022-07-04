@@ -1,9 +1,12 @@
 import { Menu, Transition } from "@headlessui/react";
 import { ChevronDownIcon, FlagIcon } from "@heroicons/react/outline";
 import { classes } from "@utils/classes";
+import { useTranslations } from "next-intl";
 import Link from "next/link";
 
 export const LocaleDropdown = () => {
+  const t = useTranslations("LocaleDropdown");
+
   return (
     <Menu
       as="div"
@@ -16,19 +19,21 @@ export const LocaleDropdown = () => {
             <div className="flex items-center">
               <span
                 className={classes(
-                  "btn-gray rounded-full",
+                  "btn-gray rounded-lg py-2.5",
                   open
                     ? "bg-gray-200 dark:bg-gray-700"
                     : "bg-gray-100  dark:bg-gray-800"
                 )}
               >
-                <div className="flex items-center justify-center w-full h-full align-middle border-none rounded-full select-none ">
+                <div className="flex items-center justify-center w-full h-full align-middle border-none rounded-lg select-none ">
                   <FlagIcon className="w-4 h-4 mr-2" />
-                  Langue
+                  <span className="hidden xl:block">
+                  {t("button")}
+                  </span>
                   <ChevronDownIcon
                     key="sidebar_dropdown-icon"
                     className={classes(
-                      "w-3 h-3 ml-2 duration-300 transition",
+                      "w-3 h-3 xl:ml-2 duration-300 transition",
                       open && "rotate-180"
                     )}
                   />
@@ -54,22 +59,22 @@ export const LocaleDropdown = () => {
             >
               <>
                 <div className="block px-4 py-2 pt-4 text-xs text-gray-400 font-spectral">
-                  Langues
+                  {t("button")}
                 </div>
-                <Link href="/" locale="fr">
+                <Link href="#" locale="fr">
                   <a
                     className="inline-flex items-center w-full px-4 py-2 text-sm leading-5 text-gray-700 transition duration-150 ease-in-out font-marianne dark:text-gray-300 hover:text-bleuFrance-500 hover:bg-bleuFrance-50 dark:hover:bg-bleuFrance-800"
                     id="link-redirect-login"
                   >
-                    Français
+                    {t("fr")}
                   </a>
                 </Link>
-                <Link href="/" locale="en">
+                <Link href="#" locale="en">
                   <a
                     className="inline-flex items-center w-full px-4 py-2 text-sm leading-5 text-gray-700 transition duration-150 ease-in-out font-marianne dark:text-gray-300 hover:text-bleuFrance-500 hover:bg-bleuFrance-50 dark:hover:bg-bleuFrance-800"
                     id="link-redirect-register"
                   >
-                    Anglais
+                    {t("en")}
                   </a>
                 </Link>
               </>

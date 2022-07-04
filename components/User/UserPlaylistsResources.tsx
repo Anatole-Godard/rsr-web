@@ -1,16 +1,18 @@
 import { ResourceCard } from "@components/Resource/Card";
 import { Resource } from "@definitions/Resource";
 import { classes } from "libs/classes";
+import { useTranslations } from "next-intl";
 
 export const UserPlaylistResources = ({
   resources = [],
 }: {
   resources: Resource[];
 }) => {
+  const t = useTranslations("UserPlaylistResources");
   return (
     <div
       className={classes(
-        "flex flex-col shadow space-y-3 dark:bg-gray-900 min-h-[8rem] rounded-lg w-full overflow-hidden"
+        "flex flex-col space-y-3 dark:bg-gray-900 min-h-[8rem] rounded-lg w-full overflow-hidden"
       )}
     >
       {resources.length > 0 ? (
@@ -29,7 +31,7 @@ export const UserPlaylistResources = ({
         </div>
       ) : (
         <div className="flex items-center justify-center w-full h-32 font-spectral">
-          Aucune ressource...
+          {t("empty")}
         </div>
       )}
     </div>
