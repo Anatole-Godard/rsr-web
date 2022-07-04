@@ -180,22 +180,24 @@ const ChannelSlug: NextPage<any> = ({
                     </a>
                   </Link>
                 )}
-                <button
-                  className="btn-red shrink-0"
-                  onClick={quit}
-                  key="channel_slug-quit_btn"
-                >
-                  <XIcon
-                    className="w-4 h-4 sm:mr-2 shrink-0"
-                    key="channel_slug-quit_icon"
-                  />
-                  <span className="items-center hidden sm:inline-flex">
-                    {t("quit1")}
-                    <span className="hidden ml-1 lg:inline-flex">
-                      {t("quit2")}
+                {channel.visibility === "private" && (
+                  <button
+                    className="btn-red shrink-0"
+                    onClick={quit}
+                    key="channel_slug-quit_btn"
+                  >
+                    <XIcon
+                      className="w-4 h-4 sm:mr-2 shrink-0"
+                      key="channel_slug-quit_icon"
+                    />
+                    <span className="items-center hidden sm:inline-flex">
+                      {t("quit1")}
+                      <span className="hidden ml-1 lg:inline-flex">
+                        {t("quit2")}
+                      </span>
                     </span>
-                  </span>
-                </button>
+                  </button>
+                )}
               </div>
             </div>
 
