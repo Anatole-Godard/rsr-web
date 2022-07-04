@@ -96,7 +96,7 @@ export const NotificationsDropdown = () => {
             <Menu.Items
               static
               className={
-                "bg-white md:origin-top-right fixed md:absolute left-0 md:left-auto md:right-0 mt-8 dark:bg-gray-900 text-base z-50 float-left py-2 list-none text-left rounded-xl shadow-lg w-full md:w-96 lg:w-[32rem]"
+                "bg-white md:origin-top-right fixed md:absolute left-0 md:left-auto md:right-0 mt-8 dark:bg-gray-900 text-base z-50 float-left pt-2 list-none text-left rounded-xl shadow-lg w-full md:w-96 lg:w-[32rem]"
               }
             >
               <div className="inline-flex items-center justify-between w-full px-4 py-2 text-xs text-gray-400 font-marianne">
@@ -147,7 +147,7 @@ export const NotificationsDropdown = () => {
               </div>
 
               {notifications?.length > 0 ? (
-                <div className="flex flex-col px-3 lg:px-6">
+                <div className="flex flex-col px-3">
                   {notifications
                     .sort(
                       (a, b) =>
@@ -252,8 +252,9 @@ const NotificationComponent = ({
 
   return (
     <div
-      className="w-full pt-3 pb-3 mb-3 text-gray-900 duration-300 border-b select-none shrink md:max-w-sm dark:text-gray-300 lg:max-w-lg last:border-b-0 dark:border-gray-700 last:pb-0"
+      className="w-full p-3 mb-3 text-gray-900 duration-300 border-b rounded-lg cursor-pointer select-none shrink md:max-w-sm dark:text-gray-300 lg:max-w-lg last:border-b-0 dark:border-gray-700 hover:bg-gray-200 dark:hover:bg-gray-800"
       role="alert"
+      onClick={type !== "report" ? () => goTo(_id) : undefined}
     >
       <div className="flex items-start justify-between w-full">
         <div className="inline-flex items-start pl-2">

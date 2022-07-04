@@ -30,25 +30,29 @@ function NotificationProvider({
   const router = useRouter();
   const t = useTranslations("useNotifications");
 
-  const removeNotification = (id: string) => {
-    fetchRSR(
-      `/api/user/${user.data.uid.toString()}/notifications?id=${id}`,
-      user.session,
-      {
-        method: "DELETE",
-      }
-    )
-      .then((res) => res.json())
-      .then((res) => {
-        if (res.error) {
-          // toast.error("Une erreur est survenue");
-          console.error(res.error);
-        } else {
-          toast.success(t("toast-read"));
-          setNotifications(res.data.attributes);
+  const removeNotification = async (id: string) => {
+    try {
+      const res = await fetchRSR(
+        `/api/user/${user.data.uid.toString()}/notifications?id=${id}`,
+        user.session,
+        {
+          method: "DELETE",
         }
-      })
-      .catch((err) => console.error(err));
+      );
+      const body = await res.json();
+      if (body.error) {
+        if (body.error.code === 404) {
+          setNotifications(notifications.filter((n) => n._id !== id));
+        } else {
+          console.error(body.error);
+        }
+      } else {
+        toast.success(t("toast-read"));
+        setNotifications(body.data.attributes);
+      }
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   useEffect(() => {

@@ -19,19 +19,21 @@ export const LocaleDropdown = () => {
             <div className="flex items-center">
               <span
                 className={classes(
-                  "btn-gray rounded-full",
+                  "btn-gray rounded-lg py-2.5",
                   open
                     ? "bg-gray-200 dark:bg-gray-700"
                     : "bg-gray-100  dark:bg-gray-800"
                 )}
               >
-                <div className="flex items-center justify-center w-full h-full align-middle border-none rounded-full select-none ">
+                <div className="flex items-center justify-center w-full h-full align-middle border-none rounded-lg select-none ">
                   <FlagIcon className="w-4 h-4 mr-2" />
+                  <span className="hidden xl:block">
                   {t("button")}
+                  </span>
                   <ChevronDownIcon
                     key="sidebar_dropdown-icon"
                     className={classes(
-                      "w-3 h-3 ml-2 duration-300 transition",
+                      "w-3 h-3 xl:ml-2 duration-300 transition",
                       open && "rotate-180"
                     )}
                   />
