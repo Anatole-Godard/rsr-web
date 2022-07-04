@@ -6,16 +6,56 @@ import NotificationModel from "@models/Notification";
 import { Notification } from "@definitions/Notification";
 import { UserMinimum } from "@definitions/User";
 import { ChannelMinimum } from "@definitions/Channel";
+import { getUser } from "@utils/getCurrentUser";
 
 const handler = async (req: NextApiRequest, res: NextApiResponseServerIO) => {
   const slug = req.query.slug as string;
   const channel = await Channel.findOne({ slug });
-  if (req.method === "POST") {
-    const { user, data } = req.body;
+  const user = await getUser(req);
+  if (!user) {
+    return res.status(401).json({
+      data: null,
+      error: {
+        code: 401,
+        message: "unauthorized",
+      },
+    });
+  }
 
-    const msg = { user, data, createdAt: new Date().toISOString() };
+  if (!channel) {
+    return res.status(401).json({
+      data: null,
+      error: {
+        code: 401,
+        message: "unauthorized",
+      },
+    });
+  }
+  if (req.method === "POST") {
+    const { data } = req.body;
+    let userMinimum: UserMinimum = {
+      uid: user.uid,
+      fullName: user.fullName,
+      photoURL: user.photoURL,
+    };
+    const msg = {
+      user: userMinimum,
+      data,
+      createdAt: new Date().toISOString(),
+    };
+
+    if (
+      channel.visibility === "public" &&
+      channel.members.findIndex(
+        (member: UserMinimum) => member.uid === user.uid
+      ) === -1
+    ) {
+      channel.members.push(userMinimum);
+    }
 
     channel.messages.push(msg);
+    channel.markModified("members");
+    channel.markModified("messages");
     await channel.save();
 
     const channelMin: ChannelMinimum = {
@@ -25,11 +65,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponseServerIO) => {
       slug: channel.slug,
       createdAt: channel.createdAt,
       image: channel.image,
-      description: channel.description
+      description: channel.description,
     };
 
     const notifications: Notification[] = channel.members
-      .filter((u: UserMinimum) => u.uid.toString() !== user.uid.toString())
+      .filter((u: UserMinimum) => u.uid.toString() !== userMinimum.uid)
       .map((u: UserMinimum) => ({
         user: {
           uid: u.uid.toString(),
@@ -45,7 +85,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponseServerIO) => {
         type: "message",
         createdAt: msg.createdAt,
       }));
-
 
     await NotificationModel.insertMany(notifications);
 
