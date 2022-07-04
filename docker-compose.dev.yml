@@ -34,7 +34,9 @@ services:
       ME_CONFIG_MONGODB_URL: mongodb://root:root@mongo:27017/
 
   app:
-    build: "."
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
     image: rsr/app
     networks:
       - rsr-network
