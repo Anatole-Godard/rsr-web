@@ -11,5 +11,6 @@ RUN yarn add pm2 -g
 COPY . .
 
 RUN yarn build
+RUN echo "test================================================="
 
 CMD ["yarn", "pm2"]
