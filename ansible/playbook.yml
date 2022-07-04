@@ -99,3 +99,14 @@
         name: nginx
         state: latest
         update-cache: true
+
+    - name: Create nginx config file
+      template:
+        src: templates/rsr-web
+        dest: /etc/nginx/sites-available/rsr-web
+
+    - name: Enable nginx config file
+      shell: "ln -s /etc/nginx/sites-available/rsr-web /etc/nginx/sites-enabled/rsr-web"
+
+    - name: Restart nginx
+      shell: "sudo systemctl restart nginx"
