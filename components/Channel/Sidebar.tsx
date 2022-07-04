@@ -14,6 +14,7 @@ import { UserMinimum } from "@definitions/User";
 import Image from "next/image";
 import { useSearch } from "@hooks/useSearch";
 import { useTranslations } from "next-intl";
+import { useRouter } from "next/router";
 
 export const Sidebar = ({
   channels,
@@ -162,9 +163,10 @@ const ChatOverview = ({
   visibility: "public" | "private";
 }) => {
   const t = useTranslations("ChannelSidebar");
+  const {locale} = useRouter()
   return (
     <a
-      href={`/channel/${slug}`}
+      href={`/${locale}/channel/${slug}`}
       className={classes(
         "py-1 px-2 md:px-3 md:py-3 inline-flex items-center rounded-md w-max  md:w-full h-full md:h-16",
         active
