@@ -51,6 +51,8 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
                 emitter: element.emitter,
                 document: element.document,
                 type: element.type,
+                message: element.message,
+                link: element.link,
                 validated: element.validated,
                 context: element.context,
               }))

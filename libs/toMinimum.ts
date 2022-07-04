@@ -8,14 +8,15 @@ export const toResourceMinimum = (resource: Resource): ResourceMinimum => {
   if (!resource) throw new Error("resource is required");
   return {
     slug: resource.slug,
+    owner: resource.owner,
+    createdAt: resource.createdAt,
     description: resource.description,
     tags: resource.tags,
     data: resource.data,
-    owner: resource.owner,
     validated: resource.validated,
-    createdAt: resource.createdAt,
     visibility: resource.visibility,
     members: resource.members,
     seenBy: resource.seenBy,
+    updatedAt: resource.updatedAt,
   };
 };

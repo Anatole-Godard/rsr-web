@@ -129,6 +129,7 @@ describe("allow to convert a resource to a resource minimum", () => {
       visibility: resource.visibility,
       members: resource.members,
       seenBy: resource.seenBy,
+      updatedAt: resource.updatedAt,
     });
   });
 
