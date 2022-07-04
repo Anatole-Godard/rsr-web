@@ -13,4 +13,4 @@ COPY . .
 RUN yarn build
 RUN echo "test================================================="
 
-CMD ["yarn", "pm2"]
+CMD ["pm2-runtime", "../ecosystem.config.js"]
