@@ -25,7 +25,16 @@ const Select: any = dynamic(() => import("react-select") as any, {
   ssr: false,
 });
 
-const ChannelEdit: NextPage<any> = (props) => {
+type MemberValue = {
+  label: string;
+  value: string;
+  photoURL: string;
+};
+
+const ChannelEdit: NextPage<any> = ({
+  membersOptions,
+  ...props
+}: Channel & { membersOptions: UserMinimum[] }) => {
   const router = useRouter();
   const { user } = useAuth();
   const t = useTranslations("ChannelCreate");
@@ -40,12 +49,9 @@ const ChannelEdit: NextPage<any> = (props) => {
     props.visibility === "private"
   );
 
-  const [members, setMembers] = useState<
-    { value: string; label: string; photoURL: string }[] | UserMinimum[]
-  >(props.members?.filter((member: { uid: any }) => member.uid !== user?.uid));
-  const [membersOptions, setMembersOptions] = useState<
-    { value: string; label: string; photoURL: string }[]
-  >([]);
+  const [members, setMembers] = useState<MemberValue[]>(
+    (props.members as unknown as MemberValue[]) || []
+  );
 
   const [validForm, setValidForm] = useState<boolean>(false);
   const [requestOk, setRequestOk] = useState<boolean | null>(null);
@@ -85,11 +91,18 @@ const ChannelEdit: NextPage<any> = (props) => {
               description,
               visibility: privateGroup ? "private" : "public",
               photoURL: pictureUrl,
-              members: members.map((member) => ({
-                uid: member.value,
-                photoURL: member.photoURL,
-                fullName: member.label,
-              })),
+              members: [
+                {
+                  uid: user?.data.uid,
+                  fullName: user?.data.fullName,
+                  photoURL: user?.data.photoURL,
+                },
+                ...members.map((member) => ({
+                  uid: member.value,
+                  photoURL: member.photoURL,
+                  fullName: member.label,
+                })),
+              ],
             }),
           }
         );
@@ -112,20 +125,6 @@ const ChannelEdit: NextPage<any> = (props) => {
       setValidForm(true);
     } else setValidForm(false);
   }, [pictureUrl, name, description, members, privateGroup]);
-
-  useEffect(() => {
-    fetchRSR("/api/user/", user?.session)
-      .then((res) => res.json())
-      .then((body) =>
-        setMembersOptions(
-          body?.data?.attributes?.map((user) => ({
-            value: user.uid,
-            label: user.fullName,
-            photoURL: user.photoURL,
-          }))
-        )
-      );
-  }, [user?.session]);
 
   return (
     <AppLayout title={t("head-edit-title", { name })}>
@@ -333,25 +332,19 @@ const ChannelEdit: NextPage<any> = (props) => {
                 <Select
                   name="members"
                   className="w-full"
-                  value={members.map((member) => ({
-                    value: member.uid,
-                    label: member.fullName,
-                    photoURL: member.photoURL,
-                  }))}
+                  value={members}
                   isMulti
                   placeholder={
                     <div className="text-sm font-semibold font-spectral">
                       {t("members-placeholder")}
                     </div>
                   }
-                  options={membersOptions.filter(
-                    (m) => m.value !== user?.data.uid
-                  )}
-                  formatOptionLabel={(member: {
-                    value: string;
-                    label: string;
-                    photoURL: string;
-                  }) => (
+                  options={membersOptions.map((member) => ({
+                    value: member.uid,
+                    label: member.fullName,
+                    photoURL: member.photoURL,
+                  }))}
+                  formatOptionLabel={(member: MemberValue) => (
                     <div className="inline-flex items-center">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
@@ -498,9 +491,27 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         },
       };
 
+    const membersOptionsBody = await (
+      await fetch("http://localhost:3000/api/user")
+    ).json();
+
     return {
       props: {
         ...channel,
+        members: channel.members
+          .filter((m) => m.uid !== parsedUser?.data.uid)
+          .map((m: UserMinimum) => ({
+            value: m.uid,
+            label: m.fullName,
+            photoURL: m.photoURL,
+          })),
+        membersOptions: membersOptionsBody.data.attributes
+          .filter((m: UserMinimum) => m.uid !== parsedUser?.data.uid)
+          .map((m: UserMinimum) => ({
+            value: m.uid,
+            label: m.fullName,
+            photoURL: m.photoURL,
+          })),
         i18n: (await import(`../../../i18n/${context.locale}.json`)).default,
       },
     };
