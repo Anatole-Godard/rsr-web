@@ -1,12 +1,13 @@
-import { GetServerSideProps, NextPage } from "next";
-import { AdminLayout } from "@components/Layout/AdminLayout";
-import { CustomTable } from "@components/UI/CustomTable";
-import { useCallback, useEffect, useState } from "react";
-import { Report } from "@definitions/Report";
-import { useAuth } from "@hooks/useAuth";
-import { fetchRSR } from "libs/fetchRSR";
-import { SearchIcon, UserIcon } from "@heroicons/react/outline";
-import toast from "react-hot-toast";
+import { GetServerSideProps, NextPage } from 'next';
+import { AdminLayout } from '@components/Layout/AdminLayout';
+import { CustomTable } from '@components/UI/CustomTable';
+import { useCallback, useEffect, useState } from 'react';
+import { Report } from '@definitions/Report';
+import { useAuth } from '@hooks/useAuth';
+import { fetchRSR } from 'libs/fetchRSR';
+import { SearchIcon, UserIcon } from '@heroicons/react/outline';
+import toast from 'react-hot-toast';
+import { useRouter } from 'next/router';
 
 const ReportAdmin: NextPage<any> = (props) => {
   const [reports, setReports] = useState<Report[]>(props?.data?.attributes);
@@ -14,46 +15,48 @@ const ReportAdmin: NextPage<any> = (props) => {
   const limitPerPage = parseInt(
     process.env.NEXT_PUBLIC_BACK_OFFICE_MAX_ENTITIES
   );
-
   const [totalPages, setTotalPages] = useState<number>(props?.data?.totalPages);
   const { user } = useAuth();
+  const router = useRouter();
 
   const validReport = async (id: number, validated: Boolean) => {
     const body = JSON.stringify({ validated });
     const toastID = toast.loading(
       validated
-        ? "Validation de la ressource en cours..."
-        : "Suspension de la ressource en cours..."
+        ? 'Validation de la ressource en cours...'
+        : 'Suspension de la ressource en cours...'
     );
     const res = await fetchRSR(`/api/report/admin/${id}/edit`, user.session, {
-      method: "PUT",
-      body,
+      method: 'PUT',
+      body
     });
     toast.dismiss(toastID);
 
     if (res.ok)
-      toast.success(validated ? "Validation réussie" : "Suspension réussie");
-    else toast.error("Une erreur est survenue");
+      toast.success(validated ? 'Validation réussie' : 'Suspension réussie');
+    else toast.error('Une erreur est survenue');
     getReports();
   };
 
   const theadList = [
     {
-      name: "emitter",
-      subName: "fullName",
-      label: "Rapporteur",
-      type: "isUser",
-      width: 20,
+      name: 'emitter',
+      subName: 'fullName',
+      label: 'Rapporteur',
+      type: 'isUser',
+      width: 20
     },
-    { name: "type", label: "Type", width: 25 },
-    { name: "context", label: "Contexte", width: 25 },
+    { name: 'type', label: 'Type', width: 25 },
+    { name: 'context', label: 'Contexte', width: 25 },
+    { name: 'message', label: 'Message', width: 25 },
+    { name: 'link', label: 'Lien vers le Context', type: 'isLink', width: 25 },
     {
-      name: "validated",
-      label: "Suspensions",
-      type: "validated",
+      name: 'validated',
+      label: 'Suspensions',
+      type: 'validated',
       validEntity: validReport,
-      width: 25,
-    },
+      width: 25
+    }
   ];
 
   const updatePage = (data) => {
@@ -63,28 +66,33 @@ const ReportAdmin: NextPage<any> = (props) => {
 
   const getReports = useCallback(
     async (search?) => {
-      let filter = "";
+      if (!user?.session) {
+        await router.push('/');
+        return;
+      }
+
+      let filter = '';
       if (search) {
         filter = search;
       }
+
       const res = await fetchRSR(
-        "/api/report/admin?limit=" +
-          limitPerPage +
-          "&page=" +
-          currentPage +
-          "&search=" +
-          filter,
+        '/api/report/admin?limit=' +
+        limitPerPage +
+        '&page=' +
+        currentPage +
+        '&search=' +
+        filter,
         user.session
       );
-
       if (res.ok) {
         const body = await res.json();
         if (body.data?.attributes) {
           setTotalPages(body.data?.totalPages);
           setReports(body.data?.attributes);
-          toast.success("Récupération des signalements réussie");
+          toast.success('Récupération des signalements réussie');
         }
-      } else toast.error("Une erreur est survenue");
+      } else toast.error('Une erreur est survenue');
     },
     [currentPage, limitPerPage, user?.session]
   );
@@ -93,28 +101,28 @@ const ReportAdmin: NextPage<any> = (props) => {
     getReports();
   }, [currentPage, limitPerPage, user?.session, getReports]);
 
-  const [search, setSearch] = useState<string>("");
+  const [search, setSearch] = useState<string>('');
 
   const deleteReport = async (id: string) => {
-    const toastID = toast.loading("Suppression en cours...");
+    const toastID = toast.loading('Suppression en cours...');
     const res = await fetchRSR(`/api/report/admin/${id}/delete`, user.session, {
-      method: "DELETE",
+      method: 'DELETE'
     });
     toast.dismiss(toastID);
 
-    if (res.ok) toast.success("Suppression du signalement réussie");
-    else toast.error("Une erreur est survenue");
+    if (res.ok) toast.success('Suppression du signalement réussie');
+    else toast.error('Une erreur est survenue');
 
     getReports();
   };
 
   return (
     <>
-      <AdminLayout title="Signalements - Admin.">
-        <div className="flex flex-col w-full h-full bg-white dark:bg-black grow">
-          <div className="flex flex-col w-full px-6 py-6 bg-white shrink-0 lg:px-12 dark:bg-black dark:border-gray-800">
-            <div className="inline-flex items-end justify-between w-full mb-2">
-              <div className="flex flex-col space-y-2">
+      <AdminLayout title='Signalements - Admin.'>
+        <div className='flex flex-col w-full h-full bg-white dark:bg-black grow'>
+          <div className='flex flex-col w-full px-6 py-6 bg-white shrink-0 lg:px-12 dark:bg-black dark:border-gray-800'>
+            <div className='inline-flex items-end justify-between w-full mb-2'>
+              <div className='flex flex-col space-y-2'>
                 {/* <div className="w-auto h-auto">
                   <Image
                     src="/img/books.png"
@@ -123,9 +131,9 @@ const ReportAdmin: NextPage<any> = (props) => {
                     alt="Books"
                   />
                 </div> */}
-                <h3 className="text-2xl font-extrabold text-gray-800 font-marianne dark:text-gray-200">
+                <h3 className='text-2xl font-extrabold text-gray-800 font-marianne dark:text-gray-200'>
                   Liste des
-                  <span className="ml-1 text-blue-600 dark:text-blue-400">
+                  <span className='ml-1 text-blue-600 dark:text-blue-400'>
                     signalements
                   </span>
                 </h3>
@@ -137,29 +145,29 @@ const ReportAdmin: NextPage<any> = (props) => {
                 e.preventDefault();
                 getReports(search);
               }}
-              className="relative flex flex-row justify-between w-full space-x-3 text-sm"
+              className='relative flex flex-row justify-between w-full space-x-3 text-sm'
             >
-              <label className="relative text-gray-400 focus-within:text-gray-600">
-                <UserIcon className="absolute w-4 h-4 transform -translate-y-1/2 pointer-events-none top-1/2 left-3" />
+              <label className='relative text-gray-400 focus-within:text-gray-600'>
+                <UserIcon className='absolute w-4 h-4 transform -translate-y-1/2 pointer-events-none top-1/2 left-3' />
                 <input
-                  id="query"
-                  name="query"
-                  type="text"
-                  autoComplete="off"
+                  id='query'
+                  name='query'
+                  type='text'
+                  autoComplete='off'
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
-                  className="input px-5 py-2 pl-[2.25rem] placeholder-gray-500   lg:w-96 "
-                  placeholder="Rechercher un signalement par nom"
+                  className='input px-5 py-2 pl-[2.25rem] placeholder-gray-500   lg:w-96 '
+                  placeholder='Rechercher un signalement par nom'
                 />
               </label>
 
-              <button className="btn-bleuFrance" type="submit">
-                <SearchIcon className="w-4 h-4 mr-1" />
+              <button className='btn-bleuFrance' type='submit'>
+                <SearchIcon className='w-4 h-4 mr-1' />
                 Rechercher
               </button>
             </form>
           </div>
-          <div className="h-full p-6 bg-gray-100 min-h-max max-h-max dark:bg-gray-900 lg:p-12">
+          <div className='h-full p-6 bg-gray-100 min-h-max max-h-max dark:bg-gray-900 lg:p-12'>
             <CustomTable
               theadList={theadList}
               valuesList={reports}
@@ -219,36 +227,45 @@ const ReportAdmin: NextPage<any> = (props) => {
 
 export default ReportAdmin;
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const {
-    cookies: { user },
-  } = context.req;
+  try {
+    const {
+      cookies: { user }
+    } = context.req;
 
-  let parseReport = JSON.parse(user);
+    let parseReport = JSON.parse(user);
 
-  if (!user) {
+    if (!user) {
+      return {
+        redirect: {
+          permanent: false,
+          destination: '/auth/login'
+        }
+      };
+    } else if (parseReport?.session?.role === 'user') {
+      return {
+        redirect: {
+          permanent: false,
+          destination: '/'
+        }
+      };
+    }
+    const limit = parseInt(process.env.NEXT_PUBLIC_BACK_OFFICE_MAX_ENTITIES);
+    const res = await fetch(
+      'http://localhost:3000/api/report/admin?limit=' + limit + '&page=1'
+    );
+    const body = await res.json();
     return {
-      redirect: {
-        permanent: false,
-        destination: "/auth/login",
-      },
+      props: {
+        ...body,
+        i18n: (await import(`../../../i18n/${context.locale}.json`)).default
+      }
     };
-  } else if (parseReport?.session?.role === "user") {
+  } catch (e) {
     return {
       redirect: {
         permanent: false,
-        destination: "/",
-      },
+        destination: '/'
+      }
     };
   }
-  const limit = parseInt(process.env.NEXT_PUBLIC_BACK_OFFICE_MAX_ENTITIES);
-  const res = await fetch(
-    "http://localhost:3000/api/report/admin?limit=" + limit + "&page=1"
-  );
-  const body = await res.json();
-  return {
-    props: {
-      ...body,
-      i18n: (await import(`../../../i18n/${context.locale}.json`)).default,
-    },
-  };
 };

@@ -1,55 +1,55 @@
-import { withAuth } from "@middleware/auth";
-import withDatabase from "@middleware/mongoose";
-import Report from "@models/Report";
-import { getUser } from "libs/getCurrentUser";
-import { handleError } from "libs/handleError";
-import { NextApiRequest, NextApiResponse } from "next";
-import User from "@models/User";
-import Resource from "@models/Resource";
-import { ResourceMinimum } from "@definitions/Resource";
-import { UserMinimum } from "@definitions/User";
-import { toResourceMinimum } from "libs/toMinimum";
+import { withAuth } from '@middleware/auth';
+import withDatabase from '@middleware/mongoose';
+import Report from '@models/Report';
+import { getUser } from 'libs/getCurrentUser';
+import { handleError } from 'libs/handleError';
+import { NextApiRequest, NextApiResponse } from 'next';
+import User from '@models/User';
+import Resource from '@models/Resource';
+import { ResourceMinimum } from '@definitions/Resource';
+import { UserMinimum } from '@definitions/User';
+import { toResourceMinimum } from 'libs/toMinimum';
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
-  if (req.method !== "POST") {
+  if (req.method !== 'POST') {
     res.status(405).json({
       data: null,
       error: {
         code: 405,
-        message: "method not allowed",
-      },
+        message: 'method not allowed'
+      }
     });
     return;
   }
 
   try {
-    const { documentUid, type, context } = req.body;
+    const { documentUid, type, context, message, link } = req.body;
     if (!documentUid || !type) {
       res.status(400).json({
         data: null,
         error: {
           code: 400,
-          message: "bad request",
+          message: 'bad request',
           fields: {
             document: !documentUid,
-            type: !type,
-          },
-        },
+            type: !type
+          }
+        }
       });
       return;
     }
     let document: ResourceMinimum | UserMinimum | {} = {};
     let validated = true;
 
-    if (type === "user") {
+    if (type === 'user') {
       const reportedUser = await User.findOne({ _id: documentUid });
       validated = reportedUser.validated;
       document = {
         uid: reportedUser._id.toString(),
         fullName: reportedUser.fullName,
-        photoURL: reportedUser.photoURL,
+        photoURL: reportedUser.photoURL
       };
-    } else if (type === "resource") {
+    } else if (type === 'resource') {
       const reportedResource = await Resource.findOne({ slug: documentUid });
       validated = reportedResource.validated;
       document = toResourceMinimum(reportedResource);
@@ -59,9 +59,9 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       return res.status(404).json({
         data: null,
         error: {
-          message: type + " not found",
-          code: 404,
-        },
+          message: type + ' not found',
+          code: 404
+        }
       });
     }
 
@@ -71,8 +71,8 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         data: null,
         error: {
           code: 401,
-          message: "unauthorized",
-        },
+          message: 'unauthorized'
+        }
       });
       return;
     }
@@ -80,7 +80,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     const emitter = {
       fullName: user.fullName,
       photoURL: user.photoURL,
-      uid: user._id.toString(),
+      uid: user._id.toString()
     };
 
     const report = await Report.create({
@@ -88,21 +88,23 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       emitter,
       type,
       context,
-      validated,
+      message,
+      link,
+      validated
     });
     res.status(201).json({
       data: {
-        message: "ok",
-        type: "report",
+        message: 'ok',
+        type: 'report',
         attributes: report,
         payload: {
-          ...req.body,
-        },
+          ...req.body
+        }
       },
-      error: null,
+      error: null
     });
   } catch (error) {
-    handleError(res, error, "report:create");
+    handleError(res, error, 'report:create');
   }
 }
 
