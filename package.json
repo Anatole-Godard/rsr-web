@@ -10,7 +10,8 @@
     "codehawk": "codehawk .",
     "test": "jest --no-cache",
     "test:e2e": "playwright test",
-    "pm2": "pm2 start ../ecosystem.config.js"
+    "pm2:dev": "pm2 start ./node_modules/next/dist/bin/next-start",
+    "pm2:prod": "pm2 start ./node_modules/next/dist/bin/next-start -i max"
   },
   "resolutions": {
     "@types/react": "17.0.2",

@@ -11,4 +11,4 @@ COPY . .
 
 RUN yarn build
 
-CMD ["pm2-runtime", "../ecosystem.config.js"]
+CMD ["yarn", "pm2:prod"]
