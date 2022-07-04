@@ -36,7 +36,7 @@ services:
   app:
     build:
       context: .
-      dockerfile: Dockerfile.prod
+      dockerfile: prod.Dockerfile
     image: rsr/app
     networks:
       - rsr-network
