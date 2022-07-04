@@ -11,9 +11,12 @@ import {
 import { Logo } from "@components/UI/Logo";
 
 import zxcvbn from "zxcvbn";
+import { GetStaticProps } from "next";
+import { useTranslations } from "next-intl";
 
 export default function Register() {
   const { register } = useAuth();
+  const t = useTranslations("Register");
   const [step, setStep] = useState(1);
 
   const [email, setEmail] = useState("");
@@ -42,12 +45,12 @@ export default function Register() {
   }, [password]);
 
   return (
-    <GuestLayout title="Se créer un compte">
+    <GuestLayout title={t("head-title")}>
       <div className="w-full max-w-sm mx-auto lg:w-96">
         <div>
           <Logo className="flex flex-col text-5xl font-extrabold tracking-wider uppercase text-opacity-80" />
           <h2 className="mt-6 text-3xl font-extrabold text-gray-900 font-marianne dark:text-gray-100">
-            Se créer un compte RSR
+            {t("title")}
           </h2>
         </div>
 
@@ -55,7 +58,7 @@ export default function Register() {
           <div>
             <div>
               <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                Enregistrez-vous avec
+                {t("connect-with")}
               </p>
 
               <div className="grid grid-cols-1 gap-3 mt-1">
@@ -84,7 +87,7 @@ export default function Register() {
               </div>
               <div className="relative flex justify-center text-sm">
                 <span className="px-2 text-gray-500 bg-white dark:bg-gray-900">
-                  Ou enregistrer vous avec
+                  {t("or-with")}
                 </span>
               </div>
             </div>
@@ -99,7 +102,7 @@ export default function Register() {
                       htmlFor="email"
                       className="block text-sm font-medium text-gray-700 dark:text-gray-300"
                     >
-                      Adresse email
+                      {t("email")}
                     </label>
                     <div>
                       <input
@@ -124,7 +127,7 @@ export default function Register() {
                     </div>
                     {validation.email === false && (
                       <small className="text-xs font-bold text-red-500">
-                        {"L'adresse email est invalide"}
+                        {t("email-invalid")}
                       </small>
                     )}
                   </div>
@@ -134,7 +137,7 @@ export default function Register() {
                       htmlFor="password"
                       className="block text-sm font-medium text-gray-700 dark:text-gray-300"
                     >
-                      Mot de passe
+                      {t("password")}
                     </label>
                     <div className="flex flex-col mt-1">
                       <input
@@ -176,38 +179,38 @@ export default function Register() {
                       </div>
                       {password === "" && (
                         <small className="text-xs font-bold text-gray-500">
-                          {"Le mot de passe est obligatoire"}
+                          {t("password-required")}
                         </small>
                       )}
                       {passwordScore === 0 && password !== "" && (
                         <small className="text-xs font-bold text-red-500">
-                          {"Le mot de passe est trop faible"}
+                          {t("password-strengh0")}
                         </small>
                       )}
                       {passwordScore === 1 && (
                         <small className="text-xs font-bold text-yellow-500">
-                          {"Le mot de passe est assez faible"}
+                          {t("password-strengh1")}
                         </small>
                       )}
                       {passwordScore === 2 && (
                         <small className="text-xs font-bold text-green-500">
-                          {"Le mot de passe est assez fort"}
+                          {t("password-strengh2")}
                         </small>
                       )}
                       {passwordScore === 3 && (
                         <small className="text-xs font-bold text-green-500">
-                          {"Le mot de passe est fort"}
+                          {t("password-strengh3")}
                         </small>
                       )}
                       {passwordScore === 4 && (
                         <small className="text-xs font-bold text-bleuFrance-500">
-                          {"Le mot de passe est très fort"}
+                          {t("password-strengh4")}
                         </small>
                       )}
                     </div>
                     {validation.password === false && (
                       <small className="text-xs font-bold text-red-500">
-                        Le mot de passe doit contenir au moins 8 caractères
+                        {t("password-length")}
                       </small>
                     )}
                   </div>
@@ -221,7 +224,7 @@ export default function Register() {
                       htmlFor="fullName"
                       className="block text-sm font-medium text-gray-700 dark:text-gray-300"
                     >
-                      Nom complet
+                      {t("fullname")}
                     </label>
                     <div>
                       <input
@@ -242,7 +245,7 @@ export default function Register() {
                     </div>
                     {validation.fullName === false && (
                       <small className="text-xs font-bold text-red-500">
-                        {"Le nom complet n'est pas renseigné"}
+                        {t("fullname-required")}
                       </small>
                     )}
                   </div>
@@ -252,7 +255,7 @@ export default function Register() {
                       htmlFor="birthDate"
                       className="block text-sm font-medium text-gray-700 dark:text-gray-300"
                     >
-                      Date de naissance
+                      {t("birthdate")}
                     </label>
                     <div>
                       <input
@@ -273,7 +276,7 @@ export default function Register() {
                     </div>
                     {validation.birthDate === false && (
                       <small className="text-xs font-bold text-red-500">
-                        {"La date de naissance n'est pas renseignée"}
+                        {t("birthdate-required")}
                       </small>
                     )}
                   </div>
@@ -302,7 +305,7 @@ export default function Register() {
                     }}
                     className="justify-center w-1/2 btn-bleuFrance"
                   >
-                    Continuer
+                    {t("next")}
                     <ArrowRightIcon className="w-5 h-5 ml-2" />
                   </button>
                 </div>
@@ -315,7 +318,7 @@ export default function Register() {
                     className="justify-center w-1/2 btn-bleuFrance"
                   >
                     <ArrowLeftIcon className="w-5 h-5 mr-2" />
-                    Retour
+                    {t("back")}
                   </button>
                   <button
                     onClick={() => {
@@ -331,7 +334,7 @@ export default function Register() {
                     }}
                     className="justify-center w-1/2 btn-bleuFrance"
                   >
-                    {"S'enregistrer"}
+                    {t("sign-up")}
                     <UserAddIcon className="w-5 h-5 ml-2" />
                   </button>
                 </div>
@@ -340,7 +343,7 @@ export default function Register() {
               <div className="my-1 text-sm">
                 <Link href="/auth/login">
                   <a className="font-medium duration-150 text-bleuFrance-600 hover:text-bleuFrance-500">
-                    Se connecter
+                    {t("already-have-account")}
                   </a>
                 </Link>
               </div>
@@ -351,3 +354,11 @@ export default function Register() {
     </GuestLayout>
   );
 }
+
+export const getStaticProps: GetStaticProps = async (ctx) => {
+  return {
+    props: {
+      i18n: (await import(`../../i18n/${ctx.locale}.json`)).default,
+    },
+  };
+};

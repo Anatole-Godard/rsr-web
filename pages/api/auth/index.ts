@@ -1,8 +1,9 @@
-import User from "@models/User";
-import { genToken } from "@middleware/auth";
-import type { NextApiRequest, NextApiResponse } from "next";
-import SessionToken from "@models/SessionToken";
-import withDatabase from "@middleware/mongoose";
+import User from '@models/User';
+import { genToken } from '@middleware/auth';
+import type { NextApiRequest, NextApiResponse } from 'next';
+import SessionToken from '@models/SessionToken';
+import withDatabase from '@middleware/mongoose';
+
 const argon2 = require("argon2");
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -51,6 +52,17 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     const user = await User.findOne({ email }).lean();
     if (await argon2.verify(user.password, password)) {
       const token = genToken({ uid: user._id.toString(), role: user.role });
+
+      if(!(user.validated)){
+        return res.status(403).json({
+          data: null,
+          error: {
+            name: "UnAuthorizedError",
+            message: "UnAuthorized user",
+            client: "Cet utilisateur n'est pas autorisé à se connecter",
+          },
+        });
+      }
 
       const session = await SessionToken.findOneAndUpdate(
         { uid: user._id, appSource: appsource },

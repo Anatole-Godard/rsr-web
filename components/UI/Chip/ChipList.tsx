@@ -19,6 +19,7 @@ export const ChipList = ({
   list: ChipElement[];
   selected?: ChipElement[];
   setSelected?:
+    // eslint-disable-next-line no-unused-vars
     | ((selected?: ChipElement[]) => void)
     | Dispatch<SetStateAction<ChipElement[]>>
     | null;

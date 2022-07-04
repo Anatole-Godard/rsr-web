@@ -68,7 +68,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       const tag = await Tag.findByIdAndDelete(req.body._id);
       const resources = await Resource.updateMany(
         { tags: { $elemMatch: { _id: tag._id } } },
-          // @ts-ignore
+        // @ts-ignore
         { $pull: { tags: { _id: tag._id } } }
       );
 

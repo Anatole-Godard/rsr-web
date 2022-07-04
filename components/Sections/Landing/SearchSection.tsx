@@ -5,6 +5,7 @@ import {
   LibraryIcon,
 } from "@heroicons/react/outline";
 import { types } from "constants/resourcesTypes";
+import { useTranslations } from "next-intl";
 import { useRouter } from "next/router";
 import { useState } from "react";
 
@@ -12,6 +13,7 @@ export const SearchSection = () => {
   const [query, setQuery] = useState("");
   const [type, setType] = useState(null);
   const router = useRouter();
+  const t = useTranslations("SearchSection");
 
   const post = (e) => {
     e.preventDefault();
@@ -24,7 +26,7 @@ export const SearchSection = () => {
   return (
     <div className="flex-col hidden w-full px-32 my-4 mb-12 space-y-4 lg:flex lg:my-12">
       <h4 className="mb-1 text-xl font-bold tracking-tight text-center font-marianne sm:text-2xl">
-        Que recherchez-vous ?
+        {t("title")}
       </h4>
       <form className="relative w-full" onSubmit={(e) => post(e)}>
         <div className="absolute inset-0 flex items-center" aria-hidden="true">
@@ -42,7 +44,7 @@ export const SearchSection = () => {
               onChange={(e) => setQuery(e.target.value)}
               required
               className="input px-5 py-2 pl-[2.25rem] placeholder-gray-500   lg:w-96 "
-              placeholder="Rechercher ..."
+              placeholder={t("search-query")}
             />
           </label>
           <label className="relative text-gray-400 focus-within:text-gray-600">
@@ -67,10 +69,10 @@ export const SearchSection = () => {
               className="input px-5 py-2 appearance-none pl-[2.25rem] placeholder-gray-500   lg:w-48 "
               placeholder="Type de la ressource"
             >
-              <option value="null">Tout type</option>
+              <option value="null">{t("type-all")}</option>
               {types.map((type, idx) => (
                 <option key={idx} value={type.value}>
-                  {type.label}
+                  {t(type.value)}
                 </option>
               ))}
             </select>
@@ -78,17 +80,10 @@ export const SearchSection = () => {
           </label>
           <button className="btn-bleuFrance">
             <SearchIcon className="w-4 h-4 mr-2" />
-            Rechercher
+            {t("search-button")}
           </button>
         </div>
       </form>
-      {/* <div className="hidden pt-3 mx-auto space-x-3 overflow-x-hidden lg:inline-flex md:pt-0 md:pl-3">
-        <Chip size="normal" color="green" name="Tomorrow" />
-        <Chip size="normal" color="amber" name="This week" />
-        <Chip size="normal" color="purple" name="Near you" />
-        <Chip size="normal" color="bleuFrance" name="Online" />
-        <Chip size="normal" color="red" name="In person" />
-      </div> */}
     </div>
   );
 };

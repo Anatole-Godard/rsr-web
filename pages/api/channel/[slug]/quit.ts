@@ -34,15 +34,15 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       });
     }
 
-    if (channel.owner.uid === user._id) {
-      return res.status(403).json({
-        data: null,
-        error: {
-          code: 403,
-          message: "forbidden",
-        },
-      });
-    }
+    // if (channel.owner.uid === user._id) {
+    //   return res.status(403).json({
+    //     data: null,
+    //     error: {
+    //       code: 403,
+    //       message: "forbidden",
+    //     },
+    //   });
+    // }
 
     channel.members = channel.members.filter(
       (member: UserMinimum) => member.uid !== user._id

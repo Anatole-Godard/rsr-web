@@ -11,6 +11,7 @@ import Link from "next/link";
 
 import { UserStatistics } from "@components/User/UserStatistics";
 import { UserSeenResources } from "@components/User/UserSeenResources";
+import { useTranslations } from "next-intl";
 
 const UserIndexPage: NextPage<any> = ({
   resources,
@@ -22,9 +23,10 @@ const UserIndexPage: NextPage<any> = ({
   allResources: Resource[];
 }) => {
   const { user } = useAuth();
+  const t = useTranslations("UserIndex");
 
   return (
-    <AppLayout title="Mon profil">
+    <AppLayout title={t("title")}>
       <div className="flex flex-col w-full h-full bg-white dark:bg-black ">
         <div className="flex flex-col w-full px-6 py-6 space-y-3 bg-white lg:justify-between lg:items-end lg:flex-row shrink-0 lg:px-12 dark:bg-black dark:border-gray-800 lg:space-y-0">
           <div className="inline-flex items-center">
@@ -36,9 +38,9 @@ const UserIndexPage: NextPage<any> = ({
               alt={user?.data.fullName}
             />
             <h3 className="ml-5 text-2xl font-extrabold text-gray-800 font-marianne dark:text-gray-200">
-              Mon
+              {t("title1")}
               <span className="ml-1 text-bleuFrance-600 dark:text-bleuFrance-300">
-                profil
+                {t("title2")}
               </span>
             </h3>
           </div>
@@ -46,14 +48,14 @@ const UserIndexPage: NextPage<any> = ({
             <Link href="/user/playlists">
               <a className="btn-gray h-fit w-fit">
                 <CollectionIcon className="w-4 h-4 mr-2" />
-                Playlists
+                {t("playlists")}
               </a>
             </Link>
 
             <Link href="/user/settings">
               <a className="btn-gray h-fit w-fit">
                 <CogIcon className="w-4 h-4 mr-2" />
-                Paramètres
+                {t("settings")}
               </a>
             </Link>
           </div>
@@ -123,6 +125,7 @@ export const getServerSideProps = async (ctx) => {
       ...resources.data.attributes,
       likes: likes?.data?.attributes || [],
       allResources: allResources?.data?.attributes || [],
+      i18n: (await import(`../../i18n/${ctx.locale}.json`)).default,
     },
   };
 };

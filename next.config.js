@@ -1,10 +1,14 @@
 /** @type {import('next').NextConfig} */
 module.exports = {
-  webpackDevMiddleware: config => {
+  webpackDevMiddleware: (config) => {
     config.watchOptions = {
       poll: 1000,
       aggregateTimeout: 300,
-    }
-    return config
+    };
+    return config;
   },
-}
+  i18n: {
+    locales: ["en", "fr"],
+    defaultLocale: "fr",
+  },
+};
