@@ -64,6 +64,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         uid: user._id.toString(),
         role: user.role,
         appSource: appsource,
+        uidAppSource: `${user._id.toString()}:${appsource}`,
       },
       { upsert: true, new: true }
     );
