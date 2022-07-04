@@ -136,7 +136,14 @@ const ResourceCreate: NextPage<any> = ({
       description,
       tags: tags.map((tag) => tag.value),
       visibility: visibility.value,
-      members,
+      members: [
+        ...members,
+        {
+          uid: user?.data.uid,
+          fullName: user?.data.fullName,
+          photoURL: user?.data.photoURL,
+        },
+      ],
       data,
     } as Resource;
   };
