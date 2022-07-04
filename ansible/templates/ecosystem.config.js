@@ -4,11 +4,8 @@ module.exports = {
     exec_mode: 'cluster',
     instances: 1,
     script: ".node_modules/next/dist/bin/next",
+    args: "start",
     merge_logs: true,
-    cwd: "/home/ophzl/app/",
-    env: {
-      NODE_ENV: 'production',
-      PORT: '3000'
-    }
+    cwd: "/home/ophzl/app/"
   }],
 };
