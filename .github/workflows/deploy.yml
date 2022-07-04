@@ -36,5 +36,5 @@ jobs:
           ssh-private-key: ${{ secrets.SSH_KEY }}
       - name: Deploy with rsync
         run: rsync -avz ./ ophzl@35.189.195.156:app
-      - run: ssh ophzl@35.189.195.156 "cd app && sudo docker compose -f docker-compose.dev.yml up -d"
+      - run: ssh ophzl@35.189.195.156 "cd app && sudo docker compose -f docker-compose.dev.yml up -d --remove-orphans --build"
 #      - run: ssh ophzl@35.189.195.156 "pm2 startOrReload ecosystem.config.js"
