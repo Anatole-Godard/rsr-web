@@ -1,11 +1,11 @@
 import { MediaUploader } from "@components/Channel/Helper/Media/Uploader";
 import { AppLayout } from "@components/Layout/AppLayout";
 import { Media } from "@definitions/Resource/Media";
+import { UserMinimum } from "@definitions/User";
 import {
   CheckIcon,
   CloudUploadIcon,
   XCircleIcon,
-  XIcon,
 } from "@heroicons/react/solid";
 import { useAuth } from "@hooks/useAuth";
 import { classes } from "libs/classes";
@@ -250,13 +250,9 @@ const ChannelCreate: NextPage<any> = ({
                       {t("members-placeholder")}
                     </div>
                   }
-                  options={membersOptions
-                    .filter((member) => member.uid !== user?.data.uid)
-                    .map((member) => ({
-                      value: member.uid,
-                      label: member.fullName,
-                      photoURL: member.photoURL,
-                    }))}
+                  options={membersOptions.filter(
+                    (member) => member.value !== user?.data.uid
+                  )}
                   formatOptionLabel={(member: {
                     value: string;
                     label: string;
@@ -311,7 +307,11 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const body = await (await fetch("http://localhost:3000/api/user")).json();
   return {
     props: {
-      membersOptions: body?.data?.attributes,
+      membersOptions: body?.data?.attributes.map((member: UserMinimum) => ({
+        value: member.uid,
+        label: member.fullName,
+        photoURL: member.photoURL,
+      })),
       i18n: (await import(`../../i18n/${ctx.locale}.json`)).default,
     },
   };

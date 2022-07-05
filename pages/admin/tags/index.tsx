@@ -102,7 +102,7 @@ const TagManager: NextPage<any> = (props) => {
         toast.error('Une erreur est survenue');
       }
     },
-    [currentPage, limitPerPage, user?.session]
+    [currentPage, limitPerPage, router, user.session]
   );
 
   useEffect(() => {

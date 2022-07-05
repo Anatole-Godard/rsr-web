@@ -1,7 +1,6 @@
 import {
   CloudUploadIcon,
   DocumentIcon,
-  ExclamationIcon,
   PhotographIcon,
   PlusCircleIcon,
   VideoCameraIcon,
@@ -11,7 +10,6 @@ import {
 import { Dispatch, Fragment, useEffect, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { formatBytes } from "libs/formatBytes";
-import { useRouter } from "next/router";
 import { useEventListener } from "@hooks/useEventListener";
 import { Media } from "@definitions/Resource/Media";
 import { useTranslations } from "next-intl";
@@ -27,7 +25,6 @@ export const MediaUploader = ({
   limit: number;
   accepted: ("image/*" | "video/*" | "audio/*" | "application/pdf")[];
 }) => {
-  const router = useRouter();
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [hasChanges, setHasChanges] = useState<boolean>(false);
 
