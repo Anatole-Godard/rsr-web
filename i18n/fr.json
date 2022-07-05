@@ -448,6 +448,14 @@
     "limit-file-size": "Maximum 5 Mo par fichier jusqu'à 3 fichiers",
     "limit-file-remaining": "{remaining} fichiers restants"
   },
+  "ChannelMediaUploader": {
+    "cancel": "Annuler",
+    "add": "Ajouter une image",
+    "accepted-files-types": "Fichier image accepté",
+    "limit-reached": "Vous avez atteint le nombre maximum de documents",
+    "limit-file-size": "Maximum 5 Mo par fichier jusqu'à {limit} fichier(s)",
+    "limit-file-remaining": "{remaining} fichier(s) restants"
+  },
   "WrapperModularInputs": {
     "default-input-label": "Identifiant du champ",
     "no-input-title": "Ajoutez un champ à remplir",

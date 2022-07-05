@@ -163,7 +163,7 @@ const ChatOverview = ({
   visibility: "public" | "private";
 }) => {
   const t = useTranslations("ChannelSidebar");
-  const {locale} = useRouter()
+  const { locale } = useRouter();
   return (
     <a
       href={`/${locale}/channel/${slug}`}
@@ -181,8 +181,8 @@ const ChatOverview = ({
       )}
     >
       {image ? (
-        <div className="flex items-center justify-center w-6 h-6 rounded-full select-none md:w-8 md:h-8 bg-bleuFrance-50 ring-2 shrink-0 ring-offset-2 ring-bleuFrance-200">
-          <Image src={image.url} alt={slug} width={24} height={24} />
+        <div className="flex items-center justify-center w-6 h-6 overflow-hidden rounded-full select-none md:w-8 md:h-8 bg-bleuFrance-50 ring-2 shrink-0 ring-offset-2 ring-bleuFrance-200">
+          <Image src={image.url} alt={slug}  width={32} height={32} />
         </div>
       ) : (
         <span className="flex items-center justify-center w-6 h-6 rounded-full shrink-0 md:w-8 md:h-8 text-bleuFrance-500 bg-bleuFrance-50 ring-2 ring-offset-2 ring-bleuFrance-200 dark:bg-bleuFrance-700 dark:text-bleuFrance-200">
