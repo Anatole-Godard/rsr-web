@@ -9,7 +9,9 @@
     "lint": "next lint",
     "codehawk": "codehawk .",
     "test": "jest --no-cache",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "pm2:dev": "pm2 start yarn -- dev",
+    "pm2:prod": "pm2 start yarn -- start"
   },
   "resolutions": {
     "@types/react": "17.0.2",
