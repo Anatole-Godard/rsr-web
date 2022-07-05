@@ -124,12 +124,12 @@ const ChannelSlug: NextPage<any> = ({
             <div className="inline-flex justify-between w-full p-3 pr-6 border-b border-gray-100 dark:border-gray-900 md:border-0">
               <div className="inline-flex items-center">
                 {channel.image ? (
-                  <div className="flex items-center justify-center w-6 h-6 rounded-full select-none md:w-8 md:h-8 bg-bleuFrance-50 ring-2 shrink-0 ring-offset-2 ring-bleuFrance-200">
+                  <div className="flex items-center justify-center w-6 h-6 rounded-full select-none md:w-8 md:h-8 bg-bleuFrance-50 ring-2 shrink-0 ring-offset-2 ring-bleuFrance-200 overflow-hidden">
                     <Image
                       src={channel.image.url}
                       alt={slug}
-                      width={24}
-                      height={24}
+                      width={32}
+                      height={32}
                     />
                   </div>
                 ) : (
@@ -143,9 +143,7 @@ const ChannelSlug: NextPage<any> = ({
                     <p className="text-xl font-medium text-gray-700 dark:text-gray-200 font-marianne">
                       {"#" + slug}
                     </p>
-                    {/* <span className=" text-[0.6rem] ml-3 h-3 min-w-max w-full bg-gray-200 text-black font-bold rounded-full">
-                    {chat.length}
-                  </span> */}
+                    
                   </div>
                   {channel.description && (
                     <p className="text-xs font-light text-gray-500 font-spectral">

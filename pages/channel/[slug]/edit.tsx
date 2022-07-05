@@ -1,5 +1,7 @@
+import { MediaUploader } from "@components/Channel/Helper/Media/Uploader";
 import { AppLayout } from "@components/Layout/AppLayout";
 import { Channel } from "@definitions/Channel";
+import { Media } from "@definitions/Resource/Media";
 import { UserMinimum } from "@definitions/User";
 import { Dialog, Transition } from "@headlessui/react";
 import { TrashIcon } from "@heroicons/react/outline";
@@ -39,8 +41,6 @@ const ChannelEdit: NextPage<any> = ({
   const { user } = useAuth();
   const t = useTranslations("ChannelCreate");
 
-  const [pictureUrl, setPictureUrl] = useState(props?.image?.url || null);
-  const [pictureFile, setPictureFile] = useState(null);
   const [name, setName] = useState<string>(props.name || "");
   const [description, setDescription] = useState<string | null>(
     props.description
@@ -51,6 +51,9 @@ const ChannelEdit: NextPage<any> = ({
 
   const [members, setMembers] = useState<MemberValue[]>(
     (props.members as unknown as MemberValue[]) || []
+  );
+  const [medias, setMedias] = useState<Media[]>(
+    props.image ? [props.image] : []
   );
 
   const [validForm, setValidForm] = useState<boolean>(false);
@@ -90,7 +93,6 @@ const ChannelEdit: NextPage<any> = ({
               name,
               description,
               visibility: privateGroup ? "private" : "public",
-              photoURL: pictureUrl,
               members: [
                 {
                   uid: user?.data.uid,
@@ -106,11 +108,46 @@ const ChannelEdit: NextPage<any> = ({
             }),
           }
         );
-        toast.dismiss(toastID);
-        if (response.ok) toast.success(t("toast-edit-success"));
-        else toast.error(t("toast-edit-error"));
 
-        setRequestOk(response.ok);
+        const body = await response.json();
+        toast.dismiss(toastID);
+        if (response.ok && medias.length > 0) {
+          const responses = [];
+          for (const media of medias) {
+            const formData = new FormData();
+            formData.append("file", media as any);
+            formData.append("name", media.name);
+            formData.append("type", media.type);
+            formData.append("size", media.size.toString());
+            responses.push(
+              await fetch(`/api/channel/${body.data.attributes.slug}/upload`, {
+                method: "POST",
+                body: formData,
+              })
+            );
+          }
+          if (responses.every((r) => r.ok)) {
+            setRequestOk(true);
+            toast.success(t("toast-edit-success"));
+            router.push(`/channel/${body.data.attributes.slug}`);
+          } else setRequestOk(false);
+        } else if (response.ok && medias.length === 0) {
+          const response = await fetchRSR(
+            `/api/channel/${body.data.attributes.slug}/upload`,
+            user?.session,
+            {
+              method: "DELETE",
+            }
+          );
+          if (response.ok) {
+            setRequestOk(true);
+            toast.success(t("toast-edit-success"));
+            router.push(`/channel/${body.data.attributes.slug}`);
+          } else {
+            setRequestOk(false);
+            toast.error(t("toast-edit-error"));
+          }
+        }
       } catch (err) {
         // console.log(err);
       }
@@ -124,7 +161,7 @@ const ChannelEdit: NextPage<any> = ({
     if (name && description && (members.length > 0 || !privateGroup)) {
       setValidForm(true);
     } else setValidForm(false);
-  }, [pictureUrl, name, description, members, privateGroup]);
+  }, [name, description, members, privateGroup]);
 
   return (
     <AppLayout title={t("head-edit-title", { name })}>
@@ -231,79 +268,17 @@ const ChannelEdit: NextPage<any> = ({
                 disabled
               ></input>
             </label>
-
             <label className="flex flex-col grow">
-              <h4 className="mb-1 text-sm font-semibold text-gray-700 dark:text-gray-300 font-marianne">
-                {t("picture")}
+              <h4 className="mb-1 text-sm font-semibold after:content-['*'] after:ml-0.5 after:text-red-500 text-gray-700 font-marianne dark:text-gray-300">
+                {t("description")}
               </h4>
-              {pictureUrl && (
-                <div className="relative w-full grow">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={pictureUrl}
-                    className="object-cover object-center w-full rounded-lg aspect-video"
-                    alt="Event picture"
-                  ></img>
-                  <div
-                    className="absolute top-0 right-0 flex items-center justify-center w-6 h-6 -mt-1 -mr-1 text-red-700 transition duration-300 bg-red-200 rounded-full cursor-pointer hover:bg-red-300"
-                    onClick={() => {
-                      setPictureUrl(null);
-                      setPictureFile(null);
-                    }}
-                  >
-                    <XIcon className="w-3 h-3 stroke-2"></XIcon>
-                  </div>
-                </div>
-              )}
-              {!pictureUrl && (
-                <div className="w-full grow">
-                  <input
-                    id="filePicture"
-                    type="file"
-                    accept="image/*"
-                    onChange={(e) => {
-                      let file =
-                        e.target.files instanceof FileList
-                          ? e.target.files[0]
-                          : null;
-                      if (file) {
-                        setPictureFile(file);
-                        setPictureUrl(URL.createObjectURL(file));
-                      }
-                    }}
-                    className="hidden"
-                  ></input>
-                  <label
-                    htmlFor="filePicture"
-                    className="relative flex flex-col items-center justify-center w-full h-full p-12 duration-300 border-2 border-gray-300 border-dashed rounded-lg hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                  >
-                    <svg
-                      className="w-12 h-12 mx-auto text-gray-400"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"
-                      />
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"
-                      />
-                    </svg>
-
-                    <span className="block mt-2 text-sm font-medium text-gray-900">
-                      {t("picture-add")}
-                    </span>
-                  </label>
-                </div>
-              )}
+              <textarea
+                className="bg-gray-200 input grow"
+                onChange={(e) => setDescription(e.target.value)}
+                rows={10}
+                value={description}
+                placeholder={t("description")}
+              ></textarea>
             </label>
           </div>
           <div className="flex flex-col w-full px-2 space-y-3 md:w-1/2">
@@ -361,18 +336,15 @@ const ChannelEdit: NextPage<any> = ({
                 />
               </label>
             )}
-            <label className="flex flex-col grow">
-              <h4 className="mb-1 text-sm font-semibold after:content-['*'] after:ml-0.5 after:text-red-500 text-gray-700 font-marianne dark:text-gray-300">
-                {t("description")}
-              </h4>
-              <textarea
-                className="bg-gray-200 input grow"
-                onChange={(e) => setDescription(e.target.value)}
-                rows={10}
-                value={description}
-                placeholder={t("description")}
-              ></textarea>
-            </label>
+            <h4 className="mb-1 text-sm font-semibold text-gray-700 dark:text-gray-300 font-marianne">
+              {t("picture")}
+            </h4>
+            <MediaUploader
+              limit={1}
+              accepted={["image/*"]}
+              files={medias}
+              setFiles={setMedias}
+            />
           </div>
         </div>
       </form>
