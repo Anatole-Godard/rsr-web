@@ -18,7 +18,7 @@ jobs:
           # Remote user
           REMOTE_USER: ophzl
           # Remote port
-          REMOTE_PORT: 4284
+          # REMOTE_PORT: 22
           # Source directory
           # SOURCE: # optional, default is
           # Target directory
