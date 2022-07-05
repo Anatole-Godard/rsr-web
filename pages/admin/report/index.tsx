@@ -94,7 +94,7 @@ const ReportAdmin: NextPage<any> = (props) => {
         }
       } else toast.error('Une erreur est survenue');
     },
-    [currentPage, limitPerPage, user?.session]
+    [currentPage, limitPerPage, user?.session, router]
   );
 
   useEffect(() => {

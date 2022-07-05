@@ -14,6 +14,7 @@ import { UserMinimum } from "@definitions/User";
 import Image from "next/image";
 import { useSearch } from "@hooks/useSearch";
 import { useTranslations } from "next-intl";
+import { useRouter } from "next/router";
 
 export const Sidebar = ({
   channels,
@@ -162,9 +163,10 @@ const ChatOverview = ({
   visibility: "public" | "private";
 }) => {
   const t = useTranslations("ChannelSidebar");
+  const { locale } = useRouter();
   return (
     <a
-      href={`/channel/${slug}`}
+      href={`/${locale}/channel/${slug}`}
       className={classes(
         "py-1 px-2 md:px-3 md:py-3 inline-flex items-center rounded-md w-max  md:w-full h-full md:h-16",
         active
@@ -179,8 +181,8 @@ const ChatOverview = ({
       )}
     >
       {image ? (
-        <div className="flex items-center justify-center w-6 h-6 rounded-full select-none md:w-8 md:h-8 bg-bleuFrance-50 ring-2 shrink-0 ring-offset-2 ring-bleuFrance-200">
-          <Image src={image.url} alt={slug} width={24} height={24} />
+        <div className="flex items-center justify-center w-6 h-6 overflow-hidden rounded-full select-none md:w-8 md:h-8 bg-bleuFrance-50 ring-2 shrink-0 ring-offset-2 ring-bleuFrance-200">
+          <Image src={image.url} alt={slug}  width={32} height={32} />
         </div>
       ) : (
         <span className="flex items-center justify-center w-6 h-6 rounded-full shrink-0 md:w-8 md:h-8 text-bleuFrance-500 bg-bleuFrance-50 ring-2 ring-offset-2 ring-bleuFrance-200 dark:bg-bleuFrance-700 dark:text-bleuFrance-200">

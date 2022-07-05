@@ -449,6 +449,14 @@
     "limit-file-size": "File size limit is 5MB",
     "limit-file-remaining": "{remaining} remaining files"
   },
+  "ChannelMediaUploader": {
+    "cancel": "Annuler",
+    "add": "Add an image",
+    "accepted-files-types": "Image file accepted",
+    "limit-reached": "You have reached the limit of 1 image",
+    "limit-file-size": "File size limit is 5MB",
+    "limit-file-remaining": "{remaining} remaining files"
+  },
   "WrapperModularInputs": {
     "default-input-label": "Label",
     "no-input-title": "Add an input",

@@ -10,8 +10,6 @@ import {
 import { formatDistance } from 'date-fns';
 import { fr } from 'date-fns/locale';
 import Image from 'next/image';
-import { fetchRSR } from 'libs/fetchRSR';
-import { useAuth } from '@hooks/useAuth';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
 import { useReport } from '@hooks/useReport';
@@ -21,22 +19,10 @@ type History = (Message | Activity) & {
 };
 
 export const HistoryItem = ({ user, data, createdAt, context }: History) => {
-  const auth = useAuth();
   const t = useTranslations('HistoryItem');
   const { locale } = useRouter();
   const { asPath } = useRouter();
   const { openReport } = useReport();
-
-  const report = async (type, context) => {
-    await fetchRSR(`/api/report/create`, auth.user?.session, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        appsource: 'web'
-      },
-      body: JSON.stringify({ type, documentUid: user.uid, context })
-    });
-  };
 
   return (
     <li className='mb-6 ml-6 last:pb-6'>
