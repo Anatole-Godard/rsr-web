@@ -13,7 +13,7 @@ interface CommentViewProps {
   slug: string;
 }
 
-export const CommentView = ({ comment, slug }: CommentViewProps) => {
+export const CommentView = ({ comment }: CommentViewProps) => {
   const { owner, content, createdAt } = comment;
   const { user } = useAuth();
   const { locale, asPath } = useRouter();
@@ -52,7 +52,7 @@ export const CommentView = ({ comment, slug }: CommentViewProps) => {
                   openReport({
                     type: 'comment',
                     label: 'Commentaire',
-                    uid: slug,
+                    uid: comment.owner.uid,
                     link: asPath,
                     context: content
                   });
