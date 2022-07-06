@@ -83,6 +83,8 @@
     "comments-none": "Aucun commentaire pour l'instant",
     "comments-placeholder": "Ajouter un commentaire...",
 
+    "resource-not-found": "La ressource n'existe pas",
+
     "toast-report-loading": "Envoi du signalement...",
     "toast-report-success": "Signalement envoyé",
     "toast-report-error": "Erreur lors de l'envoi du signalement",
@@ -144,6 +146,8 @@
     "edit-delete-title": "Supprimer #{slug}",
     "edit-delete-text": "Êtes-vous sûr de vouloir supprimer cette ressource ? Cette action est irréversible.",
     "edit-delete-text2": "Les commentaires et les J'aime associés seront également supprimés.",
+
+    "resource-not-found": "La ressource n'existe pas",
 
     "toast-create-success": "Ressource créée",
     "toast-create-error": "Erreur lors de la création de la ressource",

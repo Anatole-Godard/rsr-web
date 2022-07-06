@@ -83,6 +83,8 @@
     "comments-none": "No comments yet",
     "comments-placeholder": "Write a comment ...",
 
+    "resource-not-found": "Resource not found",
+
     "toast-report-loading": "Reporting ...",
     "toast-report-success": "Reported",
     "toast-report-error": "Error while reporting",
@@ -144,6 +146,8 @@
     "edit-delete-title": "Delete #{slug}",
     "edit-delete-text": "Are you sure you want to delete this resource? This action can't be undone.",
     "edit-delete-text2": "Associated comments and likes will also be deleted.",
+
+    "resource-not-found": "Resource not found",
 
     "toast-create-success": "Resource created",
     "toast-create-error": "Error while creating resource",
