@@ -52,16 +52,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
               id: "all",
               totalItems: count,
               totalPages: getTotalPages(count, limit),
-              attributes: resource.map((element) => ({
-                uid: element._id,
-                owner: element.owner,
-                slug: element.slug,
-                data: element.data,
-                likes: element.likes,
-                validated: element.validated,
-                createdAt: element.createdAt,
-                tags: element.tags,
-              })),
+              attributes: resource,
             },
           });
         });
