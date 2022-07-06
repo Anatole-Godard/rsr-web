@@ -145,7 +145,7 @@ const ResourceIndex: NextPage<any> = ({
           </div>
         </div>
         <div
-          className="grid min-h-full grid-cols-1 gap-3 p-6 bg-gray-100 dark:bg-gray-900 grow xl:rounded-tl-xl lg:grid-cols-4 2xl:grid-cols-4 md:grid-cols-2 lg:gap-6 lg:p-12 md:overflow-y-auto"
+          className="grid w-full gap-3 p-6 pb-16 bg-gray-100 dark:bg-gray-900 grow xl:rounded-tl-xl lg:grid-cols-4 2xl:grid-cols-4 md:grid-cols-2 lg:gap-6 lg:p-12 "
           id="grid-resources"
         >
           {displayables.map((el, index) => (
