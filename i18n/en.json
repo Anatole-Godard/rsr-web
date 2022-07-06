@@ -33,6 +33,11 @@
     "title2": "resources",
     "see-all": "See all"
   },
+  "ChannelSection": {
+    "title1": "Active",
+    "title2": "channels",
+    "see-all": "See all"
+  },
   "ResourceIndex": {
     "title": "Resources",
     "title1": "All",
@@ -411,6 +416,18 @@
     "unlisted-members": ": {length} members have access",
 
     "created-by": "of {name}"
+  },
+  "ChannelCard": {
+    "public": "Public",
+    "private-member": "Private - {length} member",
+    "private-members": "Private - {length} members",
+    "created-by": "of {name}",
+
+    "last-activity": "Last activity: {date}",
+    "no-activity": "No activity yet",
+
+    "member": "{length} member",
+    "members": "{length} members"
   },
   "ResourceView": {
     "physical_item": "Physical item",
