@@ -22,9 +22,7 @@ export const ChannelCard = (props: Channel) => {
   return (
     <div
       className={classes(
-        "flex flex-col w-full p-2 duration-300 bg-white h-fit max-h-max grow-0 border dark:border-gray-600 rounded-xl dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-900 group",
-        // visibility === "unlisted" && "border-amber-500 dark:border-amber-600",
-        visibility === "private" && "border-red-500 dark:border-red-600"
+        "flex flex-col w-full p-2 duration-300 bg-white h-fit max-h-max grow-0 border dark:border-gray-600 rounded-xl dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-900 group"
       )}
     >
       <Link href={"/channel/" + slug}>
