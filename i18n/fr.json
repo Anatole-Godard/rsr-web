@@ -33,6 +33,11 @@
     "title2": "ressources",
     "see-all": "Voir toutes les ressources"
   },
+  "ChannelSection": {
+    "title1": "",
+    "title2": "Salons de discussion",
+    "see-all": "Voir tout les salons"
+  },
   "ResourceIndex": {
     "title": "Ressources",
     "title1": "Toutes les",
@@ -411,6 +416,19 @@
     "unlisted-members": ": {length} membres y ont accès",
 
     "created-by": "de {name}"
+  },
+
+  "ChannelCard": {
+    "public": "Publique",
+    "private-member": "Privé - {length} membre",
+    "private-members": "Privé - {length} membres",
+    "created-by": "de {name}",
+
+    "last-activity": "Dernière activité: {date}",
+    "no-activity": "Aucune activité",
+
+    "member": "{length} membre",
+    "members": "{length} membres"
   },
   "ResourceView": {
     "physical_item": "Objet",
