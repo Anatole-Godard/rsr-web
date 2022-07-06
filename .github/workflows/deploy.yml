@@ -4,6 +4,7 @@ jobs:
   deploy-dev:
     timeout-minutes: 60
     runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/master'
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
