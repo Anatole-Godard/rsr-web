@@ -61,7 +61,7 @@ export const SidebarDropdown = () => {
                 <div className="block px-4 pt-3 text-xs text-gray-400 font-marianne">
                   {t("shortcuts")}
                 </div>
-                <div className="inline-flex items-center w-full py-3 ">
+                <div className="inline-flex items-center w-full gap-4 py-3 ">
                   <Shortcut
                     href="/"
                     icon={<HomeIcon {...className} />}
@@ -91,11 +91,11 @@ export const SidebarDropdown = () => {
 
 const Shortcut = ({ href, icon, name }) => (
   <Link href={href}>
-    <a className="flex flex-col items-center w-16 h-full mx-4 text-sm text-gray-700 group">
+    <a className="flex flex-col items-center w-16 h-full mx-4 text-sm text-gray-700 group shrink-0">
       <div className="flex items-center justify-center w-12 h-12 p-4 duration-300 bg-gray-200 rounded-full group-hover:bg-gray-300 active:bg-gray-100">
         {icon}
       </div>
-      <span className="mt-2 text-xs font-spectral">{name}</span>
+      <span className="mt-2 text-xs font-spectral shrink-0 whitespace-nowrap">{name}</span>
     </a>
   </Link>
 );
