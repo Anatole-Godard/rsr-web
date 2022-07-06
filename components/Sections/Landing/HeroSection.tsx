@@ -115,8 +115,8 @@ export const HeroSection = () => {
                   />
                 </svg>
               </div>
-              <div className="relative pl-4 -mr-40 sm:mx-auto sm:max-w-3xl sm:px-0 lg:max-w-none lg:h-full lg:pl-12">
-                <div className="w-full bg-opacity-50 rounded-l-xl rounded-r-xl lg:rounded-r-none bg-gray-50 dark:bg-gray-900 lg:h-full lg:w-auto ">
+              <div className="relative w-full pl-4 -mr-40 sm:mx-auto sm:max-w-3xl sm:px-0 lg:max-w-none lg:h-full lg:pl-12">
+                <div className="w-full bg-opacity-50 rounded-l-xl sm:rounded-r-xl lg:rounded-r-none bg-gray-50 dark:bg-gray-900 lg:h-full lg:w-auto ">
                   <Animation data={animationData} />
                 </div>
               </div>
