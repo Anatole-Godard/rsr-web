@@ -314,11 +314,7 @@ const ChannelEdit: NextPage<any> = ({
                       {t("members-placeholder")}
                     </div>
                   }
-                  options={membersOptions.map((member) => ({
-                    value: member.uid,
-                    label: member.fullName,
-                    photoURL: member.photoURL,
-                  }))}
+                  options={membersOptions}
                   formatOptionLabel={(member: MemberValue) => (
                     <div className="inline-flex items-center">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
