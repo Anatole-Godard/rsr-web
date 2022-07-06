@@ -75,10 +75,10 @@ const ChannelSlug: NextPage<any> = ({
     };
   }, [chat, channel.activities]);
 
-  useEffect(() => {
-    if (bottomListRef.current)
-      bottomListRef.current.scrollIntoView({ behavior: "smooth" });
-  }, []);
+  // useEffect(() => {
+  //   if (bottomListRef.current)
+  //     bottomListRef.current.scrollIntoView({ behavior: "smooth" });
+  // }, []);
 
   const quit = async () => {
     const res = await fetchRSR(`/api/channel/${slug}/quit`, user?.session);
@@ -118,13 +118,13 @@ const ChannelSlug: NextPage<any> = ({
           channels={sideBarChannels}
           selectedChannelSlug={slug as string}
         />
-        <div className="flex justify-center w-full max-h-[calc(100%-6rem)] md:max-h-full h-full">
-          <div className="flex flex-col w-full md:bg-gray-100 dark:md:bg-gray-900 ">
+        <div className="flex justify-center w-full h-[calc(100vh-10.75rem)] md:max-h-full ">
+          <div className="flex flex-col justify-between w-full h-full md:bg-gray-100 dark:md:bg-gray-900 ">
             {/* HEADER */}
             <div className="inline-flex justify-between w-full p-3 pr-6 border-b border-gray-100 dark:border-gray-900 md:border-0">
               <div className="inline-flex items-center">
                 {channel.image ? (
-                  <div className="flex items-center justify-center w-6 h-6 rounded-full select-none md:w-8 md:h-8 bg-bleuFrance-50 ring-2 shrink-0 ring-offset-2 ring-bleuFrance-200 overflow-hidden">
+                  <div className="flex items-center justify-center w-6 h-6 overflow-hidden rounded-full select-none md:w-8 md:h-8 bg-bleuFrance-50 ring-2 shrink-0 ring-offset-2 ring-bleuFrance-200">
                     <Image
                       src={channel.image.url}
                       alt={slug}
