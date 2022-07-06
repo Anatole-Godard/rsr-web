@@ -100,7 +100,7 @@ const ResourceSlug: NextPage<any> = ({
     }
   };
 
-  if (!slug) return <Error404 title={t('resource-not-found')} />;
+  if (!slug) return <Error404 title={t("resource-not-found")} />;
 
   // @ts-ignore
   return (
@@ -267,7 +267,9 @@ const ResourceSlug: NextPage<any> = ({
                   ? "emerald"
                   : data.type === "event"
                   ? "red"
-                  : "amber"
+                  : data.type === "external_link"
+                  ? "amber"
+                  : "gray"
               }
               size="normal"
               list={(tags as TagDocument[]).map((tag: TagDocument) => ({
@@ -294,7 +296,9 @@ const ResourceSlug: NextPage<any> = ({
                         ? "bg-emerald-300 text-emerald-700 dark:bg-emerald-700 dark:text-emerald-300"
                         : data.type === "event"
                         ? "bg-red-300 text-red-700 dark:bg-red-700 dark:text-red-300"
-                        : "bg-amber-300 text-amber-700 dark:bg-amber-700 dark:text-amber-300"
+                        : data.type === "external_link"
+                        ? "bg-amber-300 text-amber-700 dark:bg-amber-700 dark:text-amber-300"
+                        : "bg-gray-300 text-gray-700 dark:bg-gray-700 dark:text-gray-300"
                       : "text-gray-500",
 
                     data.type === "location"
@@ -303,7 +307,9 @@ const ResourceSlug: NextPage<any> = ({
                       ? "hover:bg-emerald-500 hover:text-emerald-50"
                       : data.type === "event"
                       ? "hover:bg-red-500 hover:text-red-50"
-                      : "hover:bg-amber-500 hover:text-amber-50"
+                      : data.type === "external_link"
+                      ? "hover:bg-amber-500 hover:text-amber-50"
+                      : "hover:bg-gray-500 hover:text-gray-50"
                   )
                 }
               >
@@ -320,7 +326,9 @@ const ResourceSlug: NextPage<any> = ({
                         ? "bg-emerald-300 text-emerald-700 dark:bg-emerald-700 dark:text-emerald-300"
                         : data.type === "event"
                         ? "bg-red-300 text-red-700 dark:bg-red-700 dark:text-red-300"
-                        : "bg-amber-300 text-amber-700 dark:bg-amber-700 dark:text-amber-300"
+                        : data.type === "external_link"
+                        ? "bg-amber-300 text-amber-700 dark:bg-amber-700 dark:text-amber-300"
+                        : "bg-gray-300 text-gray-700 dark:bg-gray-700 dark:text-gray-300"
                       : "text-gray-500",
 
                     data.type === "location"
@@ -329,7 +337,9 @@ const ResourceSlug: NextPage<any> = ({
                       ? "hover:bg-emerald-500 hover:text-emerald-50"
                       : data.type === "event"
                       ? "hover:bg-red-500 hover:text-red-50"
-                      : "hover:bg-amber-500 hover:text-amber-50"
+                      : data.type === "external_link"
+                      ? "hover:bg-amber-500 hover:text-amber-50"
+                      : "hover:bg-gray-500 hover:text-gray-50"
                   )
                 }
               >
