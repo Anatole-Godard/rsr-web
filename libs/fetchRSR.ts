@@ -1,4 +1,9 @@
+import { LogBody, LogOptions } from "@definitions/Log";
 import toast from "react-hot-toast";
+
+const HOST_URL = process.env.HOST_URL || "http://localhost:3000";
+const LOG_END_POINT = "/api/log";
+const EXCEPTIONS_END_POINTS = ["notifications", "revalidate"];
 
 /**
  * It fetches a resource from the RSR API.
@@ -13,13 +18,41 @@ import toast from "react-hot-toast";
  */
 export const fetchRSR = async (
   url: string,
-  session: { token: string; uid: string },
+  session: {
+    token: string;
+    uid: string;
+  },
   options?: any
 ): Promise<Response> => {
   if (!url) throw new Error("url is required");
   if (!session) throw new Error("session is required");
   if (!session.token) throw new Error("session.token is required");
   if (!session.uid) throw new Error("session.uid is required");
+
+  // logging
+
+  if (!EXCEPTIONS_END_POINTS.some((endpoint) => url.includes(endpoint))) {
+    await fetch(
+      (typeof window !== "undefined" ? window.location.origin : HOST_URL) +
+        LOG_END_POINT,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          method: options?.method ?? "GET",
+          location:
+            typeof window !== "undefined" ? window?.location.pathname : "",
+          user: {
+            uid: session.uid,
+          },
+          url: url,
+          type: "fetch",
+        } as LogBody),
+      } as LogOptions
+    );
+  }
 
   return fetch(url, {
     ...options,
