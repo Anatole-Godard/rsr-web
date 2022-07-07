@@ -37,61 +37,71 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const {
     cookies: { user },
   } = context.req;
-  const uid = JSON.parse(user || "null")?.data.uid || undefined;
-  const rBody = await (
-    await fetch(
-      `http://localhost:3000/api/resource`,
-      uid
-        ? {
-            headers: { uid },
-          }
-        : undefined
-    )
-  ).json();
-  const resources =
-    (rBody.data?.attributes as Resource[])
-      .sort(
-        (a, b) =>
-          new Date(b.createdAt.toString()).getTime() -
-          new Date(a.createdAt.toString()).getTime()
+  try {
+    const uid = JSON.parse(user || "null")?.data.uid || undefined;
+    const rBody = await (
+      await fetch(
+        `http://localhost:3000/api/resource`,
+        uid
+          ? {
+              headers: { uid },
+            }
+          : undefined
       )
-      .filter((_, i) => i < 3) || [];
+    ).json();
+    const resources =
+      (rBody.data?.attributes as Resource[])
+        .sort(
+          (a, b) =>
+            new Date(b.createdAt.toString()).getTime() -
+            new Date(a.createdAt.toString()).getTime()
+        )
+        .filter((_, i) => i < 3) || [];
 
-  let parsedUser = JSON.parse(user);
-  const cBody = await (
-    await fetchRSR("http://localhost:3000/api/channel/", parsedUser?.session)
-  ).json();
+    let parsedUser = JSON.parse(user);
+    const cBody = await (
+      await fetchRSR("http://localhost:3000/api/channel/", parsedUser?.session)
+    ).json();
 
-  const channels = (cBody.data?.attributes as Channel[]).sort((a, b) => {
-    const aHistory = [...a.messages, a.activities].sort(
-      (a_a, a_b) =>
+    const channels = (cBody.data?.attributes as Channel[]).sort((a, b) => {
+      const aHistory = [...a.messages, a.activities].sort(
+        (a_a, a_b) =>
+          // @ts-ignore
+          new Date(a_b.createdAt.toString()).getTime() -
+          // @ts-ignore
+          new Date(a_a.createdAt.toString()).getTime()
+      );
+
+      const bHistory = [...b.messages, b.activities].sort(
+        (b_a, b_b) =>
+          // @ts-ignore
+          new Date(b_b.createdAt.toString()).getTime() -
+          // @ts-ignore
+          new Date(b_a.createdAt.toString()).getTime()
+      );
+
+      return (
         // @ts-ignore
-        new Date(a_b.createdAt.toString()).getTime() -
+        new Date(bHistory.at(0).createdAt.toString()).getTime() -
         // @ts-ignore
-        new Date(a_a.createdAt.toString()).getTime()
-    );
+        new Date(aHistory.at(0).createdAt.toString()).getTime()
+      );
+    });
 
-    const bHistory = [...b.messages, b.activities].sort(
-      (b_a, b_b) =>
-        // @ts-ignore
-        new Date(b_b.createdAt.toString()).getTime() -
-        // @ts-ignore
-        new Date(b_a.createdAt.toString()).getTime()
-    );
-
-    return (
-      // @ts-ignore
-      new Date(bHistory.at(0).createdAt.toString()).getTime() -
-      // @ts-ignore
-      new Date(aHistory.at(0).createdAt.toString()).getTime()
-    );
-  });
-
-  return {
-    props: {
-      resources,
-      channels,
-      i18n: (await import(`../i18n/${context.locale}.json`)).default,
-    },
-  };
+    return {
+      props: {
+        resources,
+        channels,
+        i18n: (await import(`../i18n/${context.locale}.json`)).default,
+      },
+    };
+  } catch (e) {
+    return {
+      props: {
+        resources: [],
+        channels: [],
+        i18n: (await import(`../i18n/${context.locale}.json`)).default,
+      },
+    };
+  }
 };

@@ -7,25 +7,35 @@ import mongoose from "mongoose";
  * @returns A function that takes in a request and a response.
  */
 const withDatabase = (handler) => async (req, res) => {
-  if (mongoose.connections[0].readyState) {
-    // Use current db connection
-    return handler(req, res);
-  }
-  // Use new db connection
+  try {
 
-  await mongoose.connect(
-    `mongodb${process.env.IN_ATLAS === "ATLAS" ? "+srv" : ""}://${
-      process.env.DB_USER
-    }:${process.env.DB_PASS}@${process.env.DB_HOST}/${
-      process.env.DB_NAME || "rsr"
-    }?retryWrites=true&w=majority&authSource=admin`,
-
-    {
-      useUnifiedTopology: true,
-      useNewUrlParser: true,
+    if (mongoose.connections[0].readyState) {
+      // Use current db connection
+      return handler(req, res);
     }
-  );
-  return handler(req, res);
+    // Use new db connection
+    
+    await mongoose.connect(
+      `mongodb${process.env.IN_ATLAS === "ATLAS" ? "+srv" : ""}://${
+        process.env.DB_USER
+      }:${process.env.DB_PASS}@${process.env.DB_HOST}/${
+        process.env.DB_NAME || "rsr"
+      }?retryWrites=true&w=majority&authSource=admin`,
+      
+      {
+        useUnifiedTopology: true,
+        useNewUrlParser: true,
+      }
+      );
+      return handler(req, res);
+    } catch (err) {
+      
+      res.status(500).json({data:null, error:{
+        message: "Error connecting to database",
+        code: 500,
+        name: "MONGOOSE_CONNECTION_ERROR",
+      }});
+    }
 };
 
 export default withDatabase;
