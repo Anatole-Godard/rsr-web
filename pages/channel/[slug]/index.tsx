@@ -47,7 +47,7 @@ const ChannelSlug: NextPage<any> = ({
   }, [inputRef]);
 
   useEffect((): any => {
-    const socket = io("http://localhost:3000", {
+    const socket = io("", {
       path: `/api/channel/[slug]/socket`,
     });
 
@@ -103,7 +103,11 @@ const ChannelSlug: NextPage<any> = ({
     if (res.ok) {
       setMessage("");
       if (bottomListRef.current)
-        bottomListRef.current.scrollIntoView({ behavior: "smooth", inline: "end", block: "nearest" });
+        bottomListRef.current.scrollIntoView({
+          behavior: "smooth",
+          inline: "end",
+          block: "nearest",
+        });
     }
   };
 
