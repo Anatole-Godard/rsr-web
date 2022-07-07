@@ -75,7 +75,7 @@ export const SidebarIconXL = ({
           (active
             ? " dark:bg-red-800  text-bleuFrance-500 dark:text-red-100 dark:group-hover:bg-red-600 group-hover:bg-bleuFrance-600"
             : "dark:text-gray-100 text-gray-500 group-hover:bg-gray-600 ") +
-          " relative flex-row items-center w-12 h-8 transition-all duration-300 ease-linear cursor-pointer flex-shrink-0  group-hover:text-white group-hover:rounded-lg rounded-lg flex xl:w-32"
+          " relative flex-row items-center w-12 h-12 transition-all duration-300 ease-linear cursor-pointer flex-shrink-0  group-hover:text-white group-hover:rounded-lg rounded-lg flex xl:w-32"
         }
       >
         <div className="inline-flex items-center justify-between w-full xl:w-10">

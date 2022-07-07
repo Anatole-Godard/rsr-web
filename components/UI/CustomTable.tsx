@@ -20,6 +20,7 @@ import { ChipList } from "@components/UI/Chip/ChipList";
 import { classes } from "libs/classes";
 import { fetchRSR } from "libs/fetchRSR";
 import { useAuth } from "@hooks/useAuth";
+import { format } from "date-fns";
 
 const roleType = [
   { label: "Utilisateur", value: "user" },
@@ -89,6 +90,10 @@ export const CustomTable = ({
           .join(", ");
         break;
       }
+      case "isDate": {
+        displayedValue = format(new Date(value[theadValue.name]), "dd/MM/yyyy HH:mm:ss");
+        break;
+      }
       case "isObject": {
         const object = value[theadValue.name];
         displayedValue = object[theadValue.subName];
@@ -129,7 +134,7 @@ export const CustomTable = ({
         isJsx = true;
         displayedValue = (
           <Link href={value[theadValue.name]}>
-            <a className='btn-gray dark:bg-gray-900 px-2'>
+            <a className='px-2 btn-gray dark:bg-gray-900'>
               <ExternalLinkIcon className='w-4 h-4 shrink-0' />
             </a>
           </Link>
@@ -240,7 +245,9 @@ export const CustomTable = ({
                 {deleteEntity && (
                   <td
                     className='px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white font-spectral'
-                    onClick={() => deleteEntity(value.slug || value.uid || value._id)}
+                    onClick={() =>
+                      deleteEntity(value.slug || value.uid || value._id)
+                    }
                   >
                     <a className='px-2 py-2 cursor-pointer btn-red'>
                       <TrashIcon className='w-4 h-4 shrink-0' />
@@ -254,16 +261,16 @@ export const CustomTable = ({
       </table>
       {totalPages !== null && (
         <ReactPaginate
-          previousLabel={(
+          previousLabel={
             <button className='px-2 py-2 btn-gray'>
               <ChevronLeftIcon className='w-4 h-4 shrink-0' />
             </button>
-          )}
-          nextLabel={(
+          }
+          nextLabel={
             <button className='px-2 py-2 btn-gray'>
               <ChevronRightIcon className='w-4 h-4 shrink-0' />
             </button>
-          )}
+          }
           breakLabel='...'
           breakClassName='break-me'
           pageCount={totalPages}

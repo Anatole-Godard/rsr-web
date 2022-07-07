@@ -33,6 +33,11 @@
     "title2": "ressources",
     "see-all": "Voir toutes les ressources"
   },
+  "ChannelSection": {
+    "title1": "",
+    "title2": "Salons de discussion",
+    "see-all": "Voir tout les salons"
+  },
   "ResourceIndex": {
     "title": "Ressources",
     "title1": "Toutes les",
@@ -82,6 +87,8 @@
 
     "comments-none": "Aucun commentaire pour l'instant",
     "comments-placeholder": "Ajouter un commentaire...",
+
+    "resource-not-found": "La ressource n'existe pas",
 
     "toast-report-loading": "Envoi du signalement...",
     "toast-report-success": "Signalement envoyé",
@@ -144,6 +151,8 @@
     "edit-delete-title": "Supprimer #{slug}",
     "edit-delete-text": "Êtes-vous sûr de vouloir supprimer cette ressource ? Cette action est irréversible.",
     "edit-delete-text2": "Les commentaires et les J'aime associés seront également supprimés.",
+
+    "resource-not-found": "La ressource n'existe pas",
 
     "toast-create-success": "Ressource créée",
     "toast-create-error": "Erreur lors de la création de la ressource",
@@ -407,6 +416,19 @@
     "unlisted-members": ": {length} membres y ont accès",
 
     "created-by": "de {name}"
+  },
+
+  "ChannelCard": {
+    "public": "Publique",
+    "private-member": "Privé - {length} membre",
+    "private-members": "Privé - {length} membres",
+    "created-by": "de {name}",
+
+    "last-activity": "Dernière activité: {date}",
+    "no-activity": "Aucune activité",
+
+    "member": "{length} membre",
+    "members": "{length} membres"
   },
   "ResourceView": {
     "physical_item": "Objet",

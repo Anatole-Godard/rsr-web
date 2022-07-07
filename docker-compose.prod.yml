@@ -21,7 +21,9 @@ services:
     command: mongod --quiet --logpath /dev/null
 
   app:
-    build: "."
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
     image: rsr/app
     networks:
       - rsr-network

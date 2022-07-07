@@ -33,6 +33,11 @@
     "title2": "resources",
     "see-all": "See all"
   },
+  "ChannelSection": {
+    "title1": "Active",
+    "title2": "channels",
+    "see-all": "See all"
+  },
   "ResourceIndex": {
     "title": "Resources",
     "title1": "All",
@@ -82,6 +87,8 @@
 
     "comments-none": "No comments yet",
     "comments-placeholder": "Write a comment ...",
+
+    "resource-not-found": "Resource not found",
 
     "toast-report-loading": "Reporting ...",
     "toast-report-success": "Reported",
@@ -144,6 +151,8 @@
     "edit-delete-title": "Delete #{slug}",
     "edit-delete-text": "Are you sure you want to delete this resource? This action can't be undone.",
     "edit-delete-text2": "Associated comments and likes will also be deleted.",
+
+    "resource-not-found": "Resource not found",
 
     "toast-create-success": "Resource created",
     "toast-create-error": "Error while creating resource",
@@ -407,6 +416,18 @@
     "unlisted-members": ": {length} members have access",
 
     "created-by": "of {name}"
+  },
+  "ChannelCard": {
+    "public": "Public",
+    "private-member": "Private - {length} member",
+    "private-members": "Private - {length} members",
+    "created-by": "of {name}",
+
+    "last-activity": "Last activity: {date}",
+    "no-activity": "No activity yet",
+
+    "member": "{length} member",
+    "members": "{length} members"
   },
   "ResourceView": {
     "physical_item": "Physical item",

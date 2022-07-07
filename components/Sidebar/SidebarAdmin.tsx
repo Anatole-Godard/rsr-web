@@ -4,6 +4,7 @@ import {
   ExclamationIcon,
   TagIcon,
   LibraryIcon,
+  FingerPrintIcon,
 } from "@heroicons/react/outline";
 import { ArrowLeftIcon } from "@heroicons/react/solid";
 import { useRouter } from "next/router";
@@ -91,6 +92,24 @@ export const SidebarAdmin = () => {
           href="/admin/report"
           id="link-admin-report"
         />
+        <DividerXL />
+
+        {user &&
+          (user.session.role === "admin" ||
+            user.session.role === "superadmin") && (
+            <>
+              <SidebarTitle text="Logs" />
+              <SidebarIcon
+                key={uuidv4()}
+                active={pathname === "/admin/logs"}
+                icon={<FingerPrintIcon {...className} />}
+                text="Routes"
+                href="/admin/logs"
+                id="link-admin-logs"
+              />
+              
+            </>
+          )}
       </div>
     </div>
   );

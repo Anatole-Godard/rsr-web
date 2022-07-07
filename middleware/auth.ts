@@ -80,7 +80,7 @@ export const isTokenValid = async (
  * @returns A function that takes in a NextApiRequest and NextApiResponse and returns a Promise.
  */
 export const withAuth =
-  (handler: ()=>{}) => async (req: NextApiRequest, res: NextApiResponse) => {
+  (handler: (req: NextApiRequest, res: NextApiResponse)=>{}) => async (req: NextApiRequest, res: NextApiResponse) => {
     const headerAuth = req.headers.authorization;
     const validation = await isTokenValid(headerAuth);
     if (validation.valid) {

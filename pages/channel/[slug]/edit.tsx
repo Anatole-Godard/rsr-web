@@ -34,9 +34,9 @@ type MemberValue = {
 };
 
 const ChannelEdit: NextPage<any> = ({
-                                      membersOptions,
-                                      ...props
-                                    }: Channel & { membersOptions: UserMinimum[] }) => {
+  membersOptions,
+  ...props
+}: Channel & { membersOptions: UserMinimum[] }) => {
   const router = useRouter();
   const { user } = useAuth();
   const t = useTranslations("ChannelCreate");
@@ -317,11 +317,7 @@ const ChannelEdit: NextPage<any> = ({
                       {t("members-placeholder")}
                     </div>
                   }
-                  options={membersOptions.map((member) => ({
-                    value: member.uid,
-                    label: member.fullName,
-                    photoURL: member.photoURL
-                  }))}
+                  options={membersOptions}
                   formatOptionLabel={(member: MemberValue) => (
                     <div className='inline-flex items-center'>
                       {/* eslint-disable-next-line @next/next/no-img-element */}
