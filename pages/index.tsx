@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { HeroSection } from "@components/Sections/Landing/HeroSection";
 import { ResourceSection } from "@components/Sections/Landing/ResourceSection";
 import { SearchSection } from "@components/Sections/Landing/SearchSection";
@@ -10,13 +11,12 @@ import { fetchRSR } from "@utils/fetchRSR";
 import { Channel } from "@definitions/Channel";
 import { ChannelSection } from "@components/Sections/Landing/ChannelSection";
 
-const Home: NextPage<any> = ({
-  resources,
-  channels,
-}: {
+type Props = {
   resources: Resource[];
   channels: Channel[];
-}) => {
+};
+
+const Home: NextPage<Props> = ({ resources, channels }: Props) => {
   const t = useTranslations("Index");
   return (
     <AppLayout title={t("title")}>
@@ -58,35 +58,41 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         )
         .filter((_, i) => i < 3) || [];
 
-    let parsedUser = JSON.parse(user);
-    const cBody = await (
-      await fetchRSR("http://localhost:3000/api/channel/", parsedUser?.session)
-    ).json();
+    let channels = [];
+    if (user) {
+      const parsedUser = JSON.parse(user);
+      const cBody = await (
+        await fetchRSR(
+          "http://localhost:3000/api/channel/",
+          parsedUser?.session
+        )
+      ).json();
 
-    const channels = (cBody.data?.attributes as Channel[]).sort((a, b) => {
-      const aHistory = [...a.messages, a.activities].sort(
-        (a_a, a_b) =>
-          // @ts-ignore
-          new Date(a_b.createdAt.toString()).getTime() -
-          // @ts-ignore
-          new Date(a_a.createdAt.toString()).getTime()
-      );
+      channels = (cBody.data?.attributes as Channel[]).sort((a, b) => {
+        const aHistory = [...a.messages, a.activities].sort(
+          (a_a, a_b) =>
+            // @ts-ignore
+            new Date(a_b.createdAt.toString()).getTime() -
+            // @ts-ignore
+            new Date(a_a.createdAt.toString()).getTime()
+        );
 
-      const bHistory = [...b.messages, b.activities].sort(
-        (b_a, b_b) =>
-          // @ts-ignore
-          new Date(b_b.createdAt.toString()).getTime() -
-          // @ts-ignore
-          new Date(b_a.createdAt.toString()).getTime()
-      );
+        const bHistory = [...b.messages, b.activities].sort(
+          (b_a, b_b) =>
+            // @ts-ignore
+            new Date(b_b.createdAt.toString()).getTime() -
+            // @ts-ignore
+            new Date(b_a.createdAt.toString()).getTime()
+        );
 
-      return (
-        // @ts-ignore
-        new Date(bHistory.at(0).createdAt.toString()).getTime() -
-        // @ts-ignore
-        new Date(aHistory.at(0).createdAt.toString()).getTime()
-      );
-    });
+        return (
+          // @ts-ignore
+          new Date(bHistory.at(0).createdAt.toString()).getTime() -
+          // @ts-ignore
+          new Date(aHistory.at(0).createdAt.toString()).getTime()
+        );
+      });
+    }
 
     return {
       props: {

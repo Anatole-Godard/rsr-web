@@ -3,9 +3,15 @@ import { useTranslations } from "next-intl";
 import Link from "next/link";
 import type { Channel } from "@definitions/Channel";
 import { ChannelCard } from "@components/Channel/Card";
+import { useAuth } from "@hooks/useAuth";
 
 export const ChannelSection = ({ channels }: { channels: Channel[] }) => {
   const t = useTranslations("ChannelSection");
+
+  const { user } = useAuth();
+
+  if (!user?.session) return null;
+
   return (
     <div className="flex flex-col w-full ">
       <div className="inline-flex items-end justify-between px-3">

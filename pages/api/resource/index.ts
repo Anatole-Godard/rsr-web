@@ -130,6 +130,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
           }
           : { validated: true, visibility: "public" })
       });
+
       res.status(200).json({
         data: {
           id: "all",
