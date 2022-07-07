@@ -22,10 +22,9 @@ const UserPlaylist: NextPage = () => {
     loading,
   }: {
     data?: Playlist;
-    error?: any;
+    error?: Error;
     loading: boolean;
     revalidate: () => void;
-    payload?: any;
   } = useFetchRSR(
     `/api/user/${user?.data.uid}/resources/playlists`,
     user?.session
@@ -36,8 +35,9 @@ const UserPlaylist: NextPage = () => {
       <div className="flex flex-col w-full h-full bg-white dark:bg-black ">
         <div className="flex flex-col w-full px-6 py-6 space-y-3 bg-white lg:justify-between lg:items-end lg:flex-row shrink-0 lg:px-12 dark:bg-black dark:border-gray-800 lg:space-y-0">
           <div className="inline-flex items-center">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              className="object-cover w-full h-full rounded-full"
+              className="object-cover w-16 h-16 rounded-full"
               src={user?.data.photoURL || "/uploads/user/default.png"}
               alt={user?.data.fullName}
             />

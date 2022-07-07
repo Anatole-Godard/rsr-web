@@ -1,9 +1,19 @@
 import { AppLayout } from "@components/Layout/AppLayout";
 import { UserResources } from "@components/User/UserResources";
+import { Resource } from "@definitions/Resource";
+import { UserMinimum } from "@definitions/User";
 import { NextPage, GetServerSideProps } from "next";
 import { useTranslations } from "next-intl";
 
-const UserUIDPage: NextPage<any> = ({ photoURL, fullName, resources }) => {
+type Props = UserMinimum & {
+  resources: Resource[];
+};
+
+const UserUIDPage: NextPage<Props> = ({
+  photoURL,
+  fullName,
+  resources,
+}: Props) => {
   const t = useTranslations("UserUID");
   return (
     <AppLayout title={t("title", { name: fullName })}>
@@ -11,6 +21,7 @@ const UserUIDPage: NextPage<any> = ({ photoURL, fullName, resources }) => {
         <div className="flex flex-col w-full px-6 py-6 bg-white shrink-0 lg:px-12 dark:bg-black dark:border-gray-800">
           <div className="inline-flex items-end w-full">
             <div className="w-auto h-auto">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 className="object-cover w-16 h-16 rounded-full"
                 src={photoURL || "/uploads/user/default.png"}

@@ -12,15 +12,17 @@ import { UserStatistics } from "@components/User/UserStatistics";
 import { UserSeenResources } from "@components/User/UserSeenResources";
 import { useTranslations } from "next-intl";
 
-const UserIndexPage: NextPage<any> = ({
-  resources,
-  likes,
-  allResources,
-}: {
+type Props = {
   resources: Resource[];
   likes: Resource[];
   allResources: Resource[];
-}) => {
+};
+
+const UserIndexPage: NextPage<Props> = ({
+  resources,
+  likes,
+  allResources,
+}: Props) => {
   const { user } = useAuth();
   const t = useTranslations("UserIndex");
 
@@ -29,6 +31,7 @@ const UserIndexPage: NextPage<any> = ({
       <div className="flex flex-col w-full h-full bg-white dark:bg-black ">
         <div className="flex flex-col w-full px-6 py-6 space-y-3 bg-white lg:justify-between lg:items-end lg:flex-row shrink-0 lg:px-12 dark:bg-black dark:border-gray-800 lg:space-y-0">
           <div className="inline-flex items-center">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               className="object-cover w-16 h-16 rounded-full"
               src={user?.data.photoURL || "/uploads/user/default.png"}

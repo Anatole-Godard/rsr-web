@@ -6,13 +6,12 @@ import { SessionsViewer } from "@components/User/SessionsViewer";
 import { ArrowLeftIcon } from "@heroicons/react/outline";
 import { useAuth } from "@hooks/useAuth";
 import { GetServerSideProps, NextPage } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import { RetrieveAccount } from "@components/User/RetrieveAccount";
 import { GetStartedResetter } from "@components/User/GetStartedResetter";
 import { useTranslations } from "next-intl";
 
-const UserSettings: NextPage<any> = () => {
+const UserSettings: NextPage = () => {
   const { user } = useAuth();
   const t = useTranslations("UserSettings");
 
@@ -21,6 +20,7 @@ const UserSettings: NextPage<any> = () => {
       <div className="flex flex-col w-full h-full bg-white dark:bg-black ">
         <div className="flex flex-col w-full px-6 py-6 space-y-3 bg-white lg:justify-between lg:items-end lg:flex-row shrink-0 lg:px-12 dark:bg-black dark:border-gray-800 lg:space-y-0">
           <div className="inline-flex items-center">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               className="object-cover w-16 h-16 rounded-full"
               src={user?.data.photoURL || "/uploads/user/default.png"}
