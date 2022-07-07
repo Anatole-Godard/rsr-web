@@ -27,10 +27,6 @@ jobs:
         run: yarn install --frozen-lockfile
       - name: Build application
         run: yarn build
-      - name: Install dependencies
-        run: npm install --force
-      - name: Build stack
-        run: docker compose -f docker-compose.dev.yml up -d --build
       - name: Launch e2e tests
         run: npm run test:e2e
       - uses: actions/upload-artifact@v2
