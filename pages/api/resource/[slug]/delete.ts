@@ -13,14 +13,14 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         data: null,
         error: {
           code: 405,
-          message: "method not allowed",
-        },
+          message: "method not allowed"
+        }
       });
       return;
     }
 
     let resource = await Resource.findOne({
-      slug: req.query.slug,
+      slug: req.query.slug
     }).lean();
 
     if (!resource) {
@@ -28,13 +28,13 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         data: null,
         error: {
           code: 404,
-          message: "resource not found",
-        },
+          message: "resource not found"
+        }
       });
       return;
     }
-    let user = await User.findOne({
-      slug: req.headers.uid,
+    const user = await User.findOne({
+      slug: req.headers.uid
     }).lean();
 
     if (user.role === "user" || user.role === "moderator") {
@@ -43,22 +43,22 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
           data: null,
           error: {
             code: 403,
-            message: "forbidden",
-          },
+            message: "forbidden"
+          }
         });
         return;
       }
     }
 
     resource = await Resource.findOneAndDelete({
-      slug: req.query.slug,
+      slug: req.query.slug
     }).lean();
 
     // remove notifications
 
     const notificationsDeleted = await Notification.deleteMany({
       "document.slug": req.query.slug,
-      $or: [{ type: "like" }, { type: "comment" }],
+      $or: [{ type: "like" }, { type: "comment" }]
     });
 
     res.status(200).json({
@@ -67,9 +67,9 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         id: resource._id,
         attributes: resource,
         extra: {
-          notifications: notificationsDeleted,
-        },
-      },
+          notifications: notificationsDeleted
+        }
+      }
     });
   } catch (err) {
     handleError(res, err, "resource:slug/delete");

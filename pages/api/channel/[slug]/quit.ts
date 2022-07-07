@@ -8,8 +8,8 @@ import { UserMinimum } from "@definitions/User";
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
-    let channel = await Channel.findOne({
-      slug: req.query.slug,
+    const channel = await Channel.findOne({
+      slug: req.query.slug
     });
 
     if (!channel) {
@@ -17,8 +17,8 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         data: null,
         error: {
           code: 404,
-          message: "channel not found",
-        },
+          message: "channel not found"
+        }
       });
       return;
     }
@@ -29,8 +29,8 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         data: null,
         error: {
           code: 401,
-          message: "unauthorized",
-        },
+          message: "unauthorized"
+        }
       });
     }
 
@@ -53,8 +53,8 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     res.status(200).json({
       data: {
         type: "channel",
-        attributes: channel,
-      },
+        attributes: channel
+      }
     });
   } catch (err) {
     handleError(res, err, "channel:slug/quit");

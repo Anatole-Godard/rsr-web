@@ -1,13 +1,13 @@
-import { AdminLayout } from '@components/Layout/AdminLayout';
-import { GetServerSideProps, NextPage } from 'next';
-import { CustomTable } from '@components/UI/CustomTable';
-import { useCallback, useEffect, useState } from 'react';
-import { fetchRSR } from 'libs/fetchRSR';
-import { useAuth } from '@hooks/useAuth';
-import { Resource } from '@definitions/Resource';
-import { LibraryIcon, SearchIcon } from '@heroicons/react/outline';
-import toast from 'react-hot-toast';
-import { useRouter } from 'next/router';
+import { AdminLayout } from "@components/Layout/AdminLayout";
+import { GetServerSideProps, NextPage } from "next";
+import { CustomTable } from "@components/UI/CustomTable";
+import { useCallback, useEffect, useState } from "react";
+import { fetchRSR } from "libs/fetchRSR";
+import { useAuth } from "@hooks/useAuth";
+import { Resource } from "@definitions/Resource";
+import { LibraryIcon, SearchIcon } from "@heroicons/react/outline";
+import toast from "react-hot-toast";
+import { useRouter } from "next/router";
 
 const Resources: NextPage<any> = (props) => {
   const [resources, setResources] = useState<Resource[]>(
@@ -19,48 +19,48 @@ const Resources: NextPage<any> = (props) => {
   const { user } = useAuth();
   const router = useRouter();
 
-  const validResource = async (id: number, validated: Boolean) => {
+  const validResource = async (id: number, validated: boolean) => {
     if (!user?.session) {
-      await router.push('/');
+      await router.push("/");
       return;
     }
 
-    const body = JSON.stringify({ action: 'validate', validated });
+    const body = JSON.stringify({ action: "validate", validated });
     const toastID = toast.loading(
-      validated ? 'Validation en cours...' : 'Suspension en cours...'
+      validated ? "Validation en cours..." : "Suspension en cours..."
     );
     const res = await fetchRSR(`/api/resource/admin/${id}/edit`, user.session, {
-      method: 'PUT',
+      method: "PUT",
       body
     });
     toast.dismiss(toastID);
 
     if (res.ok)
-      toast.success(validated ? 'Validation de la ressource réussie' : 'Suspension de la ressource réussie');
-    else toast.error('Une erreur est survenue');
+      toast.success(validated ? "Validation de la ressource réussie" : "Suspension de la ressource réussie");
+    else toast.error("Une erreur est survenue");
     getRessources();
   };
 
   const theadList = [
     {
-      name: 'owner',
-      subName: 'fullName',
-      label: 'Créateur',
-      type: 'isUser',
+      name: "owner",
+      subName: "fullName",
+      label: "Créateur",
+      type: "isUser",
       width: 20
     },
-    { name: 'slug', label: 'Identifiant', width: 20 },
+    { name: "slug", label: "Identifiant", width: 20 },
     {
-      name: 'data',
-      subName: 'type',
-      label: 'Type',
-      type: 'isObject',
+      name: "data",
+      subName: "type",
+      label: "Type",
+      type: "isObject",
       width: 20
     },
     {
-      name: 'validated',
-      label: 'Validation',
-      type: 'validated',
+      name: "validated",
+      label: "Validation",
+      type: "validated",
       validEntity: validResource,
       width: 25
     }
@@ -70,31 +70,31 @@ const Resources: NextPage<any> = (props) => {
   const getRessources = useCallback(
     async (search?) => {
       if (!user?.session) {
-        await router.push('/');
+        await router.push("/");
         return;
       }
-      let filter = '';
+      let filter = "";
       if (search) {
         filter = search;
       }
 
       const res = await fetchRSR(
-        '/api/resource/admin?limit=' +
+        "/api/resource/admin?limit=" +
         limitPerPage +
-        '&page=' +
+        "&page=" +
         currentPage +
-        '&search=' +
+        "&search=" +
         filter,
         user.session
       );
       if (res.ok) {
-        toast.success('Récupération des ressources réussie');
+        toast.success("Récupération des ressources réussie");
         const body = await res.json();
         if (body.data?.attributes) {
           setResources(body.data?.attributes);
           setTotalPages(body.data?.totalPages);
         }
-      } else toast.error('Une erreur est survenue');
+      } else toast.error("Une erreur est survenue");
     },
     [currentPage, limitPerPage, user?.session, router]
   );
@@ -109,17 +109,17 @@ const Resources: NextPage<any> = (props) => {
   };
 
   const deleteResource = async (id: number) => {
-    const toastID = toast.loading('Suppression de la ressource en cours...');
+    const toastID = toast.loading("Suppression de la ressource en cours...");
     const res = await fetchRSR(`/api/resource/${id}/delete`, user.session, {
-      method: 'DELETE'
+      method: "DELETE"
     });
     toast.dismiss(toastID);
-    if (res.ok) toast.success('Suppression de la ressource réussie');
-    else toast.error('Une erreur est survenue');
+    if (res.ok) toast.success("Suppression de la ressource réussie");
+    else toast.error("Une erreur est survenue");
     getRessources();
   };
 
-  const [search, setSearch] = useState<string>('');
+  const [search, setSearch] = useState<string>("");
 
   return (
     <AdminLayout title='Ressources - Admin.'>
@@ -194,26 +194,26 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       cookies: { user }
     } = context.req;
 
-    let parseUser = JSON.parse(user);
+    const parseUser = JSON.parse(user);
 
     if (!user) {
       return {
         redirect: {
           permanent: false,
-          destination: '/auth/login'
+          destination: "/auth/login"
         }
       };
-    } else if (parseUser?.session?.role === 'user') {
+    } else if (parseUser?.session?.role === "user") {
       return {
         redirect: {
           permanent: false,
-          destination: '/'
+          destination: "/"
         }
       };
     }
     const limit = parseInt(process.env.NEXT_PUBLIC_BACK_OFFICE_MAX_ENTITIES);
     const res = await fetch(
-      'http://localhost:3000/api/resource/admin?limit=' + limit + '&page=1'
+      "http://localhost:3000/api/resource/admin?limit=" + limit + "&page=1"
     );
     const body = await res.json();
     return {
@@ -226,7 +226,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     return {
       redirect: {
         permanent: false,
-        destination: '/'
+        destination: "/"
       }
     };
   }

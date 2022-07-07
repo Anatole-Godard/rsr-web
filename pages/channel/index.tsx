@@ -6,14 +6,14 @@ import { GetServerSideProps, NextPage } from "next";
 import { useTranslations } from "next-intl";
 
 const Channel: NextPage<any> = ({
-  sideBarChannels,
-}: {
+                                  sideBarChannels
+                                }: {
   sideBarChannels: Channel[];
 }) => {
   const t = useTranslations("ChannelIndex");
   return (
     <AppLayout title={t("title")}>
-      <div className="flex flex-col w-full h-full max-h-[calc(100vh-4rem)] xl:flex-row">
+      <div className='flex flex-col w-full h-full max-h-[calc(100vh-4rem)] xl:flex-row'>
         <Sidebar channels={sideBarChannels} />
       </div>
     </AppLayout>
@@ -24,17 +24,17 @@ export default Channel;
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const {
-    cookies: { user },
+    cookies: { user }
   } = context.req;
   if (!user)
     return {
       redirect: {
         permanent: false,
-        destination: "/auth/login",
-      },
+        destination: "/auth/login"
+      }
     };
 
-  let parsedUser = JSON.parse(user);
+  const parsedUser = JSON.parse(user);
   const channels = await (
     await fetchRSR("http://localhost:3000/api/channel/", parsedUser?.session)
   ).json();
@@ -42,7 +42,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   return {
     props: {
       sideBarChannels: channels?.data?.attributes,
-      i18n: (await import(`../../i18n/${context.locale}.json`)).default,
-    },
+      i18n: (await import(`../../i18n/${context.locale}.json`)).default
+    }
   };
 };

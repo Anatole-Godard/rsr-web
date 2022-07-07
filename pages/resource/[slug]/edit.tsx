@@ -6,7 +6,7 @@ import {
   ChevronLeftIcon,
   CloudUploadIcon,
   XCircleIcon,
-  XIcon,
+  XIcon
 } from "@heroicons/react/solid";
 import { fetchXHR } from "libs/fetchXHR";
 import { classes } from "libs/classes";
@@ -27,7 +27,7 @@ import { isAdmin } from "@utils/getCurrentUser";
 import { MediaUploader } from "@components/Resource/Helper/Media/Uploader";
 import {
   Input,
-  WrapperModularInputs,
+  WrapperModularInputs
 } from "@components/Resource/Helper/ModularInput";
 import { toModularInput } from "@utils/toModularInput";
 import { Media } from "@definitions/Resource/Media";
@@ -35,11 +35,11 @@ import toast from "react-hot-toast";
 import { useTranslations } from "next-intl";
 
 const Map: any = dynamic(() => import("@components/Map/Map") as any, {
-  ssr: false,
+  ssr: false
 });
 
 const Select: any = dynamic(() => import("react-select/creatable") as any, {
-  ssr: false,
+  ssr: false
 });
 
 interface Props extends Resource {
@@ -115,7 +115,7 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
       `/api/resource/${props.slug}/delete`,
       user?.session,
       {
-        method: "DELETE",
+        method: "DELETE"
       }
     );
     if (res.ok) router.push("/resource");
@@ -128,7 +128,7 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
         `https://api-adresse.data.gouv.fr/reverse/?lat=${position[0]}&lon=${position[1]}`
       );
       //   const body = await response.json();
-      let json = JSON.parse(response as string);
+      const json = JSON.parse(response as string);
       if (json?.features[0] != null) {
         setLocation(json.features[0]?.properties?.label);
       } else {
@@ -139,9 +139,9 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
   }, [position]);
 
   const formatResource = (): Resource => {
-    let data: Resource["data"] = {
+    const data: Resource["data"] = {
       type: type.value as Resource["data"]["type"],
-      attributes: {},
+      attributes: {}
     };
     if (type.value === "physical_item") {
       data.attributes = {
@@ -150,28 +150,28 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
           description,
           price,
           category,
-          photoURL: null,
-        },
+          photoURL: null
+        }
       };
     } else if (type.value === "location") {
       data.attributes = {
         type: "Feature",
         geometry: {
           type: "Point",
-          coordinates: position,
+          coordinates: position
         },
         properties: {
           name,
-          location,
-        },
+          location
+        }
       };
     } else if (type.value === "external_link") {
       data.attributes = {
         properties: {
           name,
           description,
-          url: externalLink,
-        },
+          url: externalLink
+        }
       };
     } else if (type.value === "event") {
       data.attributes = {
@@ -180,15 +180,15 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
           description,
           startDate,
           endDate,
-          participants: [],
-        },
+          participants: []
+        }
       };
     } else if (type.value === "other") {
       data.attributes = {
         properties: {
           name,
-          description,
-        },
+          description
+        }
       };
       inputs.map((input) => {
         data.attributes.properties[input.slug] = input;
@@ -212,9 +212,9 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
         {
           uid: user?.data.uid,
           fullName: user?.data.fullName,
-          photoURL: user?.data.photoURL,
-        },
-      ],
+          photoURL: user?.data.photoURL
+        }
+      ]
     } as Resource;
   };
 
@@ -228,7 +228,7 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
           user?.session,
           {
             method: "PUT",
-            body: JSON.stringify(formatResource()),
+            body: JSON.stringify(formatResource())
           }
         );
 
@@ -244,7 +244,7 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
             responses.push(
               await fetch(`/api/resource/${body.data.attributes.slug}/upload`, {
                 method: "POST",
-                body: formData,
+                body: formData
               })
             );
           }
@@ -312,11 +312,11 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
     location,
     startDate,
     inputs,
-    medias,
+    medias
   ]);
 
   const {
-    data: tagsOptions,
+    data: tagsOptions
   }: {
     data?: TagDocument[];
   } = useFetchRSR("/api/resource/tags", user?.session);
@@ -325,43 +325,43 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
     <AppLayout title={t("edit-title", { name })}>
       <form
         onSubmit={handleSubmit}
-        className="flex flex-col w-full max-h-full bg-white dark:bg-gray-900 grow"
+        className='flex flex-col w-full max-h-full bg-white dark:bg-gray-900 grow'
       >
-        <div className="flex flex-col w-full px-6 py-6 bg-white shrink-0 lg:px-12 dark:bg-black dark:border-gray-800">
-          <div className="inline-flex items-end justify-between w-full">
-            <div className="flex flex-col space-y-2">
-              <div className="w-auto h-auto">
+        <div className='flex flex-col w-full px-6 py-6 bg-white shrink-0 lg:px-12 dark:bg-black dark:border-gray-800'>
+          <div className='inline-flex items-end justify-between w-full'>
+            <div className='flex flex-col space-y-2'>
+              <div className='w-auto h-auto'>
                 <Image
-                  src="/img/pencil.png"
+                  src='/img/pencil.png'
                   width={64}
                   height={64}
-                  alt="Pencil"
+                  alt='Pencil'
                 />
               </div>
-              <h3 className="mb-2 text-2xl font-extrabold text-gray-800 font-marianne dark:text-gray-200">
+              <h3 className='mb-2 text-2xl font-extrabold text-gray-800 font-marianne dark:text-gray-200'>
                 {t("edit-title1")}
-                <span className="ml-2 text-amber-600 dark:text-amber-400">
+                <span className='ml-2 text-amber-600 dark:text-amber-400'>
                   {name || t("edit-title2")}
                 </span>
               </h3>
             </div>
-            <div className="inline-flex items-center space-x-2">
+            <div className='inline-flex items-center space-x-2'>
               <Link href={`/resource/${props.slug}`}>
-                <a className="btn-gray">
-                  <ChevronLeftIcon className="w-4 h-4 mr-2" />
+                <a className='btn-gray'>
+                  <ChevronLeftIcon className='w-4 h-4 mr-2' />
                   {t("back")}
                 </a>
               </Link>
               <button
-                type="button"
+                type='button'
                 onClick={() => setDeleteModalOpen(true)}
-                className="btn-red"
+                className='btn-red'
               >
-                <TrashIcon className="w-4 h-4 mr-1" />
+                <TrashIcon className='w-4 h-4 mr-1' />
                 {t("delete")}
               </button>
               <button
-                type="submit"
+                type='submit'
                 className={classes(
                   requestOk ? "btn-green" : validForm ? "btn-amber" : "btn-red",
                   "group"
@@ -369,38 +369,38 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
               >
                 {loading ? (
                   <svg
-                    className="w-5 h-5 text-white animate-spin"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
+                    className='w-5 h-5 text-white animate-spin'
+                    xmlns='http://www.w3.org/2000/svg'
+                    fill='none'
+                    viewBox='0 0 24 24'
                   >
                     <circle
-                      className="opacity-25"
+                      className='opacity-25'
                       cx={12}
                       cy={12}
                       r={10}
-                      stroke="currentColor"
+                      stroke='currentColor'
                       strokeWidth={4}
                     />
                     <path
-                      className="opacity-75"
-                      fill="currentColor"
-                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                      className='opacity-75'
+                      fill='currentColor'
+                      d='M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z'
                     />
                   </svg>
                 ) : requestOk ? (
                   <>
-                    <CheckIcon className="w-4 h-4 mr-1 duration-300 group-active:text-white" />
+                    <CheckIcon className='w-4 h-4 mr-1 duration-300 group-active:text-white' />
                     {t("sent")}
                   </>
                 ) : validForm ? (
                   <>
-                    <CloudUploadIcon className="w-4 h-4 mr-1 duration-300 group-active:text-white" />
+                    <CloudUploadIcon className='w-4 h-4 mr-1 duration-300 group-active:text-white' />
                     {t("send")}
                   </>
                 ) : (
                   <>
-                    <XCircleIcon className="w-4 h-4 mr-1 duration-300 group-active:text-white" />
+                    <XCircleIcon className='w-4 h-4 mr-1 duration-300 group-active:text-white' />
                     {t("invalid")}
                   </>
                 )}
@@ -408,26 +408,26 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
             </div>
           </div>
         </div>
-        <div className="flex flex-col flex-grow px-4 py-3 pb-6 bg-gray-100 dark:bg-gray-900 rounded-tl-xl md:flex-row">
-          <div className="flex flex-col w-full px-2 space-y-3 md:w-1/2">
+        <div className='flex flex-col flex-grow px-4 py-3 pb-6 bg-gray-100 dark:bg-gray-900 rounded-tl-xl md:flex-row'>
+          <div className='flex flex-col w-full px-2 space-y-3 md:w-1/2'>
             <label>
-              <h4 className="mb-1 text-sm font-semibold text-gray-700 dark:text-gray-300 font-marianne">
+              <h4 className='mb-1 text-sm font-semibold text-gray-700 dark:text-gray-300 font-marianne'>
                 {t("title")}
               </h4>
               <input
-                type="text"
-                className="bg-gray-200 input"
+                type='text'
+                className='bg-gray-200 input'
                 placeholder={t("title")}
                 value={name}
                 onChange={(e) => setName(e.target.value)}
               ></input>
             </label>
-            <label className="flex flex-col grow">
-              <h4 className="mb-1 text-sm font-semibold text-gray-700 font-marianne dark:text-gray-300">
+            <label className='flex flex-col grow'>
+              <h4 className='mb-1 text-sm font-semibold text-gray-700 font-marianne dark:text-gray-300'>
                 {t("description")}
               </h4>
               <textarea
-                className="bg-gray-200 input grow"
+                className='bg-gray-200 input grow'
                 onChange={(e) => setDescription(e.target.value)}
                 rows={10}
                 value={description}
@@ -436,7 +436,8 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
             </label>
 
             <label>
-              <h4 className="-mb-2 text-sm after:content-['*'] after:ml-0.5 after:text-red-500 font-semibold text-gray-700 font-marianne dark:text-gray-300">
+              <h4
+                className="-mb-2 text-sm after:content-['*'] after:ml-0.5 after:text-red-500 font-semibold text-gray-700 font-marianne dark:text-gray-300">
                 {t("visibility")}
               </h4>
             </label>
@@ -452,8 +453,8 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
                 else setMembers(props.members);
               }}
             >
-              <div className="inline-flex items-center w-full">
-                <Tab.List className="flex space-x-2 bg-gray-100 dark:bg-gray-900 grow rounded-xl">
+              <div className='inline-flex items-center w-full'>
+                <Tab.List className='flex space-x-2 bg-gray-100 dark:bg-gray-900 grow rounded-xl'>
                   {visibilities.map((v, i) => (
                     <Tab
                       key={v.value}
@@ -479,16 +480,17 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
             </Tab.Group>
             {visibility.value === "unlisted" && (
               <label>
-                <h4 className="mb-1 after:content-['*'] after:ml-0.5 after:text-red-500 text-sm font-semibold text-gray-700 font-marianne dark:text-gray-300">
+                <h4
+                  className="mb-1 after:content-['*'] after:ml-0.5 after:text-red-500 text-sm font-semibold text-gray-700 font-marianne dark:text-gray-300">
                   {t("members")}
                 </h4>
                 <Select
-                  name="members"
-                  className="w-full"
-                  menuPlacement="auto"
+                  name='members'
+                  className='w-full'
+                  menuPlacement='auto'
                   isMulti
                   placeholder={
-                    <div className="text-sm font-semibold font-spectral">
+                    <div className='text-sm font-semibold font-spectral'>
                       {t("members-placeholder")}
                     </div>
                   }
@@ -497,21 +499,21 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
                     .map((member) => ({
                       value: member.uid,
                       label: member.fullName,
-                      photoURL: member.photoURL,
+                      photoURL: member.photoURL
                     }))}
                   formatOptionLabel={(member: {
                     value: string;
                     label: string;
                     photoURL: string;
                   }) => (
-                    <div className="inline-flex items-center">
+                    <div className='inline-flex items-center'>
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
                         src={member.photoURL}
                         alt={member.label}
-                        className="w-5 h-5 mr-2 rounded-full"
+                        className='w-5 h-5 mr-2 rounded-full'
                       />
-                      <span className="text-xs text-gray-700 font-marianne">
+                      <span className='text-xs text-gray-700 font-marianne'>
                         {member.label}
                       </span>
                     </div>
@@ -521,29 +523,29 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
                       value.map((v) => ({
                         uid: v.value,
                         fullName: v.label,
-                        photoURL: v.photoURL,
+                        photoURL: v.photoURL
                       }))
                     )
                   }
                   value={members.map((m) => ({
                     value: m.uid,
                     label: m.fullName,
-                    photoURL: m.photoURL,
+                    photoURL: m.photoURL
                   }))}
                 />
               </label>
             )}
 
             <label>
-              <h4 className="mb-1 text-sm font-semibold text-gray-700 font-marianne dark:text-gray-300">
+              <h4 className='mb-1 text-sm font-semibold text-gray-700 font-marianne dark:text-gray-300'>
                 {t("tags")}
               </h4>
               <Select
-                name="tags"
-                className="w-full"
+                name='tags'
+                className='w-full'
                 isClearable
                 isMulti
-                menuPlacement="auto"
+                menuPlacement='auto'
                 options={tagsOptions
                   ?.filter(
                     (tag: TagDocument) =>
@@ -551,20 +553,20 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
                   )
                   .map((tag: TagDocument) => ({
                     label: tag.name,
-                    value: tag.name,
+                    value: tag.name
                   }))}
                 value={tags}
                 inputValue={tagInputValue}
                 onInputChange={(e: string) => setTagInputValue(e)}
                 onChange={(e: any[]) => setTags(e)}
                 placeholder={
-                  <div className="text-sm font-semibold font-spectral">
+                  <div className='text-sm font-semibold font-spectral'>
                     {t("tags-placeholder")}
                   </div>
                 }
                 formatOptionLabel={(tag: { label: string; value: string }) => (
-                  <div className="inline-flex items-center">
-                    <span className="text-xs text-gray-700 font-spectral">
+                  <div className='inline-flex items-center'>
+                    <span className='text-xs text-gray-700 font-spectral'>
                       {tag.label}
                     </span>
                   </div>
@@ -581,7 +583,7 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
                     case "Tab":
                       setTags([
                         ...tags,
-                        { value: tagInputValue, label: tagInputValue },
+                        { value: tagInputValue, label: tagInputValue }
                       ]);
                       setTagInputValue("");
                       // console.group("Value Added");
@@ -593,10 +595,10 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
               />
             </label>
           </div>
-          <div className="flex flex-col justify-between w-full px-2 mt-3 space-y-3 md:w-1/2 md:mt-0">
-            <div className="flex flex-col w-full h-full space-y-3">
+          <div className='flex flex-col justify-between w-full px-2 mt-3 space-y-3 md:w-1/2 md:mt-0'>
+            <div className='flex flex-col w-full h-full space-y-3'>
               <label>
-                <h4 className="-mb-2 text-sm font-semibold text-gray-700 font-marianne dark:text-gray-300">
+                <h4 className='-mb-2 text-sm font-semibold text-gray-700 font-marianne dark:text-gray-300'>
                   {t("type")}
                 </h4>
               </label>
@@ -608,8 +610,8 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
                   setType(types[selected]);
                 }}
               >
-                <div className="inline-flex items-center w-full">
-                  <Tab.List className="flex space-x-2 bg-gray-100 dark:bg-gray-900 grow rounded-xl">
+                <div className='inline-flex items-center w-full'>
+                  <Tab.List className='flex space-x-2 bg-gray-100 dark:bg-gray-900 grow rounded-xl'>
                     {types.map((type, i) => (
                       <Tab
                         key={type.value}
@@ -626,7 +628,7 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
                         }
                       >
                         {type.icon.outline({
-                          className: "w-4 h-4 mr-1 shrink-0",
+                          className: "w-4 h-4 mr-1 shrink-0"
                         })}
 
                         {t(type.value)}
@@ -637,7 +639,7 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
               </Tab.Group>
 
               {types.find((t) => t.value === type.value).hasMedia && (
-                <div className="flex flex-col h-full overflow-hidden grow">
+                <div className='flex flex-col h-full overflow-hidden grow'>
                   <h4
                     className={classes(
                       "mb-1 text-sm font-semibold text-gray-700 dark:text-gray-300 font-marianne",
@@ -655,23 +657,23 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
               {type.value === "physical_item" && (
                 <>
                   <label>
-                    <h4 className="mb-1 text-sm font-semibold text-gray-700 font-marianne dark:text-gray-300">
+                    <h4 className='mb-1 text-sm font-semibold text-gray-700 font-marianne dark:text-gray-300'>
                       {t("physical_item-category")}
                     </h4>
                     <input
-                      type="text"
-                      className="bg-gray-200 input"
+                      type='text'
+                      className='bg-gray-200 input'
                       value={category}
                       onChange={(e) => setCategory(e.target.value)}
                     />
                   </label>
                   <label>
-                    <h4 className="mb-1 text-sm font-semibold text-gray-700 font-marianne dark:text-gray-300">
+                    <h4 className='mb-1 text-sm font-semibold text-gray-700 font-marianne dark:text-gray-300'>
                       {t("physical_item-price")}
                     </h4>
                     <input
-                      type="number"
-                      className="bg-gray-200 input"
+                      type='number'
+                      className='bg-gray-200 input'
                       value={price}
                       onChange={(e) => setPrice(e.target.value)}
                     />
@@ -682,12 +684,12 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
               {type.value === "external_link" && (
                 <>
                   <label>
-                    <h4 className="mb-1 text-sm font-semibold text-gray-700 font-marianne dark:text-gray-300">
+                    <h4 className='mb-1 text-sm font-semibold text-gray-700 font-marianne dark:text-gray-300'>
                       {t("external_link-url")}
                     </h4>
                     <input
-                      type="text"
-                      className="bg-gray-200 input"
+                      type='text'
+                      className='bg-gray-200 input'
                       value={externalLink}
                       onChange={(e) => setExternalLink(e.target.value)}
                     />
@@ -696,25 +698,25 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
               )}
 
               {type.value === "location" && (
-                <label className="flex flex-col grow">
-                  <h4 className="mb-1 text-sm font-semibold text-gray-700 font-marianne dark:text-gray-300">
+                <label className='flex flex-col grow'>
+                  <h4 className='mb-1 text-sm font-semibold text-gray-700 font-marianne dark:text-gray-300'>
                     {t("location-address")}
                   </h4>
-                  <div className="w-full mb-3">
+                  <div className='w-full mb-3'>
                     <input
-                      type="text"
+                      type='text'
                       value={location}
-                      className="bg-gray-200 input"
+                      className='bg-gray-200 input'
                       placeholder={t("location-address")}
                       onChange={(e) => setLocation(e.target.value)}
                     ></input>
                   </div>
-                  <div className="flex-grow rounded-lg">
+                  <div className='flex-grow rounded-lg'>
                     <Map
                       zoom={4.5}
-                      className="relative inset-0 w-full h-64 rounded-lg md:h-full"
+                      className='relative inset-0 w-full h-64 rounded-lg md:h-full'
                       mapEventHandler={{
-                        click: (e) => setPosition([e.latlng.lat, e.latlng.lng]),
+                        click: (e) => setPosition([e.latlng.lat, e.latlng.lng])
                       }}
                       point={(position as number[]) || [46.227638, 2.213749]}
                     ></Map>
@@ -724,7 +726,7 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
 
               {type.value === "event" && (
                 <>
-                  <div className="flex flex-col">
+                  <div className='flex flex-col'>
                     <h4
                       className={classes(
                         "mb-1 text-sm font-semibold text-gray-700 dark:text-gray-300 font-marianne"
@@ -733,27 +735,28 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
                       {t("event-datetime")}
                     </h4>
 
-                    <div className="grid gap-2 xl:grid-cols-2">
-                      <label className="flex flex-col">
-                        <p className="after:content-['*'] text-gray-500 after:ml-0.5 after:text-red-500 text-xs font-spectral">
+                    <div className='grid gap-2 xl:grid-cols-2'>
+                      <label className='flex flex-col'>
+                        <p
+                          className="after:content-['*'] text-gray-500 after:ml-0.5 after:text-red-500 text-xs font-spectral">
                           {t("event-datetime-start")}
                         </p>
                         <input
                           placeholder={t("event-datetime-start")}
-                          className="bg-gray-200 input "
-                          type="datetime-local"
+                          className='bg-gray-200 input '
+                          type='datetime-local'
                           onChange={(e) => setStartDate(e.target.value)}
                           value={startDate}
                         />
                       </label>
-                      <label className="flex flex-col">
-                        <p className="text-xs text-gray-500 font-spectral">
+                      <label className='flex flex-col'>
+                        <p className='text-xs text-gray-500 font-spectral'>
                           {t("event-datetime-end")}
                         </p>
                         <input
                           placeholder={t("event-datetime-end")}
-                          className="bg-gray-200 input "
-                          type="datetime-local"
+                          className='bg-gray-200 input '
+                          type='datetime-local'
                           onChange={(e) => setEndDate(e.target.value)}
                           value={endDate}
                         />
@@ -772,69 +775,70 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
       </form>
       <Transition appear show={deleteModalOpen} as={Fragment}>
         <Dialog
-          as="div"
-          className="fixed inset-0 z-50 overflow-y-auto"
+          as='div'
+          className='fixed inset-0 z-50 overflow-y-auto'
           onClose={() => setDeleteModalOpen(false)}
         >
-          <div className="min-h-screen px-4 text-center">
+          <div className='min-h-screen px-4 text-center'>
             <Transition.Child
               as={Fragment}
-              enter="ease-out duration-300"
-              enterFrom="opacity-0"
-              enterTo="opacity-100"
-              leave="ease-in duration-200"
-              leaveFrom="opacity-100"
-              leaveTo="opacity-0"
+              enter='ease-out duration-300'
+              enterFrom='opacity-0'
+              enterTo='opacity-100'
+              leave='ease-in duration-200'
+              leaveFrom='opacity-100'
+              leaveTo='opacity-0'
             >
-              <Dialog.Overlay className="fixed inset-0 bg-black bg-opacity-70" />
+              <Dialog.Overlay className='fixed inset-0 bg-black bg-opacity-70' />
             </Transition.Child>
 
             {/* This element is to trick the browser into centering the modal contents. */}
             <span
-              className="inline-block h-screen align-middle"
-              aria-hidden="true"
+              className='inline-block h-screen align-middle'
+              aria-hidden='true'
             >
               &#8203;
             </span>
             <Transition.Child
               as={Fragment}
-              enter="ease-out duration-300"
-              enterFrom="opacity-0 scale-95"
-              enterTo="opacity-100 scale-100"
-              leave="ease-in duration-200"
-              leaveFrom="opacity-100 scale-100"
-              leaveTo="opacity-0 scale-95"
+              enter='ease-out duration-300'
+              enterFrom='opacity-0 scale-95'
+              enterTo='opacity-100 scale-100'
+              leave='ease-in duration-200'
+              leaveFrom='opacity-100 scale-100'
+              leaveTo='opacity-0 scale-95'
             >
-              <div className="inline-block w-full max-w-md p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl">
+              <div
+                className='inline-block w-full max-w-md p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl'>
                 <Dialog.Title
-                  as="h3"
-                  className="text-lg font-medium leading-6 text-gray-900 font-marianne"
+                  as='h3'
+                  className='text-lg font-medium leading-6 text-gray-900 font-marianne'
                 >
                   {t("edit-delete-title", { slug: props.slug })}
                 </Dialog.Title>
-                <div className="mt-6">
-                  <p className="text-sm text-gray-500 font-spectral">
+                <div className='mt-6'>
+                  <p className='text-sm text-gray-500 font-spectral'>
                     {t("edit-delete-text")}
                     <br />
                     {t("edit-delete-text2")}
                   </p>
                 </div>
 
-                <div className="inline-flex items-center justify-end w-full mt-4 space-x-3">
+                <div className='inline-flex items-center justify-end w-full mt-4 space-x-3'>
                   <button
-                    type="button"
-                    className="btn-red"
+                    type='button'
+                    className='btn-red'
                     onClick={deleteResource}
                   >
-                    <TrashIcon className="w-4 h-4 mr-2" />
+                    <TrashIcon className='w-4 h-4 mr-2' />
                     {t("delete")}
                   </button>
                   <button
-                    type="button"
-                    className="btn-gray"
+                    type='button'
+                    className='btn-gray'
                     onClick={() => setDeleteModalOpen(false)}
                   >
-                    <XIcon className="w-4 h-4 mr-2" />
+                    <XIcon className='w-4 h-4 mr-2' />
                     {t("cancel")}
                   </button>
                 </div>
@@ -850,18 +854,18 @@ const ResourceEdit: NextPage<any> = (props: Props) => {
 export default ResourceEdit;
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const {
-    cookies: { user },
+    cookies: { user }
   } = context.req;
   if (!user) {
     return {
       redirect: {
         permanent: false,
-        destination: "/auth/login",
-      },
+        destination: "/auth/login"
+      }
     };
   }
   try {
-    let parsedUser = JSON.parse(user);
+    const parsedUser = JSON.parse(user);
     const res = await fetchRSR(
       `${
         process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000/api"
@@ -875,19 +879,18 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       return {
         redirect: {
           permanent: false,
-          destination: "/resource",
-        },
+          destination: "/resource"
+        }
       };
     }
 
-    // @ts-ignore
     if (!(await isAdmin({ headers: parsedUser.session })))
       if (resource.owner.uid !== parsedUser?.data.uid) {
         return {
           redirect: {
             permanent: false,
-            destination: "/resource",
-          },
+            destination: "/resource"
+          }
         };
       }
 
@@ -902,15 +905,15 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         membersOptions: users.data.attributes.filter(
           (m: UserMinimum) => parsedUser?.data.uid !== m.uid
         ),
-        i18n: (await import(`../../../i18n/${context.locale}.json`)).default,
-      },
+        i18n: (await import(`../../../i18n/${context.locale}.json`)).default
+      }
     };
   } catch (e) {
     return {
       redirect: {
         permanent: false,
-        destination: "/resource",
-      },
+        destination: "/resource"
+      }
     };
   }
 };

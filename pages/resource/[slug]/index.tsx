@@ -99,7 +99,6 @@ const ResourceSlug: NextPage<any> = ({
     }
   };
 
-  // @ts-ignore
   return (
     <AppLayout title={data.attributes.properties.name}>
       <section className='flex flex-col w-full bg-gray-100 h-fit dark:bg-gray-900'>
@@ -271,7 +270,10 @@ const ResourceSlug: NextPage<any> = ({
                     ? 'emerald'
                     : data.type === 'event'
                       ? 'red'
-                      : 'amber'
+
+                      : data.type === 'other'
+                        ? 'gray'
+                        : 'amber'
               }
               size='normal'
               list={(tags as TagDocument[]).map((tag: TagDocument) => ({

@@ -197,8 +197,7 @@ const Input = ({
               <input
                 className="input hover:bg-gray-300 dark:bg-gray-700 grow"
                 type={type}
-                // @ts-ignore
-                value={type === "number" ? value : value.toString()}
+                value={type === "number" ? value as number : value.toString()}
                 onChange={(e) =>
                   onValueChange(
                     type === "number"
@@ -212,8 +211,7 @@ const Input = ({
               <input
                 className="w-4 h-4 p-0 rounded-md appearance-none input active:bg-bleuFrance-600 checked:bg-bleuFrance-500 checked:ring-2 ring-bleuFrance-200 dark:bg-gray-100 dark:checked:bg-bleuFrance-300 "
                 type="checkbox"
-                // @ts-ignore
-                checked={value}
+                checked={value as boolean}
                 onChange={(e) => onValueChange(e.target.checked)}
               />
             )}

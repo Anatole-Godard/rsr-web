@@ -1,13 +1,13 @@
-import { GetServerSideProps, NextPage } from 'next';
-import { AdminLayout } from '@components/Layout/AdminLayout';
-import { CustomTable } from '@components/UI/CustomTable';
-import { useCallback, useEffect, useState } from 'react';
-import { Report } from '@definitions/Report';
-import { useAuth } from '@hooks/useAuth';
-import { fetchRSR } from 'libs/fetchRSR';
-import { SearchIcon, UserIcon } from '@heroicons/react/outline';
-import toast from 'react-hot-toast';
-import { useRouter } from 'next/router';
+import { GetServerSideProps, NextPage } from "next";
+import { AdminLayout } from "@components/Layout/AdminLayout";
+import { CustomTable } from "@components/UI/CustomTable";
+import { useCallback, useEffect, useState } from "react";
+import { Report } from "@definitions/Report";
+import { useAuth } from "@hooks/useAuth";
+import { fetchRSR } from "libs/fetchRSR";
+import { SearchIcon, UserIcon } from "@heroicons/react/outline";
+import toast from "react-hot-toast";
+import { useRouter } from "next/router";
 
 const ReportAdmin: NextPage<any> = (props) => {
   const [reports, setReports] = useState<Report[]>(props?.data?.attributes);
@@ -19,41 +19,41 @@ const ReportAdmin: NextPage<any> = (props) => {
   const { user } = useAuth();
   const router = useRouter();
 
-  const validReport = async (id: number, validated: Boolean) => {
+  const validReport = async (id: number, validated: boolean) => {
     const body = JSON.stringify({ validated });
     const toastID = toast.loading(
       validated
-        ? 'Validation de la ressource en cours...'
-        : 'Suspension de la ressource en cours...'
+        ? "Validation de la ressource en cours..."
+        : "Suspension de la ressource en cours..."
     );
     const res = await fetchRSR(`/api/report/admin/${id}/edit`, user.session, {
-      method: 'PUT',
+      method: "PUT",
       body
     });
     toast.dismiss(toastID);
 
     if (res.ok)
-      toast.success(validated ? 'Validation réussie' : 'Suspension réussie');
-    else toast.error('Une erreur est survenue');
+      toast.success(validated ? "Validation réussie" : "Suspension réussie");
+    else toast.error("Une erreur est survenue");
     getReports();
   };
 
   const theadList = [
     {
-      name: 'emitter',
-      subName: 'fullName',
-      label: 'Rapporteur',
-      type: 'isUser',
+      name: "emitter",
+      subName: "fullName",
+      label: "Rapporteur",
+      type: "isUser",
       width: 20
     },
-    { name: 'type', label: 'Type', width: 25 },
-    { name: 'context', label: 'Contexte', width: 25 },
-    { name: 'message', label: 'Message', width: 25 },
-    { name: 'link', label: 'Lien vers le Context', type: 'isLink', width: 25 },
+    { name: "type", label: "Type", width: 25 },
+    { name: "context", label: "Contexte", width: 25 },
+    { name: "message", label: "Message", width: 25 },
+    { name: "link", label: "Lien vers le Context", type: "isLink", width: 25 },
     {
-      name: 'validated',
-      label: 'Suspensions',
-      type: 'validated',
+      name: "validated",
+      label: "Suspensions",
+      type: "validated",
       validEntity: validReport,
       width: 25
     }
@@ -67,21 +67,21 @@ const ReportAdmin: NextPage<any> = (props) => {
   const getReports = useCallback(
     async (search?) => {
       if (!user?.session) {
-        await router.push('/');
+        await router.push("/");
         return;
       }
 
-      let filter = '';
+      let filter = "";
       if (search) {
         filter = search;
       }
 
       const res = await fetchRSR(
-        '/api/report/admin?limit=' +
+        "/api/report/admin?limit=" +
         limitPerPage +
-        '&page=' +
+        "&page=" +
         currentPage +
-        '&search=' +
+        "&search=" +
         filter,
         user.session
       );
@@ -90,9 +90,9 @@ const ReportAdmin: NextPage<any> = (props) => {
         if (body.data?.attributes) {
           setTotalPages(body.data?.totalPages);
           setReports(body.data?.attributes);
-          toast.success('Récupération des signalements réussie');
+          toast.success("Récupération des signalements réussie");
         }
-      } else toast.error('Une erreur est survenue');
+      } else toast.error("Une erreur est survenue");
     },
     [currentPage, limitPerPage, user?.session, router]
   );
@@ -101,17 +101,17 @@ const ReportAdmin: NextPage<any> = (props) => {
     getReports();
   }, [currentPage, limitPerPage, user?.session, getReports]);
 
-  const [search, setSearch] = useState<string>('');
+  const [search, setSearch] = useState<string>("");
 
   const deleteReport = async (id: string) => {
-    const toastID = toast.loading('Suppression en cours...');
+    const toastID = toast.loading("Suppression en cours...");
     const res = await fetchRSR(`/api/report/admin/${id}/delete`, user.session, {
-      method: 'DELETE'
+      method: "DELETE"
     });
     toast.dismiss(toastID);
 
-    if (res.ok) toast.success('Suppression du signalement réussie');
-    else toast.error('Une erreur est survenue');
+    if (res.ok) toast.success("Suppression du signalement réussie");
+    else toast.error("Une erreur est survenue");
 
     getReports();
   };
@@ -232,26 +232,26 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       cookies: { user }
     } = context.req;
 
-    let parseReport = JSON.parse(user);
+    const parseReport = JSON.parse(user);
 
     if (!user) {
       return {
         redirect: {
           permanent: false,
-          destination: '/auth/login'
+          destination: "/auth/login"
         }
       };
-    } else if (parseReport?.session?.role === 'user') {
+    } else if (parseReport?.session?.role === "user") {
       return {
         redirect: {
           permanent: false,
-          destination: '/'
+          destination: "/"
         }
       };
     }
     const limit = parseInt(process.env.NEXT_PUBLIC_BACK_OFFICE_MAX_ENTITIES);
     const res = await fetch(
-      'http://localhost:3000/api/report/admin?limit=' + limit + '&page=1'
+      "http://localhost:3000/api/report/admin?limit=" + limit + "&page=1"
     );
     const body = await res.json();
     return {
@@ -264,7 +264,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     return {
       redirect: {
         permanent: false,
-        destination: '/'
+        destination: "/"
       }
     };
   }

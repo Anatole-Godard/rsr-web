@@ -161,7 +161,7 @@ export const MediaUploader = ({
                           type="file"
                           accept="image/*,video/*,.pdf,audio/*"
                           onChange={(e) => {
-                            let file =
+                            const file =
                               e.target.files instanceof FileList
                                 ? e.target.files[0]
                                 : null;

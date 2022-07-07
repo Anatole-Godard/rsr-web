@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const ObjectId = require("mongoose").Types.ObjectId;
 /**
  * It converts a string to a mongoose ObjectId.

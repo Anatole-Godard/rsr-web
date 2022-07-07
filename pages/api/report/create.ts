@@ -38,7 +38,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       });
       return;
     }
-    let document: ResourceMinimum | UserMinimum | {} = {};
+    let document: ResourceMinimum | UserMinimum | any;
     let validated = true;
 
     if (type === 'user') {

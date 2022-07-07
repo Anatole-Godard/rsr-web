@@ -1,4 +1,4 @@
-export const GlobalDisplay = ({label, data}: {label: String, data: number}) => {
+export const GlobalDisplay = ({label, data}: {label: string, data: number}) => {
     return(
         <div className="items-center">
             <h6 className="font-bold text-gray-700 dark:text-gray-300 font-marianne">{label}</h6>

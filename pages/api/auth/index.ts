@@ -1,10 +1,10 @@
-import User from '@models/User';
-import { genToken } from '@middleware/auth';
-import type { NextApiRequest, NextApiResponse } from 'next';
-import SessionToken from '@models/SessionToken';
-import withDatabase from '@middleware/mongoose';
+import User from "@models/User";
+import { genToken } from "@middleware/auth";
+import type { NextApiRequest, NextApiResponse } from "next";
+import SessionToken from "@models/SessionToken";
+import withDatabase from "@middleware/mongoose";
 
-const argon2 = require("argon2");
+import argon2 from "argon2";
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== "POST") {
@@ -14,8 +14,8 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         name: "MethodNotAllowedError",
         method: req.method,
         message: "Method not allowed",
-        client: "Méthode non autorisée",
-      },
+        client: "Méthode non autorisée"
+      }
     });
   }
 
@@ -27,10 +27,10 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         message: "Please provide email and password",
         fields: {
           email: !req.body.email,
-          password: !req.body.password,
+          password: !req.body.password
         },
-        client: "Merci de fournir un email et un mot de passe",
-      },
+        client: "Merci de fournir un email et un mot de passe"
+      }
     });
   }
 
@@ -43,8 +43,8 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       error: {
         name: "MissingAppSourceError",
         message: "Please provide appsource",
-        client: "Une erreur est survenue",
-      },
+        client: "Une erreur est survenue"
+      }
     });
   }
 
@@ -53,14 +53,14 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     if (await argon2.verify(user.password, password)) {
       const token = genToken({ uid: user._id.toString(), role: user.role });
 
-      if(!(user.validated)){
+      if (!(user.validated)) {
         return res.status(403).json({
           data: null,
           error: {
             name: "UnAuthorizedError",
             message: "UnAuthorized user",
-            client: "Cet utilisateur n'est pas autorisé à se connecter",
-          },
+            client: "Cet utilisateur n'est pas autorisé à se connecter"
+          }
         });
       }
 
@@ -71,7 +71,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
           uid: user._id,
           role: user.role,
           appSource: appsource,
-          uidAppSource: `${user._id.toString()}:${appsource}`,
+          uidAppSource: `${user._id.toString()}:${appsource}`
         },
         { upsert: true, new: true }
       );
@@ -85,8 +85,8 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
           birthDate: user.birthDate,
           email: user.email,
           photoURL: user.photoURL,
-          createdAt: user.createdAt,
-        },
+          createdAt: user.createdAt
+        }
       });
     } else {
       return res.status(400).json({
@@ -94,8 +94,8 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         error: {
           name: "InvalidCredentialsError",
           message: "Invalid email or password",
-          client: "Mauvais email ou mot de passe",
-        },
+          client: "Mauvais email ou mot de passe"
+        }
       });
     }
   } catch (err) {
@@ -105,8 +105,8 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         name: err instanceof Error ? err.name : "InternalServerError",
         message:
           err instanceof Error ? err.message : "an error occured on: login",
-        client: "Une erreur est survenue lors de la connexion",
-      },
+        client: "Une erreur est survenue lors de la connexion"
+      }
     });
   }
 }

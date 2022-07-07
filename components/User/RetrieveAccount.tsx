@@ -10,7 +10,7 @@ export const RetrieveAccount = () => {
   const t = useTranslations("RetrieveAccount");
   const fetchExport = async () => {
     if (user) {
-      let toastID = toast.loading(t("toast-loading"));
+      const toastID = toast.loading(t("toast-loading"));
       const res = await fetchRSR("/api/auth/export", user.session);
       toast.dismiss(toastID);
 
@@ -18,8 +18,8 @@ export const RetrieveAccount = () => {
         toast.success(t("toast-success"));
 
         const blob = await res.blob();
-        let url = window.URL.createObjectURL(blob);
-        let aDOM = document.createElement("a");
+        const url = window.URL.createObjectURL(blob);
+        const aDOM = document.createElement("a");
         aDOM.href = url;
         aDOM.download = `export_rsr-${
           user.data.uid

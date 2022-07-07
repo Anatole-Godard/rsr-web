@@ -1,8 +1,8 @@
-const path = require("path");
-const { pathsToModuleNameMapper } = require("ts-jest");
+import path from "path";
+import { pathsToModuleNameMapper } from "ts-jest";
 // In the following statement, replace `./tsconfig` with the path to your `tsconfig` file
 // which contains the path mapping (ie the `compilerOptions.paths` option):
-const { compilerOptions } = require("./tsconfig");
+import { compilerOptions } from "./tsconfig";
 
 /** @type {import('ts-jest/dist/types').InitialOptionsTsJest} */
 module.exports = {

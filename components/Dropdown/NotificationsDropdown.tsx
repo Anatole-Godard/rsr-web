@@ -346,7 +346,7 @@ const NotificationComponent = ({
   );
 };
 
-interface ChannelComponentProps extends Channel {}
+type ChannelComponentProps = Channel
 
 const ChannelComponent = (props: ChannelComponentProps) => {
   const { locale } = useRouter();

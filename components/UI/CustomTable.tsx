@@ -1,4 +1,4 @@
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 import {
   BanIcon,
   CheckCircleIcon,
@@ -11,21 +11,21 @@ import {
   ThumbUpIcon,
   TrashIcon,
   ExternalLinkIcon
-} from '@heroicons/react/outline';
-import ReactPaginate from 'react-paginate';
-import Link from 'next/link';
-import { Transition } from '@headlessui/react';
-import React, { Fragment, useEffect, useRef, useState } from 'react';
-import { ChipList } from '@components/UI/Chip/ChipList';
-import { classes } from 'libs/classes';
-import { fetchRSR } from 'libs/fetchRSR';
-import { useAuth } from '@hooks/useAuth';
+} from "@heroicons/react/outline";
+import ReactPaginate from "react-paginate";
+import Link from "next/link";
+import { Transition } from "@headlessui/react";
+import React, { Fragment, useEffect, useRef, useState } from "react";
+import { ChipList } from "@components/UI/Chip/ChipList";
+import { classes } from "libs/classes";
+import { fetchRSR } from "libs/fetchRSR";
+import { useAuth } from "@hooks/useAuth";
 
 const roleType = [
-  { label: 'Utilisateur', value: 'user' },
-  { label: 'Modérateur', value: 'moderator' },
-  { label: 'Administrateur', value: 'admin' },
-  { label: 'Super-administrateur', value: 'superadmin' }
+  { label: "Utilisateur", value: "user" },
+  { label: "Modérateur", value: "moderator" },
+  { label: "Administrateur", value: "admin" },
+  { label: "Super-administrateur", value: "superadmin" }
 ];
 
 export const CustomTable = ({
@@ -62,13 +62,13 @@ export const CustomTable = ({
   };
 
   const displayValue = (theadValue: any, value: any) => {
-    let displayedValue: any = '';
-    let displayedFullValue: string = '';
-    let isJsx: boolean = false;
+    let displayedValue: any = "";
+    let displayedFullValue = "";
+    let isJsx = false;
 
     // TODO add other type like date, dateTime...
     switch (theadValue.type) {
-      case 'isUser':
+      case "isUser": {
         isJsx = true;
         displayedValue = (
           <div className='inline-flex items-center'>
@@ -82,22 +82,27 @@ export const CustomTable = ({
           </div>
         );
         break;
-      case 'isArray':
+      }
+      case "isArray": {
         displayedValue = value[theadValue.name]
           .map((v: { label: string }) => v.label)
-          .join(', ');
+          .join(", ");
         break;
-      case 'isObject':
+      }
+      case "isObject": {
         const object = value[theadValue.name];
         displayedValue = object[theadValue.subName];
         break;
-      case 'isStatus':
-        displayedValue = value[theadValue.name] ? 'Actif' : 'Inactif';
+      }
+      case "isStatus": {
+        displayedValue = value[theadValue.name] ? "Actif" : "Inactif";
         break;
-      case 'isLength':
-        displayedValue = value[theadValue.name].length || '-';
+      }
+      case "isLength": {
+        displayedValue = value[theadValue.name].length || "-";
         break;
-      case 'isLike':
+      }
+      case "isLike": {
         isJsx = true;
         displayedValue = (
           <div className='flex items-center'>
@@ -106,7 +111,8 @@ export const CustomTable = ({
           </div>
         );
         break;
-      case 'isRolePopUp':
+      }
+      case "isRolePopUp": {
         isJsx = true;
         displayedValue = (
           <UserRolePopUp
@@ -118,24 +124,26 @@ export const CustomTable = ({
           />
         );
         break;
-      case 'isLink':
+      }
+      case "isLink": {
         isJsx = true;
         displayedValue = (
-          <Link href={value[theadValue.name]} >
+          <Link href={value[theadValue.name]}>
             <a className='btn-gray dark:bg-gray-900 px-2'>
               <ExternalLinkIcon className='w-4 h-4 shrink-0' />
             </a>
           </Link>
         );
         break;
-      case 'validated':
+      }
+      case "validated": {
         isJsx = true;
         displayedValue = (
           <div
             className='inline-flex items-center'
             onClick={() => {
               theadValue.validEntity(
-                theadValue.isTag ? value._id.toString() : value.uid,
+                value._id.toString(),
                 !value[theadValue.name]
               );
             }}
@@ -158,9 +166,11 @@ export const CustomTable = ({
           </div>
         );
         break;
-      default:
+      }
+      default: {
         displayedValue = value[theadValue.name];
         break;
+      }
     }
 
     if (!isJsx) {
@@ -210,7 +220,7 @@ export const CustomTable = ({
                 {readUrl && (
                   <td
                     className='px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white font-spectral'>
-                    <Link href={readUrl + '/' + value.slug + ''}>
+                    <Link href={readUrl + "/" + value.slug + ""}>
                       <a className='px-2 py-2 btn-gray'>
                         <EyeIcon className='w-4 h-4 shrink-0' />
                       </a>
@@ -220,7 +230,7 @@ export const CustomTable = ({
                 {editUrl && (
                   <td
                     className='px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white font-spectral'>
-                    <Link href={editUrl + '/' + value.slug + '/edit'}>
+                    <Link href={editUrl + "/" + value.slug + "/edit"}>
                       <a className='px-2 py-2 btn-gray'>
                         <PencilAltIcon className='w-4 h-4 shrink-0' />
                       </a>
@@ -281,11 +291,11 @@ const UserRolePopUp = ({ role, id, getEntity }) => {
     //TODO: verify the current user role (only admin | super-admin)
     if (roleSelected && roleSelected.length === 1) {
       const body = JSON.stringify({
-        action: 'change-role',
+        action: "change-role",
         role: roleSelected[0].value
       });
       fetchRSR(`/api/user/admin/${id}/edit`, user.session, {
-        method: 'PUT',
+        method: "PUT",
         body
       })
         .then((res) => res.json())
@@ -301,7 +311,7 @@ const UserRolePopUp = ({ role, id, getEntity }) => {
         setOpen(false);
       }
     };
-    document.addEventListener('mousedown', checkIfClickedOutside);
+    document.addEventListener("mousedown", checkIfClickedOutside);
   }, [open]);
 
   return (
@@ -316,8 +326,8 @@ const UserRolePopUp = ({ role, id, getEntity }) => {
             {role.label}
             <ChevronDownIcon
               className={classes(
-                'shrink-0 w-5 h-5 ml-1 duration-300 text-black',
-                open ? 'rotate-180' : ''
+                "shrink-0 w-5 h-5 ml-1 duration-300 text-black",
+                open ? "rotate-180" : ""
               )}
             />
           </div>
@@ -334,7 +344,7 @@ const UserRolePopUp = ({ role, id, getEntity }) => {
         >
           <div
             className={classes(
-              'absolute -left-20 z-10 bg-white rounded-lg shadow-lg'
+              "absolute -left-20 z-10 bg-white rounded-lg shadow-lg"
             )}
           >
             <div className='p-3 w-max'>

@@ -123,9 +123,9 @@ export const UserStatistics = ({
   };
 
   const getStatistics = () => {
-    let data = Array(12).fill(0);
+    const data = Array(12).fill(0);
     resources.filter((resource) => {
-      let index = moment(resource.createdAt).month();
+      const index = moment(resource.createdAt).month();
       data[index]++;
     });
     return data;

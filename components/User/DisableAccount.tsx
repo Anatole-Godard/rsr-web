@@ -8,7 +8,7 @@ import toast from "react-hot-toast";
 export const DisableAccount = () => {
   const t = useTranslations("DisableAccount");
 
-  let [isOpen, setIsOpen] = useState<boolean>(false);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
   const openModal = () => setIsOpen(true);
   const closeModal = () => setIsOpen(false);
 
