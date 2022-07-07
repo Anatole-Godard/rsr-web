@@ -19,7 +19,6 @@ import { ArrowRightIcon, UserCircleIcon } from "@heroicons/react/solid";
 
 import { useAuth } from "@hooks/useAuth";
 import { classes } from "libs/classes";
-import Image from "next/image";
 import { formatDistance } from "date-fns";
 import { fr } from "date-fns/locale";
 import { useTranslations } from "next-intl";
@@ -51,13 +50,10 @@ export const UserDropdown = () => {
                   )}
                 >
                   <div className="w-5/6 align-middle border-none rounded-full select-none h-5/6 ">
-                    <Image
+                    <img
                       key="user_dropdown-image"
-                      layout="responsive"
+                      className="w-full h-full rounded-full"
                       alt={user.data.fullName}
-                      width={16}
-                      height={16}
-                      className="rounded-full"
                       src={
                         user.data.photoURL
                           ? user.data.photoURL
@@ -108,10 +104,9 @@ export const UserDropdown = () => {
                     <a className="inline-flex justify-between items-center  w-full min-h-[6rem] px-2 py-4 duration-300 rounded-t-xl hover:bg-bleuFrance-50 dark:hover:bg-bleuFrance-900 border-b dark:border-gray-800 border-gray-100 ">
                       <div className="inline-flex items-center">
                         <div className="relative flex items-center justify-center w-12 h-12 m-1 mr-2 text-xl text-white bg-white rounded-full shrink-0">
-                          <Image
+                          <img
                             alt={user.data.fullName}
-                            layout="fill"
-                            className="rounded-full"
+                            className="w-full h-full rounded-full"
                             src={
                               user.data.photoURL || "/uploads/user/default.png"
                             }

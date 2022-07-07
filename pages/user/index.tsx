@@ -6,63 +6,58 @@ import { CogIcon, CollectionIcon } from "@heroicons/react/outline";
 import { useAuth } from "@hooks/useAuth";
 import { fetchRSR } from "libs/fetchRSR";
 import { NextPage } from "next";
-import Image from "next/image";
 import Link from "next/link";
 
 import { UserStatistics } from "@components/User/UserStatistics";
 import { UserSeenResources } from "@components/User/UserSeenResources";
 import { useTranslations } from "next-intl";
 
-const UserIndexPage: NextPage<any> = (
-  {
-    resources,
-    likes,
-    allResources
-  }: {
-    resources: Resource[];
-    likes: Resource[];
-    allResources: Resource[];
-  }) => {
+const UserIndexPage: NextPage<any> = ({
+  resources,
+  likes,
+  allResources,
+}: {
+  resources: Resource[];
+  likes: Resource[];
+  allResources: Resource[];
+}) => {
   const { user } = useAuth();
   const t = useTranslations("UserIndex");
 
   return (
     <AppLayout title={t("title")}>
-      <div className='flex flex-col w-full h-full bg-white dark:bg-black '>
-        <div
-          className='flex flex-col w-full px-6 py-6 space-y-3 bg-white lg:justify-between lg:items-end lg:flex-row shrink-0 lg:px-12 dark:bg-black dark:border-gray-800 lg:space-y-0'>
-          <div className='inline-flex items-center'>
-            <Image
-              className='rounded-full'
+      <div className="flex flex-col w-full h-full bg-white dark:bg-black ">
+        <div className="flex flex-col w-full px-6 py-6 space-y-3 bg-white lg:justify-between lg:items-end lg:flex-row shrink-0 lg:px-12 dark:bg-black dark:border-gray-800 lg:space-y-0">
+          <div className="inline-flex items-center">
+            <img
+              className="object-cover w-16 h-16 rounded-full"
               src={user?.data.photoURL || "/uploads/user/default.png"}
-              width={32}
-              height={32}
               alt={user?.data.fullName}
             />
-            <h3 className='ml-5 text-2xl font-extrabold text-gray-800 font-marianne dark:text-gray-200'>
+            <h3 className="ml-5 text-2xl font-extrabold text-gray-800 font-marianne dark:text-gray-200">
               {t("title1")}
-              <span className='ml-1 text-bleuFrance-600 dark:text-bleuFrance-300'>
+              <span className="ml-1 text-bleuFrance-600 dark:text-bleuFrance-300">
                 {t("title2")}
               </span>
             </h3>
           </div>
-          <div className='inline-flex items-center space-x-2'>
-            <Link href='/user/playlists'>
-              <a className='btn-gray h-fit w-fit'>
-                <CollectionIcon className='w-4 h-4 mr-2' />
+          <div className="inline-flex items-center space-x-2">
+            <Link href="/user/playlists">
+              <a className="btn-gray h-fit w-fit">
+                <CollectionIcon className="w-4 h-4 mr-2" />
                 {t("playlists")}
               </a>
             </Link>
 
-            <Link href='/user/settings'>
-              <a className='btn-gray h-fit w-fit'>
-                <CogIcon className='w-4 h-4 mr-2' />
+            <Link href="/user/settings">
+              <a className="btn-gray h-fit w-fit">
+                <CogIcon className="w-4 h-4 mr-2" />
                 {t("settings")}
               </a>
             </Link>
           </div>
         </div>
-        <div className='flex flex-col p-6 overflow-y-auto bg-gray-100 dark:bg-gray-900 grow xl:rounded-tl-xl'>
+        <div className="flex flex-col p-6 overflow-y-auto bg-gray-100 dark:bg-gray-900 grow xl:rounded-tl-xl">
           {user && (
             <>
               <UserStatistics
@@ -92,14 +87,14 @@ export default UserIndexPage;
 
 export const getServerSideProps = async (ctx) => {
   const {
-    cookies: { user }
+    cookies: { user },
   } = ctx.req;
   if (!user)
     return {
       redirect: {
         permanent: false,
-        destination: "/auth/login"
-      }
+        destination: "/auth/login",
+      },
     };
 
   const parsedUser = JSON.parse(user);
@@ -127,7 +122,7 @@ export const getServerSideProps = async (ctx) => {
       ...resources.data.attributes,
       likes: likes?.data?.attributes || [],
       allResources: allResources?.data?.attributes || [],
-      i18n: (await import(`../../i18n/${ctx.locale}.json`)).default
-    }
+      i18n: (await import(`../../i18n/${ctx.locale}.json`)).default,
+    },
   };
 };

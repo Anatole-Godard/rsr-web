@@ -2,10 +2,10 @@
 /* eslint-disable @next/next/no-img-element */
 import { UserMinimum } from "@definitions/User";
 import Link from "next/link";
+import { Avatar } from "./Avatar";
 
 const DEFAULT_LIMIT = 5;
-const DEFAULT_LARGE = false
-
+const DEFAULT_LARGE = false;
 
 export const AvatarGroup = ({
   users,
@@ -20,24 +20,7 @@ export const AvatarGroup = ({
     <div className={"flex " + (xl ? "-space-x-1 md:-space-x-5" : "-space-x-1")}>
       {users?.map(
         (user, index) =>
-          index < limit && (
-            <Link key={index} href={"/user/" + user.uid}>
-              <img
-                className={
-                  "inline-block select-none rounded-full cursor-pointer ring-2 ring-white dark:ring-gray-800 bg-white dark:bg-black " +
-                  (xl ? "md:w-12 md:h-12 w-6 h-6" : "w-6 h-6")
-                }
-                src={
-                  user.photoURL
-                    ? user.photoURL
-                    : "https://ui-avatars.com/api/?name=" +
-                      user.fullName +
-                      "&color=007bff&background=054880"
-                }
-                alt={user.fullName}
-              />
-            </Link>
-          )
+          index < limit && <Avatar key={index} user={user} xl={xl} />
       )}
       {users.length > limit && (
         <span

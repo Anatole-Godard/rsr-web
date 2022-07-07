@@ -18,7 +18,7 @@ export const PhysicalItemView = ({
   return (
     <>
       <div className="relative h-full overflow-hidden rounded-lg xl:col-span-2">
-        {attributes.properties.medias ? (
+        {attributes.properties.medias.length > 0 ? (
           <MediaCarouselView
             medias={attributes.properties.medias}
             updatedAt={updatedAt}
