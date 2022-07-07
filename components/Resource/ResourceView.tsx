@@ -19,7 +19,7 @@ export const ResourceView = ({
     updatedAt,
   }: ResourceViewProps) => {
     return (
-      <div className="grid h-full min-h-[24rem] gap-6  xl:grid-cols-3 md:grid-cols-2">
+      <div className="grid h-full min-h-[24rem] max-h-[32rem] gap-6  xl:grid-cols-3 md:grid-cols-2">
         {type === "location" && (
           <LocationView attributes={attributes} slug={slug} />
         )}

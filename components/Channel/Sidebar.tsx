@@ -11,7 +11,6 @@ import Link from "next/link";
 import { Channel } from "@definitions/Channel";
 import { classes } from "libs/classes";
 import { UserMinimum } from "@definitions/User";
-import Image from "next/image";
 import { useSearch } from "@hooks/useSearch";
 import { useTranslations } from "next-intl";
 import { useRouter } from "next/router";
@@ -32,7 +31,9 @@ export const Sidebar = ({
           "w-full h-full  items-center shrink-0 flex-col p-3 space-y-2 bg-gray-100 dark:bg-gray-900 md:w-48 lg:w-56",
           selectedChannelSlug ? "lg:rounded-tl-xl" : "lg:rounded-t-xl",
           "hidden md:flex", //responsive,
-          selectedChannelSlug ? "md:min-h-[calc(100vh-10.75rem)]" : "md:min-h-[24rem]"
+          selectedChannelSlug
+            ? "md:min-h-[calc(100vh-10.75rem)]"
+            : "md:min-h-[24rem]"
         )}
       >
         <div className="inline-flex items-center w-full gap-2">
@@ -183,7 +184,7 @@ const ChatOverview = ({
     >
       {image ? (
         <div className="flex items-center justify-center w-6 h-6 overflow-hidden rounded-full select-none md:w-8 md:h-8 bg-bleuFrance-50 ring-2 shrink-0 ring-offset-2 ring-bleuFrance-200">
-          <Image src={image.url} alt={slug} width={32} height={32} />
+          <img src={image.url} alt={slug} className="object-cover w-8 h-8" />
         </div>
       ) : (
         <span className="flex items-center justify-center w-6 h-6 rounded-full shrink-0 md:w-8 md:h-8 text-bleuFrance-500 bg-bleuFrance-50 ring-2 ring-offset-2 ring-bleuFrance-200 dark:bg-bleuFrance-700 dark:text-bleuFrance-200">
