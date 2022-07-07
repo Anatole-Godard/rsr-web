@@ -47,11 +47,9 @@ const ChannelSlug: NextPage<any> = ({
   }, [inputRef]);
 
   useEffect((): any => {
-    console.log(window.location.origin);
     const socket = io(window.location.origin || "", {
       path: `/api/channel/[slug]/socket`,
     });
-    console.log(socket);
 
     socket.on("message", (message: Message) => {
       setChat((oldChat) => [...oldChat, message]);
