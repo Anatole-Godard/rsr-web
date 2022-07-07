@@ -47,9 +47,11 @@ const ChannelSlug: NextPage<any> = ({
   }, [inputRef]);
 
   useEffect((): any => {
-    const socket = io("", {
+    console.log(window.location.origin);
+    const socket = io(window.location.origin || "", {
       path: `/api/channel/[slug]/socket`,
     });
+    console.log(socket);
 
     socket.on("message", (message: Message) => {
       setChat((oldChat) => [...oldChat, message]);
@@ -87,6 +89,7 @@ const ChannelSlug: NextPage<any> = ({
   };
 
   const sendMessage = async (msg: string) => {
+    if (msg.trim().length === 0) return;
     const message = {
       user: {
         fullName: user.data.fullName,
