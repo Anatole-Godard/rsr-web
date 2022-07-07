@@ -54,21 +54,29 @@ function AuthProvider({
   };
 
   const signOut = async () => {
-    const response = await fetchRSR("/api/auth/revoke", user.session, {
-      method: "POST",
-    });
-    const body = await response.json();
-    if (body.error) {
-      toast.error(body?.error?.client);
-      removeCookie("user", { path: "/" });
-      setUser(null);
-      router.push("/");
-    }
+    try {
+      const response = await fetchRSR("/api/auth/revoke", user.session, {
+        method: "POST",
+      });
+      const body = await response.json();
+      if (body.error) {
+        toast.error(body?.error?.client);
+        removeCookie("user", { path: "/" });
+        setUser(null);
+        router.push("/");
+      }
 
-    if (response.ok) {
+      if (response.ok) {
+        toast.success(t("signout-toast-success"));
+        removeCookie("user", { path: "/" });
+        setUser(null);
+        router.push("/");
+      }
+    } catch (e) {
       toast.success(t("signout-toast-success"));
       removeCookie("user", { path: "/" });
       setUser(null);
+
       router.push("/");
     }
   };

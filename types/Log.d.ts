@@ -15,3 +15,7 @@ export type LogOptions = {
   };
   body: string;
 };
+
+export type Log = LogBody & {
+  createdAt: Date;
+};
