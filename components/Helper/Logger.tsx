@@ -35,5 +35,5 @@ export const Logger = (): JSX.Element => {
     log();
   }, [router.pathname, log]);
 
-  return <>log</>;
+  return <></>;
 };
