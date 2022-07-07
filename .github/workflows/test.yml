@@ -29,11 +29,3 @@ jobs:
         run: yarn build
       - name: Launch e2e tests
         run: npm run test:e2e
-      - uses: actions/upload-artifact@v2
-        if: always()
-        with:
-          name: test-artifacts
-          path: test-results/
-      - name: Stop containers
-        if: always()
-        run: docker compose -f docker-compose.dev.yml down
