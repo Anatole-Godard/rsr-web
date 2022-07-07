@@ -24,7 +24,7 @@ export const AvatarGroup = ({
             <Link key={index} href={"/user/" + user.uid}>
               <img
                 className={
-                  "inline-block select-none rounded-full cursor-pointer ring-2 ring-white dark:ring-gray-800 " +
+                  "inline-block select-none rounded-full cursor-pointer ring-2 ring-white dark:ring-gray-800 bg-white dark:bg-black " +
                   (xl ? "md:w-12 md:h-12 w-6 h-6" : "w-6 h-6")
                 }
                 src={

@@ -2,7 +2,11 @@ import { AppLayout } from "@components/Layout/AppLayout";
 import type { NextPage } from "next";
 import Link from "next/link";
 
-const Error404: NextPage = () => {
+const Error404: NextPage<{ title?: string }> = ({
+  title = "La page n'existe pas",
+}: {
+  title?: string;
+}) => {
   return (
     <AppLayout title="404">
       <div className="h-full px-4 py-16 bg-white dark:bg-black sm:px-6 sm:py-24 md:grid md:place-items-center lg:px-8">
@@ -14,7 +18,7 @@ const Error404: NextPage = () => {
             <div className="sm:ml-6">
               <div className="sm:border-l sm:border-gray-200 dark:border-gray-700 sm:pl-6">
                 <h1 className="text-4xl font-extrabold tracking-tight text-gray-900 dark:text-gray-100 font-marianne sm:text-5xl">
-                  {"La page n'existe pas"}
+                  {title}
                 </h1>
                 <p className="mt-2 text-base text-gray-500 dark:text-gray-400 font-spectral">
                   {"Merci de bien vérifier l'adresse URL."}
