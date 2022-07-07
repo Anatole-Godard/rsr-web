@@ -22,6 +22,10 @@ const logSchema = new Schema({
     required: true,
     enum: ["fetch", "next"],
   },
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  }
 });
 
 // mongoose.models = {};
