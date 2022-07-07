@@ -103,7 +103,7 @@ const ChannelSlug: NextPage<any> = ({
     if (res.ok) {
       setMessage("");
       if (bottomListRef.current)
-        bottomListRef.current.scrollIntoView({ behavior: "smooth" });
+        bottomListRef.current.scrollIntoView({ behavior: "smooth", inline: "end", block: "nearest" });
     }
   };
 
