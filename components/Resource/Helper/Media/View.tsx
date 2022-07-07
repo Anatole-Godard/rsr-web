@@ -10,7 +10,7 @@ export const MediaView = ({ name, url, type }: Media) => {
   return (
     <div className="relative flex flex-col w-full h-full max-h-[24rem] rounded-md sm:rounded-lg ">
       {type.includes("image") && (
-        <img src={url} alt={name} className="object-cover w-full h-auto" />
+        <img src={url} alt={name} className="object-cover w-full h-full" />
       )}
       {type.includes("audio") && (
         <div className="relative w-full h-full overflow-hidden bg-yellow-500">
