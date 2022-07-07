@@ -1,13 +1,13 @@
-import { GetServerSideProps, NextPage } from 'next';
-import { AdminLayout } from '@components/Layout/AdminLayout';
-import { CustomTable } from '@components/UI/CustomTable';
-import { useCallback, useEffect, useState } from 'react';
-import { User } from '@definitions/User';
-import { useAuth } from '@hooks/useAuth';
-import { fetchRSR } from 'libs/fetchRSR';
-import { SearchIcon, UserIcon } from '@heroicons/react/outline';
-import toast from 'react-hot-toast';
-import { useRouter } from 'next/router';
+import { GetServerSideProps, NextPage } from "next";
+import { AdminLayout } from "@components/Layout/AdminLayout";
+import { CustomTable } from "@components/UI/CustomTable";
+import { useCallback, useEffect, useState } from "react";
+import { User } from "@definitions/User";
+import { useAuth } from "@hooks/useAuth";
+import { fetchRSR } from "libs/fetchRSR";
+import { SearchIcon, UserIcon } from "@heroicons/react/outline";
+import toast from "react-hot-toast";
+import { useRouter } from "next/router";
 
 const UserAdmin: NextPage<any> = (props) => {
   const [users, setUsers] = useState<User[]>(props?.data?.attributes);
@@ -21,7 +21,7 @@ const UserAdmin: NextPage<any> = (props) => {
     getUsers();
   };
 
-  const validUser = async (id: number, validated: Boolean) => {
+  const validUser = async (id: number, validated: boolean) => {
     if (!user?.session) {
       await router.push('/');
       return;
@@ -187,7 +187,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       cookies: { user }
     } = context.req;
 
-    let parseUser = JSON.parse(user);
+    const parseUser = JSON.parse(user);
 
     if (!user) {
       return {

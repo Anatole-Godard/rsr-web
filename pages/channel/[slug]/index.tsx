@@ -5,7 +5,7 @@ import {
   CheckIcon,
   PencilIcon,
   UserGroupIcon,
-  XIcon,
+  XIcon
 } from "@heroicons/react/outline";
 import { GetServerSideProps, NextPage } from "next";
 import { useRouter } from "next/router";
@@ -22,9 +22,9 @@ import { Activity } from "@definitions/Activity";
 import { useTranslations } from "next-intl";
 
 const ChannelSlug: NextPage<any> = ({
-  sideBarChannels,
-  channel,
-}: {
+                                      sideBarChannels,
+                                      channel
+                                    }: {
   sideBarChannels: Channel[];
   channel: Channel;
 }) => {
@@ -47,7 +47,7 @@ const ChannelSlug: NextPage<any> = ({
 
   useEffect((): any => {
     const socket = io("http://localhost:3000", {
-      path: `/api/channel/[slug]/socket`,
+      path: `/api/channel/[slug]/socket`
     });
 
     socket.on("message", (message: Message) => {
@@ -90,14 +90,14 @@ const ChannelSlug: NextPage<any> = ({
       user: {
         fullName: user.data.fullName,
         photoURL: user.data.photoURL,
-        uid: user.data.uid,
+        uid: user.data.uid
       },
-      data: { type: "message", text: msg },
+      data: { type: "message", text: msg }
     };
 
     const res = await fetchRSR(`/api/channel/${slug}/messages`, user?.session, {
       method: "POST",
-      body: JSON.stringify(message),
+      body: JSON.stringify(message)
     });
     if (res.ok) {
       setMessage("");
@@ -113,18 +113,20 @@ const ChannelSlug: NextPage<any> = ({
 
   return (
     <AppLayout title={channel.name}>
-      <div className="flex flex-col w-full h-full md:flex-row">
+      <div className='flex flex-col w-full h-full md:flex-row'>
         <Sidebar
           channels={sideBarChannels}
           selectedChannelSlug={slug as string}
         />
-        <div className="flex justify-center w-full h-[calc(100vh-10.75rem)] md:max-h-full ">
-          <div className="flex flex-col justify-between w-full h-full md:bg-gray-100 dark:md:bg-gray-900 ">
+        <div className='flex justify-center w-full h-[calc(100vh-10.75rem)] md:max-h-full '>
+          <div className='flex flex-col justify-between w-full h-full md:bg-gray-100 dark:md:bg-gray-900 '>
             {/* HEADER */}
-            <div className="inline-flex justify-between w-full p-3 pr-6 border-b border-gray-100 dark:border-gray-900 md:border-0">
-              <div className="inline-flex items-center">
+            <div
+              className='inline-flex justify-between w-full p-3 pr-6 border-b border-gray-100 dark:border-gray-900 md:border-0'>
+              <div className='inline-flex items-center'>
                 {channel.image ? (
-                  <div className="flex items-center justify-center w-6 h-6 overflow-hidden rounded-full select-none md:w-8 md:h-8 bg-bleuFrance-50 ring-2 shrink-0 ring-offset-2 ring-bleuFrance-200">
+                  <div
+                    className='flex items-center justify-center w-6 h-6 overflow-hidden rounded-full select-none md:w-8 md:h-8 bg-bleuFrance-50 ring-2 shrink-0 ring-offset-2 ring-bleuFrance-200'>
                     <Image
                       src={channel.image.url}
                       alt={slug}
@@ -133,20 +135,21 @@ const ChannelSlug: NextPage<any> = ({
                     />
                   </div>
                 ) : (
-                  <span className="flex items-center justify-center w-6 h-6 rounded-full shrink-0 md:w-8 md:h-8 text-bleuFrance-500 bg-bleuFrance-50 ring-2 ring-offset-2 ring-bleuFrance-200 dark:bg-bleuFrance-700 dark:text-bleuFrance-200">
-                    <UserGroupIcon className="w-3 h-3 md:w-4 md:h-4 shrink-0" />
+                  <span
+                    className='flex items-center justify-center w-6 h-6 rounded-full shrink-0 md:w-8 md:h-8 text-bleuFrance-500 bg-bleuFrance-50 ring-2 ring-offset-2 ring-bleuFrance-200 dark:bg-bleuFrance-700 dark:text-bleuFrance-200'>
+                    <UserGroupIcon className='w-3 h-3 md:w-4 md:h-4 shrink-0' />
                   </span>
                 )}
 
-                <div className="flex flex-col ml-2">
-                  <div className="inline-flex items-center">
-                    <p className="text-xl font-medium text-gray-700 dark:text-gray-200 font-marianne">
+                <div className='flex flex-col ml-2'>
+                  <div className='inline-flex items-center'>
+                    <p className='text-xl font-medium text-gray-700 dark:text-gray-200 font-marianne'>
                       {"#" + slug}
                     </p>
-                    
+
                   </div>
                   {channel.description && (
-                    <p className="text-xs font-light text-gray-500 font-spectral">
+                    <p className='text-xs font-light text-gray-500 font-spectral'>
                       {channel.description.length > 70
                         ? channel.description.substring(0, 70) + "..."
                         : channel.description}
@@ -155,23 +158,23 @@ const ChannelSlug: NextPage<any> = ({
                 </div>
               </div>
 
-              <div className="inline-flex items-center pr-6 space-x-3 ">
+              <div className='inline-flex items-center pr-6 space-x-3 '>
                 {user?.data.uid === channel.owner.uid && (
                   <Link
                     href={`/channel/${slug}/edit`}
-                    key="channel_slug-edit_link"
+                    key='channel_slug-edit_link'
                   >
                     <a
-                      className="bg-gray-300 btn-gray hover:bg-gray-400 hover:text-gray-900 dark:hover:text-gray-300 shrink-0"
-                      key="channel_slug-edit-btn"
+                      className='bg-gray-300 btn-gray hover:bg-gray-400 hover:text-gray-900 dark:hover:text-gray-300 shrink-0'
+                      key='channel_slug-edit-btn'
                     >
                       <PencilIcon
-                        className="w-4 h-4 sm:mr-2 shrink-0"
-                        key="channel_slug-edit-icon"
+                        className='w-4 h-4 sm:mr-2 shrink-0'
+                        key='channel_slug-edit-icon'
                       />
-                      <span className="items-center hidden sm:inline-flex">
+                      <span className='items-center hidden sm:inline-flex'>
                         {t("edit1")}
-                        <span className="hidden ml-1 lg:inline-flex">
+                        <span className='hidden ml-1 lg:inline-flex'>
                           {t("edit2")}
                         </span>
                       </span>
@@ -180,17 +183,17 @@ const ChannelSlug: NextPage<any> = ({
                 )}
                 {channel.visibility === "private" && (
                   <button
-                    className="btn-red shrink-0"
+                    className='btn-red shrink-0'
                     onClick={quit}
-                    key="channel_slug-quit_btn"
+                    key='channel_slug-quit_btn'
                   >
                     <XIcon
-                      className="w-4 h-4 sm:mr-2 shrink-0"
-                      key="channel_slug-quit_icon"
+                      className='w-4 h-4 sm:mr-2 shrink-0'
+                      key='channel_slug-quit_icon'
                     />
-                    <span className="items-center hidden sm:inline-flex">
+                    <span className='items-center hidden sm:inline-flex'>
                       {t("quit1")}
-                      <span className="hidden ml-1 lg:inline-flex">
+                      <span className='hidden ml-1 lg:inline-flex'>
                         {t("quit2")}
                       </span>
                     </span>
@@ -200,8 +203,9 @@ const ChannelSlug: NextPage<any> = ({
             </div>
 
             {/* BODY */}
-            <div className="flex flex-col p-6 pr-6 space-y-4 overflow-y-auto bg-white dark:bg-gray-800 grow lg:max-h-full md:rounded-l-xl ">
-              <ol className="relative border-l border-gray-200 h-fit dark:border-gray-700">
+            <div
+              className='flex flex-col p-6 pr-6 space-y-4 overflow-y-auto bg-white dark:bg-gray-800 grow lg:max-h-full md:rounded-l-xl '>
+              <ol className='relative border-l border-gray-200 h-fit dark:border-gray-700'>
                 {history.map((item, index) => (
                   <HistoryItem
                     {...item}
@@ -216,20 +220,21 @@ const ChannelSlug: NextPage<any> = ({
             {/* FOOTER */}
             <form
               onSubmit={handleSubmitMessage}
-              className="inline-flex items-center w-full px-6 py-3 md:pl-0"
+              className='inline-flex items-center w-full px-6 py-3 md:pl-0'
             >
-              <label className="relative w-full mr-2 text-gray-400 focus-within:text-gray-600 ">
-                <ChatIcon className="absolute w-4 h-4 duration-300 transform -translate-y-1/2 pointer-events-none top-1/2 left-3" />
+              <label className='relative w-full mr-2 text-gray-400 focus-within:text-gray-600 '>
+                <ChatIcon
+                  className='absolute w-4 h-4 duration-300 transform -translate-y-1/2 pointer-events-none top-1/2 left-3' />
                 <input
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
-                  className="z-40 pl-[2.25rem] bg-white hover:bg-gray-200 dark:hover:bg-gray-700 dark:focus:bg-gray-700 input"
+                  className='z-40 pl-[2.25rem] bg-white hover:bg-gray-200 dark:hover:bg-gray-700 dark:focus:bg-gray-700 input'
                   ref={inputRef}
                   placeholder={t("placeholder")}
                 />
               </label>
-              <button type="submit" className=" btn-bleuFrance">
-                <CheckIcon className="w-4 h-4 mr-2" />
+              <button type='submit' className=' btn-bleuFrance'>
+                <CheckIcon className='w-4 h-4 mr-2' />
                 {t("send")}
               </button>
             </form>
@@ -244,16 +249,16 @@ export default ChannelSlug;
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const {
-    cookies: { user },
+    cookies: { user }
   } = context.req;
   if (!user)
     return {
       redirect: {
         permanent: false,
-        destination: "/auth/login",
-      },
+        destination: "/auth/login"
+      }
     };
-  let parsedUser = JSON.parse(user);
+  const parsedUser = JSON.parse(user);
   const channels = await (
     await fetchRSR("http://localhost:3000/api/channel/", parsedUser?.session)
   ).json();
@@ -271,15 +276,15 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     return {
       redirect: {
         permanent: false,
-        destination: "/channel",
-      },
+        destination: "/channel"
+      }
     };
 
   return {
     props: {
       sideBarChannels: channels?.data?.attributes,
       channel,
-      i18n: (await import(`../../../i18n/${context.locale}.json`)).default,
-    },
+      i18n: (await import(`../../../i18n/${context.locale}.json`)).default
+    }
   };
 };

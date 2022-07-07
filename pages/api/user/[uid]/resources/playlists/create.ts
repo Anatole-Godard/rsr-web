@@ -14,15 +14,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       error: {
         code: 403,
         name: "UnauthorizedError",
-        message: "Not authorized to access this endpoint",
-        // cause: {
-        //   "!headersUid": !headersUid,
-        //   "!queryUid": !queryUid,
-        //   "!headersUid === !queryUid": !headersUid === !queryUid,
-        //   headersUid,
-        //   queryUid,
-        // },
-      },
+        message: "Not authorized to access this endpoint"
+      }
     });
 
   if (req.method !== "POST")
@@ -33,9 +26,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         name: "MethodError",
         message: "Bad method for this endpoint",
         cause: {
-          method: req.method,
-        },
-      },
+          method: req.method
+        }
+      }
     });
 
   const { playlistKey } = req.body as {
@@ -43,7 +36,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   };
 
   try {
-    let user = await UserModel.findById(headersUid).select("-password");
+    const user = await UserModel.findById(headersUid).select("-password");
     const playlists = user.playlists;
     playlists.keys = [...playlists.keys, playlistKey];
     playlists[playlistKey] = [];
@@ -56,12 +49,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       data: {
         attributes: {
           playlists: user.playlists,
-          uid: user._id.toString(),
-        },
+          uid: user._id.toString()
+        }
       },
-      error: null,
+      error: null
     });
   } catch (error) {
+    // @ts-ignore
     handleError(res, error, "user/resources/playlists/create");
   }
 };

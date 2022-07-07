@@ -41,6 +41,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       error: null,
     });
   } catch (e) {
+    // @ts-ignore
     handleError(res, e, "log");
   }
 };

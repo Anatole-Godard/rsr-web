@@ -1,63 +1,64 @@
 import mongoose from "mongoose";
+
 const Schema = mongoose.Schema;
 
 const ResourceSchema = new Schema({
   slug: {
     type: String,
     required: true,
-    unique: true,
+    unique: true
   },
   owner: {
     type: Object,
-    required: true,
+    required: true
   },
   createdAt: {
     type: Date,
-    default: Date.now,
+    default: Date.now
   },
   updatedAt: {
     type: Date,
-    default: Date.now,
+    default: Date.now
   },
   description: {
     type: String,
-    required: false,
+    required: false
   },
   tags: {
     type: Array,
-    required: false,
+    required: false
   },
   data: {
     type: Object,
-    required: true,
+    required: true
   },
   likes: {
     type: Array,
     required: true,
-    default: [],
+    default: []
   },
   comments: {
     type: Array,
-    default: [],
+    default: []
   },
   validated: {
     type: Boolean,
-    default: false,
+    default: false
   },
   visibility: {
     type: String,
     required: true,
     default: "public",
-    enum: ["public", "private", "unlisted"],
+    enum: ["public", "private", "unlisted"]
   },
   members: {
     type: Array,
-    required: false,
+    required: false
   },
   seenBy: {
     type: Array,
-    default: [],
-  },
+    default: []
+  }
 });
 
 const Resource =
@@ -65,8 +66,7 @@ const Resource =
 
 export default Resource;
 
-// @ts-ignore
-ResourceSchema.post("save", function (next) {
+ResourceSchema.post("save", function(next) {
   // @ts-ignore
   this.updatedAt = Date.now();
   // @ts-ignore

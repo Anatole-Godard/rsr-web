@@ -25,8 +25,8 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
           data: null,
           error: {
             code: 500,
-            message: err.message,
-          },
+            message: err.message
+          }
         });
         return;
       }
@@ -37,8 +37,8 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
           error: {
             code: 400,
             message: "bad request",
-            fields: { slug },
-          },
+            fields: { slug }
+          }
         });
         return;
       }
@@ -48,8 +48,8 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
           data: null,
           error: {
             code: 405,
-            message: "method not allowed",
-          },
+            message: "method not allowed"
+          }
         });
         return;
       }
@@ -61,8 +61,8 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
           data: null,
           error: {
             code: 404,
-            message: "not found",
-          },
+            message: "not found"
+          }
         });
         return;
       }
@@ -80,16 +80,16 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
             code: 400,
             message: "bad request",
             fields: {
-              type: resource.data.type,
-            },
-          },
+              type: resource.data.type
+            }
+          }
         });
         return;
       }
 
       try {
         await fs.mkdir(`${DEFAULT_PATH}/${slug}`, {
-          recursive: true,
+          recursive: true
         });
 
         await fs.writeFile(
@@ -98,7 +98,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         );
         resource.data.attributes.properties.medias.push({
           ...fields,
-          url: `/uploads/resource/${resource.slug}/${fields.name}`,
+          url: `/uploads/resource/${resource.slug}/${fields.name}`
         });
 
         resource.markModified("data.attributes.properties.medias");
@@ -107,11 +107,12 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 
         res.status(200).json({
           data: {
-            attributes: resource,
+            attributes: resource
           },
-          error: null,
+          error: null
         });
       } catch (err) {
+        // @ts-ignore
         handleError(res, err, "resource/upload");
       }
     }
@@ -122,6 +123,6 @@ export default withDatabase(handler);
 
 export const config = {
   api: {
-    bodyParser: false,
-  },
+    bodyParser: false
+  }
 };

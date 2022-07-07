@@ -1,13 +1,13 @@
-import { AdminLayout } from '@components/Layout/AdminLayout';
-import { GetServerSideProps, NextPage } from 'next';
-import { CustomTable } from '@components/UI/CustomTable';
-import { useCallback, useEffect, useState } from 'react';
-import { fetchRSR } from 'libs/fetchRSR';
-import { useAuth } from '@hooks/useAuth';
-import { SearchIcon, TagIcon } from '@heroicons/react/outline';
-import { TagDocument } from '@definitions/Resource/Tag';
-import toast from 'react-hot-toast';
-import { useRouter } from 'next/router';
+import { AdminLayout } from "@components/Layout/AdminLayout";
+import { GetServerSideProps, NextPage } from "next";
+import { CustomTable } from "@components/UI/CustomTable";
+import { useCallback, useEffect, useState } from "react";
+import { fetchRSR } from "libs/fetchRSR";
+import { useAuth } from "@hooks/useAuth";
+import { SearchIcon, TagIcon } from "@heroicons/react/outline";
+import { TagDocument } from "@definitions/Resource/Tag";
+import toast from "react-hot-toast";
+import { useRouter } from "next/router";
 
 const TagManager: NextPage<any> = (props) => {
   const [tags, setTags] = useState<TagDocument[]>(props?.data?.attributes);
@@ -17,53 +17,53 @@ const TagManager: NextPage<any> = (props) => {
   const { user } = useAuth();
   const router = useRouter();
 
-  const validate = async (_id: string, validated: Boolean) => {
-    const body = JSON.stringify({ action: 'validate', validated, _id });
+  const validate = async (_id: string, validated: boolean) => {
+    const body = JSON.stringify({ action: "validate", validated, _id });
     const toastID = toast.loading(
       validated
-        ? 'Validation de l\'étiquette en cours...'
-        : 'Suspension de l\'étiquette en cours...'
+        ? "Validation de l'étiquette en cours..."
+        : "Suspension de l'étiquette en cours..."
     );
     const res = await fetchRSR(`/api/resource/admin/tags`, user.session, {
-      method: 'PUT',
+      method: "PUT",
       body
     });
     toast.dismiss(toastID);
     if (res.ok)
       toast.success(
         validated
-          ? 'Validation de l\'étiquette réussie'
-          : 'Suspension de l\'étiquette réussie'
+          ? "Validation de l'étiquette réussie"
+          : "Suspension de l'étiquette réussie"
       );
 
     getTags();
   };
   const deleteTag = async (_id: string) => {
-    const toastID = toast.loading('Suppression de l\'étiquette en cours...');
+    const toastID = toast.loading("Suppression de l'étiquette en cours...");
     const res = await fetchRSR(`/api/resource/admin/tags/`, user.session, {
-      method: 'DELETE',
+      method: "DELETE",
       body: JSON.stringify({ _id })
     });
     toast.dismiss(toastID);
-    if (res.ok) toast.success('Suppression de l\'étiquette réussie');
-    else toast.error('Une erreur est survenue');
+    if (res.ok) toast.success("Suppression de l'étiquette réussie");
+    else toast.error("Une erreur est survenue");
     getTags();
   };
 
   const theadList = [
     {
-      name: 'owner',
-      subName: 'fullName',
-      label: 'Créateur',
-      type: 'isUser',
+      name: "owner",
+      subName: "fullName",
+      label: "Créateur",
+      type: "isUser",
       width: 20
     },
-    { name: 'name', label: 'Nom de l\'étiquette' },
+    { name: "name", label: "Nom de l'étiquette" },
 
     {
-      name: 'validated',
-      label: 'Validation',
-      type: 'validated',
+      name: "validated",
+      label: "Validation",
+      type: "validated",
       isTag: true,
       validEntity: validate,
       width: 25
@@ -72,22 +72,21 @@ const TagManager: NextPage<any> = (props) => {
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const getTags = useCallback(
-
     async (search?) => {
       if (!user?.session) {
-        await router.push('/');
+        await router.push("/");
         return;
       }
-      let filter = '';
+      let filter = "";
       if (search) {
         filter = search;
       }
       const res = await fetchRSR(
-        '/api/resource/admin/tags?limit=' +
+        "/api/resource/admin/tags?limit=" +
         limitPerPage +
-        '&page=' +
+        "&page=" +
         currentPage +
-        '&search=' +
+        "&search=" +
         filter,
         user.session
       );
@@ -97,9 +96,9 @@ const TagManager: NextPage<any> = (props) => {
           setTags(body.data?.attributes);
           setTotalPages(body.data?.totalPages);
         }
-        toast.success('Récupération des étiquettes réussie');
+        toast.success("Récupération des étiquettes réussie");
       } else {
-        toast.error('Une erreur est survenue');
+        toast.error("Une erreur est survenue");
       }
     },
     [currentPage, limitPerPage, router, user.session]
@@ -113,7 +112,7 @@ const TagManager: NextPage<any> = (props) => {
     const currentPage = data.selected + 1;
     setCurrentPage(currentPage);
   };
-  const [search, setSearch] = useState<string>('');
+  const [search, setSearch] = useState<string>("");
 
   return (
     <AdminLayout title='Tags - Admin.'>
@@ -178,26 +177,26 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       cookies: { user }
     } = context.req;
 
-    let parseUser = JSON.parse(user);
+    const parseUser = JSON.parse(user);
 
     if (!user) {
       return {
         redirect: {
           permanent: false,
-          destination: '/auth/login'
+          destination: "/auth/login"
         }
       };
-    } else if (parseUser?.session?.role === 'user') {
+    } else if (parseUser?.session?.role === "user") {
       return {
         redirect: {
           permanent: false,
-          destination: '/'
+          destination: "/"
         }
       };
     }
     const limit = parseInt(process.env.NEXT_PUBLIC_BACK_OFFICE_MAX_ENTITIES);
     const res = await fetchRSR(
-      'http://localhost:3000/api/resource/admin/tags?limit=' + limit + '&page=1',
+      "http://localhost:3000/api/resource/admin/tags?limit=" + limit + "&page=1",
       parseUser.session
     );
     const body = await res.json();
@@ -211,7 +210,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     return {
       redirect: {
         permanent: false,
-        destination: '/'
+        destination: "/"
       }
     };
   }

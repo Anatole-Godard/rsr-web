@@ -3,7 +3,7 @@ import User from "@models/User";
 import { genToken } from "@middleware/auth";
 import { NextApiRequest, NextApiResponse } from "next";
 import withDatabase from "@middleware/mongoose";
-const argon2 = require("argon2");
+import argon2 from "argon2";
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== "POST") {
@@ -13,8 +13,8 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         name: "MethodNotAllowedError",
         method: req.method,
         message: "Method not allowed",
-        client: "Méthode non autorisée",
-      },
+        client: "Méthode non autorisée"
+      }
     });
   }
   const { email, password, birthDate, fullName } = req.body;
@@ -30,11 +30,11 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
           email: !email,
           password: !password,
           birthDate: !birthDate,
-          fullName: !fullName,
+          fullName: !fullName
         },
         client:
-          "Merci de fournir un email, un mot de passe, une date de naissance et un nom complet",
-      },
+          "Merci de fournir un email, un mot de passe, une date de naissance et un nom complet"
+      }
     });
   }
   if (!appsource) {
@@ -43,8 +43,8 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       error: {
         name: "MissingAppSourceError",
         message: "Please provide appsource",
-        client: "Une erreur est survenue",
-      },
+        client: "Une erreur est survenue"
+      }
     });
   }
 
@@ -53,7 +53,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       email,
       password: await argon2.hash(password),
       birthDate,
-      fullName,
+      fullName
     });
     const token = genToken({ uid: user._id.toString(), role: user.role });
 
@@ -64,7 +64,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         uid: user._id.toString(),
         role: user.role,
         appSource: appsource,
-        uidAppSource: `${user._id.toString()}:${appsource}`,
+        uidAppSource: `${user._id.toString()}:${appsource}`
       },
       { upsert: true, new: true }
     );
@@ -77,9 +77,9 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         birthDate: user.birthDate,
         email: user.email,
         photoURL: user.photoURL,
-        createdAt: user.createdAt,
+        createdAt: user.createdAt
       },
-      session,
+      session
     });
   } catch (err) {
     if (err.message.includes("E11000 duplicate key error")) {
@@ -88,8 +88,8 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         error: {
           name: "DuplicateEmailError",
           message: "Email already exists",
-          client: "Cet email existe déjà",
-        },
+          client: "Cet email existe déjà"
+        }
       });
     }
     return res.status(500).json({
@@ -98,8 +98,8 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         name: err instanceof Error ? err.name : "InternalServerError",
         message:
           err instanceof Error ? err.message : "an error occured on: register",
-        client: "Une erreur est survenue",
-      },
+        client: "Une erreur est survenue"
+      }
     });
   }
 }

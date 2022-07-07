@@ -102,7 +102,6 @@ const ResourceSlug: NextPage<any> = ({
 
   if (!slug) return <Error404 title={t("resource-not-found")} />;
 
-  // @ts-ignore
   return (
     <AppLayout title={data.attributes.properties.name}>
       <section className="flex flex-col w-full bg-gray-100 h-fit dark:bg-gray-900">
@@ -267,7 +266,10 @@ const ResourceSlug: NextPage<any> = ({
                   ? "emerald"
                   : data.type === "event"
                   ? "red"
-                  : data.type === "external_link"
+
+                      : data.type === 'other'
+                        ? 'gray'
+                        : data.type === "external_link"
                   ? "amber"
                   : "gray"
               }

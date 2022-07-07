@@ -38,7 +38,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       });
       return;
     }
-    let document: ResourceMinimum | UserMinimum | {} = {};
+    let document: ResourceMinimum | UserMinimum | any;
     let validated = true;
 
     if (type === 'user') {
@@ -104,6 +104,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       error: null
     });
   } catch (error) {
+    // @ts-ignore
     handleError(res, error, 'report:create');
   }
 }

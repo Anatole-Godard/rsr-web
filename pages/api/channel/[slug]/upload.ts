@@ -87,6 +87,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
             error: null,
           });
         } catch (err) {
+          // @ts-ignore
           handleError(res, err, "channel/upload");
         }
       }
@@ -122,6 +123,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         error: null,
       });
     } catch (err) {
+      // @ts-ignore
       handleError(res, err, "channel/upload");
     }
   }

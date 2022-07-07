@@ -17,8 +17,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponseServerIO) => {
       data: null,
       error: {
         code: 401,
-        message: "unauthorized",
-      },
+        message: "unauthorized"
+      }
     });
   }
 
@@ -27,21 +27,21 @@ const handler = async (req: NextApiRequest, res: NextApiResponseServerIO) => {
       data: null,
       error: {
         code: 401,
-        message: "unauthorized",
-      },
+        message: "unauthorized"
+      }
     });
   }
   if (req.method === "POST") {
     const { data } = req.body;
-    let userMinimum: UserMinimum = {
+    const userMinimum: UserMinimum = {
       uid: user.uid,
       fullName: user.fullName,
-      photoURL: user.photoURL,
+      photoURL: user.photoURL
     };
     const msg = {
       user: userMinimum,
       data,
-      createdAt: new Date().toISOString(),
+      createdAt: new Date().toISOString()
     };
 
     if (
@@ -65,7 +65,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponseServerIO) => {
       slug: channel.slug,
       createdAt: channel.createdAt,
       image: channel.image,
-      description: channel.description,
+      description: channel.description
     };
 
     const notifications: Notification[] = channel.members
@@ -74,16 +74,16 @@ const handler = async (req: NextApiRequest, res: NextApiResponseServerIO) => {
         user: {
           uid: u.uid.toString(),
           fullName: u.fullName,
-          photoURL: u.photoURL,
+          photoURL: u.photoURL
         },
         emitter: {
           uid: user.uid.toString(),
           fullName: user.fullName,
-          photoURL: user.photoURL,
+          photoURL: user.photoURL
         },
         document: channelMin,
         type: "message",
-        createdAt: msg.createdAt,
+        createdAt: msg.createdAt
       }));
 
     await NotificationModel.insertMany(notifications);

@@ -78,6 +78,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       },
     });
   } catch (err) {
+    // @ts-ignore
     handleError(res, err, "resource/slug/comment");
   }
 }

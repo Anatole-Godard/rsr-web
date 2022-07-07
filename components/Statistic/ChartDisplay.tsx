@@ -56,10 +56,10 @@ Chart.register(
     SubTitle
 );
 
-export const ChartDisplay = ({label, resources, minPeriod, maxPeriod}:{label: String, resources: Resource[], minPeriod: string, maxPeriod: string}) => {
+export const ChartDisplay = ({label, resources, minPeriod, maxPeriod}:{label: string, resources: Resource[], minPeriod: string, maxPeriod: string}) => {
 
-    let min = moment(minPeriod);
-    let max = moment(maxPeriod);
+    const min = moment(minPeriod);
+    const max = moment(maxPeriod);
     const values = [];
 
     while (max > min || min.format('M') === max.format('M')) {
@@ -97,9 +97,9 @@ export const ChartDisplay = ({label, resources, minPeriod, maxPeriod}:{label: St
     };
 
     const getStatistics = () => {
-        let data = Array(12).fill(0)
+        const data = Array(12).fill(0)
         resources.filter(resource => {
-            let index = moment(resource.createdAt).month()
+            const index = moment(resource.createdAt).month()
             data[index]++
         })
         return data

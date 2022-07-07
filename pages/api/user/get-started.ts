@@ -62,6 +62,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       error: null,
     });
   } catch (err) {
+    // @ts-ignore
     handleError(res, err, "user/get-started");
   }
 };

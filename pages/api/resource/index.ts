@@ -10,91 +10,91 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { q: search = "", type = "" } = req.query;
 
   if (search || type) {
-    let query = uid
+    const query = uid
       ? {
-          $and: [
-            {
-              $or: [
-                { $and: [{ validated: false }, { "owner.uid": uid }] },
-                {
-                  $and: [
-                    { visibility: "private" },
-                    { "owner.uid": uid },
-                    { validated: true },
-                  ],
-                },
-                {
-                  $and: [
-                    { visibility: "unlisted" },
-                    { "members.uid": uid },
-                    { validated: true },
-                  ],
-                },
-                { $and: [{ visibility: "public" }, { validated: true }] },
-              ],
-            },
-            ...(search
-              ? [
-                  {
-                    $or: [
-                      {
-                        "data.attributes.properties.name": {
-                          $regex: search,
-                          $options: "i",
-                        },
-                      },
-                      {
-                        "tags.name": {
-                          $regex: search,
-                          $options: "i",
-                        },
-                      },
-                    ],
-                  },
+        $and: [
+          {
+            $or: [
+              { $and: [{ validated: false }, { "owner.uid": uid }] },
+              {
+                $and: [
+                  { visibility: "private" },
+                  { "owner.uid": uid },
+                  { validated: true }
                 ]
-              : []),
-            ...(type
-              ? [
-                  {
-                    "data.type": type,
-                  },
+              },
+              {
+                $and: [
+                  { visibility: "unlisted" },
+                  { "members.uid": uid },
+                  { validated: true }
                 ]
-              : []),
-          ],
-        }
+              },
+              { $and: [{ visibility: "public" }, { validated: true }] }
+            ]
+          },
+          ...(search
+            ? [
+              {
+                $or: [
+                  {
+                    "data.attributes.properties.name": {
+                      $regex: search,
+                      $options: "i"
+                    }
+                  },
+                  {
+                    "tags.name": {
+                      $regex: search,
+                      $options: "i"
+                    }
+                  }
+                ]
+              }
+            ]
+            : []),
+          ...(type
+            ? [
+              {
+                "data.type": type
+              }
+            ]
+            : [])
+        ]
+      }
       : {
-          $and: [
-            { visibility: "public" },
-            { validated: true },
-            ...(search
-              ? [
+        $and: [
+          { visibility: "public" },
+          { validated: true },
+          ...(search
+            ? [
+              {
+                $or: [
                   {
-                    $or: [
-                      {
-                        "data.attributes.properties.name": {
-                          $regex: search,
-                          $options: "i",
-                        },
-                      },
-                      {
-                        "tags.name": {
-                          $regex: search,
-                          $options: "i",
-                        },
-                      },
-                    ],
+                    "data.attributes.properties.name": {
+                      $regex: search,
+                      $options: "i"
+                    }
                   },
-                ]
-              : []),
-            ...(type
-              ? [
                   {
-                    "data.type": type,
-                  },
+                    "tags.name": {
+                      $regex: search,
+                      $options: "i"
+                    }
+                  }
                 ]
-              : []),
-          ],
-        };
+              }
+            ]
+            : []),
+          ...(type
+            ? [
+              {
+                "data.type": type
+              }
+            ]
+            : [])
+        ]
+      };
 
     try {
       const resources = await Resource.find(query);
@@ -107,13 +107,14 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
             uid === r.owner.uid
               ? r.toObject()
               : {
-                  ...r.toObject(),
-                  tags: r.tags.filter((t: TagDocument) => t.validated),
-                }
-          ),
-        },
+                ...r.toObject(),
+                tags: r.tags.filter((t: TagDocument) => t.validated)
+              }
+          )
+        }
       });
     } catch (error) {
+      // @ts-ignore
       handleError(res, error, "resource/search");
     }
   } else {
@@ -121,13 +122,13 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       const resources = await Resource.find({
         ...(uid
           ? {
-              $or: [
-                { "members.uid": uid },
-                { "owner.uid": uid },
-                { validated: true, visibility: "public" },
-              ],
-            }
-          : { validated: true, visibility: "public" }),
+            $or: [
+              { "members.uid": uid },
+              { "owner.uid": uid },
+              { validated: true, visibility: "public" }
+            ]
+          }
+          : { validated: true, visibility: "public" })
       });
       res.status(200).json({
         data: {
@@ -137,14 +138,15 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
             uid === r.owner.uid
               ? r.toObject()
               : {
-                  ...r.toObject(),
-                  tags: r.tags.filter((t: TagDocument) => t.validated),
-                }
+                ...r.toObject(),
+                tags: r.tags.filter((t: TagDocument) => t.validated)
+              }
           ),
-          search: false,
-        },
+          search: false
+        }
       });
     } catch (err) {
+      // @ts-ignore
       handleError(res, err, "resource/all");
     }
   }

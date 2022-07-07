@@ -45,6 +45,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         }
         Log.countDocuments(query).exec((count_error, count) => {
           if (err) {
+            // @ts-ignore
             handleError(res, err, "logs/all");
           }
           return res.status(200).json({
@@ -59,6 +60,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         });
       });
   } catch (err) {
+    // @ts-ignore
     handleError(res, err, "logs/all");
   }
 }

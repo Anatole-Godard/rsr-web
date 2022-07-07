@@ -53,6 +53,7 @@ export function useCarousel<T = any>(
       <div className="absolute top-0 inline-flex gap-2 w-full p-2 z-[8]">
         {items.map((_: any, index: number) => (
           <span
+            key={index}
             onClick={() => jumpTo(index)}
             style={{ width: `${100 / items.length}%` }}
             className="pb-16 cursor-pointer"
