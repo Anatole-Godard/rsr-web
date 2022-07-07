@@ -1,5 +1,5 @@
 name: 'Test'
-on: [push, pull_request]
+on: [ push, pull_request ]
 
 jobs:
   #  unit-tests:
@@ -20,10 +20,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Build stack
-        run: docker compose -f docker-compose.dev.yml up -d --build
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16.x'
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+      - name: Build application
+        run: yarn build
       - name: Install dependencies
         run: npm install --force
+      - name: Build stack
+        run: docker compose -f docker-compose.dev.yml up -d --build
       - name: Launch e2e tests
         run: npm run test:e2e
       - uses: actions/upload-artifact@v2
