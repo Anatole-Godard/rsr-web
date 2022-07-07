@@ -17,6 +17,7 @@ import { fr } from "date-fns/locale";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { useRouter } from "next/router";
+import { Avatar } from "@components/UI/Avatar/Avatar";
 
 export const ResourceCard = (props: Resource) => {
   const { user } = useAuth();
@@ -99,8 +100,12 @@ export const ResourceCard = (props: Resource) => {
               <h3 className="w-full font-extrabold leading-5 truncate dark:text-gray-200 font-marianne">
                 {name}
               </h3>
-              <h4 className="text-xs font-semibold font-spectral">
-                {t("created-by", { name: owner.fullName })}
+              <h4 className="inline-flex items-end mt-1 text-xs font-semibold font-spectral">
+                {/* {t("created-by", { name: "" })} */}
+                <span className="inline-flex items-center">
+                  <Avatar user={owner} />
+                  <span className="ml-1">{owner.fullName}</span>
+                </span>
               </h4>
             </div>
 
@@ -171,18 +176,17 @@ export const ResourceCard = (props: Resource) => {
         <button
           onClick={() => {
             if (navigator.share) {
-              navigator
-                .share({
-                  title: `${name} - RSR`,
-                  url:
-                    document.location.protocol +
-                    "//" +
-                    document.location.host +
-                    "/resource/" +
-                    slug,
-                })
-                // .then(() => console.log("Successful share"))
-                // .catch((error) => console.log("Error sharing", error));
+              navigator.share({
+                title: `${name} - RSR`,
+                url:
+                  document.location.protocol +
+                  "//" +
+                  document.location.host +
+                  "/resource/" +
+                  slug,
+              });
+              // .then(() => console.log("Successful share"))
+              // .catch((error) => console.log("Error sharing", error));
             }
           }}
           className="px-2 btn-gray shrink-0"

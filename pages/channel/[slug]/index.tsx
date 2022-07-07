@@ -47,11 +47,9 @@ const ChannelSlug: NextPage<any> = ({
   }, [inputRef]);
 
   useEffect((): any => {
-    console.log(window.location.origin);
     const socket = io(window.location.origin || "", {
       path: `/api/channel/[slug]/socket`,
     });
-    console.log(socket);
 
     socket.on("message", (message: Message) => {
       setChat((oldChat) => [...oldChat, message]);
@@ -135,11 +133,10 @@ const ChannelSlug: NextPage<any> = ({
               <div className="inline-flex items-center">
                 {channel.image ? (
                   <div className="flex items-center justify-center w-6 h-6 overflow-hidden rounded-full select-none md:w-8 md:h-8 bg-bleuFrance-50 ring-2 shrink-0 ring-offset-2 ring-bleuFrance-200">
-                    <Image
+                    <img
                       src={channel.image.url}
                       alt={slug}
-                      width={32}
-                      height={32}
+                      className="object-cover w-full h-full"
                     />
                   </div>
                 ) : (

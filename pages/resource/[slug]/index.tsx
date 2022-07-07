@@ -38,6 +38,7 @@ import { useTranslations } from "next-intl";
 import { useRouter } from "next/router";
 import { useReport } from "@hooks/useReport";
 import Error404 from "pages/404";
+import { Avatar } from "@components/UI/Avatar/Avatar";
 
 const ResourceSlug: NextPage<any> = ({
   slug,
@@ -114,6 +115,10 @@ const ResourceSlug: NextPage<any> = ({
             </a>
           </Link>
           <div className="flex flex-col space-y-3 lg:divide-x dark:divide-gray-700 font-spectral lg:h-10 lg:items-center lg:flex-row lg:space-x-2 lg:space-y-0">
+            <div className="inline-flex items-center text-xs text-gray-500 transition duration-200 hover:text-gray-700 dark:text-gray-400">
+              <Avatar user={owner} />
+              <span className="ml-1">{owner.fullName}</span>
+            </div>
             <div className="inline-flex text-xs text-gray-500 transition duration-200 hover:text-gray-700 dark:text-gray-400">
               {types
                 .find((t) => t.value === data?.type)
@@ -266,10 +271,9 @@ const ResourceSlug: NextPage<any> = ({
                   ? "emerald"
                   : data.type === "event"
                   ? "red"
-
-                      : data.type === 'other'
-                        ? 'gray'
-                        : data.type === "external_link"
+                  : data.type === "other"
+                  ? "gray"
+                  : data.type === "external_link"
                   ? "amber"
                   : "gray"
               }

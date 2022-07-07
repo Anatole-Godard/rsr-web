@@ -59,7 +59,7 @@ export const EventView = ({ attributes, slug, updatedAt }: EventViewProps) => {
         />
       </div>
       <div className="">
-        {attributes.properties.medias ? (
+        {attributes.properties.medias.length > 0 ? (
           <MediaCarouselView
             medias={attributes.properties.medias}
             updatedAt={updatedAt}
@@ -68,6 +68,11 @@ export const EventView = ({ attributes, slug, updatedAt }: EventViewProps) => {
           <div className="flex flex-col items-center justify-center h-48 text-red-800 bg-red-200 rounded-lg dark:text-red-200 dark:bg-red-800">
             <CalendarIcon className="w-12 h-12 mb-1" />
             <p className="text-lg font-spectral">{t("event")}</p>
+            {attributes.properties.medias.length === 0 && (
+              <p className="pt-2 mx-12 mt-2 text-sm text-center text-red-600 border-t border-red-500 dark:text-red-400 font-spectral">
+                {t("no-media")}
+              </p>
+            )}
           </div>
         )}
       </div>

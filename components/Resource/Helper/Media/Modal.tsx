@@ -5,7 +5,6 @@ import { useEventListener } from "@hooks/useEventListener";
 import { formatRelative } from "date-fns";
 import { fr } from "date-fns/locale";
 import { useTranslations } from "next-intl";
-import Image from "next/image";
 import { useRouter } from "next/router";
 import { Fragment } from "react";
 
@@ -62,11 +61,10 @@ export const MediaModal = ({
               <Dialog.Panel className="w-full h-full absolute  top-0 left-0  z-[61]">
                 <div className="relative z-[61] top-0 left-0 w-full h-full">
                   {type.includes("image") && (
-                    <Image
+                    <img
                       src={url}
                       alt={name}
-                      layout="fill"
-                      objectFit="cover"
+                      className="object-cover w-full h-full"
                     />
                   )}
                   {type.includes("audio") && (
