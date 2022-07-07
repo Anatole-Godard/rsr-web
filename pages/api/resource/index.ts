@@ -114,6 +114,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         }
       });
     } catch (error) {
+      // @ts-ignore
       handleError(res, error, "resource/search");
     }
   } else {
@@ -145,6 +146,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         }
       });
     } catch (err) {
+      // @ts-ignore
       handleError(res, err, "resource/all");
     }
   }

@@ -61,6 +61,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       },
     });
   } catch (err) {
+    // @ts-ignore
     handleError(res, err, "channel:slug/edit");
   }
 }

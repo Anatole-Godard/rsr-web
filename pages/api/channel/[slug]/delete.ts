@@ -47,6 +47,7 @@ async function handler(
       },
     });
   } catch (err) {
+    // @ts-ignore
     handleError(res, err, "channel:slug/delete");
   }
 }

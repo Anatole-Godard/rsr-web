@@ -44,6 +44,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         }
         Resource.countDocuments(query).exec((count_error, count) => {
           if (err) {
+            // @ts-ignore
             handleError(res, err, "resource/all");
           }
           return res.status(200).json({

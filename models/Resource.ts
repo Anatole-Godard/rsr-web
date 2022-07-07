@@ -69,5 +69,6 @@ export default Resource;
 ResourceSchema.post("save", function(next) {
   // @ts-ignore
   this.updatedAt = Date.now();
+  // @ts-ignore
   next();
 });

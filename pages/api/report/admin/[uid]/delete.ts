@@ -66,6 +66,7 @@ async function handler(
     }
   } catch
     (err) {
+    // @ts-ignore
     handleError(res, err, "report:slug/delete");
   }
 }

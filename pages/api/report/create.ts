@@ -104,6 +104,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       error: null
     });
   } catch (error) {
+    // @ts-ignore
     handleError(res, error, 'report:create');
   }
 }

@@ -112,6 +112,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
           error: null
         });
       } catch (err) {
+        // @ts-ignore
         handleError(res, err, "resource/upload");
       }
     }

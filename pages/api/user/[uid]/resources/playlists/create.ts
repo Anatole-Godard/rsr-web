@@ -55,6 +55,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       error: null
     });
   } catch (error) {
+    // @ts-ignore
     handleError(res, error, "user/resources/playlists/create");
   }
 };
