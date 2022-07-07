@@ -135,7 +135,7 @@ export const NotificationsDropdown = () => {
                     {notifications.length}
                   </span>
                 </span>
-                {notifications.length > 0 && (
+                {/* {notifications.length > 0 && (
                   <button
                     // onClick={readAllNotifications}
                     className="px-2 py-1 text-xs rounded-full btn-bleuFrance"
@@ -143,7 +143,7 @@ export const NotificationsDropdown = () => {
                     <CheckIcon className="w-4 h-4 mr-1 " />
                     {t("read-all")}
                   </button>
-                )}
+                )} */}
               </div>
 
               {notifications?.length > 0 ? (
@@ -252,12 +252,14 @@ const NotificationComponent = ({
 
   return (
     <div
-      className="w-full p-3 mb-3 text-gray-900 duration-300 border-b rounded-lg cursor-pointer select-none shrink md:max-w-sm dark:text-gray-300 lg:max-w-lg last:border-b-0 dark:border-gray-700 hover:bg-gray-200 dark:hover:bg-gray-800"
+      className="w-full p-3 mb-3 text-gray-900 duration-300 border-b rounded-lg select-none shrink md:max-w-sm dark:text-gray-300 lg:max-w-lg last:border-b-0 dark:border-gray-700 hover:bg-gray-200 dark:hover:bg-gray-800"
       role="alert"
-      onClick={type !== "report" ? () => goTo(_id) : undefined}
     >
       <div className="flex items-start justify-between w-full">
-        <div className="inline-flex items-start pl-2">
+        <div
+          onClick={type !== "report" ? () => goTo(_id) : undefined}
+          className="inline-flex items-start pl-2 cursor-pointer "
+        >
           <div className="relative inline-block shrink-0">
             {emitter && (
               <>
@@ -346,7 +348,7 @@ const NotificationComponent = ({
   );
 };
 
-type ChannelComponentProps = Channel
+type ChannelComponentProps = Channel;
 
 const ChannelComponent = (props: ChannelComponentProps) => {
   const { locale } = useRouter();

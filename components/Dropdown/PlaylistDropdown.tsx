@@ -203,9 +203,7 @@ const PlaylistCreator = ({
     if (key) {
       const toastID = toast.loading(t("toast-create-loading"));
       const res = await fetchRSR(
-        `${
-          process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000/api"
-        }/user/${user.data.uid}/resources/playlists/create`,
+        `/api/user/${user.data.uid}/resources/playlists/create`,
         user.session,
         {
           method: "POST",

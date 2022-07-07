@@ -72,10 +72,12 @@ export const fetchRSR = async (
       if (res.ok) {
         return Promise.resolve(res);
       } else {
-        toast.error(
-          (res as unknown as { error: { client: string } })?.error?.client ||
-            "Une erreur est survenue"
-        );
+        if (!url.includes("/notifications")) {
+          toast.error(
+            (res as unknown as { error: { client: string } })?.error?.client ||
+              "Une erreur est survenue"
+          );
+        }
       }
     })
     .catch((err) => {

@@ -167,7 +167,9 @@
     "quit2": "this channel",
 
     "placeholder": "Write a message ...",
-    "send": "Send"
+    "send": "Send",
+
+    "channel-not-found": "Channel not found"
   },
 
   "ChannelCreate": {
@@ -215,7 +217,9 @@
   },
 
   "ChannelIndex": {
-    "title": "Salons de discussion"
+    "title": "Channels",
+    "no-channel-selected": "No channel selected",
+    "no-channel-selected-text": "Select a channel to start chatting"
   },
 
   "UserIndex": {

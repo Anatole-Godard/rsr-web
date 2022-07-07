@@ -167,7 +167,9 @@
     "quit2": "le salon",
 
     "placeholder": "Entrez votre message...",
-    "send": "Envoyer"
+    "send": "Envoyer",
+
+    "channel-not-found": "Le salon de discussion n'existe pas"
   },
 
   "ChannelCreate": {
@@ -215,7 +217,9 @@
   },
 
   "ChannelIndex": {
-    "title": "Salons de discussion"
+    "title": "Salons de discussion",
+    "no-channel-selected": "Aucun salon sélectionné",
+    "no-channel-selected-text": "Sélectionnez un salon pour commencer"
   },
 
   "UserIndex": {
