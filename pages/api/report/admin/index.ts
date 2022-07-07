@@ -1,8 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import withDatabase from "@middleware/mongoose";
-import { handleError } from "@utils/handleError";
-import { getPagination, getTotalPages } from "@utils/pagination";
-import { isAdmin } from '@utils/getCurrentUser';
+import { handleError } from "libs/handleError";
+import { getPagination, getTotalPages } from "libs/pagination";
+import { isAdmin } from 'libs/getCurrentUser';
 import Report from '@models/Report';
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -38,6 +38,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         }
         Report.countDocuments(query).exec((count_error, count) => {
           if (err) {
+            // @ts-ignore
             handleError(res, err, "report/all");
           }
           return res.status(200).json({
@@ -51,6 +52,8 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
                 emitter: element.emitter,
                 document: element.document,
                 type: element.type,
+                message: element.message,
+                link: element.link,
                 validated: element.validated,
                 context: element.context,
               }))

@@ -10,6 +10,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       error: {
         name: "MethodNotAllowedError",
         message: "Method not allowed",
+        client: "Méthode non autorisée",
       },
     });
   }
@@ -20,6 +21,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       error: {
         name: "InvalidTokenError",
         message: "No token provided",
+        client: "Une erreur est survenue",
       },
     });
   const token = parseAuthorization(req.headers.authorization);
@@ -29,6 +31,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       error: {
         name: "InvalidTokenError",
         message: "No token provided",
+        client: "Une erreur est survenue",
       },
     });
 
@@ -50,6 +53,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       error: {
         name: "NotFoundError",
         message: "Session not found",
+        client: "Une erreur est survenue",
       },
     });
   }

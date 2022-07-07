@@ -1,0 +1,41 @@
+name: 'Deploy'
+on: [ push ]
+jobs:
+  deploy-dev:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/master'
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16.x'
+      - uses: easingthemes/ssh-deploy@v2.2.11
+        with:
+          # Private Key
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_KEY }}
+          # Remote host
+          REMOTE_HOST: 35.189.195.156
+          # Remote user
+          REMOTE_USER: ophzl
+          # Remote port 
+          # REMOTE_PORT: 22
+          # Source directory
+          # SOURCE: # optional, default is
+          # Target directory
+          TARGET: /home/ophzl/app # optional, default is /home/REMOTE_USER/
+          # Arguments to pass to rsync
+          # ARGS: # optional, default is -rltgoDzvO
+          # An array of folder to excludehh
+          EXCLUDE: node_modules
+      - run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan 35.189.195.156 >> ~/.ssh/known_hosts
+          chmod 644 ~/.ssh/known_hosts
+      - uses: webfactory/ssh-agent@v0.5.4
+        with:
+          ssh-private-key: ${{ secrets.SSH_KEY }}
+      - name: Deploy with rsync
+        run: rsync -avz ./ ophzl@35.189.195.156:app
+      - run: ssh ophzl@35.189.195.156 "cd app && sudo docker compose -f docker-compose.prod.yml up -d --build"
+#      - run: ssh ophzl@35.189.195.156 "pm2 startOrReload ecosystem.config.js"

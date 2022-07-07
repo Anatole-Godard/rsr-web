@@ -1,8 +1,8 @@
 import { withAuth } from "@middleware/auth";
 import withDatabase from "@middleware/mongoose";
 import Notification from "@models/Notification";
-import { getUser } from "@utils/getCurrentUser";
-import { handleError } from "@utils/handleError";
+import { getUser } from "libs/getCurrentUser";
+import { handleError } from "libs/handleError";
 import { NextApiRequest, NextApiResponse } from "next";
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -39,6 +39,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         error: null,
       });
     } catch (err) {
+      // @ts-ignore
       handleError(res, err, "user/notifications");
     }
   }
@@ -90,6 +91,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         error: null,
       });
     } catch (err) {
+      // @ts-ignore
       handleError(res, err, "user/notifications/delete");
     }
   }

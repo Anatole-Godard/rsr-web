@@ -2,8 +2,8 @@ import { UserMinimum } from "@definitions/User";
 import { withAuth } from "@middleware/auth";
 import withDatabase from "@middleware/mongoose";
 import ResourceModel from "@models/Resource";
-import { getUser } from "@utils/getCurrentUser";
-import { handleError } from "@utils/handleError";
+import { getUser } from "libs/getCurrentUser";
+import { handleError } from "libs/handleError";
 import { NextApiRequest, NextApiResponse } from "next";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -79,6 +79,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       error: null,
     });
   } catch (err) {
+    // @ts-ignore
     handleError(res, err, "resource/slug/participate");
   }
 };

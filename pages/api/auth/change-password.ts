@@ -2,10 +2,10 @@ import { withAuth } from "@middleware/auth";
 import withDatabase from "@middleware/mongoose";
 import SessionToken from "@models/SessionToken";
 import User from "@models/User";
-import { handleError } from "@utils/handleError";
+import { handleError } from "libs/handleError";
 import { NextApiRequest, NextApiResponse } from "next";
 
-const argon2 = require("argon2");
+import argon2 from "argon2";
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
@@ -13,9 +13,15 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     const user = await User.findOne({ _id: req.headers.uid });
 
     if (!(await argon2.verify(user.password, oldPassword))) {
-      return res
-        .status(401)
-        .json({ data: null, error: { message: "Wrong password", code: 401 } });
+      return res.status(401).json({
+        data: null,
+        error: {
+          name: "InvalidPasswordError",
+          message: "Wrong password",
+          code: 401,
+          client: "Mot de passe incorrect",
+        },
+      });
     }
 
     user.password = await argon2.hash(newPassword);
@@ -28,6 +34,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       error: null,
     });
   } catch (error) {
+    // @ts-ignore
     handleError(res, error, "auth/change-password");
   }
 }

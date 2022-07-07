@@ -1,9 +1,13 @@
 import { Notification } from "@definitions/Notification";
-import { fetchRSR } from "@utils/fetchRSR";
+import { fetchRSR } from "libs/fetchRSR";
+import { useTranslations } from "next-intl";
 import { useRouter } from "next/router";
 import React, { createContext, useContext, useState, useEffect } from "react";
+import toast from "react-hot-toast";
 import { useAuth } from "./useAuth";
 const NotificationContext = createContext({});
+
+const DEFAULT_POLLING_INTERVAL = 10000;
 
 /**
  * TODO: improve this by using sockets instead of polling
@@ -24,24 +28,31 @@ function NotificationProvider({
   const [notifications, setNotifications] = useState<Notification[]>([]);
 
   const router = useRouter();
+  const t = useTranslations("useNotifications");
 
-  const removeNotification = (id: string) => {
-    fetchRSR(
-      `/api/user/${user.data.uid.toString()}/notifications?id=${id}`,
-      user.session,
-      {
-        method: "DELETE",
-      }
-    )
-      .then((res) => res.json())
-      .then((res) => {
-        if (res.error) {
-          console.log(res.error);
-        } else {
-          setNotifications(res.data.attributes);
+  const removeNotification = async (id: string) => {
+    try {
+      const res = await fetchRSR(
+        `/api/user/${user.data.uid.toString()}/notifications?id=${id}`,
+        user.session,
+        {
+          method: "DELETE",
         }
-      })
-      .catch((err) => console.log(err));
+      );
+      const body = await res.json();
+      if (body.error) {
+        if (body.error.code === 404) {
+          setNotifications(notifications.filter((n) => n._id !== id));
+        } else {
+          console.error(body.error);
+        }
+      } else {
+        toast.success(t("toast-read"));
+        setNotifications(body.data.attributes);
+      }
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   useEffect(() => {
@@ -69,7 +80,7 @@ function NotificationProvider({
               router.push("/auth/login");
             }
           });
-      }, 5000);
+      }, DEFAULT_POLLING_INTERVAL);
 
       return () => {
         clearInterval(poll);

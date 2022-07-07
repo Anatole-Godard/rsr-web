@@ -1,0 +1,40 @@
+version: '3.7'
+
+networks:
+  rsr-network:
+
+volumes:
+  database-data:
+
+services:
+  mongo:
+    image: mongo
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
+    networks:
+      - rsr-network
+    volumes:
+      - database-data:/data/db
+    ports:
+      - "27017"
+    command: mongod --quiet --logpath /dev/null
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
+    image: rsr/app
+    networks:
+      - rsr-network
+    restart: always
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+      - /usr/src/app/.next
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env.local
+    environment:
+      NEXT_PUBLIC_BACK_OFFICE_MAX_ENTITIES: 20

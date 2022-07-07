@@ -27,7 +27,16 @@ module.exports = {
         },
         rougeMarianne: {
           DEFAULT: "#E1000F",
+          50: "#FF9AA0",
+          100: "#FF858D",
+          200: "#FF5C67",
+          300: "#FF3441",
+          400: "#FF0B1B",
           500: "#E1000F",
+          600: "#A9000B",
+          700: "#710008",
+          800: "#390004",
+          900: "#010000",
         },
         gray: {
           50: "#fafafa",
@@ -40,6 +49,20 @@ module.exports = {
           700: "#404040",
           800: "#262626",
           900: "#171717",
+        },
+      },
+      animation: {
+        stories: "stories 10s linear"
+      },
+
+      keyframes: {
+        stories: {
+          "0%": {
+           width: "0%"
+          },
+          "100%": {
+            width: "100%"
+          },
         },
       },
     },

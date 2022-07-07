@@ -1,4 +1,4 @@
-import { fetchRSR } from "@utils/fetchRSR";
+import { fetchRSR } from "libs/fetchRSR";
 import { useEffect, useReducer, useRef, useState } from "react";
 
 interface State<T> {

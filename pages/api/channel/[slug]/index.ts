@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import withDatabase from "@middleware/mongoose";
-import { handleError } from "@utils/handleError";
+import { handleError } from "libs/handleError";
 import Channel from "@models/Channel";
 import { withAuth } from "@middleware/auth";
 
@@ -29,6 +29,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       },
     });
   } catch (err) {
+    // @ts-ignore
     handleError(res, err, "channel:slug/index");
   }
 }

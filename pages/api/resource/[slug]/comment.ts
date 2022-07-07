@@ -5,9 +5,9 @@ import { withAuth } from "@middleware/auth";
 import withDatabase from "@middleware/mongoose";
 import NotificationModel from "@models/Notification";
 import Resource from "@models/Resource";
-import { getUser } from "@utils/getCurrentUser";
-import { handleError } from "@utils/handleError";
-import { toResourceMinimum } from "@utils/toMinimum";
+import { getUser } from "libs/getCurrentUser";
+import { handleError } from "libs/handleError";
+import { toResourceMinimum } from "libs/toMinimum";
 import { NextApiRequest, NextApiResponse } from "next";
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -78,6 +78,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       },
     });
   } catch (err) {
+    // @ts-ignore
     handleError(res, err, "resource/slug/comment");
   }
 }

@@ -1,10 +1,13 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import Resource from "@models/Resource";
 import withDatabase from "@middleware/mongoose";
-import { handleError } from "@utils/handleError";
+import { handleError } from "libs/handleError";
 import { withAuth } from "@middleware/auth";
-import { getUser, isAdmin } from "@utils/getCurrentUser";
+import { getUser, isAdmin } from "libs/getCurrentUser";
 import Tag from "@models/Tag";
+
+import { promises as fs } from "fs";
+const DEFAULT_PATH = `/usr/src/app/public/uploads/resource`;
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== "PUT") {
@@ -73,9 +76,29 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       { slug: req.query.slug },
       {
         ...req.body,
+
         tags: tagsInDB.map((t) => ({ ...t, _id: t._id.toString() })),
       }
     ).lean();
+
+    // get files list in ressources folder if exists
+
+    if (
+      await fs.stat(`${DEFAULT_PATH}/${resource.slug}`).catch((err) => {
+        if (err.code === "ENOENT") {
+          return false;
+        }
+        throw err;
+      })
+    ) {
+      const files = await fs.readdir(`${DEFAULT_PATH}/${resource.slug}`);
+      // unlink files in ressources folder
+      await Promise.all(
+        files.map(async (file) => {
+          await fs.unlink(`${DEFAULT_PATH}/${resource.slug}/${file}`);
+        })
+      );
+    }
 
     res.status(200).json({
       data: {
@@ -90,6 +113,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       },
     });
   } catch (err) {
+    // @ts-ignore
     handleError(res, err, "resource:slug/edit");
   }
 }

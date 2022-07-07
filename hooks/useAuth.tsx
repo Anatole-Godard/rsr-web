@@ -1,7 +1,9 @@
-import { fetchRSR } from "@utils/fetchRSR";
+import { fetchRSR } from "libs/fetchRSR";
+import { useTranslations } from "next-intl";
 import { useRouter } from "next/router";
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { useCookies } from "react-cookie";
+import toast from "react-hot-toast";
 const AuthContext = createContext({});
 
 /**
@@ -18,6 +20,8 @@ function AuthProvider({
   const [user, setUser] = useState<any | null>(cookie.user || null);
   const [history, setHistory] = useState([]);
   const router = useRouter();
+
+  const t = useTranslations("useAuth");
 
   const getLastUrl = (): string => {
     const lastUrl: string =
@@ -43,23 +47,36 @@ function AuthProvider({
       });
       setUser(body);
       router.push(getLastUrl());
-    } else setUser(null);
+    } else {
+      toast.error(body?.error?.client);
+      setUser(null);
+    }
   };
 
   const signOut = async () => {
-    const response = await fetchRSR("/api/auth/revoke", user.session, {
-      method: "POST",
-    });
-    const body = await response.json();
-    if (body.error) {
-      removeCookie("user", { path: "/" });
-      setUser(null);
-      router.push("/");
-    }
+    try {
+      const response = await fetchRSR("/api/auth/revoke", user.session, {
+        method: "POST",
+      });
+      const body = await response.json();
+      if (body.error) {
+        toast.error(body?.error?.client);
+        removeCookie("user", { path: "/" });
+        setUser(null);
+        router.push("/");
+      }
 
-    if (response.ok) {
+      if (response.ok) {
+        toast.success(t("signout-toast-success"));
+        removeCookie("user", { path: "/" });
+        setUser(null);
+        router.push("/");
+      }
+    } catch (e) {
+      toast.success(t("signout-toast-success"));
       removeCookie("user", { path: "/" });
       setUser(null);
+
       router.push("/");
     }
   };
@@ -87,7 +104,10 @@ function AuthProvider({
         sameSite: true,
       });
       router.push(getLastUrl());
-    } else setUser(null);
+    } else {
+      toast.error(body?.error?.client);
+      setUser(null);
+    }
   };
 
   const removeUser = (redirect = "/", flash?: string) => {

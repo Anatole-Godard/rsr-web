@@ -1,35 +1,52 @@
-import { AppLayoutAdmin } from "components/layouts/AppLayoutAdmin";
+import { AdminLayout } from "@components/Layout/AdminLayout";
 import { GetServerSideProps, NextPage } from "next";
-import { CustomTable } from "@components/customTable/CustomTable";
+import { CustomTable } from "@components/UI/CustomTable";
 import { useCallback, useEffect, useState } from "react";
-import { fetchRSR } from "@utils/fetchRSR";
+import { fetchRSR } from "libs/fetchRSR";
 import { useAuth } from "@hooks/useAuth";
 import { SearchIcon, TagIcon } from "@heroicons/react/outline";
 import { TagDocument } from "@definitions/Resource/Tag";
+import toast from "react-hot-toast";
+import { useRouter } from "next/router";
 
 const TagManager: NextPage<any> = (props) => {
-  console.log(props);
   const [tags, setTags] = useState<TagDocument[]>(props?.data?.attributes);
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const [limitPerPage, setLimitPerPage] = useState<number>(
-    parseInt(process.env.NEXT_PUBLIC_BACK_OFFICE_MAX_ENTITIES)
-  );
+  const limitPerPage = parseInt(process.env.NEXT_PUBLIC_BACK_OFFICE_MAX_ENTITIES);
   const [totalPages, setTotalPages] = useState<number>(props?.data?.totalPages);
   const { user } = useAuth();
+  const router = useRouter();
 
-  const validate = async (_id: string, validated: Boolean) => {
+  const validate = async (_id: string, validated: boolean) => {
     const body = JSON.stringify({ action: "validate", validated, _id });
-    await fetchRSR(`/api/resource/admin/tags`, user.session, {
+    const toastID = toast.loading(
+      validated
+        ? "Validation de l'étiquette en cours..."
+        : "Suspension de l'étiquette en cours..."
+    );
+    const res = await fetchRSR(`/api/resource/admin/tags`, user.session, {
       method: "PUT",
-      body,
+      body
     });
+    toast.dismiss(toastID);
+    if (res.ok)
+      toast.success(
+        validated
+          ? "Validation de l'étiquette réussie"
+          : "Suspension de l'étiquette réussie"
+      );
+
     getTags();
   };
   const deleteTag = async (_id: string) => {
-    await fetchRSR(`/api/resource/admin/tags/`, user.session, {
+    const toastID = toast.loading("Suppression de l'étiquette en cours...");
+    const res = await fetchRSR(`/api/resource/admin/tags/`, user.session, {
       method: "DELETE",
-      body: JSON.stringify({ _id }),
+      body: JSON.stringify({ _id })
     });
+    toast.dismiss(toastID);
+    if (res.ok) toast.success("Suppression de l'étiquette réussie");
+    else toast.error("Une erreur est survenue");
     getTags();
   };
 
@@ -39,7 +56,7 @@ const TagManager: NextPage<any> = (props) => {
       subName: "fullName",
       label: "Créateur",
       type: "isUser",
-      width: 20,
+      width: 20
     },
     { name: "name", label: "Nom de l'étiquette" },
 
@@ -49,50 +66,47 @@ const TagManager: NextPage<any> = (props) => {
       type: "validated",
       isTag: true,
       validEntity: validate,
-      width: 25,
-    },
+      width: 25
+    }
   ];
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const getTags = useCallback(
-    (search?) => {
+    async (search?) => {
+      if (!user?.session) {
+        await router.push("/");
+        return;
+      }
       let filter = "";
       if (search) {
         filter = search;
       }
-
-      fetchRSR(
+      const res = await fetchRSR(
         "/api/resource/admin/tags?limit=" +
-          limitPerPage +
-          "&page=" +
-          currentPage +
-          "&search=" +
-          filter,
+        limitPerPage +
+        "&page=" +
+        currentPage +
+        "&search=" +
+        filter,
         user.session
-      )
-        .then((res) => res.json())
-        .then((body) => {
-          if (body.data?.attributes) {
-            setTags(body.data?.attributes);
-            setTotalPages(body.data?.totalPages);
-          }
-        })
-        .catch();
+      );
+      if (res.ok) {
+        const body = await res.json();
+        if (body.data?.attributes) {
+          setTags(body.data?.attributes);
+          setTotalPages(body.data?.totalPages);
+        }
+        toast.success("Récupération des étiquettes réussie");
+      } else {
+        toast.error("Une erreur est survenue");
+      }
     },
-    [currentPage, limitPerPage, user?.session]
+    [currentPage, limitPerPage, router, user.session]
   );
 
   useEffect(() => {
     getTags();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
-    getTags();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentPage]);
-
-  
+  }, [currentPage, limitPerPage, getTags]);
 
   const updatePage = (data: { selected: number }) => {
     const currentPage = data.selected + 1;
@@ -101,14 +115,14 @@ const TagManager: NextPage<any> = (props) => {
   const [search, setSearch] = useState<string>("");
 
   return (
-    <AppLayoutAdmin>
-      <div className="flex flex-col w-full h-full bg-white dark:bg-black grow">
-        <div className="flex flex-col w-full px-6 py-6 bg-white shrink-0 lg:px-12 dark:bg-black dark:border-gray-800">
-          <div className="inline-flex items-end justify-between w-full mb-2">
-            <div className="flex flex-col space-y-2">
-              <h3 className="text-2xl font-extrabold text-gray-800 font-marianne dark:text-gray-200">
+    <AdminLayout title='Tags - Admin.'>
+      <div className='flex flex-col w-full h-full bg-white dark:bg-black grow'>
+        <div className='flex flex-col w-full px-6 py-6 bg-white shrink-0 lg:px-12 dark:bg-black dark:border-gray-800'>
+          <div className='inline-flex items-end justify-between w-full mb-2'>
+            <div className='flex flex-col space-y-2'>
+              <h3 className='text-2xl font-extrabold text-gray-800 font-marianne dark:text-gray-200'>
                 Liste des
-                <span className="ml-1 text-blue-600 dark:text-blue-400">
+                <span className='ml-1 text-blue-600 dark:text-blue-400'>
                   étiquettes
                 </span>
               </h3>
@@ -120,29 +134,29 @@ const TagManager: NextPage<any> = (props) => {
               e.preventDefault();
               getTags(search);
             }}
-            className="relative flex flex-row justify-between w-full space-x-3 text-sm"
+            className='relative flex flex-row justify-between w-full space-x-3 text-sm'
           >
-            <label className="relative text-gray-400 focus-within:text-gray-600">
-              <TagIcon className="absolute w-4 h-4 transform -translate-y-1/2 pointer-events-none top-1/2 left-3" />
+            <label className='relative text-gray-400 focus-within:text-gray-600'>
+              <TagIcon className='absolute w-4 h-4 transform -translate-y-1/2 pointer-events-none top-1/2 left-3' />
               <input
-                id="query"
-                name="query"
-                type="text"
-                autoComplete="off"
+                id='query'
+                name='query'
+                type='text'
+                autoComplete='off'
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="input px-5 py-2 pl-[2.25rem] placeholder-gray-500   lg:w-96 "
-                placeholder="Rechercher une étiquette par nom"
+                className='input px-5 py-2 pl-[2.25rem] placeholder-gray-500   lg:w-96 '
+                placeholder='Rechercher une étiquette par nom'
               />
             </label>
 
-            <button className="btn-bleuFrance" type="submit">
-              <SearchIcon className="w-4 h-4 mr-1" />
+            <button className='btn-bleuFrance' type='submit'>
+              <SearchIcon className='w-4 h-4 mr-1' />
               Rechercher
             </button>
           </form>
         </div>
-        <div className="h-full p-6 bg-gray-100 min-h-max max-h-max dark:bg-gray-900 lg:p-12">
+        <div className='h-full p-6 bg-gray-100 min-h-max max-h-max dark:bg-gray-900 lg:p-12'>
           <CustomTable
             theadList={theadList}
             valuesList={tags}
@@ -152,40 +166,52 @@ const TagManager: NextPage<any> = (props) => {
           />
         </div>
       </div>
-    </AppLayoutAdmin>
+    </AdminLayout>
   );
 };
 
 export default TagManager;
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const {
-    cookies: { user },
-  } = context.req;
+  try {
+    const {
+      cookies: { user }
+    } = context.req;
 
-  let parseUser = JSON.parse(user);
+    const parseUser = JSON.parse(user);
 
-  if (!user) {
+    if (!user) {
+      return {
+        redirect: {
+          permanent: false,
+          destination: "/auth/login"
+        }
+      };
+    } else if (parseUser?.session?.role === "user") {
+      return {
+        redirect: {
+          permanent: false,
+          destination: "/"
+        }
+      };
+    }
+    const limit = parseInt(process.env.NEXT_PUBLIC_BACK_OFFICE_MAX_ENTITIES);
+    const res = await fetchRSR(
+      "http://localhost:3000/api/resource/admin/tags?limit=" + limit + "&page=1",
+      parseUser.session
+    );
+    const body = await res.json();
     return {
-      redirect: {
-        permanent: false,
-        destination: "/auth/login",
-      },
+      props: {
+        ...body,
+        i18n: (await import(`../../../i18n/${context.locale}.json`)).default
+      }
     };
-  } else if (parseUser?.session?.role === "user") {
+  } catch (e) {
     return {
       redirect: {
         permanent: false,
-        destination: "/",
-      },
+        destination: "/"
+      }
     };
   }
-  const limit = parseInt(process.env.NEXT_PUBLIC_BACK_OFFICE_MAX_ENTITIES);
-  const res = await fetchRSR(
-    "http://localhost:3000/api/resource/admin/tags?limit=" + limit + "&page=1",
-    parseUser.session
-  );
-  const body = await res.json();
-  return {
-    props: body,
-  };
 };

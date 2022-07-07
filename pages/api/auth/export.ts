@@ -4,7 +4,7 @@ import Channel from "@models/Channel";
 import Notification from "@models/Notification";
 import Resource from "@models/Resource";
 import User from "@models/User";
-import { handleError } from "@utils/handleError";
+import { handleError } from "libs/handleError";
 import { NextApiRequest, NextApiResponse } from "next";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -86,6 +86,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       error: null,
     });
   } catch (err) {
+    // @ts-ignore
     handleError(res, err, "auth/export");
   }
 };

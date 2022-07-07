@@ -1,14 +1,16 @@
-import { withAuth } from "@middleware/auth";
 import withDatabase from "@middleware/mongoose";
+import formidable from "formidable";
 import Resource from "@models/Resource";
-import { handleError } from "@utils/handleError";
+import { handleError } from "libs/handleError";
 import { ResourceType, types } from "constants/resourcesTypes";
 import { NextApiRequest, NextApiResponse } from "next";
-const fs = require("fs").promises;
-const formidable = require("formidable");
+
+import { promises as fs } from "fs";
+
+const DEFAULT_PATH = `/usr/src/app/public/uploads/resource`;
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
-  const { slug } = req.query;
+  const { slug } = req.query as { slug: string };
   const form = new formidable.IncomingForm();
 
   form.parse(
@@ -23,8 +25,8 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
           data: null,
           error: {
             code: 500,
-            message: err.message,
-          },
+            message: err.message
+          }
         });
         return;
       }
@@ -35,8 +37,8 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
           error: {
             code: 400,
             message: "bad request",
-            fields: { slug },
-          },
+            fields: { slug }
+          }
         });
         return;
       }
@@ -46,8 +48,8 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
           data: null,
           error: {
             code: 405,
-            message: "method not allowed",
-          },
+            message: "method not allowed"
+          }
         });
         return;
       }
@@ -59,8 +61,8 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
           data: null,
           error: {
             code: 404,
-            message: "not found",
-          },
+            message: "not found"
+          }
         });
         return;
       }
@@ -70,7 +72,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
           (type: ResourceType) => type.value === resource.data.type
         ) === undefined ||
         !types.find((type: ResourceType) => type.value === resource.data.type)
-          .hasImage
+          .hasMedia
       ) {
         res.status(400).json({
           data: null,
@@ -78,36 +80,39 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
             code: 400,
             message: "bad request",
             fields: {
-              type: resource.data.type,
-            },
-          },
+              type: resource.data.type
+            }
+          }
         });
         return;
       }
 
       try {
+        await fs.mkdir(`${DEFAULT_PATH}/${slug}`, {
+          recursive: true
+        });
+
         await fs.writeFile(
-          `/app/public/uploads/resource/${resource.slug}.${fields.name
-            .split(".")
-            .at(-1)}`,
+          `${DEFAULT_PATH}/${slug}/${fields.name}`,
           await fs.readFile(files.file.filepath)
         );
-        resource.data.attributes.properties.image = {
+        resource.data.attributes.properties.medias.push({
           ...fields,
-          url: `/uploads/resource/${resource.slug}.${fields.name
-            .split(".")
-            .at(-1)}`,
-        };
-        resource.markModified("data.attributes.properties.image");
+          url: `/uploads/resource/${resource.slug}/${fields.name}`
+        });
+
+        resource.markModified("data.attributes.properties.medias");
+
         await resource.save();
 
         res.status(200).json({
           data: {
-            attributes: resource,
+            attributes: resource
           },
-          error: null,
+          error: null
         });
       } catch (err) {
+        // @ts-ignore
         handleError(res, err, "resource/upload");
       }
     }
@@ -118,6 +123,6 @@ export default withDatabase(handler);
 
 export const config = {
   api: {
-    bodyParser: false,
-  },
+    bodyParser: false
+  }
 };

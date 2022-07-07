@@ -3,7 +3,7 @@ import withDatabase from "@middleware/mongoose";
 import Channel from "@models/Channel";
 import Resource from "@models/Resource";
 import User from "@models/User";
-import { handleError } from "@utils/handleError";
+import { handleError } from "libs/handleError";
 import { NextApiRequest, NextApiResponse } from "next";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -62,6 +62,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       error: null,
     });
   } catch (err) {
+    // @ts-ignore
     handleError(res, err, "user/get-started");
   }
 };

@@ -1,0 +1,2 @@
+[webservers]
+rsr-gcloud ansible_port=4284

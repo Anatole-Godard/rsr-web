@@ -1,15 +1,15 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import Channel from "@models/Channel";
 import withDatabase from "@middleware/mongoose";
-import { handleError } from "@utils/handleError";
+import { handleError } from "libs/handleError";
 import { withAuth } from "@middleware/auth";
-import { getUser } from "@utils/getCurrentUser";
+import { getUser } from "libs/getCurrentUser";
 import { UserMinimum } from "@definitions/User";
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
-    let channel = await Channel.findOne({
-      slug: req.query.slug,
+    const channel = await Channel.findOne({
+      slug: req.query.slug
     });
 
     if (!channel) {
@@ -17,8 +17,8 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         data: null,
         error: {
           code: 404,
-          message: "channel not found",
-        },
+          message: "channel not found"
+        }
       });
       return;
     }
@@ -29,20 +29,20 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         data: null,
         error: {
           code: 401,
-          message: "unauthorized",
-        },
+          message: "unauthorized"
+        }
       });
     }
 
-    if (channel.owner.uid === user._id) {
-      return res.status(403).json({
-        data: null,
-        error: {
-          code: 403,
-          message: "forbidden",
-        },
-      });
-    }
+    // if (channel.owner.uid === user._id) {
+    //   return res.status(403).json({
+    //     data: null,
+    //     error: {
+    //       code: 403,
+    //       message: "forbidden",
+    //     },
+    //   });
+    // }
 
     channel.members = channel.members.filter(
       (member: UserMinimum) => member.uid !== user._id
@@ -53,10 +53,11 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     res.status(200).json({
       data: {
         type: "channel",
-        attributes: channel,
-      },
+        attributes: channel
+      }
     });
   } catch (err) {
+    // @ts-ignore
     handleError(res, err, "channel:slug/quit");
   }
 }

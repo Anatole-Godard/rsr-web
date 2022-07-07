@@ -1,9 +1,9 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import Resource from "@models/Resource";
 import withDatabase from "@middleware/mongoose";
-import { handleError } from "@utils/handleError";
-import { getPagination, getTotalPages } from "@utils/pagination";
-import { isAdmin } from "@utils/getCurrentUser";
+import { handleError } from "libs/handleError";
+import { getPagination, getTotalPages } from "libs/pagination";
+import { isAdmin } from "libs/getCurrentUser";
 import Tag from "@models/Tag";
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -12,8 +12,8 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       data: null,
       error: {
         code: 401,
-        message: "unauthorized",
-      },
+        message: "unauthorized"
+      }
     });
 
   try {
@@ -29,8 +29,8 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         query = {
           $or: [
             { "owner.fullName": { $regex: `.*${search}.*` } },
-            { name: { $regex: `.*${search}.*` } },
-          ],
+            { name: { $regex: `.*${search}.*` } }
+          ]
         };
       }
       const tags = await Tag.find(query)
@@ -44,12 +44,12 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
           id: "tags",
           totalItems: tags.length,
           totalPages: getTotalPages(tags.length, limit),
-          attributes: tags,
-        },
+          attributes: tags
+        }
       });
     } else if (req.method === "PUT") {
       const tag = await Tag.findByIdAndUpdate(req.body._id, {
-        validated: req.body.validated,
+        validated: req.body.validated
       });
       const resources = await Resource.updateMany(
         { tags: { $elemMatch: { _id: tag._id } } },
@@ -61,13 +61,14 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
           type: "resource",
           id: "tags",
           attributes: await Tag.findById(req.body._id),
-          resourcesModified: resources.modifiedCount,
-        },
+          resourcesModified: resources.modifiedCount
+        }
       });
     } else if (req.method === "DELETE") {
       const tag = await Tag.findByIdAndDelete(req.body._id);
       const resources = await Resource.updateMany(
         { tags: { $elemMatch: { _id: tag._id } } },
+        // @ts-ignore
         { $pull: { tags: { _id: tag._id } } }
       );
 
@@ -76,11 +77,12 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
           type: "resource",
           id: "tags",
           attributes: tag,
-          resourcesModified: resources.modifiedCount,
-        },
+          resourcesModified: resources.modifiedCount
+        }
       });
     }
   } catch (err) {
+    // @ts-ignore
     handleError(res, err, "resource/admin/tags");
   }
 }

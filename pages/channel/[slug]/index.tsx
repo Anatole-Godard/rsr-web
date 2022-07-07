@@ -1,11 +1,9 @@
-import { Sidebar } from "@components/channel/Sidebar";
-import { AppLayout } from "@components/layouts/AppLayout";
+import { Sidebar } from "@components/Channel/Sidebar";
+import { AppLayout } from "@components/Layout/AppLayout";
 import {
   ChatIcon,
   CheckIcon,
-  PaperAirplaneIcon,
   PencilIcon,
-  PlusIcon,
   UserGroupIcon,
   XIcon,
 } from "@heroicons/react/outline";
@@ -16,11 +14,13 @@ import { useEffect, useRef, useState } from "react";
 import io from "socket.io-client";
 import { Message } from "@definitions/Message";
 import { useAuth } from "@hooks/useAuth";
-import { fetchRSR } from "@utils/fetchRSR";
+import { fetchRSR } from "libs/fetchRSR";
 import { Channel } from "@definitions/Channel";
-import { HistoryItem } from "@components/channel/HistoryItem";
+import { HistoryItem } from "@components/Channel/HistoryItem";
 import Image from "next/image";
 import { Activity } from "@definitions/Activity";
+import { useTranslations } from "next-intl";
+import Error404 from "pages/404";
 
 const ChannelSlug: NextPage<any> = ({
   sideBarChannels,
@@ -32,8 +32,10 @@ const ChannelSlug: NextPage<any> = ({
   const router = useRouter();
   const slug = router.query.slug as string;
   const { user } = useAuth();
+  const t = useTranslations("ChannelSlug");
+
   const [message, setMessage] = useState<string>("");
-  const [chat, setChat] = useState<Message[]>(channel.messages || []);
+  const [chat, setChat] = useState<Message[]>(channel?.messages || []);
   const [history, setHistory] = useState<(Message | Activity)[]>([]);
 
   const inputRef = useRef<null | HTMLInputElement>();
@@ -63,7 +65,7 @@ const ChannelSlug: NextPage<any> = ({
 
   useEffect(() => {
     setHistory(
-      [...chat, ...channel.activities].sort(
+      [...(chat || []), ...(channel?.activities || [])].sort(
         (a, b) =>
           new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
       )
@@ -72,12 +74,12 @@ const ChannelSlug: NextPage<any> = ({
     return () => {
       setHistory([]);
     };
-  }, [chat, channel.activities]);
+  }, [chat, channel?.activities]);
 
-  useEffect(() => {
-    if (bottomListRef.current)
-      bottomListRef.current.scrollIntoView({ behavior: "smooth" });
-  }, []);
+  // useEffect(() => {
+  //   if (bottomListRef.current)
+  //     bottomListRef.current.scrollIntoView({ behavior: "smooth" });
+  // }, []);
 
   const quit = async () => {
     const res = await fetchRSR(`/api/channel/${slug}/quit`, user?.session);
@@ -101,7 +103,7 @@ const ChannelSlug: NextPage<any> = ({
     if (res.ok) {
       setMessage("");
       if (bottomListRef.current)
-        bottomListRef.current.scrollIntoView({ behavior: "smooth" });
+        bottomListRef.current.scrollIntoView({ behavior: "smooth", inline: "end", block: "nearest" });
     }
   };
 
@@ -110,29 +112,31 @@ const ChannelSlug: NextPage<any> = ({
     sendMessage(message);
   };
 
+  if (!channel?.slug) return <Error404 title={t("channel-not-found")} />;
+
   return (
-    <AppLayout>
+    <AppLayout title={channel?.name}>
       <div className="flex flex-col w-full h-full md:flex-row">
         <Sidebar
           channels={sideBarChannels}
           selectedChannelSlug={slug as string}
         />
-        <div className="flex justify-center w-full max-h-[calc(100%-6rem)] md:max-h-full h-full">
-          <div className="flex flex-col w-full md:bg-gray-100 dark:md:bg-gray-900 ">
+        <div className="flex justify-center w-full h-[calc(100vh-10.75rem)] md:max-h-full ">
+          <div className="flex flex-col justify-between w-full h-full md:bg-gray-100 dark:md:bg-gray-900 ">
             {/* HEADER */}
             <div className="inline-flex justify-between w-full p-3 pr-6 border-b border-gray-100 dark:border-gray-900 md:border-0">
               <div className="inline-flex items-center">
                 {channel.image ? (
-                  <div className="flex items-center justify-center w-6 h-6 rounded-full select-none md:w-8 md:h-8 bg-bleuFrance-50 ring-2 shrink-0 ring-offset-2 ring-bleuFrance-200">
+                  <div className="flex items-center justify-center w-6 h-6 overflow-hidden rounded-full select-none md:w-8 md:h-8 bg-bleuFrance-50 ring-2 shrink-0 ring-offset-2 ring-bleuFrance-200">
                     <Image
                       src={channel.image.url}
                       alt={slug}
-                      width={24}
-                      height={24}
+                      width={32}
+                      height={32}
                     />
                   </div>
                 ) : (
-                  <span className="flex items-center justify-center w-6 h-6 rounded-full shrink-0 md:w-8 md:h-8 text-bleuFrance-500 bg-bleuFrance-50 ring-2 ring-offset-2 ring-bleuFrance-200 dark:bg-bleuFrance-700">
+                  <span className="flex items-center justify-center w-6 h-6 rounded-full shrink-0 md:w-8 md:h-8 text-bleuFrance-500 bg-bleuFrance-50 ring-2 ring-offset-2 ring-bleuFrance-200 dark:bg-bleuFrance-700 dark:text-bleuFrance-200">
                     <UserGroupIcon className="w-3 h-3 md:w-4 md:h-4 shrink-0" />
                   </span>
                 )}
@@ -142,9 +146,6 @@ const ChannelSlug: NextPage<any> = ({
                     <p className="text-xl font-medium text-gray-700 dark:text-gray-200 font-marianne">
                       {"#" + slug}
                     </p>
-                    {/* <span className=" text-[0.6rem] ml-3 h-3 min-w-max w-full bg-gray-200 text-black font-bold rounded-full">
-                    {chat.length}
-                  </span> */}
                   </div>
                   {channel.description && (
                     <p className="text-xs font-light text-gray-500 font-spectral">
@@ -157,13 +158,13 @@ const ChannelSlug: NextPage<any> = ({
               </div>
 
               <div className="inline-flex items-center pr-6 space-x-3 ">
-                {user?.data.uid === channel.owner.uid && (
+                {user?.data.uid === channel?.owner?.uid && (
                   <Link
                     href={`/channel/${slug}/edit`}
                     key="channel_slug-edit_link"
                   >
                     <a
-                      className="bg-gray-300 btn-gray hover:bg-gray-400 hover:text-gray-900 shrink-0"
+                      className="bg-gray-300 btn-gray hover:bg-gray-400 hover:text-gray-900 dark:hover:text-gray-300 shrink-0"
                       key="channel_slug-edit-btn"
                     >
                       <PencilIcon
@@ -171,48 +172,32 @@ const ChannelSlug: NextPage<any> = ({
                         key="channel_slug-edit-icon"
                       />
                       <span className="items-center hidden sm:inline-flex">
-                        Éditer{" "}
+                        {t("edit1")}
                         <span className="hidden ml-1 lg:inline-flex">
-                          le salon
+                          {t("edit2")}
                         </span>
                       </span>
                     </a>
                   </Link>
                 )}
-                <button
-                  className="btn-red shrink-0"
-                  onClick={quit}
-                  key="channel_slug-quit_btn"
-                >
-                  <XIcon
-                    className="w-4 h-4 sm:mr-2 shrink-0"
-                    key="channel_slug-quit_icon"
-                  />
-                  <span className="items-center hidden sm:inline-flex">
-                    Quitter{" "}
-                    <span className="hidden ml-1 lg:inline-flex">le salon</span>
-                  </span>
-                </button>
-                {/* <Link
-                  href={"/resource/create" + `?channel=${slug}`}
-                  key="channel_slug-resource_link"
-                >
-                  <a
-                    className="btn-bleuFrance shrink-0"
-                    key="channel_slug-resource_btn"
+                {channel.visibility === "private" && (
+                  <button
+                    className="btn-red shrink-0"
+                    onClick={quit}
+                    key="channel_slug-quit_btn"
                   >
-                    <PlusIcon
+                    <XIcon
                       className="w-4 h-4 sm:mr-2 shrink-0"
-                      key="channel_slug-resource_icon"
+                      key="channel_slug-quit_icon"
                     />
                     <span className="items-center hidden sm:inline-flex">
-                      Poster
+                      {t("quit1")}
                       <span className="hidden ml-1 lg:inline-flex">
-                        une ressource
+                        {t("quit2")}
                       </span>
                     </span>
-                  </a>
-                </Link> */}
+                  </button>
+                )}
               </div>
             </div>
 
@@ -242,12 +227,12 @@ const ChannelSlug: NextPage<any> = ({
                   onChange={(e) => setMessage(e.target.value)}
                   className="z-40 pl-[2.25rem] bg-white hover:bg-gray-200 dark:hover:bg-gray-700 dark:focus:bg-gray-700 input"
                   ref={inputRef}
-                  placeholder="Écrivez votre message..."
+                  placeholder={t("placeholder")}
                 />
               </label>
               <button type="submit" className=" btn-bleuFrance">
                 <CheckIcon className="w-4 h-4 mr-2" />
-                Envoyer
+                {t("send")}
               </button>
             </form>
           </div>
@@ -270,32 +255,43 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         destination: "/auth/login",
       },
     };
-  let parsedUser = JSON.parse(user);
+  const parsedUser = JSON.parse(user);
   const channels = await (
     await fetchRSR("http://localhost:3000/api/channel/", parsedUser?.session)
   ).json();
 
-  const channel: Channel = (
-    await (
-      await fetchRSR(
-        "http://localhost:3000/api/channel/" + context.params.slug,
-        parsedUser?.session
-      )
-    ).json()
-  )?.data?.attributes;
+  try {
+    const channel: Channel = (
+      await (
+        await fetchRSR(
+          "http://localhost:3000/api/channel/" + context.params.slug,
+          parsedUser?.session
+        )
+      ).json()
+    )?.data?.attributes;
 
-  if (!channel)
+    if (!channel)
+      return {
+        redirect: {
+          permanent: false,
+          destination: "/channel",
+        },
+      };
+
     return {
-      redirect: {
-        permanent: false,
-        destination: "/channel",
+      props: {
+        sideBarChannels: channels?.data?.attributes,
+        channel,
+        i18n: (await import(`../../../i18n/${context.locale}.json`)).default,
       },
     };
-
-  return {
-    props: {
-      sideBarChannels: channels?.data?.attributes,
-      channel,
-    },
-  };
+  } catch (e) {
+    return {
+      props: {
+        sideBarChannels: channels?.data?.attributes,
+        channel: {},
+        i18n: (await import(`../../../i18n/${context.locale}.json`)).default,
+      },
+    };
+  }
 };

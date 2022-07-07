@@ -1,3 +1,31 @@
 {
-  "extends": "next/core-web-vitals"
+  "root": true,
+  "plugins": [
+    "react",
+    "react-hooks",
+    "@typescript-eslint"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "next/core-web-vitals"
+  ],
+  "rules": {
+    "no-undef": "off",
+    "no-unused-vars": "warn",
+    "no-console": "warn",
+    "no-empty-function": "warn",
+    "prefer-const": "warn",
+    "no-useless-escape": "warn",
+    "@typescript-eslint/no-empty-interface": "warn",
+    "@typescript-eslint/no-var-requires": "warn",
+    "@typescript-eslint/ban-types": "warn",
+    "@typescript-eslint/ban-ts-comment": "warn",
+    "@typescript-eslint/no-unused-vars": "warn",
+    "@typescript-eslint/no-empty-function": "warn",
+    "@typescript-eslint/no-this-alias": "warn",
+    "@typescript-eslint/no-extra-semi": "warn"
+
+  }
 }

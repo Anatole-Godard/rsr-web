@@ -1,9 +1,9 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import Resource from "@models/Resource";
 import withDatabase from "@middleware/mongoose";
-import { handleError } from "@utils/handleError";
-import { getPagination, getTotalPages } from "@utils/pagination";
-import { isAdmin } from '@utils/getCurrentUser';
+import { handleError } from "libs/handleError";
+import { getPagination, getTotalPages } from "libs/pagination";
+import { isAdmin } from 'libs/getCurrentUser';
 import { withAuth } from "@middleware/auth";
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -44,6 +44,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         }
         Resource.countDocuments(query).exec((count_error, count) => {
           if (err) {
+            // @ts-ignore
             handleError(res, err, "resource/all");
           }
           return res.status(200).json({
@@ -52,16 +53,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
               id: "all",
               totalItems: count,
               totalPages: getTotalPages(count, limit),
-              attributes: resource.map((element) => ({
-                uid: element._id,
-                owner: element.owner,
-                slug: element.slug,
-                data: element.data,
-                likes: element.likes,
-                validated: element.validated,
-                createdAt: element.createdAt,
-                tags: element.tags,
-              })),
+              attributes: resource,
             },
           });
         });

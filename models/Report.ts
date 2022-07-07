@@ -12,13 +12,21 @@ const reportSchema = new Schema({
         type: String,
         required: true,
     },
+    message: {
+        type: String
+    },
     type: {
         type: String,
         required: true,
         enum: [
             "user",
-            "resource"
+            "resource",
+            "comment",
         ],
+    },
+    link: {
+        type: String,
+        required: true,
     },
     validated: {
         type: Boolean,

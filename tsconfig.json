@@ -1,11 +1,7 @@
 {
   "compilerOptions": {
     "target": "es5",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": false,
@@ -17,34 +13,21 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
-    "baseUrl": ".", // This must be specified if "paths" is.
+    "baseUrl": ".",
     "paths": {
-      "@definitions/*": [
-        "types/*"
-      ],
-      "@utils/*": [
-        "utils/*"
-      ],
-      "@components/*": [
-        "components/*"
-      ],
-      "@resources/*": [
-        "resources/*"
-      ],
-      "@hooks/*": [
-        "hooks/*"
-      ],
-      "@middleware/*": [
-        "middleware/*"
-      ],
-      "@models/*": [
-        "models/*"
-      ]
+      "@definitions/*": ["types/*"],
+      "@utils/*": ["libs/*"],
+      "@components/*": ["components/*"],
+      "@resources/*": ["resources/*"],
+      "@hooks/*": ["hooks/*"],
+      "@middleware/*": ["middleware/*"],
+      "@models/*": ["models/*"]
     },
     "incremental": true
   },
   "include": [
     "next-env.d.ts",
+    "global.d.ts",
     "**/*.ts",
     "**/*.tsx"
   ],
